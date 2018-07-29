@@ -1,0 +1,255 @@
+buildscript {
+    repositories {
+        maven { url "https://maven.fabric.io/public" }
+
+    }
+
+    dependencies {
+        classpath "io.fabric.tools:gradle:1.+"
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+//apply plugin: "io.fabric"
+
+repositories {
+    maven { url "https://maven.fabric.io/public" }
+    google()
+    flatDir {
+        dirs "libs"
+    }
+    mavenCentral()
+
+}
+
+android {
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    dataBinding {
+        enabled = true
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.team.mamba.atlas"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
+    }
+
+    configurations {
+        all {
+            exclude group: 'commons-logging', module: 'commons-logging'
+            exclude group: 'org.apache.httpcomponents'
+        }
+    }
+
+    lintOptions {
+        disable "GoogleAppIndexingWarning"
+        baseline file("lint-baseline.xml") // your choice of filename/path here
+    }
+
+    signingConfigs {
+
+        releaseConfig {
+
+            storeFile file("atlas.jks")
+            storePassword("android")
+            keyAlias "atlas"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+
+        release {
+            minifyEnabled false
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+
+        }
+
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //ext.enableCrashlytics = false
+        }
+    }
+
+    /**
+     * Any code you put in your flavors will override any code in your 'main' directory
+     */
+    // Specifies a flavor dimension.  link : https://developer.android.com/studio/build/gradle-plugin-3-0-0-migration.html#variant_aware
+    flavorDimensions "default"
+
+    productFlavors {
+
+        developmentFlavor {
+
+            applicationId "com.team.mamba.atlas.dev"
+            resValue "string", "app_name", "Atlas-Dev"
+            versionCode 16010500
+            versionName "1.5.0"
+            setProperty("archivesBaseName", "atlas_" + versionName)
+
+        }
+
+        stagingFlavor {
+
+            applicationId "com.team.mamba.atlas.staging"
+            resValue "string", "app_name", "Atlas-Staging"
+            versionCode 16010000
+            versionName "1.0"
+            setProperty("archivesBaseName", "atlas_" + versionName)
+
+        }
+
+        productionFlavor {
+
+            applicationId "com.team.mamba.atlas"
+            resValue "string", "app_name", "Atlas"
+            versionCode 16010000
+            versionName "1.0"
+            setProperty("archivesBaseName", "atlas_" + versionName)
+
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // run lint checks but won't abort build
+    lintOptions {
+        abortOnError false
+    }
+
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+
+    packagingOptions {
+        exclude "META-INF/MANIFEST.MF"
+        exclude "META-INF/rxjava.properties"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //all support dependencies
+    implementation "com.android.support:support-v4:$rootProject.support"
+    implementation "com.android.support:appcompat-v7:$rootProject.support"
+    implementation "com.android.support:customtabs:$rootProject.support"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayout"
+    implementation "com.android.support:recyclerview-v7:$rootProject.support"
+    implementation "com.android.support:cardview-v7:$rootProject.support"
+    implementation "com.android.support:design:$rootProject.support"
+    implementation "com.android.support:multidex:$rootProject.multidex"
+    implementation "com.android.support:preference-v7:$rootProject.support"
+    implementation "com.android.support:preference-v14:$rootProject.support"
+
+    //all testing dependencies
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
+        exclude group: "com.android.support", module: "support-annotations"
+    })
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoCore"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoCore"
+    testImplementation "junit:junit:$rootProject.junit"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockito"
+    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamCrest"
+    androidTestImplementation "org.hamcrest:hamcrest-library:$rootProject.hamCrest"
+    androidTestImplementation "com.android.support.test.espresso.idling:idling-concurrent:$rootProject.espressoCore"
+    implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoCore"
+    testAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    testImplementation "org.robolectric:robolectric:3.8"
+    testImplementation "org.robolectric:multidex:3.4.2"
+    testImplementation "org.robolectric:shadows-support-v4:3.3.2"
+
+
+    //all REST dependencies
+    implementation "com.google.code.gson:gson:$rootProject.gson"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttp"
+    implementation("com.squareup.retrofit2:retrofit:$rootProject.retrofit") {
+        exclude group: "xpp3", module: "xpp3"
+        exclude group: "stax", module: "stax-api"
+        exclude group: "stax", module: "stax"
+    }
+    implementation("com.squareup.retrofit2:converter-gson:$rootProject.retrofit") {
+        exclude group: "xpp3", module: "xpp3"
+        exclude group: "stax", module: "stax-api"
+        exclude group: "stax", module: "stax"
+    }
+    //all view manipulation dependencies
+    implementation "com.github.bumptech.glide:glide:$rootProject.glide"
+    implementation "de.hdodenhof:circleimageview:$rootProject.circleImageView"
+    implementation "com.commit451:PhotoView:$rootProject.photoView"
+
+    //all tools dependencies
+    implementation "com.google.code.findbugs:jsr305:$rootProject.findBugs"
+    implementation "com.orhanobut:logger:$rootProject.orhanobutLogger"
+    implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
+
+    //all RxJava dependencies
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0"
+    implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rootProject.rxjavaForRetrofit"
+
+    //RxJava support for ROOM dependencies
+    implementation "android.arch.persistence.room:runtime:$rootProject.roomDatabase"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomDatabase"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomDatabase"
+
+    //all ROOM dependencies
+    implementation "android.arch.persistence.room:runtime:$rootProject.roomDatabase"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomDatabase"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomDatabase"
+    kapt "android.arch.persistence.room:compiler:$rootProject.roomDatabase"
+
+    //all dagger2 dependencies
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
+//    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+//    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+
+    // Databinding
+    kapt "com.android.databinding:compiler:$gradle_plugin_version"
+
+
+    // all ViewModel and LiveData dependencies
+    implementation "android.arch.lifecycle:extensions:$rootProject.archictectureComponents"
+    annotationProcessor "android.arch.lifecycle:common-java8:$rootProject.archictectureComponents"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    kapt "android.arch.lifecycle:compiler:$rootProject.archictectureComponents"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //our jar files
+}
