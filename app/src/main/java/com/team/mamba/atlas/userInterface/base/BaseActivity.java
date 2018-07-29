@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.data.AppDataManager;
@@ -25,10 +27,10 @@ import javax.inject.Inject;
 public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
         implements HasSupportFragmentInjector{
 
-    @Inject
+//   @Inject
     DispatchingAndroidInjector<Fragment> fragmentInjector;
 
-//    @Inject
+    @Inject
     AppDataManager appDataManager;
 
     private T mViewDataBinding;
@@ -37,6 +39,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
     private static boolean isIdle = true;
     protected int sdk = Build.VERSION.SDK_INT;
     protected int marshMallow = Build.VERSION_CODES.M;
+    protected AppDataManager dataManager;
 
     /**
      * Override for set binding variable
@@ -70,6 +73,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+        dataManager = appDataManager;
         performDataBinding();
     }
 
@@ -80,6 +84,16 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
         mViewDataBinding.executePendingBindings();
     }
 
+    protected void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+    }
+
     protected boolean isNetworkConnected() {
         return NetworkUtils.isNetworkConnected(getApplicationContext());
     }
@@ -88,7 +102,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
-    protected void showMessage(String message) {
+    protected void showSnackBar(String message) {
 
         Snackbar.make(getViewDataBinding().getRoot(), message, Snackbar.LENGTH_LONG)
                 .show();

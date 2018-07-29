@@ -15,4 +15,9 @@ public class AppHelper implements DataHelper {
         this.appContext = appContext;
         this.sharedPrefs = sharedPrefs;
     }
+
+    @Override
+    public AppSharedPrefs getSharedPrefs() {
+        return sharedPrefs;
+    }
 }

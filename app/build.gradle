@@ -155,6 +155,12 @@ android {
         exclude "META-INF/MANIFEST.MF"
         exclude "META-INF/rxjava.properties"
     }
+    sourceSets {
+        main {
+            res.srcDirs =
+                    ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/welcome', 'src/main/res/layouts/dashBoard']
+        }
+    }
 }
 
 dependencies {
@@ -189,7 +195,6 @@ dependencies {
     testImplementation "org.robolectric:robolectric:3.8"
     testImplementation "org.robolectric:multidex:3.4.2"
     testImplementation "org.robolectric:shadows-support-v4:3.3.2"
-
 
     //all REST dependencies
     implementation "com.google.code.gson:gson:$rootProject.gson"
@@ -239,9 +244,12 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
+    //for dagger testing
+    androidTestImplementation "com.android.support:support-annotations:$rootProject.support"
+    androidTestImplementation "com.android.support.test:rules:$rootProject.testRunner"
+
     // Databinding
     kapt "com.android.databinding:compiler:$gradle_plugin_version"
-
 
     // all ViewModel and LiveData dependencies
     implementation "android.arch.lifecycle:extensions:$rootProject.archictectureComponents"

@@ -13,6 +13,11 @@ public class AppDataManager implements DataHelper{
     @Inject
     public AppDataManager(AppHelper appHelper){
 
+        this.appDataHelper = appDataHelper;
+    }
 
+    @Override
+    public AppSharedPrefs getSharedPrefs() {
+        return appDataHelper.getSharedPrefs();
     }
 }
