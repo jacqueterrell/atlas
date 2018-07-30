@@ -25,10 +25,8 @@ import dagger.android.support.HasSupportFragmentInjector;
 import javax.inject.Inject;
 
 public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
-        implements HasSupportFragmentInjector{
+      {
 
-//   @Inject
-    DispatchingAndroidInjector<Fragment> fragmentInjector;
 
     @Inject
     AppDataManager appDataManager;
@@ -180,8 +178,4 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
         }
     }
 
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentInjector;
-    }
 }

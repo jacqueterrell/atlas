@@ -12,6 +12,11 @@ import com.team.mamba.atlas.R;
 public class MobileCrmFragment extends Fragment {
 
 
+    public static MobileCrmFragment newInstance(){
+
+        return new MobileCrmFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

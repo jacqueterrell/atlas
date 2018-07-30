@@ -242,8 +242,8 @@ dependencies {
     //all dagger2 dependencies
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
-//    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger"
-//    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
@@ -261,6 +261,7 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:$rootProject.archictectureComponents"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
 
     //our jar files
 }
