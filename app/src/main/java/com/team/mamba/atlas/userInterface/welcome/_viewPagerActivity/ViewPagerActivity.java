@@ -3,6 +3,8 @@ package com.team.mamba.atlas.userInterface.welcome._viewPagerActivity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeViewPagerBinding;
@@ -43,5 +45,11 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
+
+        Glide.with(ViewPagerActivity.this)
+                .load(R.drawable.welcome_background)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(binding.imgViewBackground);
     }
 }

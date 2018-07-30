@@ -169,14 +169,17 @@ dependencies {
     //all support dependencies
     implementation "com.android.support:support-v4:$rootProject.support"
     implementation "com.android.support:appcompat-v7:$rootProject.support"
+    implementation "com.android.support:design:$rootProject.support"
     implementation "com.android.support:customtabs:$rootProject.support"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayout"
     implementation "com.android.support:recyclerview-v7:$rootProject.support"
     implementation "com.android.support:cardview-v7:$rootProject.support"
-    implementation "com.android.support:design:$rootProject.support"
     implementation "com.android.support:multidex:$rootProject.multidex"
     implementation "com.android.support:preference-v7:$rootProject.support"
     implementation "com.android.support:preference-v14:$rootProject.support"
+
+    //firebase libraries
+    implementation 'com.google.firebase:firebase-core:16.0.0'
 
     //all testing dependencies
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
@@ -261,3 +264,5 @@ dependencies {
 
     //our jar files
 }
+
+apply plugin: 'com.google.gms.google-services'

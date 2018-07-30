@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "662744231727",
+    "firebase_url": "https://atlas-android-8eed5.firebaseio.com",
+    "project_id": "atlas-android-8eed5",
+    "storage_bucket": "atlas-android-8eed5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662744231727:android:b4bcce416c59df98",
+        "android_client_info": {
+          "package_name": "com.team.mamba.atlas.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662744231727-1pu5hk52j7j52br1se9po9s4fhcqumln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas.dev",
+            "certificate_hash": "66525d14f3462292b742ee3352a3692dad5c2e88"
+          }
+        },
+        {
+          "client_id": "662744231727-5b2hb247gu12fmj0d50n7md5va7dl4q0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwYnUzfBX_l8xXuK_95gm5DfyNKYHz0wo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662744231727-5b2hb247gu12fmj0d50n7md5va7dl4q0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
