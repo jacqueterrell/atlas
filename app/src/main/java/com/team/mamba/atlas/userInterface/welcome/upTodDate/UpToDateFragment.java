@@ -12,6 +12,11 @@ import com.team.mamba.atlas.R;
 public class UpToDateFragment extends Fragment{
 
 
+    public static UpToDateFragment newInstance(){
+
+        return new UpToDateFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

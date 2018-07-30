@@ -13,6 +13,12 @@ import com.team.mamba.atlas.userInterface.base.BaseFragment;
 public class RememberHowYouMetFragment extends Fragment {
 
 
+    public static RememberHowYouMetFragment newInstance(){
+
+        return new RememberHowYouMetFragment();
+    }
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
