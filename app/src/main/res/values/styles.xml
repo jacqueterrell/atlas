@@ -12,9 +12,9 @@
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
     </style>
 
-    <style name = "TextView_Normal_600">
+    <style name = "App_Text_view">
 
-        <item name = "android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/lato</item>
 
     </style>
 

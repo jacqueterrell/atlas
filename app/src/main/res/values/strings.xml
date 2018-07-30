@@ -1,3 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
 <resources>
+    <string name = "accessories_button">Accessories</string>
+
+    <!--Welcome Screen -->
+    <string name="up_to_date_title">Up-to-Date Always</string>
+    <string name="up_to_date_body">As your network moves over time, your access to
+        them never does. When they updater their profiles, you're always ready. Every time</string>
+
+    <string name="how_you_met_title">Remember How You Met</string>
+    <string name="how_you_met_body">Write personal notes on your contacts and always remember
+    the how and why of your meetings. Your personal notes are for your eyes only.</string>
+
+    <string name="mobile_crm_title">Mobile CRM</string>
+    <string name="mobile_crm_body">Easier. Faster. And On-the-Go. Stay focused on mapping
+    the opportunities your business needs in real-time. Export as you see fit.</string>
+
+    <string name="latest_news_title">Latest News</string>
+    <string name="latest_news_body">Keep tabs on the latest happenings in your network.
+        Track how your network is changing over time and know all of your key stats.</string>
 
 </resources>

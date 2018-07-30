@@ -11,5 +11,8 @@
     <color name="semi_transparent_white">#66ffffff</color>
     <color name="super_transparent_white">#33ffffff</color>
 
+    <color name="material_icons_light">#d5d5d5</color>
+    <color name="material_icon">#999999</color>
+
 
 </resources>
