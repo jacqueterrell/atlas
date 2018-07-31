@@ -59,6 +59,18 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
 
     }
 
+    public boolean isNameValid(String name){
+
+        if (name.isEmpty()){
+
+            return false;
+
+        } else {
+
+            return true;
+        }
+    }
+
     public void onStartButtonClicked(){
 
         getNavigator().onStartButtonClicked();
@@ -84,13 +96,28 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         getNavigator().onFirstNameNextClicked();
     }
 
+    public void onFirstNamePreviousClicked(){
+
+        getNavigator().onFirstNamePreviousClicked();
+    }
+
     public void onLastNameNextClicked(){
 
         getNavigator().onLastNameNextClicked();
     }
 
+    public void onLastNamePreviousClicked(){
+
+        getNavigator().onLastNamePreviousClicked();
+    }
+
     public void onPhoneSubmitClicked(){
 
         getNavigator().onPhoneSubmitClicked();
+    }
+
+    public void onPhoneSubmitPreviousClicked(){
+
+        getNavigator().onPhoneSubmitPreviousClicked();
     }
 }

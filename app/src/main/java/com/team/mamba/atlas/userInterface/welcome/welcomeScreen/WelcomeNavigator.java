@@ -12,8 +12,16 @@ public interface WelcomeNavigator {
 
     void onFirstNameNextClicked();
 
+    void onFirstNamePreviousClicked();
+
     void onLastNameNextClicked();
 
+    void onLastNamePreviousClicked();
+
     void onPhoneSubmitClicked();
+
+    void onPhoneSubmitPreviousClicked();
+
+    void onBackPressed();
 
 }

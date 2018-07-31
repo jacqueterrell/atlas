@@ -8,7 +8,6 @@ public class AppConstants {
         //disable new object creation
     }
 
-
     public static boolean APP_DEBUG = BuildConfig.DEBUG;
 
 }

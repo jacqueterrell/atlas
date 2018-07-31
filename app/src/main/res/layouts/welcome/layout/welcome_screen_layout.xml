@@ -43,6 +43,22 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/ic_arrow_right_white" />
 
+        <Button
+            android:id="@+id/btn_business_login"
+            android:fontFamily="@font/lato"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="Business Login"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:onClick = "@{()-> viewModel.onBusinessLoginClicked()}"
+            />
+
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -197,25 +213,11 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_business_login"
-            android:fontFamily="@font/lato"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="Business Login"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:onClick = "@{()-> viewModel.onBusinessLoginClicked()}"
-            />
 
         <include
             android:id="@+id/dialog_verify_age"
             layout="@layout/verify_age_dialog"
-            bind:viewModel = "@{viewModel}"/>
+            bind:viewModel="@{viewModel}" />
 
         <include
             android:id="@+id/dialog_enter_first_name"
