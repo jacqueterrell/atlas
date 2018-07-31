@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.welcome.upTodDate;
+package com.team.mamba.atlas.userInterface.welcome.upToDate;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
