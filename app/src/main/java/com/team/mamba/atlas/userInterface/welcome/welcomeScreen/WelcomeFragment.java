@@ -66,6 +66,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
                 .repeat(0)
                 .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogVerifyAge.layoutVerifyAge);
+
     }
 
     @Override
@@ -234,6 +235,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
             showSnackbar("verified");
             onDateCancelClicked();
             showEnterFirstName();
+
+            binding.dialogEnterFirstName.etFirstName.requestFocus()
 
         } else {
 
