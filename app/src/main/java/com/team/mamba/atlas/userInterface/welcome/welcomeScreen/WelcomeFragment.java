@@ -51,6 +51,41 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
     }
 
     @Override
+    public void onStartButtonClicked() {
+
+    }
+
+    @Override
+    public void onBusinessLoginClicked() {
+
+    }
+
+    @Override
+    public void onDateVerifyClicked() {
+
+    }
+
+    @Override
+    public void onDateCancelClicked() {
+
+    }
+
+    @Override
+    public void onFirstNameNextClicked() {
+
+    }
+
+    @Override
+    public void onLastNameNextClicked() {
+
+    }
+
+    @Override
+    public void onPhoneSubmitClicked() {
+
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
@@ -70,5 +105,17 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
                 .into(binding.imgViewBackground);
 
         return binding.getRoot();
+    }
+
+    private void showDatePicker(){
+
+    }
+
+    private void showFirstName(){
+
+    }
+
+    private void showLastName(){
+
     }
 }

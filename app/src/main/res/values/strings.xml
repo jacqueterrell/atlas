@@ -20,4 +20,15 @@
     <string name="latest_news_body">Keep tabs on the latest happenings in your network.
         Track how your network is changing over time and know all of your key stats.</string>
 
+    <string name="verify_age_title">Verify Your Age</string>
+
+    <string name="verify_age_body">To create an account on Atlas, you must be a minimum of 13 years old.</string>
+
+    <string name="my_birthday">My Birthday:</string>
+
+    <string name="cancel">Cancel</string>
+
+    <string name="verify">Verify</string>
+
+
 </resources>

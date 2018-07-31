@@ -221,6 +221,7 @@ dependencies {
     implementation "com.google.code.findbugs:jsr305:$rootProject.findBugs"
     implementation "com.orhanobut:logger:$rootProject.orhanobutLogger"
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
+    implementation 'com.github.drawers:SpinnerDatePicker:1.0.6'
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"

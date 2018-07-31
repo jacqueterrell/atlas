@@ -42,7 +42,10 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".userInterface.dashBoard._container_activity.DashBoardActivity" />
+
+        <activity android:name=".userInterface.dashBoard._container_activity.DashBoardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme"/>
 
         <meta-data
             android:name="preloaded_fonts"
