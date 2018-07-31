@@ -5,8 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 
+import android.view.ViewGroup;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeViewPagerBinding;
@@ -33,8 +36,10 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
     DispatchingAndroidInjector<Fragment> fragmentInjector;
 
 
+    private static final int SCROLL_ACTION_STOPPED = 0;
     private WelcomeViewPagerBinding binding;
     private WelcomePager welcomePager;
+    private int currentPage;
 
     @Override
     public int getBindingVariable() {
@@ -65,7 +70,6 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
 
         welcomePager = new WelcomePager(getSupportFragmentManager());
         binding.viewPagerWelcome.setAdapter(welcomePager);
-
     }
 
     private class WelcomePager extends FragmentStatePagerAdapter{
@@ -95,16 +99,58 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
                 return MobileCrmFragment.newInstance();
             }
 
-            else  {
+            else if (position == 4) {
 
                 return LatestNewsFragment.newInstance();
+            }
+
+            else if (position == 5){
+
+                return WelcomeFragment.newInstance();
+
+            } else {
+
+                return WelcomeFragment.newInstance();
 
             }
         }
 
         @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+
+
+            ((ViewPager)container).addOnPageChangeListener(new OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+
+                    currentPage = position;
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+//                        if (currentPage ==0){
+//
+//                            ((ViewPager)container).setCurrentItem(5,false);
+//                        }
+
+                        if(currentPage == 5)
+                            ((ViewPager)container).setCurrentItem(0,false);
+
+                }
+            });
+
+            return super.instantiateItem(container, position);
+        }
+
+        @Override
         public int getCount() {
-            return 5;
+            return 6;
         }
     }
 
