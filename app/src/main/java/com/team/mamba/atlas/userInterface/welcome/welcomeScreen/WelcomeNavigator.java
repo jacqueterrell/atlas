@@ -15,4 +15,5 @@ public interface WelcomeNavigator {
     void onLastNameNextClicked();
 
     void onPhoneSubmitClicked();
+
 }

@@ -12,11 +12,17 @@
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
     </style>
 
-    <style name="NumberPickerStyle">
-        <item name="android:textSize">17sp</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/material_icon</item>
+
+    <style name="TextAppearance.EditText" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/transparent_white</item>
+        <item name="android:textSize">18sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
     </style>
+
 
     <style name = "App_Text_view">
 

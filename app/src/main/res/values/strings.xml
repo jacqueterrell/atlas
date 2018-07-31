@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-
 <resources>
-    <string name = "accessories_button">Accessories</string>
-
-    <!--Welcome Screen -->
-    <string name="up_to_date_title">Up-to-Date Always</string>
-    <string name="up_to_date_body">As your network moves over time, your access to
-        them never does. When they updater their profiles, you're always ready. Every time</string>
-
-    <string name="how_you_met_title">Remember How You Met</string>
-    <string name="how_you_met_body">Write personal notes on your contacts and always remember
-    the how and why of your meetings. Your personal notes are for your eyes only.</string>
-
-    <string name="mobile_crm_title">Mobile CRM</string>
-    <string name="mobile_crm_body">Easier. Faster. And On-the-Go. Stay focused on mapping
-    the opportunities your business needs in real-time. Export as you see fit.</string>
-
-    <string name="latest_news_title">Latest News</string>
-    <string name="latest_news_body">Keep tabs on the latest happenings in your network.
-        Track how your network is changing over time and know all of your key stats.</string>
-
-    <string name="verify_age_title">Verify Your Age</string>
-
-    <string name="verify_age_body">To create an account on Atlas, you must be a minimum of 13 years old.</string>
-
-    <string name="my_birthday">My Birthday:</string>
+    <string name="accessories_button">Accessories</string>
 
     <string name="cancel">Cancel</string>
 
-    <string name="verify">Verify</string>
+    <string name="first_name">What\'s your first name?</string>
 
+    <string name="how_you_met_body">Write personal notes on your contacts and always rememberthe how and why of your meetings. Your personal notes are for your eyes only.</string>
+    <string name="how_you_met_title">Remember How You Met</string>
+
+    <string name="latest_news_body">Keep tabs on the latest happenings in your network.Track how your network is changing over time and know all of your key stats.</string>
+    <string name="latest_news_title">Latest News</string>
+    <string name="last_name">What\'s your last name?</string>
+
+    <string name="mobile_crm_body">Easier. Faster. And On-the-Go. Stay focused on mappingthe opportunities your business needs in real-time. Export as you see fit.</string>
+    <string name="mobile_crm_title">Mobile CRM</string>
+
+    <string name="my_birthday">My Birthday:</string>
+
+    <string name="up_to_date_body">As your network moves over time, your access tothem never does. When they updater their profiles, you're always ready. Every time</string>
+    <string name="up_to_date_title">Up-to-Date Always</string>
+
+    <string name="verify">Verify</string>
+    <string name="verify_age_body">To create an account on Atlas, you must be a minimum of 13 years old.</string>
+    <string name="verify_age_title">Verify Your Age</string>
+
+    <string name="what_is_your_cell">What\'s your cell phone number?</string>
 
 </resources>

@@ -216,12 +216,13 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.glide"
     implementation "de.hdodenhof:circleimageview:$rootProject.circleImageView"
     implementation "com.commit451:PhotoView:$rootProject.photoView"
+    implementation "com.daimajia.easing:library:$rootProject.yoyoAnimations"
+    implementation "com.daimajia.androidanimations:library:$rootProject.yoyoAndroidAnimation"
 
     //all tools dependencies
     implementation "com.google.code.findbugs:jsr305:$rootProject.findBugs"
     implementation "com.orhanobut:logger:$rootProject.orhanobutLogger"
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
-    implementation 'com.github.drawers:SpinnerDatePicker:1.0.6'
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
