@@ -1,13 +1,17 @@
 package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.inputmethod.InputMethodManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
@@ -144,11 +148,11 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
     public void onPhoneSubmitClicked() {
 
         //todo send to firebase phone Auth
-        String phoneNumber = binding.dialogEnterPhoneNumber.etLastName.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS,"");
+        String phoneNumber = binding.dialogEnterPhoneNumber.etPhoneNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS,"");
 
         if (CommonUtils.isPhoneValid(phoneNumber)){
 
-            showSnackbar("Phone Num is Valid");
+            showPhoneNumberAlert(phoneNumber);
 
         } else {
 
@@ -166,21 +170,25 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
     @Override
     public void onBackPressed() {
 
-        if (binding.dialogEnterPhoneNumber.layoutVerifyAge.getVisibility() == View.VISIBLE){
+        if (binding.dialogEnterPhoneNumber.layoutPhoneNumber.getVisibility() == View.VISIBLE){
 
             hideEnterPhoneNumber();
 
-        } else if (binding.dialogEnterLastName.layoutVerifyAge.getVisibility() == View.VISIBLE){
+        } else if (binding.dialogEnterLastName.layoutLastName.getVisibility() == View.VISIBLE){
 
             hideEnterLastName();
 
-        } else if (binding.dialogEnterFirstName.layoutVerifyAge.getVisibility() == View.VISIBLE){
+        } else if (binding.dialogEnterFirstName.layoutFirstName.getVisibility() == View.VISIBLE){
 
             hideEnterFirstName();
 
         } else if (binding.dialogVerifyAge.layoutVerifyAge.getVisibility() == View.VISIBLE){
 
             onDateCancelClicked();
+
+        } else {
+
+            getBaseActivity().onBackPressed();
         }
     }
 
@@ -221,6 +229,9 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(binding.dialogEnterPhoneNumber.imgViewBackground);
 
+        binding.dialogEnterPhoneNumber.etPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
+
         return binding.getRoot();
     }
 
@@ -236,11 +247,19 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
             onDateCancelClicked();
             showEnterFirstName();
 
-            binding.dialogEnterFirstName.etFirstName.requestFocus()
-
         } else {
 
             showSnackbar("not verified");
+        }
+
+    }
+
+    private void showSoftKeyboard(View view) {
+
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager)
+                    getBaseActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
 
     }
@@ -251,8 +270,12 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
                 .repeat(0)
-                .onStart(animator -> binding.dialogEnterFirstName.layoutVerifyAge.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogEnterFirstName.layoutVerifyAge);
+                .onStart(animator -> binding.dialogEnterFirstName.layoutFirstName.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogEnterFirstName.layoutFirstName);
+
+        binding.dialogEnterFirstName.etFirstName.requestFocus();
+        showSoftKeyboard(binding.dialogEnterFirstName.etFirstName);
+
     }
 
     private void hideEnterFirstName(){
@@ -260,8 +283,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
                 .repeat(0)
-                .onEnd(animator -> binding.dialogEnterFirstName.layoutVerifyAge.setVisibility(View.GONE))
-                .playOn(binding.dialogEnterFirstName.layoutVerifyAge);
+                .onEnd(animator -> binding.dialogEnterFirstName.layoutFirstName.setVisibility(View.GONE))
+                .playOn(binding.dialogEnterFirstName.layoutFirstName);
 
     }
 
@@ -270,8 +293,11 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
                 .repeat(0)
-                .onStart(animator -> binding.dialogEnterLastName.layoutVerifyAge.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogEnterLastName.layoutVerifyAge);
+                .onStart(animator -> binding.dialogEnterLastName.layoutLastName.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogEnterLastName.layoutLastName);
+
+        binding.dialogEnterLastName.etLastName.requestFocus();
+        showSoftKeyboard(binding.dialogEnterLastName.etLastName);
     }
 
     private void hideEnterLastName(){
@@ -279,8 +305,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
                 .repeat(0)
-                .onEnd(animator -> binding.dialogEnterLastName.layoutVerifyAge.setVisibility(View.GONE))
-                .playOn(binding.dialogEnterLastName.layoutVerifyAge);
+                .onEnd(animator -> binding.dialogEnterLastName.layoutLastName.setVisibility(View.GONE))
+                .playOn(binding.dialogEnterLastName.layoutLastName);
     }
 
     private void showEnterPhoneNumber(){
@@ -288,8 +314,11 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
                 .repeat(0)
-                .onStart(animator -> binding.dialogEnterPhoneNumber.layoutVerifyAge.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogEnterPhoneNumber.layoutVerifyAge);
+                .onStart(animator -> binding.dialogEnterPhoneNumber.layoutPhoneNumber.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogEnterPhoneNumber.layoutPhoneNumber);
+
+        binding.dialogEnterPhoneNumber.etPhoneNumber.requestFocus();
+        showSoftKeyboard(binding.dialogEnterPhoneNumber.etPhoneNumber);
     }
 
     private void hideEnterPhoneNumber(){
@@ -297,9 +326,26 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
                 .repeat(0)
-                .onEnd(animator -> binding.dialogEnterPhoneNumber.layoutVerifyAge.setVisibility(View.GONE))
-                .playOn(binding.dialogEnterPhoneNumber.layoutVerifyAge);
+                .onEnd(animator -> binding.dialogEnterPhoneNumber.layoutPhoneNumber.setVisibility(View.GONE))
+                .playOn(binding.dialogEnterPhoneNumber.layoutPhoneNumber);
     }
 
+
+    private void showPhoneNumberAlert(String phoneNumber){
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle(R.string.phone_number_warning_title)
+                .setMessage(R.string.phone_number_warning_body)
+                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
+
+                })
+                .setPositiveButton("Continue",(paramDialogInterface, paramInt) -> {
+
+                    //Todo: send to Firebase phone Auth
+                });
+
+        dialog.show();
+    }
 
 }

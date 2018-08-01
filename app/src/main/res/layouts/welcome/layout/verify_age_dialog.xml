@@ -32,6 +32,8 @@
         android:paddingBottom="50dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
+        android:clickable="true"
+        android:focusable="true"
         android:visibility="gone"
         tools:visibility="gone">
 

@@ -18,7 +18,7 @@
 
     <string name="my_birthday">My Birthday:</string>
 
-    <string name="up_to_date_body">As your network moves over time, your access tothem never does. When they updater their profiles, you're always ready. Every time</string>
+    <string name="up_to_date_body">As your network moves over time, your access to them never does. When they updater their profiles, you\'re always ready. Every time</string>
     <string name="up_to_date_title">Up-to-Date Always</string>
 
     <string name="verify">Verify</string>
@@ -26,5 +26,8 @@
     <string name="verify_age_title">Verify Your Age</string>
 
     <string name="what_is_your_cell">What\'s your cell phone number?</string>
+
+    <string name="phone_number_warning_title">Login to Atlas with Your Phone Number</string>
+    <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. Standard message rates apply.</string>
 
 </resources>

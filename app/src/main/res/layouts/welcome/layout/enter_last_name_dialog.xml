@@ -20,10 +20,12 @@
 
 
     <FrameLayout
-        android:id="@+id/layout_verify_age"
+        android:id="@+id/layout_last_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
         android:visibility="gone"
         tools:visibility="gone">
 
@@ -163,26 +165,26 @@
             </LinearLayout>
 
             <android.support.v7.widget.CardView
-                android:layout_width="120dp"
-                android:layout_height="50dp"
+                android:layout_width="125dp"
+                android:layout_height="55dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:innerRadius="0dp"
                 android:shape="ring"
-                app:cardBackgroundColor="@color/material_icon"
-                app:cardCornerRadius="5dp"
-                app:contentPadding="2dp"
+                app:cardBackgroundColor="@color/material_icons_light"
+                app:cardCornerRadius="7dp"
                 card_view:cardElevation="0dp">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="120dp"
                     android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="center"
                     android:innerRadius="0dp"
                     android:shape="ring"
-                    app:cardBackgroundColor="@color/material_icons_light"
-                    app:cardCornerRadius="5dp"
-                    card_view:cardElevation="0dp">
+                    app:cardBackgroundColor="@color/transparent_white"
+                    app:cardCornerRadius="7dp"
+                    card_view:cardElevation="0dp"
+                    >
 
 
                     <Button
