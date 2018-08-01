@@ -179,7 +179,9 @@ dependencies {
     implementation "com.android.support:preference-v14:$rootProject.support"
 
     //firebase libraries
-    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.google.firebase:firebase-firestore:17.0.4'
 
     //all testing dependencies
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
@@ -218,6 +220,7 @@ dependencies {
     implementation "com.commit451:PhotoView:$rootProject.photoView"
     implementation "com.daimajia.easing:library:$rootProject.yoyoAnimations"
     implementation "com.daimajia.androidanimations:library:$rootProject.yoyoAndroidAnimation"
+    implementation "net.bohush.geometricprogressview:geometricprogressview:$rootProject.geometricProgressview"
 
     //all tools dependencies
     implementation "com.google.code.findbugs:jsr305:$rootProject.findBugs"

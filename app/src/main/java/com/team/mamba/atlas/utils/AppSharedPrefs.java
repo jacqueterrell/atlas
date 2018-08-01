@@ -5,6 +5,11 @@ import javax.inject.Inject;
 
 public class AppSharedPrefs {
 
+
+    private static final String USER_ID = "userId";
+    private static final String FIRST_NAME = "firstName";
+    private static final String LAST_NAME = "lastName";
+
     private SharedPreferences sharedPreferences;
 
     @Inject
@@ -14,5 +19,19 @@ public class AppSharedPrefs {
 
     public AppSharedPrefs() {
 
+    }
+
+    public void setUserId(String id){
+
+        sharedPreferences
+                .edit()
+                .putString(USER_ID,id)
+                .apply();
+    }
+
+    public String getUserId(){
+
+        return sharedPreferences
+                .getString(USER_ID,"");
     }
 }

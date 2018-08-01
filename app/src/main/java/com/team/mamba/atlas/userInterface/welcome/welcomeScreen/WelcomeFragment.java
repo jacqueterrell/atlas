@@ -1,8 +1,9 @@
 package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 
-import android.animation.Animator;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -10,12 +11,22 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.view.inputmethod.InputMethodManager;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeScreenLayoutBinding;
@@ -25,9 +36,8 @@ import com.team.mamba.atlas.utils.formatData.RegEx;
 
 import javax.inject.Inject;
 
-import kotlin.text.Regex;
 
-public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,WelcomeViewModel> implements WelcomeNavigator{
+public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, WelcomeViewModel> implements WelcomeNavigator {
 
     @Inject
     WelcomeViewModel viewModel;
@@ -36,8 +46,11 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
     WelcomeDataModel dataModel;
 
     private WelcomeScreenLayoutBinding binding;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private FirebaseAuth mAuth;
+    private static final int DEFAULT_TIME_IN_MILLI_SECS = 500;
 
-    public static WelcomeFragment newInstance(){
+    public static WelcomeFragment newInstance() {
 
         return new WelcomeFragment();
     }
@@ -59,26 +72,29 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
     @Override
     public void onStartButtonClicked() {
 
-        YoYo.with(Techniques.FadeIn)
-                .duration(500)
-                .repeat(0)
-                .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogVerifyAge.layoutVerifyAge);
+        viewModel.setBusinessLogin(false);
+        viewModel.addUserToFirebaseDatabase(getViewModel());
+
+//        YoYo.with(Techniques.FadeIn)
+//                .duration(DEFAULT_TIME_IN_MILLI_SECS)
+//                .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
+//                .playOn(binding.dialogVerifyAge.layoutVerifyAge);
 
     }
 
     @Override
     public void onBusinessLoginClicked() {
 
+        viewModel.setBusinessLogin(true);
+
         YoYo.with(Techniques.FadeIn)
-                .duration(500)
-                .repeat(0)
+                .duration(DEFAULT_TIME_IN_MILLI_SECS)
                 .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogVerifyAge.layoutVerifyAge);
     }
@@ -87,15 +103,14 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
     public void onDateVerifyClicked() {
 
         validateAge();
-       // onDateCancelClicked();
+        // onDateCancelClicked();
     }
 
     @Override
     public void onDateCancelClicked() {
 
         YoYo.with(Techniques.FadeOut)
-                .duration(500)
-                .repeat(0)
+                .duration(DEFAULT_TIME_IN_MILLI_SECS)
                 .onEnd(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.GONE))
                 .playOn(binding.dialogVerifyAge.layoutVerifyAge);
     }
@@ -105,8 +120,9 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
 
         String name = binding.dialogEnterFirstName.etFirstName.getText().toString();
 
-        if (viewModel.isNameValid(name)){
+        if (viewModel.isNameValid(name)) {
 
+            viewModel.setFirstName(name);
             showEnterLastName();
 
         } else {
@@ -127,8 +143,9 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
 
         String name = binding.dialogEnterLastName.etLastName.getText().toString();
 
-        if (viewModel.isNameValid(name)){
+        if (viewModel.isNameValid(name)) {
 
+            viewModel.setLastName(name);
             showEnterPhoneNumber();
 
         } else {
@@ -147,17 +164,28 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
     @Override
     public void onPhoneSubmitClicked() {
 
-        //todo send to firebase phone Auth
-        String phoneNumber = binding.dialogEnterPhoneNumber.etPhoneNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS,"");
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        String phoneNumber = binding.dialogEnterPhoneNumber.etPhoneNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS, "");
 
-        if (CommonUtils.isPhoneValid(phoneNumber)){
+        if (CommonUtils.isPhoneValid(phoneNumber)) {
 
-            showPhoneNumberAlert(phoneNumber);
+            try {
+
+                Phonenumber.PhoneNumber pn = phoneNumberUtil.parse(phoneNumber, "US");
+                String pnE164 = phoneNumberUtil.format(pn,PhoneNumberUtil.PhoneNumberFormat.E164);
+
+                viewModel.setPhoneNumber(pnE164);
+                showPhoneNumberAlert(pnE164);
+
+            } catch (NumberParseException e) {
+                e.printStackTrace();
+            }
 
         } else {
 
             showSnackbar("Phone Num is not valid");
         }
+
     }
 
     @Override
@@ -168,21 +196,58 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
     }
 
     @Override
+    public void onEnterSmsCancelClicked() {
+
+        hideEnterSMSCode();
+    }
+
+    @Override
+    public void onEnterSmsContinueClicked() {
+
+        String code = binding.etSmsCode.getText().toString();
+
+        if (code.isEmpty()){
+
+            showSnackbar("Your sms code is empty");
+
+        } else {
+
+            String verificationId = viewModel.getVerificationId();
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+            viewModel.setPhoneAuthCredential(credential);
+            viewModel.signInWithPhoneAuthCredential(getViewModel());
+
+            showProgressSpinner();
+        }
+
+    }
+
+    @Override
+    public Activity getParentActivity() {
+        return getBaseActivity();
+    }
+
+    @Override
+    public PhoneAuthProvider.OnVerificationStateChangedCallbacks getPhoneCallBacks() {
+        return mCallbacks;
+    }
+
+    @Override
     public void onBackPressed() {
 
-        if (binding.dialogEnterPhoneNumber.layoutPhoneNumber.getVisibility() == View.VISIBLE){
+        if (binding.dialogEnterPhoneNumber.layoutPhoneNumber.getVisibility() == View.VISIBLE) {
 
             hideEnterPhoneNumber();
 
-        } else if (binding.dialogEnterLastName.layoutLastName.getVisibility() == View.VISIBLE){
+        } else if (binding.dialogEnterLastName.layoutLastName.getVisibility() == View.VISIBLE) {
 
             hideEnterLastName();
 
-        } else if (binding.dialogEnterFirstName.layoutFirstName.getVisibility() == View.VISIBLE){
+        } else if (binding.dialogEnterFirstName.layoutFirstName.getVisibility() == View.VISIBLE) {
 
             hideEnterFirstName();
 
-        } else if (binding.dialogVerifyAge.layoutVerifyAge.getVisibility() == View.VISIBLE){
+        } else if (binding.dialogVerifyAge.layoutVerifyAge.getVisibility() == View.VISIBLE) {
 
             onDateCancelClicked();
 
@@ -190,6 +255,21 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
 
             getBaseActivity().onBackPressed();
         }
+    }
+
+    @Override
+    public void openDashBoard() {
+
+        hideEnterSMSCode();
+        hideProgressSpinner();
+        showAlert("Success","Dashboard is open");
+    }
+
+    @Override
+    public void handleError(String errorMsg) {
+
+        hideProgressSpinner();
+        showSnackbar(errorMsg);
     }
 
     @Override
@@ -201,7 +281,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
 
         binding = getViewDataBinding();
 
@@ -231,21 +311,32 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
 
         binding.dialogEnterPhoneNumber.etPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
+        setUpCallBacks();
 
         return binding.getRoot();
     }
 
-    private void validateAge(){
 
-        int month =  (binding.dialogVerifyAge.datePicker.getMonth());
+
+    private void validateAge() {
+
+        int month = (binding.dialogVerifyAge.datePicker.getMonth());
         int day = binding.dialogVerifyAge.datePicker.getDayOfMonth();
         int year = binding.dialogVerifyAge.datePicker.getYear();
 
-        if (viewModel.isAgeValid(month,day,year)){
 
-            showSnackbar("verified");
+
+        if (viewModel.isAgeValid(month, day, year)) {
+
             onDateCancelClicked();
-            showEnterFirstName();
+
+            if (viewModel.isBusinessLogin()){
+
+            } else {
+
+                showEnterFirstName();
+
+            }
 
         } else {
 
@@ -265,7 +356,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
     }
 
 
-    private void showEnterFirstName(){
+    private void showEnterFirstName() {
 
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
@@ -278,7 +369,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
 
     }
 
-    private void hideEnterFirstName(){
+    private void hideEnterFirstName() {
 
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
@@ -288,7 +379,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
 
     }
 
-    private void showEnterLastName(){
+    private void showEnterLastName() {
 
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
@@ -300,7 +391,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
         showSoftKeyboard(binding.dialogEnterLastName.etLastName);
     }
 
-    private void hideEnterLastName(){
+    private void hideEnterLastName() {
 
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
@@ -309,7 +400,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
                 .playOn(binding.dialogEnterLastName.layoutLastName);
     }
 
-    private void showEnterPhoneNumber(){
+    private void showEnterPhoneNumber() {
 
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
@@ -321,7 +412,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
         showSoftKeyboard(binding.dialogEnterPhoneNumber.etPhoneNumber);
     }
 
-    private void hideEnterPhoneNumber(){
+    private void hideEnterPhoneNumber() {
 
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
@@ -330,8 +421,34 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
                 .playOn(binding.dialogEnterPhoneNumber.layoutPhoneNumber);
     }
 
+    private void showEnterSMSCode(){
 
-    private void showPhoneNumberAlert(String phoneNumber){
+        YoYo.with(Techniques.FadeIn)
+                .duration(500)
+                .repeat(0)
+                .onStart(animator -> binding.layoutEnterSmsCode.setVisibility(View.VISIBLE))
+                .playOn(binding.layoutEnterSmsCode);
+
+        binding.etSmsCode.setText("");
+
+    }
+
+    private void hideEnterSMSCode(){
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(500)
+                .repeat(0)
+                .onEnd(animator -> binding.layoutEnterSmsCode.setVisibility(View.GONE))
+                .playOn(binding.layoutEnterSmsCode);
+    }
+
+
+    /**
+     * Shows an alert to validate the phone number
+     *
+     * @param phoneNumber the entered phone number
+     */
+    private void showPhoneNumberAlert(String phoneNumber) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
 
@@ -340,12 +457,66 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding,Wel
                 .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
 
                 })
-                .setPositiveButton("Continue",(paramDialogInterface, paramInt) -> {
+                .setPositiveButton("Continue", (paramDialogInterface, paramInt) -> {
 
-                    //Todo: send to Firebase phone Auth
+                   viewModel.fireBaseVerifyPhoneNumber(getViewModel(),phoneNumber);
+                   showProgressSpinner();
                 });
 
         dialog.show();
+    }
+
+    private void setUpCallBacks() {
+
+        Handler handler = new Handler();
+
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+
+                Logger.d("onVerificationCompleted: " + phoneAuthCredential);
+                viewModel.setPhoneAuthCredential(phoneAuthCredential);
+                viewModel.signInWithPhoneAuthCredential(getViewModel());
+
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+
+                Logger.e(e.getLocalizedMessage());
+                hideProgressSpinner();
+
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    // the phone number format is not valid
+                    // ...
+                    showSnackbar("invalid credentials");
+                } else if (e instanceof FirebaseTooManyRequestsException) {
+                    // The SMS quota for the project has been exceeded
+                    // ...
+                    showSnackbar("sms quota filled");
+
+                }
+            }
+
+            @Override
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+
+                // The SMS verification code has been sent to the provided phone number, we
+                // now need to ask the user to enter the code and then construct a credential
+                // by combining the code with a verification ID.
+                viewModel.setVerificationId(verificationId);
+                viewModel.setForceResendingToken(token);
+
+                hideEnterPhoneNumber();
+                hideEnterLastName();
+                hideEnterFirstName();
+
+                showEnterSMSCode();
+                hideProgressSpinner();
+
+                Logger.i("onCodeSent: " + verificationId);
+            }
+        };
     }
 
 }

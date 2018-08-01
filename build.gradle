@@ -74,6 +74,7 @@ ext {
     yoyoAndroidAnimation = '2.3@aar'
     orhanobutLogger = '2.2.0'
     photoView = '1.2.4'
+    geometricProgressview = '1.1.1'
 
     //testing versions
     junit = '4.12'

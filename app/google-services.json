@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "662744231727",
-    "firebase_url": "https://atlas-android-8eed5.firebaseio.com",
-    "project_id": "atlas-android-8eed5",
-    "storage_bucket": "atlas-android-8eed5.appspot.com"
+    "project_number": "835794396185",
+    "firebase_url": "https://atlas-35dcb.firebaseio.com",
+    "project_id": "atlas-35dcb",
+    "storage_bucket": "atlas-35dcb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:662744231727:android:b4bcce416c59df98",
+        "mobilesdk_app_id": "1:835794396185:android:b4bcce416c59df98",
         "android_client_info": {
           "package_name": "com.team.mamba.atlas.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "662744231727-1pu5hk52j7j52br1se9po9s4fhcqumln.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.team.mamba.atlas.dev",
-            "certificate_hash": "66525d14f3462292b742ee3352a3692dad5c2e88"
-          }
-        },
-        {
-          "client_id": "662744231727-5b2hb247gu12fmj0d50n7md5va7dl4q0.apps.googleusercontent.com",
+          "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDwYnUzfBX_l8xXuK_95gm5DfyNKYHz0wo"
+          "current_key": "AIzaSyDkLu1e9NfBZb6eojcHYzF7jE4v8ns32Uc"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "662744231727-5b2hb247gu12fmj0d50n7md5va7dl4q0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
