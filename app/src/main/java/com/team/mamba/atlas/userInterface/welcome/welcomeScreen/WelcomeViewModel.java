@@ -6,7 +6,9 @@ import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 import com.team.mamba.atlas.utils.CommonUtils;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
@@ -23,6 +25,7 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     private long dateOfBirth;
     private String phoneNumber;
     private boolean businessLogin = false;
+    private List<String> businessesEmailList = new ArrayList<>();
 
 
     /***************view logic************/
@@ -53,7 +56,6 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         // Calculate difference in days
         long ageInDays = diff / (HOURS_IN_A_DAY * MINUTES_IN_HOUR * 60 * 1000);
         long daysInThirteenYears = diffThirteen / (HOURS_IN_A_DAY * MINUTES_IN_HOUR * 60 * 1000);
-
 
 
         if (ageInDays >= daysInThirteenYears){
@@ -109,11 +111,16 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         }
     }
 
-    public boolean isEmailAndPasswordValid(String email, String password){
+    public boolean isEmailValid(String email){
 
 
-        return  CommonUtils.isEmailValid(email) && !password.isEmpty();
+        return  CommonUtils.isEmailValid(email);
 
+    }
+
+    public boolean isPasswordValid(String password){
+
+        return !password.isEmpty();
     }
 
 
@@ -155,6 +162,14 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setBusinessesEmailList(List<String> businessesEmailList) {
+        this.businessesEmailList = businessesEmailList;
+    }
+
+    public List<String> getBusinessesEmailList() {
+        return businessesEmailList;
     }
 
     /***************onclick listeners************/
@@ -236,8 +251,18 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         dataModel.addUserToFirebaseDatabase(viewModel);
     }
 
-    public void checkAllBusinesses(WelcomeViewModel viewModel){
+    public void checkAllBusinesses(WelcomeViewModel viewModel,String email){
 
-        dataModel.checkAllBusinesses(viewModel);
+        dataModel.checkAllBusinesses(viewModel,email);
+    }
+
+    public void onBusinessScreenLoginClicked(){
+
+        getNavigator().onBusinessScreenLoginClicked();
+    }
+
+    public void onBusinessScreenLearnMoreClicked(){
+
+        getNavigator().onBusinessScreenLearnMoreClicked();
     }
 }

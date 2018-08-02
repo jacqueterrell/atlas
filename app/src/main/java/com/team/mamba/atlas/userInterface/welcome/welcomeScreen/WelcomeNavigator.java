@@ -38,6 +38,8 @@ public interface WelcomeNavigator {
 
     void loginAsOneBusiness();
 
+    void showBusinessNotFoundAlert();
+
     void showMultipleBusinessLogin();
 
     void onBusinessScreenLoginClicked();

@@ -83,6 +83,8 @@ android {
         release {
             minifyEnabled false
             debuggable false
+            buildConfigField("String", "ATLAS_SITE_URL", "\"https://www.myatlas.co/business/\"")
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
 
@@ -92,6 +94,8 @@ android {
             debuggable true
             minifyEnabled false
             shrinkResources false
+            buildConfigField("String", "ATLAS_SITE_URL", "\"https://www.myatlas.co/business/\"")
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //ext.enableCrashlytics = false
         }

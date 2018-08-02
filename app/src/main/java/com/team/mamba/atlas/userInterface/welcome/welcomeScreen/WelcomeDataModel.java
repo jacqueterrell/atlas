@@ -3,22 +3,30 @@ package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.utils.AppConstants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -62,8 +70,16 @@ public class WelcomeDataModel {
                     if (task.isSuccessful()) {
 
                         FirebaseUser user = task.getResult().getUser();
-                        addUserToFirebaseDatabase(viewModel);
-                        viewModel.getNavigator().openDashBoard();
+
+                        if (isCurrentUser(viewModel)){
+
+                            viewModel.getNavigator().openDashBoard();
+
+                        } else {
+
+                            addUserToFirebaseDatabase(viewModel);
+
+                        }
                         Logger.d( "signInWithCredential:success");
 
                     } else {
@@ -104,8 +120,9 @@ public class WelcomeDataModel {
         newUserRef.set(user)
                 .addOnSuccessListener(documentReference -> {
 
-                    viewModel.getNavigator().handleError("Upload successful");
-                    dataManager.getSharedPrefs().setUserId("test");
+                    dataManager.getSharedPrefs().setUserId(myId);
+                    viewModel.getNavigator().openDashBoard();
+
                 })
                 .addOnFailureListener(e -> {
                     viewModel.getNavigator().handleError("Upload failed");
@@ -120,7 +137,7 @@ public class WelcomeDataModel {
      *
      * @return
      */
-    private boolean isPreviousUser(WelcomeViewModel viewModel){
+    private boolean isCurrentUser(WelcomeViewModel viewModel){
 
         String phone = viewModel.getPhoneNumber();
         String firstName = viewModel.getFirstName();
@@ -143,11 +160,42 @@ public class WelcomeDataModel {
         }
     }
 
-    public void checkAllBusinesses(WelcomeViewModel viewModel){
+    public void checkAllBusinesses(WelcomeViewModel viewModel,String email){
 
         //query database to look for the email
         //if match found login as the business
         //if multiple matched recylerview to select the business to represent
+
+        List<String> emailList = new ArrayList<>();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        CollectionReference businessesRef = db.collection(AppConstants.BUSINESSES_COLLECTION);
+
+        Query query = businessesRef.whereEqualTo("email", "matt@sofwr.com");
+
+        query.get()
+               .addOnCompleteListener(task -> {
+
+                   if (task.isSuccessful()){
+
+                       for (QueryDocumentSnapshot document : task.getResult()){
+
+                           Logger.i("email:" + document.getData().get("email"));
+                           Logger.i("email:" + document.getData());
+                           emailList.add(document.getData().get("email").toString());
+
+                       }
+
+                       viewModel.setBusinessesEmailList(emailList);
+
+                   } else {
+
+                       viewModel.getNavigator().handleError("Error getting documents");
+                       Logger.e(task.getException().getMessage());
+                   }
+               });
+
     }
 
 }

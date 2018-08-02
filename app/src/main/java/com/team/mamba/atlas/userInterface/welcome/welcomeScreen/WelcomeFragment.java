@@ -2,6 +2,8 @@ package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -29,6 +31,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
+import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeScreenLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
@@ -184,7 +187,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         } else {
 
-            showSnackbar("Phone Num is not valid");
+            showSnackbar("Phone Number is not valid");
         }
 
     }
@@ -252,6 +255,10 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
             onDateCancelClicked();
 
+        } else if (binding.dialogBusinessLogin.layoutMain.getVisibility() == View.VISIBLE){
+
+            hideBusinessLoginScreen();
+
         } else {
 
             getBaseActivity().onBackPressed();
@@ -261,7 +268,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onBusinessScreenLearnMoreClicked() {
 
-        //todo open website
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_SITE_URL));
+        startActivity(i);
     }
 
     @Override
@@ -269,14 +277,26 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         String email = binding.dialogBusinessLogin.etEmail.getText().toString();
         String password = binding.dialogBusinessLogin.etPassword.getText().toString();
+        hideKeyboard();
 
-        if (viewModel.isEmailAndPasswordValid(email,password)){
+        if (viewModel.isEmailValid(email) && viewModel.isPasswordValid(password)){
 
-           viewModel.checkAllBusinesses(getViewModel());
+           viewModel.checkAllBusinesses(getViewModel(),email);
 
         } else {
 
-            showSnackbar("Please enter a valid email and password");
+            if (!viewModel.isEmailValid(email) && !viewModel.isPasswordValid(password)) {
+
+                showSnackbar("Please enter a valid email and password");
+
+            } else if (!viewModel.isEmailValid(email)){
+
+                showSnackbar("Please enter a valid email");
+
+            } else {
+
+                showSnackbar("Please enter a valid password");
+            }
         }
 
     }
@@ -285,12 +305,21 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     public void loginAsOneBusiness() {
 
         //todo open the dashboard as a business profile
+
     }
 
     @Override
     public void showMultipleBusinessLogin() {
 
         //todo show dialog fragment recyclerview
+    }
+
+    @Override
+    public void showBusinessNotFoundAlert() {
+
+        String title = "Login Issue";
+        String body = getBaseActivity().getResources().getString(R.string.business_not_found_body);
+        showAlert(title,body);
     }
 
     @Override
@@ -383,7 +412,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         } else {
 
-            showSnackbar("not verified");
+            showSnackbar("You must be 13 years or older");
         }
 
     }
@@ -487,11 +516,16 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
     private void showBusinessLoginScreen(){
 
-        YoYo.with(Techniques.FadeOut)
+        YoYo.with(Techniques.FadeIn)
                 .duration(500)
                 .repeat(0)
-                .onEnd(animator -> binding.layoutEnterSmsCode.setVisibility(View.GONE))
-                .playOn(binding.layoutEnterSmsCode);
+                .onStart(animator -> binding.dialogBusinessLogin.layoutMain.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogBusinessLogin.layoutMain);
+
+
+        binding.dialogBusinessLogin.etEmail.setText("");
+        binding.dialogBusinessLogin.etPassword.setText("");
+        showSoftKeyboard(binding.dialogBusinessLogin.etEmail);
     }
 
     private void hideBusinessLoginScreen(){
@@ -499,8 +533,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
                 .repeat(0)
-                .onEnd(animator -> binding.layoutEnterSmsCode.setVisibility(View.GONE))
-                .playOn(binding.layoutEnterSmsCode);
+                .onEnd(animator -> binding.dialogBusinessLogin.layoutMain.setVisibility(View.GONE))
+                .playOn(binding.dialogBusinessLogin.layoutMain);
     }
 
     /**
@@ -521,7 +555,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
                    viewModel.fireBaseVerifyPhoneNumber(getViewModel(),phoneNumber);
                    showProgressSpinner();
-
 
                 });
 

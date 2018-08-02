@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+
     <string name="accessories_button">Accessories</string>
+
+    <string name="business_login_title">Business Organizational Login</string>
+    <string name="business_not_found_body">We couldn\'t find your business or organization with the provided credentials.
+    Please check the email and password or contact us to get started with network engagement.</string>
 
     <string name="cancel">Cancel</string>
 
@@ -9,14 +14,18 @@
     <string name="how_you_met_body">Write personal notes on your contacts and always rememberthe how and why of your meetings. Your personal notes are for your eyes only.</string>
     <string name="how_you_met_title">Remember How You Met</string>
 
+    <string name="last_name">What\'s your last name?</string>
+
     <string name="latest_news_body">Keep tabs on the latest happenings in your network.Track how your network is changing over time and know all of your key stats.</string>
     <string name="latest_news_title">Latest News</string>
-    <string name="last_name">What\'s your last name?</string>
 
     <string name="mobile_crm_body">Easier. Faster. And On-the-Go. Stay focused on mappingthe opportunities your business needs in real-time. Export as you see fit.</string>
     <string name="mobile_crm_title">Mobile CRM</string>
 
     <string name="my_birthday">My Birthday:</string>
+
+    <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. \n Standard message rates apply.</string>
+    <string name="phone_number_warning_title">Login to Atlas with Your Phone Number</string>
 
     <string name="up_to_date_body">As your network moves over time, your access to them never does. When they updater their profiles, you\'re always ready. Every time</string>
     <string name="up_to_date_title">Up-to-Date Always</string>
@@ -26,11 +35,5 @@
     <string name="verify_age_title">Verify Your Age</string>
 
     <string name="what_is_your_cell">What\'s your cell phone number?</string>
-
-    <string name="phone_number_warning_title">Login to Atlas with Your Phone Number</string>
-    <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. \n Standard message rates apply.</string>
-
-
-    <string name="business_login_title">Business Organizational Login</string>
 
 </resources>

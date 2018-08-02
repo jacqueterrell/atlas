@@ -12,6 +12,8 @@ import android.view.View;
 
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
@@ -74,6 +76,8 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, Vie
 
         welcomePager = new WelcomePager(getSupportFragmentManager());
         binding.viewPagerWelcome.setAdapter(welcomePager);
+
+        setFirebaseSettings();
     }
 
     private class WelcomePager extends FragmentStatePagerAdapter {
@@ -139,9 +143,9 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, Vie
 //                            ((ViewPager)container).setCurrentItem(5,false);
 //                        }
 
-                    if (currentPage == 5)
+                    if (currentPage == 5) {
                         ((ViewPager) container).setCurrentItem(0, false);
-
+                    }
                 }
             });
 
@@ -176,7 +180,6 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, Vie
 
                     WelcomeNavigator navigator = (WelcomeNavigator) fragment;
                     navigator.onBackPressed();
-
                 }
 
             } else {
@@ -189,6 +192,15 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, Vie
         return false;
     }
 
+
+    private void setFirebaseSettings(){
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        firestore.setFirestoreSettings(settings);
+    }
 
 }
 
