@@ -1,5 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
@@ -11,6 +13,12 @@ public class DashBoardActivity extends BaseActivity implements DashBoardActivity
 
     @Inject
     DashBoardActivityViewModel viewModel;
+
+
+    public static Intent newIntent(Context context){
+
+        return new Intent(context,DashBoardActivity.class);
+    }
 
     @Override
     public int getBindingVariable() {

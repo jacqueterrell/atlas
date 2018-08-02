@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "835794396185-m8kttgspoos64da9l2frl5iqbkvpj0h5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas.dev",
+            "certificate_hash": "e92cac142ee59a50745205c03a2bd255abda8945"
+          }
+        },
+        {
+          "client_id": "835794396185-8t0kgllvuusgs2e4t8b88ub1924o5335.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas.dev",
+            "certificate_hash": "66525d14f3462292b742ee3352a3692dad5c2e88"
+          }
+        },
+        {
           "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +45,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "835794396185-e04obccemlh0h6o69ovt4ttgf2t3693q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apt.atlas"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

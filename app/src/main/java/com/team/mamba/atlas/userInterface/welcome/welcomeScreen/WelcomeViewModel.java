@@ -8,8 +8,10 @@ import com.team.mamba.atlas.utils.CommonUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
 
@@ -25,7 +27,7 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     private long dateOfBirth;
     private String phoneNumber;
     private boolean businessLogin = false;
-    private List<String> businessesEmailList = new ArrayList<>();
+    private Map<String,String> businessesEmailList = new LinkedHashMap<>();
 
 
     /***************view logic************/
@@ -164,11 +166,11 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setBusinessesEmailList(List<String> businessesEmailList) {
-        this.businessesEmailList = businessesEmailList;
+    public void setBusinessNamesMap(Map<String,String> businessesNamesList) {
+        this.businessesEmailList = businessesNamesList;
     }
 
-    public List<String> getBusinessesEmailList() {
+    public Map<String,String> getBusinessNamesMap() {
         return businessesEmailList;
     }
 
@@ -264,5 +266,10 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     public void onBusinessScreenLearnMoreClicked(){
 
         getNavigator().onBusinessScreenLearnMoreClicked();
+    }
+
+    public void firebaseAuthenticateByEmail(WelcomeViewModel viewModel,String email,String password){
+
+        dataModel.firebaseAuthenticateByEmail(viewModel,email,password);
     }
 }

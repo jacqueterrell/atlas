@@ -162,7 +162,7 @@ android {
     sourceSets {
         main {
             res.srcDirs =
-                    ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/welcome', 'src/main/res/layouts/dashBoard']
+                    ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/welcome', 'src/main/res/layouts/dashBoard', 'src/main/res/layouts/main']
         }
     }
 }
@@ -186,6 +186,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-firestore:17.0.4'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
     //all testing dependencies
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
@@ -232,7 +233,6 @@ dependencies {
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
     implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
 
-
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
@@ -272,7 +272,6 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:$rootProject.archictectureComponents"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
 
     //our jar files
 }

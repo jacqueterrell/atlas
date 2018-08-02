@@ -1,32 +1,18 @@
 package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 
-import android.os.Handler;
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.utils.AppConstants;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -43,10 +29,9 @@ public class WelcomeDataModel {
     }
 
 
-    public void fireBaseVerifyPhoneNumber(WelcomeViewModel viewModel,String phoneNumber){
+    public void fireBaseVerifyPhoneNumber(WelcomeViewModel viewModel, String phoneNumber) {
 
         int timeOut = 60;
-
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,
@@ -58,7 +43,6 @@ public class WelcomeDataModel {
 
     /**
      * Use the received Firebase credential to attempt a sign in
-     *
      */
     public void signInWithPhoneAuthCredential(WelcomeViewModel viewModel) {
 
@@ -69,18 +53,17 @@ public class WelcomeDataModel {
 
                     if (task.isSuccessful()) {
 
-                        FirebaseUser user = task.getResult().getUser();
-
-                        if (isCurrentUser(viewModel)){
+                        if (isCurrentUser(viewModel)) {
 
                             viewModel.getNavigator().openDashBoard();
 
                         } else {
 
                             addUserToFirebaseDatabase(viewModel);
+                            viewModel.getNavigator().handleError("Adding New User");
 
                         }
-                        Logger.d( "signInWithCredential:success");
+                        Logger.d("signInWithCredential:success");
 
                     } else {
 
@@ -89,13 +72,13 @@ public class WelcomeDataModel {
                             viewModel.getNavigator().handleError("Invalid verification code");
                         }
 
-                        Logger.e( "signInWithCredential:failure", task.getException());
+                        Logger.e("signInWithCredential:failure", task.getException());
                     }
                 });
 
     }
 
-    public void addUserToFirebaseDatabase(WelcomeViewModel viewModel){
+    public void addUserToFirebaseDatabase(WelcomeViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -109,13 +92,13 @@ public class WelcomeDataModel {
         user.put("firstName", viewModel.getFirstName());
         user.put("lastName", viewModel.getLastName());
         user.put("dob", viewModel.getDateOfBirth());
-        user.put("phone",viewModel.getPhoneNumber());
+        user.put("phone", viewModel.getPhoneNumber());
         user.put("timestamp", timeStamp);
-        user.put("deviceToken",token);
-        user.put("id",myId);
-        user.put("badgeCount",0);
-        user.put("code",1);
-        user.put("score",0);
+        user.put("deviceToken", token);
+        user.put("id", myId);
+        user.put("badgeCount", 0);
+        user.put("code", 1);
+        user.put("score", 0);
 
         newUserRef.set(user)
                 .addOnSuccessListener(documentReference -> {
@@ -132,12 +115,11 @@ public class WelcomeDataModel {
     }
 
     /**
-     * Updates the database if all of the user's credentials
-     * have already been added.
+     * Checks to see if the user's details have already been saved
      *
      * @return
      */
-    private boolean isCurrentUser(WelcomeViewModel viewModel){
+    private boolean isCurrentUser(WelcomeViewModel viewModel) {
 
         String phone = viewModel.getPhoneNumber();
         String firstName = viewModel.getFirstName();
@@ -150,7 +132,7 @@ public class WelcomeDataModel {
 
         if (phone.equals(cachedPhone)
                 && firstName.equals(cachedFirstName)
-                && lastName.equals(cachedLastName)){
+                && lastName.equals(cachedLastName)) {
 
             return true;
 
@@ -160,42 +142,83 @@ public class WelcomeDataModel {
         }
     }
 
-    public void checkAllBusinesses(WelcomeViewModel viewModel,String email){
+
+    public void firebaseAuthenticateByEmail(WelcomeViewModel viewModel,String email,String password){
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        mAuth.signInWithEmailAndPassword(email,password)
+                .addOnCompleteListener(viewModel.getNavigator().getParentActivity(), task -> {
+
+                    if (task.isSuccessful()){
+
+                        viewModel.getNavigator().handleError("success");
+                        checkAllBusinesses(viewModel,email);
+
+                    } else {
+
+                        viewModel.getNavigator().showBusinessNotFoundAlert();
+                    }
+                });
+
+
+        // checkAllBusinesses(viewModel,email);
+
+    }
+
+    public void checkAllBusinesses(WelcomeViewModel viewModel, String email) {
 
         //query database to look for the email
         //if match found login as the business
         //if multiple matched recylerview to select the business to represent
 
-        List<String> emailList = new ArrayList<>();
+        Map<String,String> namesMap = new LinkedHashMap<>();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        CollectionReference businessesRef = db.collection(AppConstants.BUSINESSES_COLLECTION);
+        db.collection(AppConstants.BUSINESSES_COLLECTION)
+                .whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(task -> {
 
-        Query query = businessesRef.whereEqualTo("email", "matt@sofwr.com");
+                    if (task.isSuccessful()) {
 
-        query.get()
-               .addOnCompleteListener(task -> {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
 
-                   if (task.isSuccessful()){
+                            Logger.i("email:" + document.getData().get("email"));
+                            String userId = document.getData().get("id").toString();
+                            String name = document.getData().get("name").toString();
 
-                       for (QueryDocumentSnapshot document : task.getResult()){
+                            namesMap.put(userId,name);
 
-                           Logger.i("email:" + document.getData().get("email"));
-                           Logger.i("email:" + document.getData());
-                           emailList.add(document.getData().get("email").toString());
 
-                       }
+                        }
 
-                       viewModel.setBusinessesEmailList(emailList);
+                        viewModel.setBusinessNamesMap(namesMap);
 
-                   } else {
+                        if (namesMap.isEmpty()){
 
-                       viewModel.getNavigator().handleError("Error getting documents");
-                       Logger.e(task.getException().getMessage());
-                   }
-               });
+                            //todo can this situation exist
+                            viewModel.getNavigator().showBusinessNotFoundAlert();
+
+                        } else if (namesMap.size() == 1){
+
+                            viewModel.getNavigator().openDashBoard();
+
+                        } else {
+
+                            viewModel.getNavigator().showMultipleBusinessLogin();
+                        }
+
+                    } else {
+
+                        viewModel.getNavigator().handleError("Error getting documents");
+                        task.getException().printStackTrace();
+                    }
+                });
 
     }
+
+
 
 }

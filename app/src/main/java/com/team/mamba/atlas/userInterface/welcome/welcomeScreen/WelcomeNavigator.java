@@ -36,8 +36,6 @@ public interface WelcomeNavigator {
 
     void openDashBoard();
 
-    void loginAsOneBusiness();
-
     void showBusinessNotFoundAlert();
 
     void showMultipleBusinessLogin();
@@ -45,6 +43,8 @@ public interface WelcomeNavigator {
     void onBusinessScreenLoginClicked();
 
     void onBusinessScreenLearnMoreClicked();
+
+    void loginAsAdmin();
 
 
     Activity getParentActivity();

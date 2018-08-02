@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +35,7 @@ import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeScreenLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.select_business_account.BusinessAccountsActivity;
 import com.team.mamba.atlas.utils.CommonUtils;
 import com.team.mamba.atlas.utils.formatData.RegEx;
 
@@ -203,6 +204,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     public void onEnterSmsCancelClicked() {
 
         hideEnterSMSCode();
+        hideProgressSpinner();
     }
 
     @Override
@@ -275,51 +277,65 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onBusinessScreenLoginClicked() {
 
+
         String email = binding.dialogBusinessLogin.etEmail.getText().toString();
         String password = binding.dialogBusinessLogin.etPassword.getText().toString();
         hideKeyboard();
 
-        if (viewModel.isEmailValid(email) && viewModel.isPasswordValid(password)){
+        if (email.isEmpty() && password.equals("admin")){
 
-           viewModel.checkAllBusinesses(getViewModel(),email);
+            loginAsAdmin();
 
         } else {
 
-            if (!viewModel.isEmailValid(email) && !viewModel.isPasswordValid(password)) {
+            if (viewModel.isEmailValid(email) && viewModel.isPasswordValid(password)){
 
-                showSnackbar("Please enter a valid email and password");
-
-            } else if (!viewModel.isEmailValid(email)){
-
-                showSnackbar("Please enter a valid email");
+                viewModel.firebaseAuthenticateByEmail(viewModel,email,password);
+                showProgressSpinner();
 
             } else {
 
-                showSnackbar("Please enter a valid password");
+                if (!viewModel.isEmailValid(email) && !viewModel.isPasswordValid(password)) {
+
+                    showSnackbar("Please enter a valid email and password");
+
+                } else if (!viewModel.isEmailValid(email)){
+
+                    showSnackbar("Please enter a valid email");
+
+                } else {
+
+                    showSnackbar("Please enter a valid password");
+                }
             }
         }
-
     }
 
-    @Override
-    public void loginAsOneBusiness() {
 
-        //todo open the dashboard as a business profile
 
-    }
 
     @Override
     public void showMultipleBusinessLogin() {
 
-        //todo show dialog fragment recyclerview
+        hideProgressSpinner();
+        hideBusinessLoginScreen();
+        startActivity(BusinessAccountsActivity.newIntent(getBaseActivity(),viewModel.getBusinessNamesMap()));
     }
 
     @Override
     public void showBusinessNotFoundAlert() {
 
+        hideProgressSpinner();
         String title = "Login Issue";
         String body = getBaseActivity().getResources().getString(R.string.business_not_found_body);
         showAlert(title,body);
+    }
+
+    @Override
+    public void loginAsAdmin() {
+
+       //todo login as admin
+
     }
 
     @Override
@@ -332,7 +348,16 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         hideEnterSMSCode();
         hideProgressSpinner();
-       showAlert("Success","Dashboard is open");
+
+        if (viewModel.isBusinessLogin()){
+
+            showAlert("Business Login","Dashboard is open");
+
+        } else {
+
+            showAlert("Success","Dashboard is open");
+
+        }
 
     }
 
@@ -344,10 +369,21 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
+        mAuth = FirebaseAuth.getInstance();
+
+        Logger.d("testing logger");
+        Log.d("test","testing logger");
+
     }
 
     @Override
@@ -383,6 +419,23 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         binding.dialogEnterPhoneNumber.etPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         setUpCallBacks();
+
+//        String email = "jacqueterrell@yahoo.com";
+//        String password = "123456";
+//
+//
+//                mAuth.createUserWithEmailAndPassword(email,password)
+//                .addOnCompleteListener(viewModel.getNavigator().getParentActivity(), task -> {
+//
+//                    if (task.isSuccessful()){
+//
+//                        Logger.e("Email Auth successfull");
+//
+//                    } else {
+//
+//                        Logger.e("Error creating authentication");
+//                    }
+//                });
 
         return binding.getRoot();
     }
