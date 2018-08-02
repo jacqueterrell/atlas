@@ -4,6 +4,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
+import com.team.mamba.atlas.utils.CommonUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -19,7 +20,7 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     private String verificationId;
     private String firstName;
     private String lastName;
-    private String dateOfBirth;
+    private long dateOfBirth;
     private String phoneNumber;
     private boolean businessLogin = false;
 
@@ -40,6 +41,10 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         long millisDob = calDob.getTimeInMillis();
         long millisToday = calTodaysDate.getTimeInMillis();
         long millisThirteenBack = calThirteen.getTimeInMillis();
+
+        long dobTimeStamp = millisDob * 1000;
+
+        setDateOfBirth(dobTimeStamp);
 
         // Calculate difference in milliseconds
         long diff = millisToday - millisDob;
@@ -104,6 +109,14 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         }
     }
 
+    public boolean isEmailAndPasswordValid(String email, String password){
+
+
+        return  CommonUtils.isEmailValid(email) && !password.isEmpty();
+
+    }
+
+
     public void setBusinessLogin(boolean businessLogin) {
         this.businessLogin = businessLogin;
     }
@@ -128,11 +141,11 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         this.lastName = lastName;
     }
 
-    public String getDateOfBirth() {
+    public long getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -221,5 +234,10 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     public void addUserToFirebaseDatabase(WelcomeViewModel viewModel){
 
         dataModel.addUserToFirebaseDatabase(viewModel);
+    }
+
+    public void checkAllBusinesses(WelcomeViewModel viewModel){
+
+        dataModel.checkAllBusinesses(viewModel);
     }
 }

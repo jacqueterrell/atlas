@@ -17,6 +17,12 @@ public class CommonUtils {
 
     }
 
+    public static boolean isEmailValid(String email) {
+
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
+    }
+
 
     private static boolean isPhoneValidLibPhone(String phone){
 

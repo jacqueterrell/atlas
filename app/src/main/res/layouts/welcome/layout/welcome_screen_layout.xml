@@ -337,6 +337,11 @@
             layout="@layout/enter_phone_number_dialog"
             bind:viewModel="@{viewModel}" />
 
+        <include
+            android:id="@+id/dialog_business_login"
+            layout="@layout/business_login_layout"
+            bind:viewModel="@{viewModel}" />
+
         <net.bohush.geometricprogressview.GeometricProgressView
             android:id="@+id/progress_spinner"
             android:layout_width="50dp"

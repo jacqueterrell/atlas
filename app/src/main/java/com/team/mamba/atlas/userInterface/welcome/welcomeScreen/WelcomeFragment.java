@@ -25,6 +25,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
@@ -79,12 +80,11 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     public void onStartButtonClicked() {
 
         viewModel.setBusinessLogin(false);
-        viewModel.addUserToFirebaseDatabase(getViewModel());
 
-//        YoYo.with(Techniques.FadeIn)
-//                .duration(DEFAULT_TIME_IN_MILLI_SECS)
-//                .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
-//                .playOn(binding.dialogVerifyAge.layoutVerifyAge);
+        YoYo.with(Techniques.FadeIn)
+                .duration(DEFAULT_TIME_IN_MILLI_SECS)
+                .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogVerifyAge.layoutVerifyAge);
 
     }
 
@@ -103,7 +103,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     public void onDateVerifyClicked() {
 
         validateAge();
-        // onDateCancelClicked();
     }
 
     @Override
@@ -173,8 +172,10 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
                 Phonenumber.PhoneNumber pn = phoneNumberUtil.parse(phoneNumber, "US");
                 String pnE164 = phoneNumberUtil.format(pn,PhoneNumberUtil.PhoneNumberFormat.E164);
+                String international = phoneNumberUtil.format(pn, PhoneNumberFormat.INTERNATIONAL);
+                String national = phoneNumberUtil.format(pn, PhoneNumberFormat.NATIONAL);
 
-                viewModel.setPhoneNumber(pnE164);
+                viewModel.setPhoneNumber(national);
                 showPhoneNumberAlert(pnE164);
 
             } catch (NumberParseException e) {
@@ -258,11 +259,52 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     }
 
     @Override
+    public void onBusinessScreenLearnMoreClicked() {
+
+        //todo open website
+    }
+
+    @Override
+    public void onBusinessScreenLoginClicked() {
+
+        String email = binding.dialogBusinessLogin.etEmail.getText().toString();
+        String password = binding.dialogBusinessLogin.etPassword.getText().toString();
+
+        if (viewModel.isEmailAndPasswordValid(email,password)){
+
+           viewModel.checkAllBusinesses(getViewModel());
+
+        } else {
+
+            showSnackbar("Please enter a valid email and password");
+        }
+
+    }
+
+    @Override
+    public void loginAsOneBusiness() {
+
+        //todo open the dashboard as a business profile
+    }
+
+    @Override
+    public void showMultipleBusinessLogin() {
+
+        //todo show dialog fragment recyclerview
+    }
+
+    @Override
     public void openDashBoard() {
+
+        dataManager.getSharedPrefs().setFirstName(viewModel.getFirstName());
+        dataManager.getSharedPrefs().setLastName(viewModel.getFirstName());
+        dataManager.getSharedPrefs().setPhoneNumber(viewModel.getPhoneNumber());
+
 
         hideEnterSMSCode();
         hideProgressSpinner();
-        showAlert("Success","Dashboard is open");
+       showAlert("Success","Dashboard is open");
+
     }
 
     @Override
@@ -325,12 +367,13 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         int year = binding.dialogVerifyAge.datePicker.getYear();
 
 
-
         if (viewModel.isAgeValid(month, day, year)) {
 
             onDateCancelClicked();
 
             if (viewModel.isBusinessLogin()){
+
+                showBusinessLoginScreen();
 
             } else {
 
@@ -442,6 +485,23 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
                 .playOn(binding.layoutEnterSmsCode);
     }
 
+    private void showBusinessLoginScreen(){
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(500)
+                .repeat(0)
+                .onEnd(animator -> binding.layoutEnterSmsCode.setVisibility(View.GONE))
+                .playOn(binding.layoutEnterSmsCode);
+    }
+
+    private void hideBusinessLoginScreen(){
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(500)
+                .repeat(0)
+                .onEnd(animator -> binding.layoutEnterSmsCode.setVisibility(View.GONE))
+                .playOn(binding.layoutEnterSmsCode);
+    }
 
     /**
      * Shows an alert to validate the phone number
@@ -461,6 +521,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
                    viewModel.fireBaseVerifyPhoneNumber(getViewModel(),phoneNumber);
                    showProgressSpinner();
+
+
                 });
 
         dialog.show();
@@ -468,7 +530,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
     private void setUpCallBacks() {
 
-        Handler handler = new Handler();
+
 
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override

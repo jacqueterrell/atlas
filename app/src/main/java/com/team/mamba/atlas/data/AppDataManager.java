@@ -5,7 +5,7 @@ import com.team.mamba.atlas.data.appLevel.DataHelper;
 import com.team.mamba.atlas.utils.AppSharedPrefs;
 import javax.inject.Inject;
 
-public class AppDataManager implements DataHelper{
+public class AppDataManager implements DataManager{
 
     private AppHelper appDataHelper;
 
@@ -13,7 +13,7 @@ public class AppDataManager implements DataHelper{
     @Inject
     public AppDataManager(AppHelper appHelper){
 
-        this.appDataHelper = appDataHelper;
+        this.appDataHelper = appHelper;
     }
 
     @Override

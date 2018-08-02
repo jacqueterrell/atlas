@@ -30,4 +30,7 @@
     <string name="phone_number_warning_title">Login to Atlas with Your Phone Number</string>
     <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. \n Standard message rates apply.</string>
 
+
+    <string name="business_login_title">Business Organizational Login</string>
+
 </resources>

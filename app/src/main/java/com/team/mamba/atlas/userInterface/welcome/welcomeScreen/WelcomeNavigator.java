@@ -36,6 +36,15 @@ public interface WelcomeNavigator {
 
     void openDashBoard();
 
+    void loginAsOneBusiness();
+
+    void showMultipleBusinessLogin();
+
+    void onBusinessScreenLoginClicked();
+
+    void onBusinessScreenLearnMoreClicked();
+
+
     Activity getParentActivity();
 
     PhoneAuthProvider.OnVerificationStateChangedCallbacks getPhoneCallBacks();

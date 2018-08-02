@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -12,6 +13,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.utils.AppConstants;
@@ -25,8 +27,6 @@ import javax.inject.Inject;
 public class WelcomeDataModel {
 
     private AppDataManager dataManager;
-    FirebaseFirestore db;
-
 
     @Inject
     public WelcomeDataModel(AppDataManager dataManager) {
@@ -38,6 +38,7 @@ public class WelcomeDataModel {
     public void fireBaseVerifyPhoneNumber(WelcomeViewModel viewModel,String phoneNumber){
 
         int timeOut = 60;
+
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,
@@ -80,27 +81,31 @@ public class WelcomeDataModel {
 
     public void addUserToFirebaseDatabase(WelcomeViewModel viewModel){
 
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         //convert dob to time stamp
         Long timeStamp = System.currentTimeMillis() / 1000;
+        String token = FirebaseInstanceId.getInstance().getToken();
+        DocumentReference newUserRef = db.collection(AppConstants.USERS_COLLECTION).document();
+        String myId = newUserRef.getId();
 
         Map<String, Object> user = new HashMap<>();
-        user.put("firstName", "TestFirst");
-        user.put("lastName", "TestLast");
-        user.put("dob", 1815);
-        user.put("phone","(217)-317-1667");
-        user.put("id","");
+        user.put("firstName", viewModel.getFirstName());
+        user.put("lastName", viewModel.getLastName());
+        user.put("dob", viewModel.getDateOfBirth());
+        user.put("phone",viewModel.getPhoneNumber());
         user.put("timestamp", timeStamp);
+        user.put("deviceToken",token);
+        user.put("id",myId);
+        user.put("badgeCount",0);
+        user.put("code",1);
+        user.put("score",0);
 
-        db.collection(AppConstants.USERS_COLLECTION)
-                .add(user)
+        newUserRef.set(user)
                 .addOnSuccessListener(documentReference -> {
 
-                    String id = documentReference.getId();
                     viewModel.getNavigator().handleError("Upload successful");
-                    dataManager.getSharedPrefs().setUserId(documentReference.getId());
-             //       saveUserId();
+                    dataManager.getSharedPrefs().setUserId("test");
                 })
                 .addOnFailureListener(e -> {
                     viewModel.getNavigator().handleError("Upload failed");
@@ -109,24 +114,40 @@ public class WelcomeDataModel {
 
     }
 
-    private void saveUserId(){
+    /**
+     * Updates the database if all of the user's credentials
+     * have already been added.
+     *
+     * @return
+     */
+    private boolean isPreviousUser(WelcomeViewModel viewModel){
 
-        String userId = dataManager.getSharedPrefs().getUserId();
+        String phone = viewModel.getPhoneNumber();
+        String firstName = viewModel.getFirstName();
+        String lastName = viewModel.getLastName();
 
-        DocumentReference reference = db.collection("users")
-                .document(userId);
+        String cachedPhone = dataManager.getSharedPrefs().getPhoneNumber();
+        String cachedFirstName = dataManager.getSharedPrefs().getFirstName();
+        String cachedLastName = dataManager.getSharedPrefs().getLastName();
 
-        reference
-                .update("id",true)
-                .addOnSuccessListener(documentReference -> {
 
-                    Logger.d("successfully updated");
-                })
-                .addOnFailureListener(e -> {
+        if (phone.equals(cachedPhone)
+                && firstName.equals(cachedFirstName)
+                && lastName.equals(cachedLastName)){
 
-                    Logger.d("failed to update");
+            return true;
 
-                });
+        } else {
 
+            return false;
+        }
     }
+
+    public void checkAllBusinesses(WelcomeViewModel viewModel){
+
+        //query database to look for the email
+        //if match found login as the business
+        //if multiple matched recylerview to select the business to represent
+    }
+
 }
