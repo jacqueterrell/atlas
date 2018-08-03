@@ -35,7 +35,7 @@ import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeScreenLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
-import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.select_business_account.BusinessAccountsActivity;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.BusinessAccountsActivity;
 import com.team.mamba.atlas.utils.CommonUtils;
 import com.team.mamba.atlas.utils.formatData.RegEx;
 
@@ -342,7 +342,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     public void openDashBoard() {
 
         dataManager.getSharedPrefs().setFirstName(viewModel.getFirstName());
-        dataManager.getSharedPrefs().setLastName(viewModel.getFirstName());
+        dataManager.getSharedPrefs().setLastName(viewModel.getLastName());
         dataManager.getSharedPrefs().setPhoneNumber(viewModel.getPhoneNumber());
 
 

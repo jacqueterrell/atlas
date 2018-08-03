@@ -1,13 +1,13 @@
-package com.team.mamba.atlas.userInterface.dashBoard.dashBoardHome;
+package com.team.mamba.atlas.userInterface.dashBoard.info;
 
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class DashBoardHomeViewModel extends BaseViewModel<DashBoardHomeNavigator> {
 
-    private DashBoardHomeDataModel dataModel;
+    private InfoDataModel dataModel;
 
 
-    public void setDataModel(DashBoardHomeDataModel dashBoardHomeDataModel) {
+    public void setDataModel(InfoDataModel dashBoardHomeDataModel) {
         this.dataModel = dashBoardHomeDataModel;
     }
 }

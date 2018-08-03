@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.welcome.welcomeScreen.select_business_account;
+package com.team.mamba.atlas.userInterface.welcome.select_business_account;
 
 public interface BusinessAccountsNavigator {
 

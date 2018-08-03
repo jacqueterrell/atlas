@@ -10,7 +10,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.dashBoardHome.DashBoardHomeViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.info.DashBoardHomeViewModel"/>
 
     </data>
 

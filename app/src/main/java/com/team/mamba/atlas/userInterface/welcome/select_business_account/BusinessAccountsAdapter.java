@@ -1,16 +1,14 @@
-package com.team.mamba.atlas.userInterface.welcome.welcomeScreen.select_business_account;
+package com.team.mamba.atlas.userInterface.welcome.select_business_account;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.BusinessAccountsListRowBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessAccountsAdapter extends RecyclerView.Adapter<BusinessAccountsAdapter.BusinessViewHolder> {

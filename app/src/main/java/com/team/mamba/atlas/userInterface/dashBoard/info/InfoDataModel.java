@@ -1,15 +1,15 @@
-package com.team.mamba.atlas.userInterface.dashBoard.dashBoardHome;
+package com.team.mamba.atlas.userInterface.dashBoard.info;
 
 import com.team.mamba.atlas.data.AppDataManager;
 import javax.inject.Inject;
 
-public class DashBoardHomeDataModel {
+public class InfoDataModel {
 
     private AppDataManager dataManager;
 
 
     @Inject
-    public DashBoardHomeDataModel(AppDataManager dataManager){
+    public InfoDataModel(AppDataManager dataManager){
 
         this.dataManager = dataManager;
     }

@@ -47,7 +47,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"/>
 
-        <activity android:name=".userInterface.welcome.welcomeScreen.select_business_account.BusinessAccountsActivity"
+        <activity android:name=".userInterface.welcome.select_business_account.BusinessAccountsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"/>
 

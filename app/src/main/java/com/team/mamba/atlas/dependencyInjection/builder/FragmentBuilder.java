@@ -3,7 +3,7 @@ package com.team.mamba.atlas.dependencyInjection.builder;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
 import com.team.mamba.atlas.userInterface.dashBoard.businessOpportunities.BusinessOpportunitiesFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.dashBoardHome.DashBoardHomeFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.info.DashBoardHomeFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
 import com.team.mamba.atlas.userInterface.welcome.ViewPagerActivityModule;

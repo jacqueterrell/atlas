@@ -4,7 +4,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
 import com.team.mamba.atlas.userInterface.welcome.ViewPagerActivityModule;
-import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.select_business_account.BusinessAccountsActivity;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.BusinessAccountsActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.welcome.welcomeScreen.select_business_account;
+package com.team.mamba.atlas.userInterface.welcome.select_business_account;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.BusinessAccountsRecyclerViewBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
