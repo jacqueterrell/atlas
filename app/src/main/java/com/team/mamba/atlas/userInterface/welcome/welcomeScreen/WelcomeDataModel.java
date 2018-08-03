@@ -70,6 +70,7 @@ public class WelcomeDataModel {
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             // The verification code entered was invalid
                             viewModel.getNavigator().handleError("Invalid verification code");
+
                         }
 
                         Logger.e("signInWithCredential:failure", task.getException());

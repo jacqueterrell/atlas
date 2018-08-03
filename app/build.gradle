@@ -68,13 +68,17 @@ android {
     }
 
     signingConfigs {
-
         releaseConfig {
-
-            storeFile file("atlas.jks")
+            storeFile file("../signatures/atlas-store-key.jks")
             storePassword("android")
             keyAlias "atlas"
             keyPassword "android"
+        }
+        devConfig {
+            keyAlias 'atlas-debug'
+            keyPassword 'android'
+            storePassword 'android'
+            storeFile file('../signatures/atlas-development-key.jks')
         }
     }
 
@@ -84,7 +88,6 @@ android {
             minifyEnabled false
             debuggable false
             buildConfigField("String", "ATLAS_SITE_URL", "\"https://www.myatlas.co/business/\"")
-
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
 
@@ -95,8 +98,9 @@ android {
             minifyEnabled false
             shrinkResources false
             buildConfigField("String", "ATLAS_SITE_URL", "\"https://www.myatlas.co/business/\"")
-
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.devConfig
+
             //ext.enableCrashlytics = false
         }
     }
@@ -168,7 +172,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     //all support dependencies
     implementation "com.android.support:support-v4:$rootProject.support"
@@ -186,7 +190,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-firestore:17.0.4'
-    implementation "com.google.android.gms:play-services-auth:15.0.1"
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
     //all testing dependencies
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
@@ -202,9 +206,9 @@ dependencies {
     implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoCore"
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
-    testImplementation "org.robolectric:robolectric:3.8"
-    testImplementation "org.robolectric:multidex:3.4.2"
-    testImplementation "org.robolectric:shadows-support-v4:3.3.2"
+    testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation 'org.robolectric:multidex:3.4.2'
+    testImplementation 'org.robolectric:shadows-support-v4:3.3.2'
 
     //all REST dependencies
     implementation "com.google.code.gson:gson:$rootProject.gson"
@@ -219,6 +223,7 @@ dependencies {
         exclude group: "stax", module: "stax-api"
         exclude group: "stax", module: "stax"
     }
+
     //all view manipulation dependencies
     implementation "com.github.bumptech.glide:glide:$rootProject.glide"
     implementation "de.hdodenhof:circleimageview:$rootProject.circleImageView"
@@ -231,12 +236,12 @@ dependencies {
     implementation "com.google.code.findbugs:jsr305:$rootProject.findBugs"
     implementation "com.orhanobut:logger:$rootProject.orhanobutLogger"
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
-    implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0"
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
     implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rootProject.rxjavaForRetrofit"
 
     //RxJava support for ROOM dependencies
@@ -270,7 +275,6 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:common-java8:$rootProject.archictectureComponents"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     kapt "android.arch.lifecycle:compiler:$rootProject.archictectureComponents"
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     //our jar files

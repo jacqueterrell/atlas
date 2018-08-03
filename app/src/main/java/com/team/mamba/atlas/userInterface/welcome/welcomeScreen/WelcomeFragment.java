@@ -35,6 +35,7 @@ import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeScreenLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.welcome.select_business_account.BusinessAccountsActivity;
 import com.team.mamba.atlas.utils.CommonUtils;
 import com.team.mamba.atlas.utils.formatData.RegEx;
@@ -355,6 +356,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         } else {
 
+            getBaseActivity().finishAffinity();
+            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
             showAlert("Success","Dashboard is open");
 
         }
