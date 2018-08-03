@@ -1,21 +1,29 @@
 {
   "project_info": {
-    "project_number": "662744231727",
-    "firebase_url": "https://atlas-android-8eed5.firebaseio.com",
-    "project_id": "atlas-android-8eed5",
-    "storage_bucket": "atlas-android-8eed5.appspot.com"
+    "project_number": "835794396185",
+    "firebase_url": "https://atlas-35dcb.firebaseio.com",
+    "project_id": "atlas-35dcb",
+    "storage_bucket": "atlas-35dcb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:662744231727:android:b4bcce416c59df98",
+        "mobilesdk_app_id": "1:835794396185:android:b4bcce416c59df98",
         "android_client_info": {
           "package_name": "com.team.mamba.atlas.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "662744231727-1pu5hk52j7j52br1se9po9s4fhcqumln.apps.googleusercontent.com",
+          "client_id": "835794396185-m8kttgspoos64da9l2frl5iqbkvpj0h5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas.dev",
+            "certificate_hash": "e92cac142ee59a50745205c03a2bd255abda8945"
+          }
+        },
+        {
+          "client_id": "835794396185-8t0kgllvuusgs2e4t8b88ub1924o5335.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.team.mamba.atlas.dev",
@@ -23,13 +31,13 @@
           }
         },
         {
-          "client_id": "662744231727-5b2hb247gu12fmj0d50n7md5va7dl4q0.apps.googleusercontent.com",
+          "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDwYnUzfBX_l8xXuK_95gm5DfyNKYHz0wo"
+          "current_key": "AIzaSyDkLu1e9NfBZb6eojcHYzF7jE4v8ns32Uc"
         }
       ],
       "services": {
@@ -40,8 +48,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "662744231727-5b2hb247gu12fmj0d50n7md5va7dl4q0.apps.googleusercontent.com",
+              "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "835794396185-e04obccemlh0h6o69ovt4ttgf2t3693q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apt.atlas"
+              }
             }
           ]
         },

@@ -3,6 +3,8 @@ package com.team.mamba.atlas.userInterface.welcome;
 
 import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerViewModel;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeViewModel;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.BusinessAccountsViewModel;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -19,5 +21,11 @@ public class ViewPagerActivityModule {
     WelcomeViewModel providesWelcomeViewModel(){
 
         return new WelcomeViewModel();
+    }
+
+    @Provides
+    BusinessAccountsViewModel providesBusinessAccountsViewModel(){
+
+        return new BusinessAccountsViewModel();
     }
 }

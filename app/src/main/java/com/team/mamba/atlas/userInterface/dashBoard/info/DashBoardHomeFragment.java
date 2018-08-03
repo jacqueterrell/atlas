@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard.dashBoardHome;
+package com.team.mamba.atlas.userInterface.dashBoard.info;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.databinding.DashboardHomeLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
-import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import javax.inject.Inject;
 import com.team.mamba.atlas.R;
 
@@ -20,7 +19,7 @@ public class DashBoardHomeFragment extends BaseFragment<DashboardHomeLayoutBindi
     DashBoardHomeViewModel viewModel;
 
     @Inject
-    DashBoardHomeDataModel dataModel;
+    InfoDataModel dataModel;
 
     private DashboardHomeLayoutBinding binding;
 

@@ -7,9 +7,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.View;
 
 import android.view.ViewGroup;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeViewPagerBinding;
@@ -19,6 +24,7 @@ import com.team.mamba.atlas.userInterface.welcome.latestNews.LatestNewsFragment;
 import com.team.mamba.atlas.userInterface.welcome.mobileCrm.MobileCrmFragment;
 import com.team.mamba.atlas.userInterface.welcome.upToDate.UpToDateFragment;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
+import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeNavigator;
 
 import javax.inject.Inject;
 
@@ -26,7 +32,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,ViewPagerViewModel>
+public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, ViewPagerViewModel>
         implements ViewPagerNavigator, HasSupportFragmentInjector {
 
     @Inject
@@ -70,9 +76,11 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
 
         welcomePager = new WelcomePager(getSupportFragmentManager());
         binding.viewPagerWelcome.setAdapter(welcomePager);
+
+        setFirebaseSettings();
     }
 
-    private class WelcomePager extends FragmentStatePagerAdapter{
+    private class WelcomePager extends FragmentStatePagerAdapter {
 
 
         public WelcomePager(FragmentManager fm) {
@@ -94,17 +102,13 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
 
                 return RememberHowYouMetFragment.newInstance();
 
-            } else if (position == 3){
+            } else if (position == 3) {
 
                 return MobileCrmFragment.newInstance();
-            }
-
-            else if (position == 4) {
+            } else if (position == 4) {
 
                 return LatestNewsFragment.newInstance();
-            }
-
-            else if (position == 5){
+            } else if (position == 5) {
 
                 return WelcomeFragment.newInstance();
 
@@ -119,7 +123,7 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
         public Object instantiateItem(ViewGroup container, int position) {
 
 
-            ((ViewPager)container).addOnPageChangeListener(new OnPageChangeListener() {
+            ((ViewPager) container).addOnPageChangeListener(new OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -139,9 +143,9 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
 //                            ((ViewPager)container).setCurrentItem(5,false);
 //                        }
 
-                        if(currentPage == 5)
-                            ((ViewPager)container).setCurrentItem(0,false);
-
+                    if (currentPage == 5) {
+                        ((ViewPager) container).setCurrentItem(0, false);
+                    }
                 }
             });
 
@@ -159,4 +163,45 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding,View
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentInjector;
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == 4) {
+
+            if (binding.viewPagerWelcome.getCurrentItem() == 0) {
+
+                Fragment fragment = (Fragment) binding.viewPagerWelcome
+                        .getAdapter()
+                        .instantiateItem(binding.viewPagerWelcome, 0);
+
+
+                if (fragment instanceof WelcomeFragment) {
+
+                    WelcomeNavigator navigator = (WelcomeNavigator) fragment;
+                    navigator.onBackPressed();
+                }
+
+            } else {
+
+                onBackPressed();
+            }
+
+        }
+
+        return false;
+    }
+
+
+    private void setFirebaseSettings(){
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        firestore.setFirestoreSettings(settings);
+    }
+
 }
+
+
