@@ -13,6 +13,7 @@ public class AppSharedPrefs {
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
     private static final String PHONE_NUMBER = "phoneNumber";
+    private static final String USER_LOGGED_IN = "userLoggedIn";
 
 
     private SharedPreferences sharedPreferences;
@@ -78,5 +79,19 @@ public class AppSharedPrefs {
 
         return sharedPreferences
                 .getString(PHONE_NUMBER,"");
+    }
+
+    public boolean isUserLoggedIn(){
+
+        return sharedPreferences
+                .getBoolean(USER_LOGGED_IN,false);
+    }
+
+    public void setUserLoggedIn(boolean userLoggedIn){
+
+        sharedPreferences
+                .edit()
+                .putBoolean(USER_LOGGED_IN,userLoggedIn)
+                .apply();
     }
 }

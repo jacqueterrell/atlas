@@ -25,6 +25,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import javax.inject.Inject;
 
 public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
+
       {
 
 

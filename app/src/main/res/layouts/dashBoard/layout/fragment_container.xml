@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:card_view = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools">
+
+    <data>
+
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityViewModel"/>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id = "@+id/fragment_container"
+                android:layout_width = "match_parent"
+                android:layout_height = "0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                >
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp">
+
+                <ImageView
+                    android:id="@+id/iv_info_selected"
+                    style="@style/IconImageView"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_tachometer_solid"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_info_not_selected"
+                    style="@style/IconImageView"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_tachometer_solid"
+                    android:tint="@color/grey"
+                    android:onClick="@{()-> viewModel.onInfoClicked()}"
+                    android:visibility="gone"
+                    />
+
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/iv_contacts_selected"
+                    style="@style/IconImageView"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_address_book_solid"
+                    android:visibility="gone"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_contacts_not_selected"
+                    style="@style/IconImageView"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_address_book_solid"
+                    android:tint="@color/material_icon"
+                    android:onClick="@{()-> viewModel.onContactsClicked()}"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+
+                <ImageView
+                    android:id="@+id/iv_crm_selected"
+                    style="@style/IconImageView"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_pie_chart"
+                    android:visibility="gone"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_crm_not_selected"
+                    style="@style/IconImageView"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_pie_chart"
+                    android:tint="@color/material_icon"
+                    android:onClick="@{()-> viewModel.onCrmClicked()}"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+
+                <ImageView
+                    android:id="@+id/iv_notifications_selected"
+                    style="@style/IconImageView"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_bell_solid"
+                    android:visibility="gone"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_notifications_not_selected"
+                    style="@style/IconImageView"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_bell_solid"
+                    android:tint="@color/material_icon"
+                    android:onClick="@{()-> viewModel.onNotificationsClicked()}"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

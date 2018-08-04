@@ -24,7 +24,7 @@
 
     <string name="my_birthday">My Birthday:</string>
 
-    <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. \n Standard message rates apply.</string>
+    <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. <br/> Standard message rates apply.</string>
     <string name="phone_number_warning_title">Login to Atlas with Your Phone Number</string>
 
     <string name="up_to_date_body">As your network moves over time, your access to them never does. When they updater their profiles, you\'re always ready. Every time</string>
@@ -35,5 +35,17 @@
     <string name="verify_age_title">Verify Your Age</string>
 
     <string name="what_is_your_cell">What\'s your cell phone number?</string>
+
+    <string name="network">Network</string>
+
+    <string name="opportunities">Opportunities</string>
+
+    <string name="recent_activity">Recent Activity</string>
+
+    <string name="user_stats">User Stats</string>
+
+    <string name="user_status_info">Your user statistics show you the number of individuals you\'re connected to in your network, the number of companies
+    that people in your network work for, and the number opportunities you\'ve logged inside Atlas. Your user score is based on these network statistics
+    and changed over time relative to Atlas' entire user base.</string>
 
 </resources>

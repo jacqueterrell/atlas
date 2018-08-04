@@ -19,6 +19,7 @@ import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeViewPagerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.welcome.howYouMet.RememberHowYouMetFragment;
 import com.team.mamba.atlas.userInterface.welcome.latestNews.LatestNewsFragment;
 import com.team.mamba.atlas.userInterface.welcome.mobileCrm.MobileCrmFragment;
@@ -73,6 +74,12 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, Vie
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
+
+        if (dataManager.getSharedPrefs().isUserLoggedIn()){
+
+            finishAffinity();
+            startActivity(DashBoardActivity.newIntent(ViewPagerActivity.this));
+        }
 
         welcomePager = new WelcomePager(getSupportFragmentManager());
         binding.viewPagerWelcome.setAdapter(welcomePager);

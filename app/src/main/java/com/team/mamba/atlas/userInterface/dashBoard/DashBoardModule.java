@@ -4,7 +4,7 @@ package com.team.mamba.atlas.userInterface.dashBoard;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.businessOpportunities.BusinessOpportunitiesViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.info.DashBoardHomeViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsViewModel;
 import dagger.Module;
@@ -32,9 +32,9 @@ public class DashBoardModule {
     }
 
     @Provides
-    DashBoardHomeViewModel providesDashBoardHomeViewModel(){
+    InfoViewModel providesDashBoardHomeViewModel(){
 
-        return new DashBoardHomeViewModel();
+        return new InfoViewModel();
     }
 
     @Provides
