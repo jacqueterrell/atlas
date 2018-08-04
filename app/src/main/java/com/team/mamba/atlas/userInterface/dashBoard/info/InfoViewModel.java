@@ -36,18 +36,23 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
         getNavigator().onSettingsClicked();
     }
 
-    public void onAddressBookClicked(){
+    public void onUserStatsInfoClicked(){
 
-        getNavigator().onAddressBookClicked();
+        getNavigator().onUserStatsInfoClicked();
     }
 
-    public void onCrmClicked(){
+    public void onRecentActivityInfoClicked(){
 
-        getNavigator().onCrmClicked();
+        getNavigator().onRecentActivityInfoClicked();
     }
 
-    public void onNotificationsClicked(){
+    public void hideRecentActivityInfoDialog(){
 
-        getNavigator().onNotificationsClicked();
+        getNavigator().hideRecentActivityInfoDialog();
+    }
+
+    public void hideUserStatusInfoDialog(){
+
+        getNavigator().hideUserStatusInfoDialog();
     }
 }

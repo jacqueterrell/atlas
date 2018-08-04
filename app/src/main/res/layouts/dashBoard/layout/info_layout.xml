@@ -224,16 +224,117 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="15dp"
+                android:layout_marginTop="25dp"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.RecyclerView
+                <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    tools:paddingLeft="15dp">
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_recent_activity"
+                        style="@style/App_Text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recent Activity"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+
+                        />
+
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:src="@drawable/ic_info_circle_solid"
+                        android:layout_toRightOf="@id/tv_recent_activity"
+                        android:layout_toEndOf="@id/tv_recent_activity"
+                        android:tint="@color/grey"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="10dp"
+                        android:onClick="@{()-> viewModel.onRecentActivityInfoClicked()}"
+                        />
+
+                    <android.support.v4.widget.SwipeRefreshLayout
+                        android:id="@+id/swipeContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/tv_recent_activity"
+                        android:layout_marginTop="15dp"
+                        >
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        tools:paddingLeft="15dp">
 
 
-                </android.support.v7.widget.RecyclerView>
+                    </android.support.v7.widget.RecyclerView>
+
+                    </android.support.v4.widget.SwipeRefreshLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight=".3"
+                    android:layout_height="1dp"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_user_stats"
+                        style="@style/App_Text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Stats"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+
+                        />
+
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:src="@drawable/ic_info_circle_solid"
+                        android:layout_toRightOf="@id/tv_user_stats"
+                        android:layout_toEndOf="@id/tv_user_stats"
+                        android:tint="@color/grey"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="10dp"
+                        android:onClick="@{()-> viewModel.onUserStatsInfoClicked()}"
+                        />
+
+                    <android.support.v4.widget.SwipeRefreshLayout
+                        android:id="@+id/swipe_container_user_stats"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/tv_user_stats"
+                        android:layout_marginTop="15dp"
+                        >
+
+                        <android.support.v7.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+                            tools:paddingLeft="15dp">
+
+
+                        </android.support.v7.widget.RecyclerView>
+
+                    </android.support.v4.widget.SwipeRefreshLayout>
+
+                </RelativeLayout>
+
+
 
             </LinearLayout>
 
@@ -351,68 +452,168 @@
 
             </LinearLayout>
 
+        </LinearLayout>
 
-            <LinearLayout
+        <FrameLayout
+            android:id="@+id/dialog_recent_activity_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            tools:visibility="gone"
+            android:onClick="@{()-> viewModel.hideRecentActivityInfoDialog()}"
+            >
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="25dp"
-                android:paddingRight="25dp">
+                android:layout_gravity="center"
+                android:layout_margin="55dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="15dp"
+                app:contentPadding="15dp"
+                card_view:cardElevation="1dp">
 
-                <ImageView
-                    android:id="@+id/iv_info_selected"
-                    style="@style/IconImageView"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_tachometer_solid"
-                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/iv_contacts"
-                    style="@style/IconImageView"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_address_book_solid"
-                    android:tint="@color/material_icon"
-                    android:onClick="@{()-> viewModel.onAddressBookClicked()}"
-                    />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="35dp">
 
 
-                <ImageView
-                    android:id="@+id/iv_crm"
-                    style="@style/IconImageView"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_pie_chart"
-                    android:tint="@color/material_icon"
-                    android:onClick="@{()-> viewModel.onCrmClicked()}"
-                    />
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_add"
+                            android:tint="@color/green"
+                            />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
-
-                <ImageView
-                    android:id="@+id/iv_notifications"
-                    style="@style/IconImageView"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_bell_solid"
-                    android:tint="@color/material_icon"
-                    android:onClick="@{()-> viewModel.onNotificationsClicked()"/>
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:text="Appears when you have a new connection to approve"/>
 
 
-            </LinearLayout>
+                    </LinearLayout>
 
-        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="35dp">
+
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:padding="8dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_refresh_solid"
+                            />
+
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:text="Appears when you have a new connection to approve"/>
+
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:padding="5dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_person"
+                            android:tint="@color/orange"
+                            />
+
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:text="Appears when you have a new connection to approve"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/dialog_user_statistics_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            tools:visibility="gone"
+            android:onClick="@{()-> viewModel.hideUserStatusInfoDialog()}"
+            >
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="55dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="15dp"
+                app:contentPadding="15dp"
+                card_view:cardElevation="1dp">
+
+                <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_status_info"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"/>
+
+            </android.support.v7.widget.CardView>
+
+
+        </FrameLayout>
+
+
 
         <net.bohush.geometricprogressview.GeometricProgressView
             android:id="@+id/progress_spinner"

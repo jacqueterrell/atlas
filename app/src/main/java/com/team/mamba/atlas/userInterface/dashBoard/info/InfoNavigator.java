@@ -17,4 +17,12 @@ public interface InfoNavigator {
     void onCrmClicked();
 
     void onNotificationsClicked();
+
+    void onUserStatsInfoClicked();
+
+    void onRecentActivityInfoClicked();
+
+    void hideRecentActivityInfoDialog();
+
+    void hideUserStatusInfoDialog();
 }

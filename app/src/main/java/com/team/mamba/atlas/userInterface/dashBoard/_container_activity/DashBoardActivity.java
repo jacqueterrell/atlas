@@ -84,4 +84,88 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentInjector;
     }
+
+    @Override
+    public void onContactsClicked() {
+
+        showContactsIcon();
+        hideInfoIcon();
+        hideCrmIcon();
+        hideNotificationsIcon();
+    }
+
+    @Override
+    public void onCrmClicked() {
+
+        showCrmIcon();
+        hideContactsIcon();
+        hideInfoIcon();
+        hideNotificationsIcon();
+    }
+
+    @Override
+    public void onNotificationsClicked() {
+
+        showNotificationsIcon();
+        hideInfoIcon();
+        hideCrmIcon();
+        hideContactsIcon();
+    }
+
+    @Override
+    public void onInfoClicked() {
+
+        showInfoIcon();
+        hideContactsIcon();
+        hideCrmIcon();
+        hideNotificationsIcon();
+    }
+
+    private void showContactsIcon(){
+
+        binding.ivContactsSelected.setVisibility(View.VISIBLE);
+        binding.ivContactsNotSelected.setVisibility(View.GONE);
+    }
+
+    private void hideContactsIcon(){
+
+        binding.ivContactsSelected.setVisibility(View.GONE);
+        binding.ivContactsNotSelected.setVisibility(View.VISIBLE);
+    }
+
+    private void showCrmIcon(){
+
+        binding.ivCrmSelected.setVisibility(View.VISIBLE);
+        binding.ivCrmNotSelected.setVisibility(View.GONE);
+    }
+
+    private void hideCrmIcon(){
+
+        binding.ivCrmSelected.setVisibility(View.GONE);
+        binding.ivCrmNotSelected.setVisibility(View.VISIBLE);
+    }
+
+    private void showInfoIcon(){
+
+        binding.ivInfoSelected.setVisibility(View.VISIBLE);
+        binding.ivInfoNotSelected.setVisibility(View.GONE);
+    }
+
+    private void hideInfoIcon(){
+
+        binding.ivInfoSelected.setVisibility(View.GONE);
+        binding.ivInfoNotSelected.setVisibility(View.VISIBLE);
+    }
+
+    private void showNotificationsIcon(){
+
+        binding.ivNotificationsSelected.setVisibility(View.VISIBLE);
+        binding.ivNotificationsNotSelected.setVisibility(View.GONE);
+    }
+
+    private void hideNotificationsIcon(){
+
+        binding.ivNotificationsSelected.setVisibility(View.GONE);
+        binding.ivNotificationsNotSelected.setVisibility(View.VISIBLE);
+    }
 }

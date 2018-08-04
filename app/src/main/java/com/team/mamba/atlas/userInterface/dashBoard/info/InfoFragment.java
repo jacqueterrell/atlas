@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidanimations.library.YoYo.AnimatorCallback;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -82,6 +86,42 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
          setBarChart();
 
          return binding.getRoot();
+    }
+
+    @Override
+    public void onUserStatsInfoClicked() {
+
+        YoYo.with(Techniques.FadeIn)
+                .duration(500)
+                .onStart(animator -> binding.dialogUserStatisticsInfo.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogUserStatisticsInfo);
+    }
+
+    @Override
+    public void hideUserStatusInfoDialog() {
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(500)
+                .onEnd(animator -> binding.dialogUserStatisticsInfo.setVisibility(View.GONE))
+                .playOn(binding.dialogUserStatisticsInfo);
+    }
+
+    @Override
+    public void onRecentActivityInfoClicked() {
+
+        YoYo.with(Techniques.FadeIn)
+                .duration(500)
+                .onStart(animator -> binding.dialogRecentActivityInfo.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogRecentActivityInfo);
+    }
+
+    @Override
+    public void hideRecentActivityInfoDialog() {
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(500)
+                .onEnd(animator -> binding.dialogRecentActivityInfo.setVisibility(View.GONE))
+                .playOn(binding.dialogRecentActivityInfo);
     }
 
     @Override

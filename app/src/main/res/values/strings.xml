@@ -44,4 +44,8 @@
 
     <string name="user_stats">User Stats</string>
 
+    <string name="user_status_info">Your user statistics show you the number of individuals you\'re connected to in your network, the number of companies
+    that people in your network work for, and the number opportunities you\'ve logged inside Atlas. Your user score is based on these network statistics
+    and changed over time relative to Atlas' entire user base.</string>
+
 </resources>

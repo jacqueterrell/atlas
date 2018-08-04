@@ -18,5 +18,7 @@
     <color name="material_icon">#999999</color>
     <color name="grey">#7f7f7f</color>
     <color name="chart_blue">#99a0d5</color>
+    <color name="orange">#fa7847</color>
+    <color name="green">#638143</color>
 
 </resources>
