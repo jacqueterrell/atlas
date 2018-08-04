@@ -19,8 +19,9 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-public class BusinessAccountsActivity extends BaseActivity<BusinessAccountsRecyclerViewBinding,BusinessAccountsViewModel>
- implements BusinessAccountsNavigator {
+public class BusinessAccountsActivity
+        extends BaseActivity<BusinessAccountsRecyclerViewBinding, BusinessAccountsViewModel>
+        implements BusinessAccountsNavigator {
 
 
     @Inject
@@ -29,10 +30,10 @@ public class BusinessAccountsActivity extends BaseActivity<BusinessAccountsRecyc
     private BusinessAccountsRecyclerViewBinding binding;
     private List<String> namesList = new ArrayList<>();
     private List<String> businessIdList = new ArrayList<>();
-    private static Map<String,String> accountsMap;
+    private static Map<String, String> accountsMap;
 
 
-    public static Intent newIntent(Context context, Map<String,String> namesMap) {
+    public static Intent newIntent(Context context, Map<String, String> namesMap) {
 
         accountsMap = namesMap;
         return new Intent(context, BusinessAccountsActivity.class);
@@ -84,7 +85,7 @@ public class BusinessAccountsActivity extends BaseActivity<BusinessAccountsRecyc
 
         }
 
-            BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(),namesList);
+        BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(), namesList);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(accountsAdapter);

@@ -14,6 +14,7 @@ public class AppSharedPrefs {
     private static final String LAST_NAME = "lastName";
     private static final String PHONE_NUMBER = "phoneNumber";
     private static final String USER_LOGGED_IN = "userLoggedIn";
+    private static final String USER_CODE = "userCode";
 
 
     private SharedPreferences sharedPreferences;
@@ -92,6 +93,20 @@ public class AppSharedPrefs {
         sharedPreferences
                 .edit()
                 .putBoolean(USER_LOGGED_IN,userLoggedIn)
+                .apply();
+    }
+
+    public String getUserCode(){
+
+        return sharedPreferences
+                .getString(USER_CODE,"");
+    }
+
+    public void setUserCode(String userCode){
+
+        sharedPreferences
+                .edit()
+                .putString(USER_CODE,userCode)
                 .apply();
     }
 }

@@ -122,7 +122,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onFirstNameNextClicked() {
 
-        String name = binding.dialogEnterFirstName.etFirstName.getText().toString();
+        String name = binding.dialogEnterFirstName.etFirstName.getText().toString().trim();
 
         if (viewModel.isNameValid(name)) {
 
@@ -145,7 +145,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onLastNameNextClicked() {
 
-        String name = binding.dialogEnterLastName.etLastName.getText().toString();
+        String name = binding.dialogEnterLastName.etLastName.getText().toString().trim();
 
         if (viewModel.isNameValid(name)) {
 
@@ -285,7 +285,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         if (email.isEmpty() && password.equals("admin")){
 
-            loginAsAdmin();
+                loginAsAdmin();
 
         } else {
 
@@ -336,7 +336,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     public void loginAsAdmin() {
 
        //todo login as admin
-
+        dataModel.loginAsAdmin(viewModel);
     }
 
     @Override
@@ -353,12 +353,13 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         if (viewModel.isBusinessLogin()){
 
             showAlert("Business Login","Dashboard is open");
+            getBaseActivity().finishAffinity();
+            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
 
         } else {
 
             getBaseActivity().finishAffinity();
             startActivity(DashBoardActivity.newIntent(getBaseActivity()));
-            showAlert("Success","Dashboard is open");
 
         }
 

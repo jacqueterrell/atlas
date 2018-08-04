@@ -1,5 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
+import java.util.List;
+
 public interface InfoNavigator {
 
     void onNetworkButtonClicked();
@@ -25,4 +27,10 @@ public interface InfoNavigator {
     void hideRecentActivityInfoDialog();
 
     void hideUserStatusInfoDialog();
+
+    void setNetworkBarChartData();
+
+    void setUserStatsAdapter(List<String> userStats);
+
+
 }

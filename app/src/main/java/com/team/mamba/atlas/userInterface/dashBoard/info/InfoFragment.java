@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import java.util.Map;
 import javax.inject.Inject;
 import com.team.mamba.atlas.R;
 
@@ -42,6 +45,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
 
     private InfoLayoutBinding binding;
     float barWidth = 0.65f; // x2 dataset
+    private List<String> userStatsList = new ArrayList<>();
+    private UserStatsAdapter userStatsAdapter;
 
 
     public static InfoFragment newInstance(){
@@ -75,6 +80,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
+
     }
 
     @Override
@@ -82,10 +88,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-         setLabels();
-         setBarChart();
+        viewModel.checkAllConnections(getViewModel());
+        binding.tvUserId.setText(dataManager.getSharedPrefs().getUserCode());
 
-         return binding.getRoot();
+        userStatsAdapter = new UserStatsAdapter(userStatsList);
+        binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerUserStats.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerUserStats.setAdapter(userStatsAdapter);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -174,6 +185,20 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
 
     }
 
+    @Override
+    public void setUserStatsAdapter(List<String> userStats) {
+
+        userStatsList.clear();
+        userStatsList.addAll(userStats);
+        userStatsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setNetworkBarChartData() {
+
+        setBarChart();
+    }
+
     private List<String> setLabels(){
 
         List<String> labels = new ArrayList<>();
@@ -196,12 +221,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
     private List<BarEntry> setNetworkBarValues(){
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 100));
-        entries.add(new BarEntry(1, 50));
-        entries.add(new BarEntry(2, 30));
-        entries.add(new BarEntry(3, 10));
-        entries.add(new BarEntry(4, 20));
-        entries.add(new BarEntry(5, 0));
+
+        int count = 0;
+
+        for (Map.Entry<Integer,Integer> entry : viewModel.getConnectionsMap().entrySet()){
+
+            entries.add(new BarEntry(count, entry.getValue()));
+            count += 1;
+        }
+
 
         return entries;
     }

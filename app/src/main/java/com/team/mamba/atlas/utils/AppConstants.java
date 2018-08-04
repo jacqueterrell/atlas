@@ -11,5 +11,8 @@ public class AppConstants {
     public static boolean APP_DEBUG = BuildConfig.DEBUG;
     public static final String USERS_COLLECTION = "users";
     public static final String BUSINESSES_COLLECTION = "businesses";
+    public static final String CONNECTIONS_COLLECTION = "connections";
+    public static final String BUS_NOTES_COLLECTION = "busNotes";
+    public static String TEST_USER_ID = "S0URPfcKiVanC5NhHd4n9ejcEWZ2";
 
 }

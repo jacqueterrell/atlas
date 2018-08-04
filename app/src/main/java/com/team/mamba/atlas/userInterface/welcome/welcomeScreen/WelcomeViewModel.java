@@ -24,6 +24,7 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     private String verificationId;
     private String firstName;
     private String lastName;
+    private String userCode;
     private long dateOfBirth;
     private String phoneNumber;
     private boolean businessLogin = false;
@@ -39,6 +40,11 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         Calendar calThirteen = Calendar.getInstance();
 
         calDob.set(year,month,day);
+        calDob.set(Calendar.HOUR,0);
+        calDob.set(Calendar.MINUTE,1);
+        calDob.set(Calendar.AM_PM,Calendar.AM);
+        calDob.set(Calendar.SECOND,0);
+
         int thirteenYearsBack = (calThirteen.get(Calendar.YEAR) - 13);
         calThirteen.set(Calendar.YEAR,thirteenYearsBack);
 
@@ -47,7 +53,7 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         long millisToday = calTodaysDate.getTimeInMillis();
         long millisThirteenBack = calThirteen.getTimeInMillis();
 
-        long dobTimeStamp = millisDob * 1000;
+        long dobTimeStamp = millisDob / 1000;
 
         setDateOfBirth(dobTimeStamp);
 
@@ -156,6 +162,14 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
 
     public void setDateOfBirth(long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getUserCode() {
+        return userCode;
     }
 
     public String getPhoneNumber() {
