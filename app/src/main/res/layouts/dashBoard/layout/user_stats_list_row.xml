@@ -15,11 +15,12 @@
 
     </data>
 
-<LinearLayout
+<FrameLayout
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="15dp"
+    android:layout_height="40dp"
+    android:paddingRight="15dp"
+    android:paddingLeft="15dp"
     >
 
     <TextView
@@ -28,8 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="3 Connections"
+        android:layout_gravity="center_vertical"
         />
 
-</LinearLayout>
+</FrameLayout>
 
 </layout>

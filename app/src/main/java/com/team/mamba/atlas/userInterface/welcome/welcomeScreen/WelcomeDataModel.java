@@ -135,7 +135,7 @@ public class WelcomeDataModel {
                             String userId = document.getData().get("id").toString();
                             String last = document.getData().get("lastName").toString();
                             String phoneNumber = document.getData().get("phone").toString();
-                            String dob = document.getData().get("dob").toString();
+                            String dob = AppFormatter.timeStampFormatter.format(document.getData().get("dob").toString());
 
                             if (last.equals(lastName)
                                     && phoneNumber.equals(phone)

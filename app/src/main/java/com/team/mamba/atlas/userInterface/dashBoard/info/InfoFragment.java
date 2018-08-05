@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.team.mamba.atlas.BR;
+import com.team.mamba.atlas.data.model.ConnectionRecord;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import java.util.Map;
@@ -47,6 +48,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
     float barWidth = 0.65f; // x2 dataset
     private List<String> userStatsList = new ArrayList<>();
     private UserStatsAdapter userStatsAdapter;
+    private RecentActivitiesAdapter recentActivitiesAdapter;
+    private List<ConnectionRecord> recentActivityConnections = new ArrayList<>();
 
 
     public static InfoFragment newInstance(){
@@ -95,6 +98,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
         binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
         binding.recyclerUserStats.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerUserStats.setAdapter(userStatsAdapter);
+
+        recentActivitiesAdapter = new RecentActivitiesAdapter(getViewModel(),recentActivityConnections);
+        binding.recyclerRecentActivity.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerRecentActivity.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerRecentActivity.setAdapter(recentActivitiesAdapter);
 
         return binding.getRoot();
     }
@@ -186,11 +194,24 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
     }
 
     @Override
-    public void setUserStatsAdapter(List<String> userStats) {
+    public void setUserStatsAdapter(List<String> userStats,List<ConnectionRecord> connectionRecords) {
 
         userStatsList.clear();
         userStatsList.addAll(userStats);
+        recentActivityConnections.clear();
+        recentActivityConnections.addAll(connectionRecords);
+
         userStatsAdapter.notifyDataSetChanged();
+        recentActivitiesAdapter.notifyDataSetChanged();
+        hideSplashScreen();
+    }
+
+    @Override
+    public void handlerError(String msg) {
+
+        showSnackbar(msg);
+        hideSplashScreen();
+
     }
 
     @Override
@@ -198,6 +219,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
 
         setBarChart();
     }
+
+
 
     private List<String> setLabels(){
 
@@ -298,6 +321,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
         monthsList.add("Dec");
 
         return monthsList;
+    }
+
+
+    private void hideSplashScreen(){
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(500)
+                .onEnd(animator -> binding.layoutSplashScreen.setVisibility(View.GONE))
+                .playOn(binding.layoutSplashScreen);
     }
 
 }

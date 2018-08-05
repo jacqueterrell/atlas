@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel" />
+
+    </data>
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:paddingLeft="5dp"
+    android:background="?attr/selectableItemBackground"
+    >
+
+    <ImageView
+        android:id="@+id/iv_confirmed_connection_individual"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_person"
+        android:tint="@color/orange"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_vertical"
+        tools:visibility="visible"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/iv_confirmed_connection_business"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_users_solid"
+        android:tint="@color/orange"
+        android:padding="3dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/iv_add_new_connection"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_add"
+        android:tint="@color/green"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/iv_recent_updated_account"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_refresh_solid"
+        android:padding="3dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tv_user_stat"
+        style="@style/App_Text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Jacque' Terrell"
+        android:layout_gravity="center_vertical"
+        />
+
+</LinearLayout>
+
+</layout>

@@ -128,7 +128,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
-        dialog.setTitle("No Network Connection")
+        dialog.setTitle("No Network ConnectionRecord")
                 .setMessage("Please connect to a network")
                 .setNegativeButton("Ok", (paramDialogInterface, paramInt) -> {
 

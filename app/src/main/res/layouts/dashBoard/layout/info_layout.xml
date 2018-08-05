@@ -281,7 +281,7 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_weight=".3"
+                    android:layout_weight=".2"
                     android:layout_height="1dp"/>
 
                 <RelativeLayout
@@ -300,6 +300,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="10dp"
 
+
                         />
 
                     <ImageView
@@ -311,6 +312,8 @@
                         android:tint="@color/grey"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:padding="10dp"
+                        android:layout_marginRight="15dp"
+
                         android:onClick="@{()-> viewModel.onUserStatsInfoClicked()}"
                         />
 
@@ -612,6 +615,16 @@
 
             </android.support.v7.widget.CardView>
 
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layout_splash_screen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/splash_image"
+            tools:visibility="gone"
+            >
 
         </FrameLayout>
 
