@@ -1,20 +1,29 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
+import android.animation.Animator;
 import android.app.FragmentContainer;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.View;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidanimations.library.YoYo.AnimatorCallback;
 import com.team.mamba.atlas.BR;
+import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
+import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
@@ -72,6 +81,9 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
+        String version = "Version " + BuildConfig.VERSION_NAME;
+        binding.dialogSettings.tvVersionName.setText(version);
+
         if (fragment == null) {
             fragment =  InfoFragment.newInstance();
             fm.beginTransaction()
@@ -121,6 +133,86 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         hideNotificationsIcon();
     }
 
+    @Override
+    public void openSettingsScreen() {
+
+        showSettings();
+    }
+
+    @Override
+    public void onSiteLinkClicked() {
+
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_SITE_URL));
+        startActivity(i);
+    }
+
+    @Override
+    public void onCorporateDirectoryClicked() {
+
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
+        startActivity(i);
+    }
+
+    @Override
+    public void onOrganizationalOutreachClicked() {
+
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
+        startActivity(i);
+    }
+
+    @Override
+    public void onAlumniNetworkingClicked() {
+
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
+        startActivity(i);
+    }
+
+
+
+    @Override
+    public void onPrivacyPolicyClicked() {
+
+
+    }
+
+    @Override
+    public void onTermsOfServiceClicked() {
+
+
+    }
+
+    @Override
+    public void onNetworkManagementClicked() {
+
+    }
+
+    @Override
+    public void onLogOutClicked() {
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        dialog.setTitle("Log Out")
+                .setMessage("Do you want to log out of this account?")
+                .setNegativeButton("no", (paramDialogInterface, paramInt) -> {
+
+                })
+                .setPositiveButton("yes", (paramDialogInterface, paramInt) -> {
+
+                    dataManager.getSharedPrefs().setUserLoggedIn(false);
+                    showToastShort("Logging out");
+                    finishAffinity();
+                    startActivity(ViewPagerActivity.newIntent(DashBoardActivity.this));
+                });
+
+        dialog.show();
+
+    }
+
+    @Override
+    public void onDeleteMyAccountClicked() {
+
+    }
+
     private void showContactsIcon(){
 
         binding.ivContactsSelected.setVisibility(View.VISIBLE);
@@ -167,5 +259,39 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         binding.ivNotificationsSelected.setVisibility(View.GONE);
         binding.ivNotificationsNotSelected.setVisibility(View.VISIBLE);
+    }
+
+    private void showSettings(){
+
+        YoYo.with(Techniques.SlideInUp)
+                .duration(500)
+                .onStart(animator -> binding.dialogSettings.layoutDashboardSettings.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogSettings.layoutDashboardSettings);
+    }
+
+    private void hideSettings(){
+
+        YoYo.with(Techniques.SlideOutDown)
+                .duration(500)
+                .onEnd(animator -> binding.dialogSettings.layoutDashboardSettings.setVisibility(View.GONE))
+                .playOn(binding.dialogSettings.layoutDashboardSettings);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == 4){
+
+            if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
+
+                hideSettings();
+
+            } else {
+
+                onBackPressed();
+            }
+        }
+
+        return false;
     }
 }

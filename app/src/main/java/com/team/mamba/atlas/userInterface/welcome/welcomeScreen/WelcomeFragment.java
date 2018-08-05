@@ -271,7 +271,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onBusinessScreenLearnMoreClicked() {
 
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_SITE_URL));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
         startActivity(i);
     }
 
@@ -352,7 +352,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         if (viewModel.isBusinessLogin()){
 
-            showAlert("Business Login","Dashboard is open");
             getBaseActivity().finishAffinity();
             startActivity(DashBoardActivity.newIntent(getBaseActivity()));
 

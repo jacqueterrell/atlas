@@ -12,7 +12,7 @@ public class ConnectionRecord {
 
     private boolean isRecentActivity;
 
-    private String timestamp;
+    private long timestamp;
 
     public ConnectionRecord(){
 
@@ -62,11 +62,11 @@ public class ConnectionRecord {
         isRecentActivity = recentActivity;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -84,7 +84,7 @@ public class ConnectionRecord {
         private boolean isBusiness;
         private boolean isNeedsApproval;
         private boolean isRecentActivity;
-        private String timestamp;
+        private long timestamp;
         private String userId;
 
         public Builder setName(String name) {
@@ -107,7 +107,7 @@ public class ConnectionRecord {
             return this;
         }
 
-        public Builder setTimestamp(String timestamp) {
+        public Builder setTimestamp(long timestamp) {
             this.timestamp = timestamp;
             return this;
         }

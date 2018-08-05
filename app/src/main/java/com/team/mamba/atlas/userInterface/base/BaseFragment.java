@@ -116,7 +116,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         }
     }
 
-    protected void showToast(String msg) {
+    protected void showToastLong(String msg) {
 
         if (getBaseActivity() != null) {
 

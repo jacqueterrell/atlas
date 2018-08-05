@@ -6,7 +6,6 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoar
 import com.team.mamba.atlas.userInterface.dashBoard.businessOpportunities.BusinessOpportunitiesViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsViewModel;
 import dagger.Module;
 import dagger.Provides;
 
@@ -43,9 +42,4 @@ public class DashBoardModule {
         return new NotificationsViewModel();
     }
 
-    @Provides
-    SettingsViewModel providesSettingsViewModel(){
-
-        return new SettingsViewModel();
-    }
 }

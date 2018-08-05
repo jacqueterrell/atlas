@@ -5,7 +5,6 @@ import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
 import com.team.mamba.atlas.userInterface.dashBoard.businessOpportunities.BusinessOpportunitiesFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
 import com.team.mamba.atlas.userInterface.welcome.ViewPagerActivityModule;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
 import dagger.Module;
@@ -30,6 +29,4 @@ public abstract class FragmentBuilder {
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract NotificationsFragment bindNotificationsFragment();
 
-    @ContributesAndroidInjector(modules = DashBoardModule.class)
-    abstract SettingsFragment bindSettingsFragment();
 }

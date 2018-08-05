@@ -3,8 +3,10 @@ package com.team.mamba.atlas.dashboard;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +70,52 @@ public class InfoDataModelTest {
         assertTrue(connectionsMap.get(3).equals(0));
         assertTrue(connectionsMap.get(2).equals(0));
 
+
+    }
+
+    @Test
+    public void testtLongList(){
+
+        List<Long> timeStampList = new ArrayList<>();
+        timeStampList.add(1531600332L);
+        timeStampList.add(1531847343L);
+        timeStampList.add(1532962371L);
+        timeStampList.add(1533441076L);
+        timeStampList.add(1533442364L);
+
+        assertTrue(timeStampList.get(0) == 1531600332);
+
+    }
+
+    @Test
+    public void sortLongList(){
+
+        List<String> timeStampList = new ArrayList<>();
+        timeStampList.add("1531600332"); //sofr july 14
+        timeStampList.add("1532962370"); //Mathew Maher july 30
+        timeStampList.add("1533442364"); //Matthew Maher Aug 4
+        timeStampList.add("1533441076"); //Jacque Terrell Aug 4
+        timeStampList.add("1531847343"); //ramos july 17
+
+
+        String secondString = timeStampList.get(1);
+
+        //return o1.getName().compareTo(o2.getName());
+
+        Collections.sort(timeStampList,(o1,o2) ->{
+
+//            BigInteger first = new BigInteger(o1);
+//            BigInteger second = new BigInteger(o2);
+
+            long first = Long.parseLong(o1);
+            long second = Long.parseLong(o2);
+
+            return Long.compare(second, first);
+
+          //  return second.compareTo(first);
+        });
+
+        assertFalse(timeStampList.get(1) == secondString);
 
     }
 }

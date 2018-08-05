@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     >
 
 
@@ -219,6 +220,13 @@
                 android:layout_gravity="center_horizontal"
                 android:visibility="visible" />
 
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bar_chart_opportunities"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -227,38 +235,46 @@
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     >
 
-                    <TextView
-                        android:id="@+id/tv_recent_activity"
-                        style="@style/App_Text_view"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Recent Activity"
+                        android:orientation="horizontal"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
+                        >
 
-                        />
+                        <TextView
+                            android:id="@+id/tv_recent_activity"
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Recent Activity"
+                            android:layout_marginTop="10dp"
 
-                    <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:src="@drawable/ic_info_circle_solid"
-                        android:layout_toRightOf="@id/tv_recent_activity"
-                        android:layout_toEndOf="@id/tv_recent_activity"
-                        android:tint="@color/grey"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="10dp"
-                        android:onClick="@{()-> viewModel.onRecentActivityInfoClicked()}"
-                        />
+                            />
+
+                        <ImageView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:src="@drawable/ic_info_circle_solid"
+                            android:tint="@color/grey"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="10dp"
+                            android:onClick="@{()-> viewModel.onRecentActivityInfoClicked()}"
+                            />
+
+
+                    </LinearLayout>
+
 
                     <android.support.v4.widget.SwipeRefreshLayout
-                        android:id="@+id/swipeContainer"
+                        android:id="@+id/swipeContainer_recent_activiy"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/tv_recent_activity"
@@ -277,59 +293,62 @@
 
                     </android.support.v4.widget.SwipeRefreshLayout>
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     android:layout_width="0dp"
                     android:layout_weight=".2"
                     android:layout_height="1dp"/>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     >
 
-                    <TextView
-                        android:id="@+id/tv_user_stats"
-                        style="@style/App_Text_view"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User Stats"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="end">
 
+                        <TextView
+                            android:id="@+id/tv_user_stats"
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="User Stats"
+                            android:textSize="15sp"
+                            android:layout_gravity="center_vertical"
+                            />
 
-                        />
+                        <ImageView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:src="@drawable/ic_info_circle_solid"
+                            android:tint="@color/grey"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="10dp"
+                            android:layout_marginRight="5dp"
 
-                    <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:src="@drawable/ic_info_circle_solid"
-                        android:layout_toRightOf="@id/tv_user_stats"
-                        android:layout_toEndOf="@id/tv_user_stats"
-                        android:tint="@color/grey"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="10dp"
-                        android:layout_marginRight="15dp"
+                            android:onClick="@{()-> viewModel.onUserStatsInfoClicked()}"
+                            />
 
-                        android:onClick="@{()-> viewModel.onUserStatsInfoClicked()}"
-                        />
+                    </LinearLayout>
+
 
                     <android.support.v4.widget.SwipeRefreshLayout
                         android:id="@+id/swipe_container_user_stats"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/tv_user_stats"
-                        android:layout_marginTop="15dp"
                         >
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recycler_user_stats"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-
                             tools:paddingLeft="15dp">
 
 
@@ -337,7 +356,7 @@
 
                     </android.support.v4.widget.SwipeRefreshLayout>
 
-                </RelativeLayout>
+                </LinearLayout>
 
 
 
@@ -618,6 +637,7 @@
 
         </FrameLayout>
 
+
         <FrameLayout
             android:id="@+id/layout_splash_screen"
             android:layout_width="match_parent"
@@ -626,8 +646,18 @@
             tools:visibility="gone"
             >
 
-        </FrameLayout>
+            <ImageView
+                android:id="@+id/iv_logo"
+                android:layout_width="200dp"
+                android:layout_height="85dp"
+                android:layout_gravity="end"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/welcome_logo_500"
+                android:layout_marginTop="75dp"
+               />
 
+        </FrameLayout>
 
 
         <net.bohush.geometricprogressview.GeometricProgressView

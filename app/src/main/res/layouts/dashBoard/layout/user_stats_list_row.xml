@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,23 +13,30 @@
 
     </data>
 
-<FrameLayout
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:paddingRight="15dp"
-    android:paddingLeft="15dp"
-    >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
 
-    <TextView
-        android:id="@+id/tv_user_stat"
-        style="@style/App_Text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="3 Connections"
-        android:layout_gravity="center_vertical"
-        />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_gravity="end|center_vertical">
 
-</FrameLayout>
+            <TextView
+                android:id="@+id/tv_user_stat"
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:textSize="15sp"
+                tools:text="3 Connections" />
+
+        </FrameLayout>
+
+    </FrameLayout>
 
 </layout>

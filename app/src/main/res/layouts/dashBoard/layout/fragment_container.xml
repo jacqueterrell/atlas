@@ -2,7 +2,9 @@
 
 <layout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:card_view = "http://schemas.android.com/apk/res-auto"
-    xmlns:tools = "http://schemas.android.com/tools">
+    xmlns:tools = "http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
 
     <data>
 
@@ -130,6 +132,12 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <include
+            android:id="@+id/dialog_settings"
+            layout="@layout/settings_layout"
+            bind:viewModel="@{viewModel}" />
+
 
     </FrameLayout>
 

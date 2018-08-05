@@ -133,17 +133,21 @@ public class WelcomeDataModel {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
                             String userId = document.getData().get("id").toString();
+                            String userCode = document.getData().get("code").toString();
                             String last = document.getData().get("lastName").toString();
                             String phoneNumber = document.getData().get("phone").toString();
-                            String dob = AppFormatter.timeStampFormatter.format(document.getData().get("dob").toString());
+                            String dob = document.getData().get("dob").toString();
+
+                            String adjustedDob = AppFormatter.timeStampFormatter.format(Double.valueOf(dob));
 
                             if (last.equals(lastName)
                                     && phoneNumber.equals(phone)
-                                    && dob.equals(dateOfBirth)) {
+                                    && adjustedDob.equals(dateOfBirth)) {
 
                                 isUser = true;
 
                                 dataManager.getSharedPrefs().setUserId(userId);
+                                dataManager.getSharedPrefs().setUserCode(userCode);
                                 break;
                             }
                         }
@@ -155,7 +159,6 @@ public class WelcomeDataModel {
                         } else {
 
                             addUserToFirebaseDatabase(viewModel);
-                            viewModel.getNavigator().handleError("Adding New User");
                         }
 
                     } else {

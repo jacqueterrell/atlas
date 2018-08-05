@@ -97,11 +97,16 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
         return NetworkUtils.isNetworkConnected(getApplicationContext());
     }
 
-    protected void showToast(String msg) {
+    protected void showToastLong(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
-    protected void showSnackBar(String message) {
+          protected void showToastShort(String msg) {
+              Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+          }
+
+
+          protected void showSnackBar(String message) {
 
         Snackbar.make(getViewDataBinding().getRoot(), message, Snackbar.LENGTH_LONG)
                 .show();

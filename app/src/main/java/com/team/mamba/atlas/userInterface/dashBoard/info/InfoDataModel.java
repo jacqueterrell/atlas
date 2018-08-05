@@ -24,6 +24,7 @@ public class InfoDataModel {
     private static final String CONSENTING_USER_NAME = "consentingUserName";
     private static final String REQUESTING_USER_NAME = "requestingUserName";
     private static final String IS_BUSINESS = "isOrgBus";
+    private static final String STAGE = "stage";
     private static final String AUTHOR_ID = "authorID";
 
     private AppDataManager dataManager;
@@ -33,9 +34,13 @@ public class InfoDataModel {
     private boolean isUserStatsSet = false;
     private boolean isUserOpportunitiesSet = false;
     private boolean isRecentActivitiesSet = false;
+    private boolean isNetworksChartSet = false;
+    private boolean isOpportunitiesChartSet = false;
 
     private List<String> userStatsList = new ArrayList<>();
     private List<ConnectionRecord> recentActivityConnections = new ArrayList<>();
+    private List<String> confirmedConnectionsList = new ArrayList<>();
+
     private QuerySnapshot connectionsCollection;
     private static final int ALLOWED_TOTAL_RECENT_ACTIVITIES = 51;
 
@@ -49,11 +54,8 @@ public class InfoDataModel {
     public void checkAllConnections(InfoViewModel viewModel) {
 
         List<Integer> connectionMonths = new ArrayList<>();
-
-        List<String> consentingIdList = new ArrayList<>();
-
+        confirmedConnectionsList.clear();
         String userId = dataManager.getSharedPrefs().getUserId();
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection(AppConstants.CONNECTIONS_COLLECTION)
@@ -72,7 +74,7 @@ public class InfoDataModel {
 
                             if (isConfirmed && requestingUserId.equals(userId)) {
 
-                                consentingIdList.add(consentingUserId);
+                                confirmedConnectionsList.add(consentingUserId);
 
                                 String time = document.getData().get(TIME_STAMP).toString();
 
@@ -87,7 +89,7 @@ public class InfoDataModel {
 
                         }
 
-                        setUserStats(viewModel, consentingIdList);
+                        setUserStats(viewModel);
                         setUserStatusOpportunities(viewModel);
                         setConnectionsMap(viewModel, connectionMonths);
                         setRecentActivity(viewModel);
@@ -134,21 +136,28 @@ public class InfoDataModel {
 
         }
 
-        viewModel.setConnectionsMap(connectionsMap);
-        viewModel.getNavigator().setNetworkBarChartData();
+        isNetworksChartSet = true;
+        viewModel.setNetworksMap(connectionsMap);
+
+        if (isNetworksChartSet && isOpportunitiesChartSet){
+
+            viewModel.getNavigator().setNetworkBarChartData();
+        }
+
     }
 
     /**
      * Loops through all connections to find the total of businesses
      *
-     * @param connectionIdList total list of all connections accepted
      */
-    private void setUserStats(InfoViewModel viewModel, List<String> connectionIdList) {
+    private void setUserStats(InfoViewModel viewModel) {
 
         //clear the list before use
         if (!isUserOpportunitiesSet && !isUserStatsSet) {
 
             userStatsList.clear();
+            companyTotal = 0;
+            totalOpportunities = 0;
         }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -163,7 +172,7 @@ public class InfoDataModel {
 
                             String businessId = document.getData().get("id").toString();
 
-                            for (String id : connectionIdList) {
+                            for (String id : confirmedConnectionsList) {
 
                                 if (businessId.equals(id)) {
 
@@ -175,9 +184,6 @@ public class InfoDataModel {
 
                         }
 
-                        String connectionsTotal = connectionIdList.size() + " Connections";
-                        userStatsList.add(connectionsTotal);
-
                         isUserStatsSet = true;
 
                         if (isUserStatsSet && isUserOpportunitiesSet && isRecentActivitiesSet) {
@@ -185,6 +191,7 @@ public class InfoDataModel {
                             isUserStatsSet = false;
                             isUserOpportunitiesSet = false;
                             isRecentActivitiesSet = false;
+                            setUserStatsTotal();
 
                             viewModel.getNavigator().setUserStatsAdapter(userStatsList,recentActivityConnections);
                         }
@@ -213,6 +220,7 @@ public class InfoDataModel {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = dataManager.getSharedPrefs().getUserId();
+        List<Integer> opportunityStageNumbers = new ArrayList<>();
 
         db.collection(AppConstants.BUS_NOTES_COLLECTION)
                 .whereEqualTo(AUTHOR_ID, userId)
@@ -223,30 +231,13 @@ public class InfoDataModel {
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
+                            int stage = Integer.valueOf(document.getData().get(STAGE).toString());
+
+                            opportunityStageNumbers.add(stage);
                             totalOpportunities += 1;
                         }
 
-                        if (companyTotal == 1) {
-
-                            String company = companyTotal + " Company";
-                            userStatsList.add(company);
-
-                        } else {
-
-                            String company = companyTotal + " Companies";
-                            userStatsList.add(company);
-                        }
-
-                        if (totalOpportunities == 1) {
-
-                            String opportunities = totalOpportunities + " Opportunity";
-                            userStatsList.add(opportunities);
-
-                        } else {
-
-                            String opportunities = totalOpportunities + " Opportunities";
-                            userStatsList.add(opportunities);
-                        }
+                        setOpportunitiesMap(viewModel,opportunityStageNumbers);
 
                         isUserOpportunitiesSet = true;
 
@@ -255,6 +246,7 @@ public class InfoDataModel {
                             isUserStatsSet = false;
                             isUserOpportunitiesSet = false;
                             isRecentActivitiesSet = false;
+                            setUserStatsTotal();
 
                             viewModel.getNavigator().setUserStatsAdapter(userStatsList,recentActivityConnections);
                         }
@@ -271,12 +263,81 @@ public class InfoDataModel {
     }
 
 
+    private void setOpportunitiesMap(InfoViewModel viewModel, List<Integer> opportunityStages) {
+
+        Map<Integer, Integer> connectionsMap = new LinkedHashMap<>();
+
+        for (int i = 0; i < 5; i++) {
+
+            connectionsMap.put(i, 0); //7,6,5,4,3,2
+        }
+
+        for (Integer stage : opportunityStages) {
+
+            for (Map.Entry<Integer, Integer> entry : connectionsMap.entrySet()) {
+
+                int stageKey = entry.getKey();
+                int count = entry.getValue();
+
+                if (stageKey == stage) {
+
+                    entry.setValue(count + 1);
+                }
+            }
+
+        }
+
+        isOpportunitiesChartSet = true;
+        viewModel.setOpportunitiesMap(connectionsMap);
+
+        if (isNetworksChartSet && isOpportunitiesChartSet){
+
+            viewModel.getNavigator().setNetworkBarChartData();
+        }
+
+    }
+
+
+    private void setUserStatsTotal(){
+
+        String connectionsTotal = confirmedConnectionsList.size() + " Connections";
+        userStatsList.add(connectionsTotal);
+
+
+        if (companyTotal == 1) {
+
+            String company = companyTotal + " Company";
+            userStatsList.add(company);
+
+        } else {
+
+            String company = companyTotal + " Companies";
+            userStatsList.add(company);
+        }
+
+
+        if (totalOpportunities == 1) {
+
+            String opportunities = totalOpportunities + " Opportunity";
+            userStatsList.add(opportunities);
+
+        } else {
+
+            String opportunities = totalOpportunities + " Opportunities";
+            userStatsList.add(opportunities);
+        }
+
+    }
+
+
     private void setRecentActivity(InfoViewModel viewModel) {
 
         recentActivityConnections.clear();
         String userId = dataManager.getSharedPrefs().getUserId();
         List<ConnectionRecord> completedConnections = new ArrayList<>();
         List<ConnectionRecord> newConnections = new ArrayList<>();
+
+        List<String> confirmedUsers = new ArrayList<>();
 
         for (QueryDocumentSnapshot document : connectionsCollection) {
 
@@ -289,6 +350,7 @@ public class InfoDataModel {
 
             String time = document.getData().get(TIME_STAMP).toString();
             String adjustedTimeStamp = AppFormatter.timeStampFormatter.format(Double.valueOf(time));
+            long systemTimeStamp = Long.parseLong(adjustedTimeStamp);
 
             //get all completed connections
             if (isConfirmed && requestingUserId.equals(userId)){ //The connection has been confirmed
@@ -304,12 +366,13 @@ public class InfoDataModel {
                                 .setBusiness(true)
                                 .setNeedsApproval(false)
                                 .setRecentActivity(false)
-                                .setTimestamp(adjustedTimeStamp)
+                                .setTimestamp(systemTimeStamp)
                                 .setUserId(consentingUserId)
                                 .build();
 
-                        if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES){
+                        if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES && !confirmedUsers.contains(consentingUserName)){
 
+                            confirmedUsers.add(consentingUserName);
                             completedConnections.add(record);
                         }
 
@@ -320,12 +383,13 @@ public class InfoDataModel {
                                 .setBusiness(false)
                                 .setNeedsApproval(false)
                                 .setRecentActivity(false)
-                                .setTimestamp(adjustedTimeStamp)
+                                .setTimestamp(systemTimeStamp)
                                 .setUserId(consentingUserId)
                                 .build();
 
-                        if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES){
+                        if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES && !confirmedUsers.contains(consentingUserName)){
 
+                            confirmedUsers.add(consentingUserName);
                             completedConnections.add(record);
                         }
                     }
@@ -338,11 +402,12 @@ public class InfoDataModel {
                             .setBusiness(false)
                             .setNeedsApproval(false)
                             .setRecentActivity(false)
-                            .setTimestamp(adjustedTimeStamp)
+                            .setTimestamp(systemTimeStamp)
                             .build();
 
-                    if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES){
+                    if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES && !confirmedUsers.contains(consentingUserName)){
 
+                        confirmedUsers.add(consentingUserName);
                         completedConnections.add(record);
                     }
                 }
@@ -355,7 +420,7 @@ public class InfoDataModel {
                         .setBusiness(false)
                         .setNeedsApproval(true)
                         .setRecentActivity(false)
-                        .setTimestamp(adjustedTimeStamp)
+                        .setTimestamp(systemTimeStamp)
                         .build();
 
                 if (newConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES){
@@ -376,6 +441,7 @@ public class InfoDataModel {
             isUserStatsSet = false;
             isUserOpportunitiesSet = false;
             isRecentActivitiesSet = false;
+            setUserStatsTotal();
 
             viewModel.getNavigator().setUserStatsAdapter(userStatsList,recentActivityConnections);
         }

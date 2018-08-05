@@ -89,6 +89,7 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
             super(binding.getRoot());
             this.binding = binding;
             itemView.setOnClickListener(this);
+
         }
 
         @Override
