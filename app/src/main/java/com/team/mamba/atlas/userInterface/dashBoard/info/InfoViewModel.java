@@ -10,6 +10,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     private Map<Integer,Integer> networksMap = new LinkedHashMap<>();
     private Map<Integer,Integer> opportunitiesMap = new LinkedHashMap<>();
     private boolean networkChartSelected = true;
+    private String userCode = "";
 
 
 
@@ -44,6 +45,14 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
 
     public boolean isNetworkChartSelected() {
         return networkChartSelected;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getUserCode() {
+        return userCode;
     }
 
     /***************onclick listeners************/
@@ -99,4 +108,5 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
 
         dataModel.checkAllConnections(viewModel);
     }
+
 }

@@ -203,6 +203,8 @@ public class WelcomeDataModel {
 
                             dataManager.getSharedPrefs().setUserId(userId);
                             dataManager.getSharedPrefs().setUserCode(userCode);
+                            viewModel.setBusinessLogin(false);
+
                             viewModel.getNavigator().openDashBoard();
 
                             return;
@@ -230,7 +232,6 @@ public class WelcomeDataModel {
 
                     if (task.isSuccessful()) {
 
-                        viewModel.getNavigator().handleError("success");
                         checkAllBusinesses(viewModel, email);
 
                     } else {
@@ -267,7 +268,6 @@ public class WelcomeDataModel {
                             String name = document.getData().get("name").toString();
 
                             namesMap.put(userId, name);
-
 
                         }
 

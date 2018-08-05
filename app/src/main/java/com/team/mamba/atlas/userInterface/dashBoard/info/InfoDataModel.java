@@ -6,6 +6,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.ConnectionRecord;
+import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
 import java.util.ArrayList;
@@ -57,6 +58,15 @@ public class InfoDataModel {
         confirmedConnectionsList.clear();
         String userId = dataManager.getSharedPrefs().getUserId();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            getBusinessDetails(viewModel);
+
+        } else {
+
+            getUserDetails(viewModel);
+        }
 
         db.collection(AppConstants.CONNECTIONS_COLLECTION)
                 .get()
@@ -449,5 +459,79 @@ public class InfoDataModel {
 
     }
 
+    private void getBusinessDetails(InfoViewModel viewModel){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        String savedUserId = dataManager.getSharedPrefs().getUserId();
+
+        db.collection(AppConstants.BUSINESSES_COLLECTION)
+                .whereEqualTo("id", savedUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            Logger.i("email:" + document.getData().get("email"));
+                            String userId = document.getData().get("id").toString();
+                            String name = document.getData().get("name").toString();
+                            String userCode = document.getData().get("code").toString();
+                            String email = document.getData().get("email").toString();
+
+                            viewModel.setUserCode(userCode);
+                            viewModel.getNavigator().setUserDetails();
+                            dataManager.getSharedPrefs().setUserCode(userCode);
+                        }
+
+                    }
+                });
+    }
+
+
+
+    public void getUserDetails(InfoViewModel viewModel) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        String savedUserId = dataManager.getSharedPrefs().getUserId();
+
+        db.collection(AppConstants.USERS_COLLECTION)
+                .whereEqualTo("id", savedUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            String userId = document.getData().get("id").toString();
+                            String first = document.getData().get("firstName").toString();
+                            String last = document.getData().get("lastName").toString();
+                            String phoneNumber = document.getData().get("phone").toString();
+                            String dob = document.getData().get("dob").toString();
+                            String userCode = document.getData().get("code").toString();
+
+                            String adjustedTime = AppFormatter.timeStampFormatter.format(Double.valueOf(dob));
+
+                            viewModel.setUserCode(userCode);
+                            dataManager.getSharedPrefs().setUserCode(userCode);
+                            viewModel.getNavigator().setUserDetails();
+
+                            return;
+
+                        }
+
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                        task.getException().printStackTrace();
+                    }
+
+                });
+
+    }
 
 }

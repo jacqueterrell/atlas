@@ -35,5 +35,7 @@ public interface InfoNavigator {
 
     void handlerError(String msg);
 
+    void setUserDetails();
+
 
 }

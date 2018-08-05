@@ -15,6 +15,7 @@ public class AppSharedPrefs {
     private static final String PHONE_NUMBER = "phoneNumber";
     private static final String USER_LOGGED_IN = "userLoggedIn";
     private static final String USER_CODE = "userCode";
+    private static final String BUSINESS_ACCOUNT = "businessAccount";
 
 
     private SharedPreferences sharedPreferences;
@@ -107,6 +108,20 @@ public class AppSharedPrefs {
         sharedPreferences
                 .edit()
                 .putString(USER_CODE,userCode)
+                .apply();
+    }
+
+    public boolean isBusinessAccount(){
+
+        return sharedPreferences
+                .getBoolean(BUSINESS_ACCOUNT,false);
+    }
+
+    public void setBusinessAccount(boolean businessAccount){
+
+        sharedPreferences
+                .edit()
+                .putBoolean(BUSINESS_ACCOUNT,businessAccount)
                 .apply();
     }
 }

@@ -352,11 +352,13 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         if (viewModel.isBusinessLogin()){
 
+            dataManager.getSharedPrefs().setBusinessAccount(true);
             getBaseActivity().finishAffinity();
             startActivity(DashBoardActivity.newIntent(getBaseActivity()));
 
         } else {
 
+            dataManager.getSharedPrefs().setBusinessAccount(false);
             getBaseActivity().finishAffinity();
             startActivity(DashBoardActivity.newIntent(getBaseActivity()));
 

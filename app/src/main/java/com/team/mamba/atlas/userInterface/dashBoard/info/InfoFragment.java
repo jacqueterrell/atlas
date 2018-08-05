@@ -101,7 +101,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding = getViewDataBinding();
 
         viewModel.checkAllConnections(getViewModel());
-        binding.tvUserId.setText(dataManager.getSharedPrefs().getUserCode());
 
         userStatsAdapter = new UserStatsAdapter(userStatsList);
         binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
@@ -245,6 +244,13 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         hideSplashScreen();
         binding.swipeContainerUserStats.setRefreshing(false);
         binding.swipeContainerRecentActiviy.setRefreshing(false);
+
+    }
+
+    @Override
+    public void setUserDetails() {
+
+        binding.tvUserId.setText(viewModel.getUserCode());
 
     }
 

@@ -13,6 +13,7 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.BusinessAccountsRecyclerViewBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,9 +65,12 @@ public class BusinessAccountsActivity
 
         String userId = businessIdList.get(position);
         dataManager.getSharedPrefs().setUserId(userId);
-        finish();
-        //open Dashboard
-        //startActivity(DashBoardActivity.newIntent(BusinessAccountsActivity.this));
+        dataManager.getSharedPrefs().setUserLoggedIn(true);
+        dataManager.getSharedPrefs().setBusinessAccount(true);
+
+        finishAffinity();
+
+        startActivity(DashBoardActivity.newIntent(BusinessAccountsActivity.this));
     }
 
     @Override
