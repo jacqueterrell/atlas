@@ -140,10 +140,52 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     }
 
     @Override
+    public void openAddContactDialog() {
+
+        showAddContactDialog();
+    }
+
+    @Override
     public void onSiteLinkClicked() {
 
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_SITE_URL));
         startActivity(i);
+    }
+
+    @Override
+    public void onAddUserClicked() {
+
+        hideAddContactDialog();
+    }
+
+    @Override
+    public void onAddBusinessClicked() {
+
+        hideAddContactDialog();
+    }
+
+    @Override
+    public void onInviteToAtlasClicked() {
+
+        hideAddContactDialog();
+    }
+
+    @Override
+    public void onFindUsersClicked() {
+
+        hideAddContactDialog();
+    }
+
+    @Override
+    public void onAddSuggestedContactsClicked() {
+
+        hideAddContactDialog();
+    }
+
+    @Override
+    public void onCancelAddDialogClicked() {
+
+        hideAddContactDialog();
     }
 
     @Override
@@ -277,6 +319,22 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 .playOn(binding.dialogSettings.layoutDashboardSettings);
     }
 
+    private void showAddContactDialog(){
+
+        YoYo.with(Techniques.FadeIn)
+                .duration(500)
+                .onStart(animator -> binding.dialogAddContact.setVisibility(View.VISIBLE))
+                .playOn(binding.dialogAddContact);
+    }
+
+    private void hideAddContactDialog(){
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(500)
+                .onEnd(animator -> binding.dialogAddContact.setVisibility(View.GONE))
+                .playOn(binding.dialogAddContact);
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -285,6 +343,10 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
             if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
 
                 hideSettings();
+
+            } else if (binding.dialogAddContact.getVisibility() == View.VISIBLE){
+
+                hideAddContactDialog();
 
             } else {
 

@@ -1,6 +1,5 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.androidanimations.library.YoYo.AnimatorCallback;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -192,8 +190,9 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
     @Override
-    public void onAddButtonClicked() {
+    public void onAddContactClicked() {
 
+        parentNavigator.openAddContactDialog();
     }
 
     @Override

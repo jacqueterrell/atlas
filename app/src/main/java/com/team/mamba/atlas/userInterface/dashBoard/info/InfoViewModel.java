@@ -69,7 +69,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
 
     public void onAddButtonClicked(){
 
-        getNavigator().onAddButtonClicked();
+        getNavigator().onAddContactClicked();
     }
 
     public void onUserProfileClicked(){

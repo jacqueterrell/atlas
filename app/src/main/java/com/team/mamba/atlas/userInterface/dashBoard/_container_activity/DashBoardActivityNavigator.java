@@ -3,6 +3,10 @@ package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 public interface DashBoardActivityNavigator {
 
 
+    void openAddContactDialog();
+
+    void openSettingsScreen();
+
     void onContactsClicked();
 
     void onCrmClicked();
@@ -10,8 +14,6 @@ public interface DashBoardActivityNavigator {
     void onNotificationsClicked();
 
     void onInfoClicked();
-
-    void openSettingsScreen();
 
     void onCorporateDirectoryClicked();
 
@@ -30,5 +32,17 @@ public interface DashBoardActivityNavigator {
     void onDeleteMyAccountClicked();
 
     void onSiteLinkClicked();
+
+    void onAddUserClicked();
+
+    void onAddBusinessClicked();
+
+    void onInviteToAtlasClicked();
+
+    void onFindUsersClicked();
+
+    void onAddSuggestedContactsClicked();
+
+    void onCancelAddDialogClicked();
 
 }

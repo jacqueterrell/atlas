@@ -9,7 +9,7 @@ public interface InfoNavigator {
 
     void onOpportunitiesButtonClicked();
 
-    void onAddButtonClicked();
+    void onAddContactClicked();
 
     void onUserProfileClicked();
 
