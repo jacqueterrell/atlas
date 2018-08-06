@@ -14,5 +14,6 @@ public class AppConstants {
     public static final String CONNECTIONS_COLLECTION = "connections";
     public static final String BUS_NOTES_COLLECTION = "busNotes";
     public static String TEST_USER_ID = "S0URPfcKiVanC5NhHd4n9ejcEWZ2";
+    public static final String BASE_PLAY_STORE_LINK = "https://play.google.com/store/apps/details?id=";
 
 }

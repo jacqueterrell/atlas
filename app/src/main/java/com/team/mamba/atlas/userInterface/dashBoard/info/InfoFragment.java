@@ -383,6 +383,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.barChartNetwork.invalidate();
         binding.barChartNetwork.animateXY(1000, 1000);
         binding.barChartNetwork.getDescription().setText("");
+        binding.barChartNetwork.setClickable(false);
 
         binding.barChartNetwork.setVisibility(View.INVISIBLE);
         Handler handler = new Handler();
@@ -431,7 +432,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.barChartNetwork.setFitBars(true);
         binding.barChartNetwork.getLegend().setTextColor(ContextCompat.getColor(getBaseActivity(), R.color.black));
         binding.barChartNetwork.getDescription().setText("");
-        binding.barChartNetwork.invalidate();
+        binding.barChartNetwork.setClickable(false);
 
         binding.barChartNetwork.setVisibility(View.INVISIBLE);
         Handler handler = new Handler();

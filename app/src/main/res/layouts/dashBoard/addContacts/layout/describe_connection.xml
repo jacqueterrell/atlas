@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsViewModel"/>
 
     </data>
     <FrameLayout
@@ -23,7 +23,7 @@
         android:background="@color/white"
         android:focusable="true"
         android:clickable="true"
-        android:padding="15dp">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +34,8 @@
                 android:layout_width="105dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 app:cardBackgroundColor="#E0A850"
@@ -50,7 +51,9 @@
                     android:fontFamily="@font/lato"
                     android:text="Finish"
                     android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:onClick="@{()-> viewModel.onFinishButtonClicked()}"
+                    />
 
             </android.support.v7.widget.CardView>
 
@@ -60,7 +63,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                 android:textSize="17sp"
-                android:text="Add Connection"/>
+                android:text="Add Connection"
+                android:paddingLeft="15dp"/>
 
             <TextView
             style="@style/App_Text_view"
@@ -97,7 +101,7 @@
                     android:tint="@color/grey"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="10dp"
-
+                    android:onClick="@{()-> viewModel.onInfoClicked()}"
                     />
 
             </LinearLayout>
@@ -305,9 +309,44 @@
 
            </LinearLayout>
 
-
-
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/dialog_connections_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            tools:visibility="gone"
+            android:onClick="@{()-> viewModel.hideConnectionsInfo()}"
+            >
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="55dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="15dp"
+                app:contentPadding="15dp"
+                card_view:cardElevation="1dp">
+
+                <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/describe_connections_info"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"/>
+
+            </android.support.v7.widget.CardView>
+
+
+        </FrameLayout>
 
     </FrameLayout>
 

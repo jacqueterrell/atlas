@@ -124,6 +124,14 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         }
     }
 
+    protected void showToastShort(String msg) {
+
+        if (getBaseActivity() != null) {
+
+            Toast.makeText(getBaseActivity(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     protected void showSnackbar(String message) {
 
         Snackbar.make(this.getViewDataBinding().getRoot(), message, Snackbar.LENGTH_LONG)

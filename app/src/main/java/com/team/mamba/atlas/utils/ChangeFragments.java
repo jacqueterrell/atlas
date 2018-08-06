@@ -16,7 +16,7 @@ public class ChangeFragments {
     public static boolean isUnitTesting = false;
 
 
-    public static void addFragment(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
+    public static void addFragmentHorizontally(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
 
 
         if (isUnitTesting){//Robolectric cannot handle fragment animations (gets stuck in infinite loop)
@@ -40,8 +40,57 @@ public class ChangeFragments {
         transaction.commit();
     }
 
+    public static void addFragmentVertically(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
 
-    public static void replaceFragment(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
+
+        if (isUnitTesting){//Robolectric cannot handle fragment animations (gets stuck in infinite loop)
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            fragmentId.setArguments(args);
+            transaction.add(R.id.fragment_container, fragmentId, tag);
+            transaction.addToBackStack(null);
+
+            transaction.commit();
+
+            return;
+        }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        fragmentId.setArguments(args);
+        transaction.setCustomAnimations(R.anim.slide_in_up, android.R.anim.fade_out,android.R.anim.fade_in,R.anim.slide_out_down);
+        transaction.add(R.id.fragment_container, fragmentId, tag);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
+
+
+    public static void addFragmentFadeIn(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
+
+
+        if (isUnitTesting){//Robolectric cannot handle fragment animations (gets stuck in infinite loop)
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            fragmentId.setArguments(args);
+            transaction.add(R.id.fragment_container, fragmentId, tag);
+            transaction.addToBackStack(null);
+
+            transaction.commit();
+
+            return;
+        }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        fragmentId.setArguments(args);
+        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,android.R.anim.fade_in,android.R.anim.fade_out);
+        transaction.add(R.id.fragment_container, fragmentId, tag);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
+
+
+    public static void replaceFragmentHorizontally(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
 
 
         if (isUnitTesting){//Robolectric cannot handle fragment animations (gets stuck in infinite loop)
@@ -59,6 +108,31 @@ public class ChangeFragments {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         fragmentId.setArguments(args);
         transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
+        transaction.replace(R.id.fragment_container, fragmentId, tag);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
+
+
+    public static void replaceFragmentVertically(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
+
+
+        if (isUnitTesting){//Robolectric cannot handle fragment animations (gets stuck in infinite loop)
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            fragmentId.setArguments(args);
+            transaction.replace(R.id.fragment_container, fragmentId, tag);
+            transaction.addToBackStack(null);
+
+            transaction.commit();
+
+            return;
+        }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        fragmentId.setArguments(args);
+        transaction.setCustomAnimations(R.anim.slide_in_up, android.R.anim.fade_out,android.R.anim.fade_in,R.anim.slide_out_down);
         transaction.replace(R.id.fragment_container, fragmentId, tag);
         transaction.addToBackStack(null);
 

@@ -37,6 +37,7 @@
             </FrameLayout>
 
             <LinearLayout
+                android:id="@+id/layout_tool_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -299,15 +300,6 @@
             layout="@layout/settings_layout"
             bind:viewModel="@{viewModel}" />
 
-        <include
-            android:id="@+id/layout_add_user"
-            layout="@layout/add_user_layout"
-            bind:viewModel="@{viewModel}" />
-
-        <include
-            android:id="@+id/layout_describe_connection"
-            layout="@layout/describe_connection"
-            bind:viewModel="@{viewModel}" />
 
     </FrameLayout>
 

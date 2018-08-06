@@ -1,7 +1,5 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
-import android.animation.Animator;
-import android.app.FragmentContainer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,21 +7,28 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.androidanimations.library.YoYo.AnimatorCallback;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
-import com.team.mamba.atlas.userInterface.base.BaseViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
 import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
+import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
+import com.team.mamba.atlas.utils.AppConstants;
+import com.team.mamba.atlas.utils.ChangeFragments;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
@@ -43,6 +48,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
 
     private FragmentContainerBinding binding;
+
 
     public static Intent newIntent(Context context){
 
@@ -156,30 +162,54 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     public void onAddUserClicked() {
 
         hideAddContactDialog();
+        ChangeFragments.addFragmentVertically(AddUserFragment.newInstance(),getSupportFragmentManager(),"AddUser",null);
+        binding.layoutToolBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onAddBusinessClicked() {
 
         hideAddContactDialog();
+        ChangeFragments.addFragmentVertically(AddBusinessFragment.newInstance(),getSupportFragmentManager(),"AddBusiness",null);
+        binding.layoutToolBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onInviteToAtlasClicked() {
 
+        final String appPackageName = BuildConfig.APPLICATION_ID; // package name of the app
+
+        String msg = "Join me on Atlas Networking! " + AppConstants.BASE_PLAY_STORE_LINK +  appPackageName;
+
         hideAddContactDialog();
+//        Intent It = new Intent(Intent.ACTION_SEND);
+//        It.setType("text/plain");
+//        It.putExtra(android.content.Intent.EXTRA_TEXT,msg);
+//        startActivity(It);
+
+
+        ShareCompat.IntentBuilder.from(this)
+                .setType("text/plain")
+                .setText(msg)
+                .startChooser();
     }
 
     @Override
     public void onFindUsersClicked() {
 
         hideAddContactDialog();
+        ChangeFragments.addFragmentVertically(FindUsersFragment.newInstance(),getSupportFragmentManager(),"FindUsers",null);
+        binding.layoutToolBar.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onAddSuggestedContactsClicked() {
 
         hideAddContactDialog();
+        ChangeFragments.addFragmentVertically(SuggestedContactsFragment.newInstance(),getSupportFragmentManager(),"SuggestedContacts",null);
+        binding.layoutToolBar.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -254,6 +284,8 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     public void onDeleteMyAccountClicked() {
 
     }
+
+
 
     private void showContactsIcon(){
 
@@ -339,6 +371,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == 4){
+
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+            if (fragment instanceof InfoFragment){
+
+                binding.layoutToolBar.setVisibility(View.VISIBLE);
+            }
 
             if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
 

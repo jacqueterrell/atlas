@@ -630,6 +630,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
                 Logger.d("onVerificationCompleted: " + phoneAuthCredential);
                 viewModel.setPhoneAuthCredential(phoneAuthCredential);
                 viewModel.signInWithPhoneAuthCredential(getViewModel());
+                showToastShort("Auto-verified");
 
             }
 
