@@ -44,9 +44,6 @@ public interface WelcomeNavigator {
 
     void onBusinessScreenLearnMoreClicked();
 
-    void loginAsAdmin();
-
-
     Activity getParentActivity();
 
     PhoneAuthProvider.OnVerificationStateChangedCallbacks getPhoneCallBacks();

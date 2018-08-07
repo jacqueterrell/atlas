@@ -285,7 +285,16 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         if (email.isEmpty() && password.equals("admin")){
 
-                loginAsAdmin();
+            dataManager.getSharedPrefs().setUserId("S0URPfcKiVanC5NhHd4n9ejcEWZ2");
+            viewModel.setBusinessLogin(false);
+            openDashBoard();
+
+        } else if (email.isEmpty() && password.equals("test")){
+
+            dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2");
+            viewModel.setBusinessLogin(false);
+
+            openDashBoard();
 
         } else {
 
@@ -332,19 +341,9 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         showAlert(title,body);
     }
 
-    @Override
-    public void loginAsAdmin() {
-
-       //todo login as admin
-        dataModel.loginAsAdmin(viewModel);
-    }
 
     @Override
     public void openDashBoard() {
-
-        dataManager.getSharedPrefs().setFirstName(viewModel.getFirstName());
-        dataManager.getSharedPrefs().setLastName(viewModel.getLastName());
-        dataManager.getSharedPrefs().setPhoneNumber(viewModel.getPhoneNumber());
 
 
         hideEnterSMSCode();

@@ -172,57 +172,6 @@ public class WelcomeDataModel {
     }
 
 
-    public void loginAsAdmin(WelcomeViewModel viewModel) {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection(AppConstants.USERS_COLLECTION)
-                .whereEqualTo("id", AppConstants.TEST_USER_ID)
-                .get()
-                .addOnCompleteListener(task -> {
-
-                    if (task.isSuccessful()) {
-
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-
-                            String userId = document.getData().get("id").toString();
-                            String first = document.getData().get("firstName").toString();
-                            String last = document.getData().get("lastName").toString();
-                            String phoneNumber = document.getData().get("phone").toString();
-                            String dob = document.getData().get("dob").toString();
-                            String userCode = document.getData().get("code").toString();
-
-                            String adjustedTime = AppFormatter.timeStampFormatter.format(Double.valueOf(dob));
-
-                            isUser = true;
-
-                            viewModel.setFirstName(first);
-                            viewModel.setLastName(last);
-                            viewModel.setPhoneNumber(phoneNumber);
-                            viewModel.setDateOfBirth(Long.valueOf(adjustedTime));
-
-                            dataManager.getSharedPrefs().setUserId(userId);
-                            dataManager.getSharedPrefs().setUserCode(userCode);
-                            viewModel.setBusinessLogin(false);
-
-                            viewModel.getNavigator().openDashBoard();
-
-                            return;
-
-                        }
-
-
-                    } else {
-
-                        Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
-                    }
-
-                });
-
-    }
-
-
     public void firebaseAuthenticateByEmail(WelcomeViewModel viewModel, String email, String password) {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
