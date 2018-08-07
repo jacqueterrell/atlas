@@ -81,7 +81,7 @@ public class WelcomeDataModel {
         String token = FirebaseInstanceId.getInstance().getToken();
         DocumentReference newUserRef = db.collection(AppConstants.USERS_COLLECTION).document();
         String myId = newUserRef.getId();
-        String userCode = "jterrell";
+        String userCode = "35";
 
         Map<String, Object> user = new HashMap<>();
         user.put("firstName", viewModel.getFirstName());

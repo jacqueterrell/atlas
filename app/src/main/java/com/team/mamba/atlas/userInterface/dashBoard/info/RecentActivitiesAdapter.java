@@ -6,21 +6,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.google.firebase.firestore.CollectionReference;
+
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.ConnectionRecord;
+import com.team.mamba.atlas.data.model.UserConnections;
 import com.team.mamba.atlas.databinding.RecentActivitiesListRowBinding;
-import com.team.mamba.atlas.databinding.UserStatsListRowBinding;
 import com.team.mamba.atlas.userInterface.dashBoard.info.RecentActivitiesAdapter.RecentActivitiesHolder;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActivitiesHolder> {
 
-    private List<ConnectionRecord> connectionRecords;
+    private List<UserConnections> connectionRecords;
     private InfoViewModel viewModel;
 
-    public RecentActivitiesAdapter(InfoViewModel viewModel, List<ConnectionRecord> connectionRecords){
+    public RecentActivitiesAdapter(InfoViewModel viewModel, List<UserConnections> connectionRecords){
 
         this.viewModel = viewModel;
         this.connectionRecords = connectionRecords;
@@ -42,9 +41,9 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
     @Override
     public void onBindViewHolder(@NonNull RecentActivitiesHolder holder, int position) {
 
-        ConnectionRecord record = connectionRecords.get(position);
+        UserConnections record = connectionRecords.get(position);
 
-        holder.binding.tvUserStat.setText(record.getName());
+        holder.binding.tvUserStat.setText(record.getConsentingUserName());
 
         if (record.isBusiness() && !record.isNeedsApproval() && !record.isRecentActivity()){ //confirmed business record
 
@@ -95,9 +94,8 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
         @Override
         public void onClick(View v) {
 
-            ConnectionRecord record = connectionRecords.get(getAdapterPosition());
+            UserConnections record = connectionRecords.get(getAdapterPosition());
             boolean isNeedsApproval = record.isNeedsApproval();
-            String userId = record.getUserId();
         }
     }
 }

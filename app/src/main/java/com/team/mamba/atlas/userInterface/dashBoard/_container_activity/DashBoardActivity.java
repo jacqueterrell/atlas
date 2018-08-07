@@ -16,6 +16,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
@@ -150,6 +151,17 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     public void openAddContactDialog() {
 
         showAddContactDialog();
+    }
+
+    @Override
+    public void setUserProfile(UserProfile userProfile) {
+
+        viewModel.setUserProfile(userProfile);
+    }
+
+    @Override
+    public UserProfile getUserProfile() {
+        return viewModel.getUserProfile();
     }
 
     @Override
@@ -297,7 +309,11 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     @Override
     public void showToolBar() {
 
-        binding.layoutToolBar.setVisibility(View.VISIBLE);
+        try {
+            binding.layoutToolBar.setVisibility(View.VISIBLE);
+        }catch (Exception e){
+
+        }
     }
 
     private void showContactsIcon(){

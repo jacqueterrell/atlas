@@ -1,5 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
+import com.team.mamba.atlas.data.model.UserProfile;
+
 public interface DashBoardActivityNavigator {
 
 
@@ -48,5 +50,9 @@ public interface DashBoardActivityNavigator {
     void onCancelAddDialogClicked();
 
     void showToolBar();
+
+    void setUserProfile(UserProfile userProfile);
+
+    UserProfile getUserProfile();
 
 }

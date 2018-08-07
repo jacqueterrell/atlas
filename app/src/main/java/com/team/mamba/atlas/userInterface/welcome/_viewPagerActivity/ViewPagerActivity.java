@@ -82,6 +82,7 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, Vie
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
 
+        dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2");
         if (dataManager.getSharedPrefs().isUserLoggedIn()){
 
             finishAffinity();

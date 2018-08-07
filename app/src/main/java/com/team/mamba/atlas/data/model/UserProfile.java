@@ -1,39 +1,139 @@
 package com.team.mamba.atlas.data.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.team.mamba.atlas.utils.formatData.AppFormatter;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class UserProfile {
-
+    @SerializedName("id")
     private String id;
-    private String deviceToken;
-    private String code;
+
+    @SerializedName("deviceToken")
+    private String deviceToken = "...";
+
+    @SerializedName("code")
+    @Expose
+    private String code= "...";
+
+    @SerializedName("score")
+    @Expose
     private int score;
-    private String firstName;
-    private String lastName;
-    private String email = "...";
-    private String workEmail = "...";
-    private String phone = "...";
-    private String workPhone = "...";
-    private String homePhone = "...";
-    private String personalPhone = "...";
-    private String fax = "...";
-    private String street;
-    private String cityStateZip = "...";
-    private Map<String,String> workHistory;
-    private Map<String,String> education;
-    private String currentEmployer;
-    private String currentPosition;
-    private String workStreet;
-    private String workCityStateZip;
-    private String imageUrl;
-    private Map<String,String> connections;
+
+    @SerializedName("firstName")
+    @Expose
+    private String firstName= "...";
+
+    @SerializedName("lastName")
+    @Expose
+    private String lastName= "...";
+
+    @SerializedName("email")
+    @Expose
+    private String email= "...";
+
+    @SerializedName("workEmail")
+    @Expose
+    private String workEmail= "...";
+
+    @SerializedName("homePhone")
+    @Expose
+    private String homePhone= "...";
+
+    @SerializedName("personalPhone")
+    @Expose
+    private String personalPhone= "...";
+
+    @SerializedName("workPhone")
+    @Expose
+    private String workPhone= "...";
+
+    @SerializedName("fax")
+    @Expose
+    private String fax= "...";
+
+    @SerializedName("street")
+    @Expose
+    private String street= "...";
+
+    @SerializedName("cityStateZip")
+    @Expose
+    private String cityStateZip= "...";
+
+    @SerializedName("workHistory")
+    @Expose
+    private List<Map<String,String>> workHistory = new ArrayList<>();
+
+    @SerializedName("education")
+    @Expose
+    private List<Map<String,String>> education = new ArrayList<>();
+
+    @SerializedName("currentEmployer")
+    @Expose
+    private String currentEmployer= "...";
+
+    @SerializedName("currentPosition")
+    @Expose
+    private String currentPosition= "...";
+
+    @SerializedName("workStreet")
+    @Expose
+    private String workStreet= "...";
+
+    @SerializedName("workCityStateZip")
+    @Expose
+    private String workCityStateZip= "...";
+
+    @SerializedName("imageUrl")
+    @Expose
+    private String imageUrl= "...";
+
+
+    @SerializedName("connections")
+    @Expose
+    private Map<String,String> connections = new LinkedHashMap<>();
+
+    @SerializedName("connectionsCount")
+    @Expose
     private int connectionsCount;
+
+    @SerializedName("timestamp")
+    @Expose
     private double timeStamp;
+
+    @SerializedName("dob")
+    @Expose
     private double dob;
 
+    @SerializedName("phone")
+    @Expose
+    private String phone= "...";
+
+
+    public UserProfile() {
+
+
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
 
     public String getId() {
         return id;
@@ -49,14 +149,6 @@ public class UserProfile {
 
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public int getScore() {
@@ -99,22 +191,6 @@ public class UserProfile {
         this.workEmail = workEmail;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getWorkPhone() {
-        return workPhone;
-    }
-
-    public void setWorkPhone(String workPhone) {
-        this.workPhone = workPhone;
-    }
-
     public String getHomePhone() {
         return homePhone;
     }
@@ -155,19 +231,19 @@ public class UserProfile {
         this.cityStateZip = cityStateZip;
     }
 
-    public Map<String, String> getWorkHistory() {
+    public List<Map<String,String>> getWorkHistory() {
         return workHistory;
     }
 
-    public void setWorkHistory(Map<String, String> workHistory) {
+    public void setWorkHistory(List<Map<String,String>> workHistory) {
         this.workHistory = workHistory;
     }
 
-    public Map<String, String> getEducation() {
+    public List<Map<String,String>> getEducation() {
         return education;
     }
 
-    public void setEducation(Map<String, String> education) {
+    public void setEducation(List<Map<String,String>> education) {
         this.education = education;
     }
 
@@ -227,94 +303,33 @@ public class UserProfile {
         this.connectionsCount = connectionsCount;
     }
 
-    public double getTimeStamp() {
-        return timeStamp;
+    public long getTimeStamp() {
+
+        String adjustedTime = AppFormatter.timeStampFormatter.format(timeStamp);
+
+        return Long.parseLong(adjustedTime);
     }
 
     public void setTimeStamp(double timeStamp) {
         this.timeStamp = timeStamp;
     }
 
-    public double getDob() {
-        return dob;
+    public long getDob() {
+
+        String adjustedTime = AppFormatter.timeStampFormatter.format(timeStamp);
+
+        return Long.parseLong(adjustedTime);
     }
 
     public void setDob(double dob) {
         this.dob = dob;
     }
 
-    public UserProfile(){
-
+    public String getWorkPhone() {
+        return workPhone;
     }
 
-
-    private static class Builder {
-
-        private String cellPhone = "...";
-        private String officePhone = "...";
-        private String homePhone = "...";
-        private String personalPhone = "...";
-        private String fax = "...";
-        private String personalEmail = "...";
-        private String workEmail = "...";
-        private String homeAddress = "...";
-        private String workAddress = "...";
-        private List<String> workHistory = new ArrayList<>();
-        private List<String> education = new ArrayList<>();
-
-        public Builder setCellPhone(String cellPhone) {
-            this.cellPhone = cellPhone;
-            return this;
-        }
-
-        public Builder setOfficePhone(String officePhone) {
-            this.officePhone = officePhone;
-            return this;
-        }
-
-        public Builder setHomePhone(String homePhone) {
-            this.homePhone = homePhone;
-            return this;
-        }
-
-        public Builder setPersonalPhone(String personalPhone) {
-            this.personalPhone = personalPhone;
-            return this;
-        }
-
-        public Builder setFax(String fax) {
-            this.fax = fax;
-            return this;
-        }
-
-        public Builder setPersonalEmail(String personalEmail) {
-            this.personalEmail = personalEmail;
-            return this;
-        }
-
-        public Builder setWorkEmail(String workEmail) {
-            this.workEmail = workEmail;
-            return this;
-        }
-
-        public Builder setHomeAddress(String homeAddress) {
-            this.homeAddress = homeAddress;
-            return this;
-        }
-
-        public Builder setWorkAddress(String workAddress) {
-            this.workAddress = workAddress;
-            return this;
-        }
-
-        public Builder setWorkHistory(List<String> workHistory) {
-            this.workHistory = workHistory;
-            return this;
-        }
-
-        public Builder setEducation(List<String> education) {
-            this.education = education;
-            return this;
-        }
+    public void setWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
     }
 }

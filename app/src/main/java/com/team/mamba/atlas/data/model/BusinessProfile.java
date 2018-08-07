@@ -35,8 +35,8 @@ public class BusinessProfile {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCode(Object code) {
+        this.code = String.valueOf(code);
     }
 
     public String getName() {

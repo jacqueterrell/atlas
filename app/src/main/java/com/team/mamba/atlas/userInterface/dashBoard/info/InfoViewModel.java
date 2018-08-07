@@ -1,7 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
 import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.ConnectionRecord;
+import com.team.mamba.atlas.data.model.UserConnections;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import java.util.LinkedHashMap;
@@ -11,12 +11,12 @@ import java.util.Map;
 public class InfoViewModel extends BaseViewModel<InfoNavigator> {
 
     private InfoDataModel dataModel;
-    private Map<Integer,Integer> networksMap = new LinkedHashMap<>();
-    private Map<Integer,Integer> opportunitiesMap = new LinkedHashMap<>();
-    private boolean networkChartSelected = true;
-    private UserProfile userProfile;
-    private BusinessProfile businessProfile;
-    private List<ConnectionRecord> connectionRecordList;
+    private static Map<Integer,Integer> networksMap = new LinkedHashMap<>();
+    private static Map<Integer,Integer> opportunitiesMap = new LinkedHashMap<>();
+    private static boolean networkChartSelected = true;
+    private static UserProfile userProfile;
+    private static BusinessProfile businessProfile;
+    private static List<UserConnections> connectionRecordList;
 
 
 
@@ -30,7 +30,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     }
 
     public void setNetworksMap(Map<Integer,Integer> connectionsMap) {
-        this.networksMap = connectionsMap;
+        networksMap = connectionsMap;
     }
 
     public Map<Integer,Integer> getNetworksMap() {
@@ -38,7 +38,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     }
 
     public void setOpportunitiesMap(Map<Integer, Integer> opportunitiesMap) {
-        this.opportunitiesMap = opportunitiesMap;
+        InfoViewModel.opportunitiesMap = opportunitiesMap;
     }
 
     public Map<Integer, Integer> getOpportunitiesMap() {
@@ -46,7 +46,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     }
 
     public void setNetworkChartSelected(boolean networkChartSelected) {
-        this.networkChartSelected = networkChartSelected;
+        InfoViewModel.networkChartSelected = networkChartSelected;
     }
 
     public boolean isNetworkChartSelected() {
@@ -54,7 +54,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     }
 
     public void setUserProfile(UserProfile userProfile) {
-        this.userProfile = userProfile;
+        InfoViewModel.userProfile = userProfile;
     }
 
     public UserProfile getUserProfile() {
@@ -62,18 +62,18 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     }
 
     public void setBusinessProfile(BusinessProfile businessProfile) {
-        this.businessProfile = businessProfile;
+        InfoViewModel.businessProfile = businessProfile;
     }
 
     public BusinessProfile getBusinessProfile() {
         return businessProfile;
     }
 
-    public void setConnectionRecordList(List<ConnectionRecord> connectionRecordList) {
-        this.connectionRecordList = connectionRecordList;
+    public void setUserConnections(List<UserConnections> connectionRecordList) {
+        InfoViewModel.connectionRecordList = connectionRecordList;
     }
 
-    public List<ConnectionRecord> getConnectionRecordList() {
+    public List<UserConnections> getUserConnections() {
         return connectionRecordList;
     }
 

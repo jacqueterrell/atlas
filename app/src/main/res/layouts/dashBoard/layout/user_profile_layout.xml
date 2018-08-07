@@ -120,6 +120,7 @@
                 android:layout_toEndOf="@id/layout_user_image"
                 android:layout_toRightOf="@id/layout_user_image"
                 android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="15dp"
                 android:textSize="15sp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"

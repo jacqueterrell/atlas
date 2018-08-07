@@ -21,7 +21,8 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.team.mamba.atlas.BR;
-import com.team.mamba.atlas.data.model.ConnectionRecord;
+import com.team.mamba.atlas.data.model.UserConnections;
+import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
@@ -45,10 +46,10 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
     private InfoLayoutBinding binding;
     float barWidth = 0.65f; // x2 dataset
-    private List<String> userStatsList = new ArrayList<>();
+    private static List<String> userStatsList = new ArrayList<>();
     private UserStatsAdapter userStatsAdapter;
     private RecentActivitiesAdapter recentActivitiesAdapter;
-    private List<ConnectionRecord> recentActivityConnections = new ArrayList<>();
+    private static List<UserConnections> recentActivityConnections = new ArrayList<>();
     private DashBoardActivityNavigator parentNavigator;
 
 
@@ -172,7 +173,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.layoutOpportunitySelected.setVisibility(View.GONE);
 
         viewModel.setNetworkChartSelected(true);
-        viewModel.checkAllConnections(getViewModel());
+
+        if (viewModel.getNetworksMap().isEmpty()){
+
+            viewModel.checkAllConnections(getViewModel());
+
+        } else {
+
+            setNetworksBarChart();
+        }
 
     }
 
@@ -186,7 +195,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.layoutOpportunitySelected.setVisibility(View.VISIBLE);
 
         viewModel.setNetworkChartSelected(false);
-        viewModel.checkAllConnections(getViewModel());
+
+        if (viewModel.getOpportunitiesMap().isEmpty()){
+
+            viewModel.checkAllConnections(getViewModel());
+
+        } else {
+
+            setOpportunitiesBarChart();
+        }
 
     }
 
@@ -224,14 +241,19 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
     @Override
-    public void setUserStatsAdapter(List<String> userStats, List<ConnectionRecord> connectionRecords) {
-
-        Collections.sort(connectionRecords,(o1,o2) ->{
+    public void setUserStatsAdapter(List<String> userStats, List<UserConnections> connectionRecords) {
 
 
-            //return o1.getName().compareTo(o2.getName());
-            return Double.compare(o2.getTimeStamp(), o1.getTimeStamp());
-        });
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            binding.tvUserId.setText(viewModel.getBusinessProfile().getCode());
+
+        } else {
+
+            binding.tvUserId.setText(viewModel.getUserProfile().getCode());
+        }
+
+        Collections.sort(connectionRecords,(o1,o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
 
         userStatsList.clear();
         userStatsList.addAll(userStats);
@@ -244,21 +266,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.swipeContainerUserStats.setRefreshing(false);
         binding.swipeContainerRecentActiviy.setRefreshing(false);
 
-    }
-
-    @Override
-    public void setUserDetails() {
-
-        if (dataManager.getSharedPrefs().isBusinessAccount()){
-
-            binding.tvUserId.setText(viewModel.getBusinessProfile().getCode());
-
-        } else {
-
-            binding.tvUserId.setText(viewModel.getUserProfile().getCode());
-        }
+        UserProfile profile = viewModel.getUserProfile();
+        parentNavigator.setUserProfile(profile);
 
     }
+
 
     @Override
     public void handlerError(String msg) {

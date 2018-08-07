@@ -1,56 +1,84 @@
 package com.team.mamba.atlas.data.model;
 
+import android.support.annotation.Keep;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
 
-public class ConnectionRecord {
 
+@Keep
+public class UserConnections {
 
-    private String name;
+    @SerializedName("id")
+    @Expose
+    public String id;
 
-    private String userId;
 
     @SerializedName("isOrgBus")
     @Expose
-    private boolean isBusiness;
+    public boolean isOrgBus;
 
-    private String requestingUserID;
-    private String requestingUserName;
-    private String consentingUserID;
-    private String consentingUserName;
-    private int connectionType;
-    private boolean isConfirmed;
-    private boolean isViewed;
-    private boolean isDirectory;
-    private double timeStamp;
+    @SerializedName("requestingUserID")
+    @Expose
+    public String requestingUserID;
 
-    private boolean isNeedsApproval;
-    private boolean isRecentActivity;
+    @SerializedName("requestingUserName")
+    @Expose
+    public String requestingUserName;
+
+    @SerializedName("consentingUserID")
+    @Expose
+    public String consentingUserID;
+
+    @SerializedName("consentingUserName")
+    @Expose
+    public String consentingUserName;
+
+    @SerializedName("connectionType")
+    @Expose
+    public int connectionType;
+
+    @SerializedName("isConfirmed")
+    @Expose
+    public boolean isConfirmed;
+
+    @SerializedName("isViewed")
+    @Expose
+    public boolean viewed;
+
+    @SerializedName("isDirectory")
+    @Expose
+    public boolean directory;
+
+    @SerializedName("timestamp")
+    @Expose
+    public double timestamp;
+
+    public boolean needsApproval;
+    public boolean recentActivity;
 
 
-    public String getName() {
-        return name;
+    public UserConnections(){
+
+
     }
 
-    public void setName(String name) {
-        this.name = name;
+
+    public String getId() {
+        return id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public boolean isBusiness() {
-        return isBusiness;
+        return isOrgBus;
     }
 
-    public void setBusiness(boolean business) {
-        isBusiness = business;
+    public void setOrgBus(boolean orgBus) {
+        this.isOrgBus = orgBus;
     }
 
     public String getRequestingUserID() {
@@ -98,49 +126,49 @@ public class ConnectionRecord {
     }
 
     public void setConfirmed(boolean confirmed) {
-        isConfirmed = confirmed;
+        this.isConfirmed = confirmed;
     }
 
     public boolean isViewed() {
-        return isViewed;
+        return viewed;
     }
 
     public void setViewed(boolean viewed) {
-        isViewed = viewed;
+        this.viewed = viewed;
     }
 
     public boolean isDirectory() {
-        return isDirectory;
+        return directory;
     }
 
     public void setDirectory(boolean directory) {
-        isDirectory = directory;
+        this.directory = directory;
     }
 
-    public double getTimeStamp() {
-        return timeStamp;
+    public long getTimestamp() {
+
+        String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
+
+        return Long.parseLong(adjustedTime);
     }
 
-    public void setTimeStamp(double timeStamp) {
-
-        String adjustedTimeStamp = AppFormatter.timeStampFormatter.format(timeStamp);//converts IOS timestamp over to normal format
-        this.timeStamp = Double.parseDouble(adjustedTimeStamp);
+    public void setTimestamp(double timestamp) {
+        this.timestamp = timestamp;
     }
 
     public boolean isNeedsApproval() {
-        return isNeedsApproval;
+        return needsApproval;
     }
 
     public void setNeedsApproval(boolean needsApproval) {
-        isNeedsApproval = needsApproval;
+        this.needsApproval = needsApproval;
     }
 
     public boolean isRecentActivity() {
-        return isRecentActivity;
+        return recentActivity;
     }
 
     public void setRecentActivity(boolean recentActivity) {
-        isRecentActivity = recentActivity;
+        this.recentActivity = recentActivity;
     }
-
 }

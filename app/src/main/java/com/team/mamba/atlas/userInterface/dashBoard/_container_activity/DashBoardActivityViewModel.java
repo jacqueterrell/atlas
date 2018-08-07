@@ -1,10 +1,20 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
+import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class DashBoardActivityViewModel extends BaseViewModel<DashBoardActivityNavigator> {
 
 
+    private UserProfile userProfile;
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
 
     public void onContactsClicked(){
 

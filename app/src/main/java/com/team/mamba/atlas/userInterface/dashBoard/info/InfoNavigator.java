@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
-import com.team.mamba.atlas.data.model.ConnectionRecord;
+import com.team.mamba.atlas.data.model.UserConnections;
+
 import java.util.List;
 
 public interface InfoNavigator {
@@ -31,11 +32,9 @@ public interface InfoNavigator {
 
     void setNetworkBarChartData();
 
-    void setUserStatsAdapter(List<String> userStats,List<ConnectionRecord> connectionRecords);
+    void setUserStatsAdapter(List<String> userStats,List<UserConnections> connectionRecords);
 
     void handlerError(String msg);
-
-    void setUserDetails();
 
 
 }
