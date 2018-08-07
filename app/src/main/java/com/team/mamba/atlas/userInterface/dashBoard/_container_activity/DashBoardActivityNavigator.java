@@ -9,6 +9,8 @@ public interface DashBoardActivityNavigator {
 
     void onContactsClicked();
 
+    void openUserProfile();
+
     void onCrmClicked();
 
     void onNotificationsClicked();
@@ -45,5 +47,6 @@ public interface DashBoardActivityNavigator {
 
     void onCancelAddDialogClicked();
 
+    void showToolBar();
 
 }

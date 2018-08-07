@@ -1,11 +1,14 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.data.model.ConnectionRecord;
+import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
@@ -65,7 +68,7 @@ public class InfoDataModel {
 
         } else {
 
-            getUserDetails(viewModel);
+           getUserDetails(viewModel);
         }
 
         db.collection(AppConstants.CONNECTIONS_COLLECTION)
@@ -73,6 +76,10 @@ public class InfoDataModel {
                 .addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
+
+                        List<ConnectionRecord> connectionRecords = task.getResult().toObjects(ConnectionRecord.class);
+
+                        viewModel.setConnectionRecordList(connectionRecords);
 
                         connectionsCollection = task.getResult();
 
@@ -226,6 +233,8 @@ public class InfoDataModel {
         if (!isUserOpportunitiesSet && !isUserStatsSet) {
 
             userStatsList.clear();
+            companyTotal = 0;
+            totalOpportunities = 0;
         }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -349,93 +358,47 @@ public class InfoDataModel {
 
         List<String> confirmedUsers = new ArrayList<>();
 
-        for (QueryDocumentSnapshot document : connectionsCollection) {
-
-            boolean isConfirmed = Boolean.valueOf(document.getData().get(IS_CONFIRMED).toString());
-            String consentingUserId = document.getData().get(CONSENTING_USER_ID).toString();
-            String requestingUserId = document.getData().get(REQUESTED_USER_ID).toString();
-            String consentingUserName = document.getData().get(CONSENTING_USER_NAME).toString();
-            String requestingUserName = document.getData().get(REQUESTING_USER_NAME).toString();
+        for (ConnectionRecord record : viewModel.getConnectionRecordList()) {
 
 
-            String time = document.getData().get(TIME_STAMP).toString();
-            String adjustedTimeStamp = AppFormatter.timeStampFormatter.format(Double.valueOf(time));
-            long systemTimeStamp = Long.parseLong(adjustedTimeStamp);
+            ;
 
             //get all completed connections
-            if (isConfirmed && requestingUserId.equals(userId)){ //The connection has been confirmed
+            if (record.isConfirmed() && record.getUserId().equals(userId)){ //The connection has been confirmed
 
-                try {
 
-                    boolean isBusiness = Boolean.valueOf(document.getData().get(IS_BUSINESS).toString());
 
-                    if (isBusiness){
+                    if (record.isBusiness()){
 
-                        ConnectionRecord record = new ConnectionRecord.Builder()
-                                .setName(consentingUserName)
-                                .setBusiness(true)
-                                .setNeedsApproval(false)
-                                .setRecentActivity(false)
-                                .setTimestamp(systemTimeStamp)
-                                .setUserId(consentingUserId)
-                                .build();
+                        if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES
+                                && !confirmedUsers.contains(record.getConsentingUserName())){
 
-                        if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES && !confirmedUsers.contains(consentingUserName)){
-
-                            confirmedUsers.add(consentingUserName);
+                            confirmedUsers.add(record.getConsentingUserName());
                             completedConnections.add(record);
                         }
 
                     } else {
 
-                        ConnectionRecord record = new ConnectionRecord.Builder()
-                                .setName(consentingUserName)
-                                .setBusiness(false)
-                                .setNeedsApproval(false)
-                                .setRecentActivity(false)
-                                .setTimestamp(systemTimeStamp)
-                                .setUserId(consentingUserId)
-                                .build();
+                        record.setRecentActivity(true);
 
-                        if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES && !confirmedUsers.contains(consentingUserName)){
+                        if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES && !confirmedUsers.contains(record.getConsentingUserName())){
 
-                            confirmedUsers.add(consentingUserName);
+                            confirmedUsers.add(record.getConsentingUserName());
                             completedConnections.add(record);
                         }
                     }
 
-                } catch (Exception e){
 
-                    ConnectionRecord record = new ConnectionRecord.Builder()
-                            .setName(consentingUserName)
-                            .setUserId(consentingUserId)
-                            .setBusiness(false)
-                            .setNeedsApproval(false)
-                            .setRecentActivity(false)
-                            .setTimestamp(systemTimeStamp)
-                            .build();
 
-                    if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES && !confirmedUsers.contains(consentingUserName)){
+            } else if (!record.isConfirmed() && record.getUserId().equals(userId)){ //The connection is new and needs to be approved
 
-                        confirmedUsers.add(consentingUserName);
-                        completedConnections.add(record);
-                    }
-                }
+                //todo if it is needs approval show the plus
 
-            } else if (!isConfirmed && consentingUserId.equals(userId)){ //The connection is new and needs to be approved
-
-                ConnectionRecord newRecord = new ConnectionRecord.Builder()
-                        .setName(requestingUserName)
-                        .setUserId(requestingUserId)
-                        .setBusiness(false)
-                        .setNeedsApproval(true)
-                        .setRecentActivity(false)
-                        .setTimestamp(systemTimeStamp)
-                        .build();
+                record.setNeedsApproval(true);
 
                 if (newConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES){
 
-                    newConnections.add(newRecord);
+                    newConnections.add(record);
                 }
             }
 
@@ -472,18 +435,9 @@ public class InfoDataModel {
 
                     if (task.isSuccessful()) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-
-                            Logger.i("email:" + document.getData().get("email"));
-                            String userId = document.getData().get("id").toString();
-                            String name = document.getData().get("name").toString();
-                            String userCode = document.getData().get("code").toString();
-                            String email = document.getData().get("email").toString();
-
-                            viewModel.setUserCode(userCode);
-                            viewModel.getNavigator().setUserDetails();
-                            dataManager.getSharedPrefs().setUserCode(userCode);
-                        }
+                        List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
+                        viewModel.setBusinessProfile(businessProfiles.get(0));
+                        viewModel.getNavigator().setUserDetails();
 
                     }
                 });
@@ -504,24 +458,10 @@ public class InfoDataModel {
 
                     if (task.isSuccessful()) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
-                            String userId = document.getData().get("id").toString();
-                            String first = document.getData().get("firstName").toString();
-                            String last = document.getData().get("lastName").toString();
-                            String phoneNumber = document.getData().get("phone").toString();
-                            String dob = document.getData().get("dob").toString();
-                            String userCode = document.getData().get("code").toString();
-
-                            String adjustedTime = AppFormatter.timeStampFormatter.format(Double.valueOf(dob));
-
-                            viewModel.setUserCode(userCode);
-                            dataManager.getSharedPrefs().setUserCode(userCode);
-                            viewModel.getNavigator().setUserDetails();
-
-                            return;
-
-                        }
+                        viewModel.setUserProfile(userProfiles.get(0));
+                        viewModel.getNavigator().setUserDetails();
 
 
                     } else {

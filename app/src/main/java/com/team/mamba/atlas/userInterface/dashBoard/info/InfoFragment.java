@@ -83,6 +83,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         super.onAttach(context);
 
         parentNavigator = (DashBoardActivityNavigator) context;
+        parentNavigator.showToolBar();
     }
 
     @Override
@@ -198,6 +199,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onUserProfileClicked() {
 
+        parentNavigator.openUserProfile();
     }
 
     @Override
@@ -226,11 +228,9 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         Collections.sort(connectionRecords,(o1,o2) ->{
 
-            long first = o1.getTimestamp();
-            long second = o2.getTimestamp();
 
             //return o1.getName().compareTo(o2.getName());
-            return Long.compare(o2.getTimestamp(), o1.getTimestamp());
+            return Double.compare(o2.getTimeStamp(), o1.getTimeStamp());
         });
 
         userStatsList.clear();
@@ -249,7 +249,14 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void setUserDetails() {
 
-        binding.tvUserId.setText(viewModel.getUserCode());
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            binding.tvUserId.setText(viewModel.getBusinessProfile().getCode());
+
+        } else {
+
+            binding.tvUserId.setText(viewModel.getUserProfile().getCode());
+        }
 
     }
 

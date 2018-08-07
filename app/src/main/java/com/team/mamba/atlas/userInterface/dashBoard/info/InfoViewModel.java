@@ -1,7 +1,11 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
+import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.ConnectionRecord;
+import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InfoViewModel extends BaseViewModel<InfoNavigator> {
@@ -10,7 +14,9 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     private Map<Integer,Integer> networksMap = new LinkedHashMap<>();
     private Map<Integer,Integer> opportunitiesMap = new LinkedHashMap<>();
     private boolean networkChartSelected = true;
-    private String userCode = "";
+    private UserProfile userProfile;
+    private BusinessProfile businessProfile;
+    private List<ConnectionRecord> connectionRecordList;
 
 
 
@@ -47,12 +53,28 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
         return networkChartSelected;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setBusinessProfile(BusinessProfile businessProfile) {
+        this.businessProfile = businessProfile;
+    }
+
+    public BusinessProfile getBusinessProfile() {
+        return businessProfile;
+    }
+
+    public void setConnectionRecordList(List<ConnectionRecord> connectionRecordList) {
+        this.connectionRecordList = connectionRecordList;
+    }
+
+    public List<ConnectionRecord> getConnectionRecordList() {
+        return connectionRecordList;
     }
 
     /***************onclick listeners************/

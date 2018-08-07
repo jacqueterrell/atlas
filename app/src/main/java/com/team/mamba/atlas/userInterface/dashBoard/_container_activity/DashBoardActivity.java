@@ -24,6 +24,7 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_use
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.UserProfileFragment;
 import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
 import com.team.mamba.atlas.utils.AppConstants;
@@ -149,6 +150,14 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     public void openAddContactDialog() {
 
         showAddContactDialog();
+    }
+
+    @Override
+    public void openUserProfile() {
+
+        hideAddContactDialog();
+        ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(),getSupportFragmentManager(),"UserProfile",null);
+        binding.layoutToolBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -285,7 +294,11 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
     }
 
+    @Override
+    public void showToolBar() {
 
+        binding.layoutToolBar.setVisibility(View.VISIBLE);
+    }
 
     private void showContactsIcon(){
 
@@ -372,12 +385,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         if (keyCode == 4){
 
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-            if (fragment instanceof InfoFragment){
-
-                binding.layoutToolBar.setVisibility(View.VISIBLE);
-            }
 
             if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
 
@@ -390,7 +397,16 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
             } else {
 
                 onBackPressed();
+
             }
+
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+            if (fragment instanceof InfoFragment){
+
+                binding.layoutToolBar.setVisibility(View.VISIBLE);
+            }
+
         }
 
         return false;

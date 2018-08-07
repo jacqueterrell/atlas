@@ -8,17 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.databinding.UserProfileLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 import javax.inject.Inject;
 
-public class UserProfileFragment extends BaseFragment
+public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,UserProfileViewModel>
         implements UserProfileNavigator {
 
 
     @Inject
     UserProfileViewModel viewModel;
+
+    private UserProfileLayoutBinding binding;
+
+    public static UserProfileFragment newInstance(){
+
+        return new UserProfileFragment();
+    }
 
     @Override
     public int getBindingVariable() {
@@ -31,7 +39,7 @@ public class UserProfileFragment extends BaseFragment
     }
 
     @Override
-    public BaseViewModel getViewModel() {
+    public UserProfileViewModel getViewModel() {
         return viewModel;
     }
 
@@ -48,6 +56,15 @@ public class UserProfileFragment extends BaseFragment
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+         super.onCreateView(inflater, container, savedInstanceState);
+         binding = getViewDataBinding();
+
+
+         return binding.getRoot();
+    }
+
+    @Override
+    public void onUserProfileClicked() {
+
     }
 }
