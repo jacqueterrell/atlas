@@ -100,8 +100,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
 
-        viewModel.checkAllConnections(getViewModel());
-
         userStatsAdapter = new UserStatsAdapter(userStatsList);
         binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
         binding.recyclerUserStats.setItemAnimator(new DefaultItemAnimator());
@@ -114,15 +112,25 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         binding.swipeContainerRecentActiviy.setOnRefreshListener(() -> {
 
-            viewModel.checkAllConnections(getViewModel());
+            viewModel.getAllUsers(getViewModel());
 
         });
 
         binding.swipeContainerUserStats.setOnRefreshListener(() -> {
 
-            viewModel.checkAllConnections(getViewModel());
+            viewModel.getAllUsers(getViewModel());
 
         });
+
+        if (!viewModel.getUserStatsList().isEmpty()){
+
+           // setUserStatsAdapter(viewModel.getUserStatsList(),viewModel.getRecentActivityConnections());
+            viewModel.getAllUsers(getViewModel());
+
+        } else {
+
+            viewModel.getAllUsers(getViewModel());
+        }
 
         return binding.getRoot();
     }
@@ -176,7 +184,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         if (viewModel.getNetworksMap().isEmpty()){
 
-            viewModel.checkAllConnections(getViewModel());
+            viewModel.getAllUsers(getViewModel());
 
         } else {
 
@@ -198,7 +206,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         if (viewModel.getOpportunitiesMap().isEmpty()){
 
-            viewModel.checkAllConnections(getViewModel());
+            viewModel.getAllUsers(getViewModel());
 
         } else {
 
@@ -289,7 +297,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
     @Override
-    public void setNetworkBarChartData() {
+    public void setBarChartData() {
 
         if (viewModel.isNetworkChartSelected()){
 
@@ -409,7 +417,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.barChartNetwork.invalidate();
         binding.barChartNetwork.animateXY(1000, 1000);
         binding.barChartNetwork.getDescription().setText("");
-        binding.barChartNetwork.setClickable(false);
+        binding.barChartNetwork.setFocusable(false);
 
         binding.barChartNetwork.setVisibility(View.INVISIBLE);
         Handler handler = new Handler();

@@ -16,6 +16,7 @@ public class AppSharedPrefs {
     private static final String USER_LOGGED_IN = "userLoggedIn";
     private static final String USER_CODE = "userCode";
     private static final String BUSINESS_ACCOUNT = "isOrgBus";
+    private static final String BUSINESS_REP_ID = "businessRepId";
 
 
     private SharedPreferences sharedPreferences;
@@ -122,6 +123,21 @@ public class AppSharedPrefs {
         sharedPreferences
                 .edit()
                 .putBoolean(BUSINESS_ACCOUNT,businessAccount)
+                .apply();
+    }
+
+
+    public String getBusinessRepId(){
+
+        return sharedPreferences
+                .getString(BUSINESS_REP_ID,"");
+    }
+
+    public void setBusinessRepId(String businessRepId){
+
+        sharedPreferences
+                .edit()
+                .putString(BUSINESS_REP_ID,businessRepId)
                 .apply();
     }
 }

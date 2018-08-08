@@ -4,6 +4,8 @@ import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.data.model.UserConnections;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +18,12 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     private static boolean networkChartSelected = true;
     private static UserProfile userProfile;
     private static BusinessProfile businessProfile;
-    private static List<UserConnections> connectionRecordList;
+    private static List<UserProfile> allUsersList = new ArrayList<>();
+    private static List<BusinessProfile>businessProfileList = new ArrayList<>();
+    private static List<UserConnections> connectionRecordList = new ArrayList<>();
 
-
+    private List<String> userStatsList = new ArrayList<>();
+    private List<UserConnections> recentActivityConnections = new ArrayList<>();
 
     /***************view logic************/
 
@@ -77,6 +82,38 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
         return connectionRecordList;
     }
 
+    public void setBusinessProfileList(List<BusinessProfile> businessProfileList) {
+        InfoViewModel.businessProfileList = businessProfileList;
+    }
+
+    public List<BusinessProfile> getBusinessProfileList() {
+        return businessProfileList;
+    }
+
+    public void setUserStatsList(List<String> userStatsList) {
+        this.userStatsList = userStatsList;
+    }
+
+    public List<String> getUserStatsList() {
+        return userStatsList;
+    }
+
+    public void setRecentActivityConnections(List<UserConnections> recentActivityConnections) {
+        this.recentActivityConnections = recentActivityConnections;
+    }
+
+    public List<UserConnections> getRecentActivityConnections() {
+        return recentActivityConnections;
+    }
+
+    public void setAllUsersList(List<UserProfile> allUsersList) {
+        this.allUsersList = allUsersList;
+    }
+
+    public List<UserProfile> getAllUsersList() {
+        return allUsersList;
+    }
+
     /***************onclick listeners************/
 
     public void onNetworkButtonClicked(){
@@ -126,9 +163,9 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
 
     /********* Datamodel Calls********/
 
-    public void checkAllConnections(InfoViewModel viewModel){
+    public void getAllUsers(InfoViewModel viewModel){
 
-        dataModel.checkAllConnections(viewModel);
+        dataModel.getAllUsers(viewModel);
     }
 
 }

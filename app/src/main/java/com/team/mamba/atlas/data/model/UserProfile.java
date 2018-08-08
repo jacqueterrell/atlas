@@ -1,5 +1,7 @@
 package com.team.mamba.atlas.data.model;
 
+import android.support.annotation.Keep;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
@@ -9,109 +11,111 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Keep
 public class UserProfile {
     @SerializedName("id")
-    private String id;
+    public String id;
 
     @SerializedName("deviceToken")
-    private String deviceToken = "...";
+    public String deviceToken = "...";
 
     @SerializedName("code")
     @Expose
-    private String code= "...";
+    public String code= "...";
 
     @SerializedName("score")
     @Expose
-    private int score;
+    public int score;
 
     @SerializedName("firstName")
     @Expose
-    private String firstName= "...";
+    public String firstName= "...";
 
     @SerializedName("lastName")
     @Expose
-    private String lastName= "...";
+    public String lastName= "...";
 
     @SerializedName("email")
     @Expose
-    private String email= "...";
+    public String email= "...";
 
     @SerializedName("workEmail")
     @Expose
-    private String workEmail= "...";
+    public String workEmail= "...";
 
     @SerializedName("homePhone")
     @Expose
-    private String homePhone= "...";
+    public String homePhone= "...";
 
     @SerializedName("personalPhone")
     @Expose
-    private String personalPhone= "...";
+    public String personalPhone= "...";
 
     @SerializedName("workPhone")
     @Expose
-    private String workPhone= "...";
+    public String workPhone= "...";
 
     @SerializedName("fax")
     @Expose
-    private String fax= "...";
+    public String fax= "...";
 
     @SerializedName("street")
     @Expose
-    private String street= "...";
+    public String street= "...";
 
     @SerializedName("cityStateZip")
     @Expose
-    private String cityStateZip= "...";
+    public String cityStateZip= "...";
 
     @SerializedName("workHistory")
     @Expose
-    private List<Map<String,String>> workHistory = new ArrayList<>();
+    public List<Map<String,String>> workHistory = new ArrayList<>();
 
     @SerializedName("education")
     @Expose
-    private List<Map<String,String>> education = new ArrayList<>();
+    public List<Map<String,String>> education = new ArrayList<>();
 
     @SerializedName("currentEmployer")
     @Expose
-    private String currentEmployer= "...";
+    public String currentEmployer= "...";
 
     @SerializedName("currentPosition")
     @Expose
-    private String currentPosition= "...";
+    public String currentPosition= "...";
 
     @SerializedName("workStreet")
     @Expose
-    private String workStreet= "...";
+    public String workStreet= "...";
 
     @SerializedName("workCityStateZip")
     @Expose
-    private String workCityStateZip= "...";
+    public String workCityStateZip= "...";
 
     @SerializedName("imageUrl")
     @Expose
-    private String imageUrl= "...";
+    public String imageUrl= "...";
 
 
     @SerializedName("connections")
     @Expose
-    private Map<String,String> connections = new LinkedHashMap<>();
+    public Map<String,String> connections = new LinkedHashMap<>();
 
     @SerializedName("connectionsCount")
     @Expose
-    private int connectionsCount;
+    public int connectionsCount;
 
     @SerializedName("timestamp")
     @Expose
-    private double timeStamp;
+    public double timestamp;
 
     @SerializedName("dob")
     @Expose
-    private double dob;
+    public double dob;
 
     @SerializedName("phone")
     @Expose
-    private String phone= "...";
+    public String phone= "...";
 
 
     public UserProfile() {
@@ -303,20 +307,20 @@ public class UserProfile {
         this.connectionsCount = connectionsCount;
     }
 
-    public long getTimeStamp() {
+    public long getTimestamp() {
 
-        String adjustedTime = AppFormatter.timeStampFormatter.format(timeStamp);
+        String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
 
         return Long.parseLong(adjustedTime);
     }
 
-    public void setTimeStamp(double timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(double timestamp) {
+        this.timestamp = timestamp;
     }
 
     public long getDob() {
 
-        String adjustedTime = AppFormatter.timeStampFormatter.format(timeStamp);
+        String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
 
         return Long.parseLong(adjustedTime);
     }

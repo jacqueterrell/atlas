@@ -30,7 +30,7 @@ public interface InfoNavigator {
 
     void hideUserStatusInfoDialog();
 
-    void setNetworkBarChartData();
+    void setBarChartData();
 
     void setUserStatsAdapter(List<String> userStats,List<UserConnections> connectionRecords);
 

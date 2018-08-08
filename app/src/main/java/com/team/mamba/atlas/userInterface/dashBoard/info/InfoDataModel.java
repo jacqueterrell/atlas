@@ -2,11 +2,9 @@ package com.team.mamba.atlas.userInterface.dashBoard.info;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.gson.annotations.Expose;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.TestProfile;
 import com.team.mamba.atlas.data.model.UserConnections;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
@@ -34,7 +32,7 @@ public class InfoDataModel {
     private boolean isUserStatsSet = false;
     private boolean isUserOpportunitiesSet = false;
     private boolean isRecentActivitiesSet = false;
-    public boolean isUserDetailsSaved = false;
+    private boolean isUserDetailsSaved = false;
     private boolean isNetworksChartSet = false;
     private boolean isOpportunitiesChartSet = false;
 
@@ -56,6 +54,44 @@ public class InfoDataModel {
         this.dataManager = dataManager;
     }
 
+    /**
+     * @param viewModel
+     */
+    public void getAllUsers(InfoViewModel viewModel) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<UserProfile> adjustedProfileList = new ArrayList<>();
+
+        db.collection(AppConstants.USERS_COLLECTION)
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        isUserDetailsSaved = true;
+
+                        List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
+
+                        for (UserProfile profile : userProfiles){
+
+                            if (profile.getId() != null){
+
+                                adjustedProfileList.add(profile);
+                            }
+                        }
+
+                        viewModel.setAllUsersList(adjustedProfileList);
+
+                        checkAllConnections(viewModel);
+                    }
+
+                });
+    }
+
+
+    /**
+     * @param viewModel
+     */
     public void checkAllConnections(InfoViewModel viewModel) {
 
         List<Integer> connectionMonths = new ArrayList<>();
@@ -103,7 +139,6 @@ public class InfoDataModel {
                         setConnectionsMap(viewModel, connectionMonths);
                         setRecentActivity(viewModel);
 
-
                     } else {
 
                         viewModel.getNavigator().handlerError("");
@@ -115,6 +150,11 @@ public class InfoDataModel {
 
     }
 
+
+    /**
+     * @param viewModel
+     * @param connectionMonths
+     */
     private void setConnectionsMap(InfoViewModel viewModel, List<Integer> connectionMonths) {
 
         Map<Integer, Integer> connectionsMap = new LinkedHashMap<>();
@@ -151,7 +191,7 @@ public class InfoDataModel {
 
         if (isNetworksChartSet && isOpportunitiesChartSet) {
 
-            viewModel.getNavigator().setNetworkBarChartData();
+            viewModel.getNavigator().setBarChartData();
         }
 
     }
@@ -180,6 +220,8 @@ public class InfoDataModel {
 
                         List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
 
+                        viewModel.setBusinessProfileList(businessProfiles);
+
                         for (BusinessProfile profile : businessProfiles) {
 
                             if (profile.getId().equals(savedUserId)) {
@@ -207,8 +249,10 @@ public class InfoDataModel {
                             isUserOpportunitiesSet = false;
                             isRecentActivitiesSet = false;
                             isUserDetailsSaved = false;
-                            setUserStatsTotal(viewModel);
+                            setUserStatsTotal();
 
+                            viewModel.setUserStatsList(userStatsList);
+                            viewModel.setRecentActivityConnections(recentActivityConnections);
                             viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
                         }
 
@@ -260,15 +304,15 @@ public class InfoDataModel {
                             isUserOpportunitiesSet = false;
                             isRecentActivitiesSet = false;
                             isUserDetailsSaved = false;
-                            setUserStatsTotal(viewModel);
-
+                            setUserStatsTotal();
+                            viewModel.setUserStatsList(userStatsList);
+                            viewModel.setRecentActivityConnections(recentActivityConnections);
                             viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
                         }
 
                         if (!dataManager.getSharedPrefs().isBusinessAccount()) {
 
                             getUserDetails(viewModel);
-
                         }
 
                     } else {
@@ -281,6 +325,10 @@ public class InfoDataModel {
     }
 
 
+    /**
+     * @param viewModel
+     * @param opportunityStages
+     */
     private void setOpportunitiesMap(InfoViewModel viewModel, List<Integer> opportunityStages) {
 
         Map<Integer, Integer> connectionsMap = new LinkedHashMap<>();
@@ -310,13 +358,15 @@ public class InfoDataModel {
 
         if (isNetworksChartSet && isOpportunitiesChartSet) {
 
-            viewModel.getNavigator().setNetworkBarChartData();
+            viewModel.getNavigator().setBarChartData();
         }
 
     }
 
 
-    private void setUserStatsTotal(InfoViewModel viewModel) {
+    /**
+     */
+    private void setUserStatsTotal() {
 
         String connectionsTotal = confirmedConnectionsList.size() + " Connections";
         userStatsList.add(connectionsTotal);
@@ -343,7 +393,7 @@ public class InfoDataModel {
             userStatsList.add(opportunities);
         }
 
-        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+        if (!dataManager.getSharedPrefs().isBusinessAccount()) {
 
             userStatsList.add(userRanking);
         }
@@ -351,20 +401,25 @@ public class InfoDataModel {
     }
 
 
+    /**
+     * @param viewModel
+     */
     private void setRecentActivity(InfoViewModel viewModel) {
 
         recentActivityConnections.clear();
         String userId = dataManager.getSharedPrefs().getUserId();
+
         List<UserConnections> completedConnections = new ArrayList<>();
         List<UserConnections> newConnections = new ArrayList<>();
-
         List<String> confirmedUsers = new ArrayList<>();
 
         for (UserConnections record : viewModel.getUserConnections()) {
 
             //get all completed connections
-            if (record.isConfirmed() && record.getRequestingUserID()
-                    .equals(userId)) { //The connection has been confirmed
+            if (record.isConfirmed() && record.getRequestingUserID().equals(userId)) { //The connection has been confirmed
+
+                Calendar calendar = Calendar.getInstance();
+                int today = calendar.get(Calendar.DAY_OF_YEAR);
 
                 if (record.isBusiness()) {
 
@@ -374,26 +429,48 @@ public class InfoDataModel {
 
                         confirmedUsers.add(record.getConsentingUserName());
                         completedConnections.add(record);
-
                     }
-
 
                 } else {
 
-                    record.setRecentActivity(false);
+                    //Look through all users and find the timestamp for the user.
+                    //This allows us to know the timestamp associated with the
+                    //connection.
+                    for (UserProfile profile : viewModel.getAllUsersList()) {
 
-                    //our user is the requester
-                    if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES
-                            && !confirmedUsers.contains(record.getConsentingUserName())) {
+                        try {
 
-                        confirmedUsers.add(record.getConsentingUserName());
-                        completedConnections.add(record);
+                            if (profile.getId().equals(record.getConsentingUserID())) {
+
+                                calendar.setTimeInMillis(profile.getTimestamp() * 1000);
+                                int lastTimeUpdating = calendar.get(Calendar.DAY_OF_YEAR);
+
+                                if (today - lastTimeUpdating <= 2) {
+
+                                    record.setRecentActivity(true);
+
+                                } else {
+
+                                    record.setRecentActivity(false);
+                                }
+
+                                if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES
+                                        && !confirmedUsers.contains(record.getConsentingUserName())) {
+
+                                    confirmedUsers.add(record.getConsentingUserName());
+                                    completedConnections.add(record);
+
+                                }
+
+                            }
+
+                        } catch (Exception e) {
+
+                        }
 
                     }
 
-
                 }
-
 
             } else if (!record.isConfirmed()
                     && record.getConsentingUserID().equals(userId)) { //The connection is new and needs to be approved
@@ -419,8 +496,10 @@ public class InfoDataModel {
             isUserOpportunitiesSet = false;
             isRecentActivitiesSet = false;
             isUserDetailsSaved = false;
-            setUserStatsTotal(viewModel);
+            setUserStatsTotal();
 
+            viewModel.setUserStatsList(userStatsList);
+            viewModel.setRecentActivityConnections(recentActivityConnections);
             viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
         }
 
@@ -428,87 +507,83 @@ public class InfoDataModel {
     }
 
 
+    /**
+     * @param viewModel
+     */
     public void getUserDetails(InfoViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         individualConnections.clear();
+        allUserScores.clear();
         String savedUserId = dataManager.getSharedPrefs().getUserId();
         List<String> connectionIds = new ArrayList<>();
 
-        db.collection(AppConstants.USERS_COLLECTION)
-                .get()
-                .addOnCompleteListener(task -> {
+        isUserDetailsSaved = true;
 
-                    if (task.isSuccessful()) {
+        totalNumberOfUsers = viewModel.getAllUsersList().size();
 
-                        isUserDetailsSaved = true;
+        //save the selected user profile
+        for (UserProfile profile : viewModel.getAllUsersList()) {
 
-                        List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
+            allUserScores.add(profile.getScore());
 
-                        totalNumberOfUsers = userProfiles.size();
+            try {
+                if (profile.getId().equals(savedUserId)) {
 
-                        //save the selected user profile
-                        for (UserProfile profile : userProfiles) {
+                    viewModel.setUserProfile(profile);
 
-                            allUserScores.add(profile.getScore());
+                    //get all of the user's connections by id
+                    for (Map.Entry<String, String> entry : profile.getConnections().entrySet()) {
 
-                            try {
-                                if (profile.getId().equals(savedUserId)) {
+                        String userId = entry.getKey();
 
-                                    viewModel.setUserProfile(profile);
+                        if (!companyUserIds.contains(userId)) {
 
-                                    //get all of the user's connections by id
-                                    for (Map.Entry<String, String> entry : profile.getConnections().entrySet()) {
-
-                                        String userId = entry.getKey();
-
-                                        if (!companyUserIds.contains(userId)) {
-
-                                            connectionIds.add(userId);
-                                        }
-                                    }
-
-                                }
-                            } catch (Exception e) {
-
-                                Logger.e("Invalid profile setup " + e.getLocalizedMessage());
-                            }
+                            connectionIds.add(userId);
                         }
-
-                        //This loops through all of the user's individual(non business) contacts and pulls their
-                        //contacts and adds them to a list.
-                        for (UserProfile profile : userProfiles) {
-
-                            for (String connectionId : connectionIds) {
-
-                                try {
-                                    if (profile.getId().equals(connectionId)) {
-
-                                        for (Map.Entry<String, String> entry : profile.getConnections().entrySet()) {
-
-                                            String userId = entry.getKey();
-
-                                            individualConnections.add(profile);
-                                        }
-                                    }
-                                } catch (Exception e) {
-
-                                    Logger.e("Invalid profile setup " + e.getLocalizedMessage());
-                                }
-                            }
-                        }
-
-                        calculateAllUsersScore(viewModel);
-
-                    } else {
-
-                        Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
                     }
 
-                });
+                }
+            } catch (Exception e) {
+
+                Logger.e("Invalid profile setup " + e.getLocalizedMessage());
+            }
+        }
+
+        //This loops through all of the user's individual(non business) contacts and pulls their
+        //contacts and adds them to a list.
+        for (UserProfile profile : viewModel.getAllUsersList()) {
+
+            for (String connectionId : connectionIds) {
+
+                try {
+                    if (profile.getId().equals(connectionId)) {
+
+                        for (Map.Entry<String, String> entry : profile.getConnections().entrySet()) {
+
+                            String userId = entry.getKey();
+
+                            individualConnections.add(profile);
+                        }
+                    }
+                } catch (Exception e) {
+
+                    Logger.e("Invalid profile setup " + e.getLocalizedMessage());
+                }
+            }
+        }
+
+        calculateAllUsersScore(viewModel);
+
 
     }
+
+
+    private void getAllBusinessContacts() {
+
+
+    }
+
 
     private void calculateAllUsersScore(InfoViewModel viewModel) {
 
@@ -546,7 +621,7 @@ public class InfoDataModel {
 
         } else if (finalPercentile > 20) {
 
-            userRanking =  "Intermediate";
+            userRanking = "Intermediate";
 
         } else {
 
@@ -562,11 +637,14 @@ public class InfoDataModel {
             isUserOpportunitiesSet = false;
             isRecentActivitiesSet = false;
             isUserDetailsSaved = false;
-            setUserStatsTotal(viewModel);
+            setUserStatsTotal();
 
+            viewModel.setUserStatsList(userStatsList);
+            viewModel.setRecentActivityConnections(recentActivityConnections);
             viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
         }
 
     }
+
 
 }

@@ -78,7 +78,14 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
+         if (viewModel.getUserProfile() == null){
+
              viewModel.getUserDetails(getViewModel());
+
+         } else {
+
+             setUserDetails();
+         }
 
          return binding.getRoot();
     }

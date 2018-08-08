@@ -1,8 +1,7 @@
 package com.team.mamba.atlas.data.model;
 
 import android.support.annotation.Keep;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +22,8 @@ public class BusinessProfile {
     public Map<String,String> children;
     public Map<String,String> contacts;
     public List<Integer> shareNeeds;
+
+    public String businessRepId;
 
 
     public String getId() {
@@ -135,5 +136,13 @@ public class BusinessProfile {
 
     public void setShareNeeds(List<Integer> shareNeeds) {
         this.shareNeeds = shareNeeds;
+    }
+
+    public String getBusinessRepId() {
+        return businessRepId;
+    }
+
+    public void setBusinessRepId(String businessRepId) {
+        this.businessRepId = businessRepId;
     }
 }

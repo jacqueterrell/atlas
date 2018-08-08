@@ -63,7 +63,14 @@ implements BusinessProfileNavigator{
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-         viewModel.getBusinessDetails(getViewModel());
+         if (viewModel.getBusinessProfile() == null){
+
+             viewModel.getBusinessDetails(getViewModel());
+
+         } else {
+
+             setBusinessDetails();
+         }
 
          return binding.getRoot();
     }

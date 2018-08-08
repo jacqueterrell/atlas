@@ -5,8 +5,8 @@ import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class BusinessProfileViewModel extends BaseViewModel<BusinessProfileNavigator> {
 
-    BusinessProfile businessProfile;
-    BusinessProfileDataModel dataModel;
+    private static BusinessProfile businessProfile;
+    private BusinessProfileDataModel dataModel;
 
 
 
@@ -16,7 +16,7 @@ public class BusinessProfileViewModel extends BaseViewModel<BusinessProfileNavig
     }
 
     public void setBusinessProfile(BusinessProfile businessProfile) {
-        this.businessProfile = businessProfile;
+        BusinessProfileViewModel.businessProfile = businessProfile;
     }
 
     public BusinessProfile getBusinessProfile() {
