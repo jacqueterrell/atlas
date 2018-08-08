@@ -7,10 +7,11 @@ public class AppFormatter {
 
     private AppFormatter(){
 
-
     }
 
 
     public static NumberFormat timeStampFormatter = new DecimalFormat("#");
+
+    public static DecimalFormat numberWithoutDecimals = new DecimalFormat("#,###,###");
 
 }

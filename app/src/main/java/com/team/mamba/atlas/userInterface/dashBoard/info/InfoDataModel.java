@@ -11,6 +11,7 @@ import com.team.mamba.atlas.data.model.UserConnections;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -28,6 +29,7 @@ public class InfoDataModel {
     private AppDataManager dataManager;
     private int companyTotal = 0;
     private int totalOpportunities = 0;
+    private String userRanking = "";
 
     private boolean isUserStatsSet = false;
     private boolean isUserOpportunitiesSet = false;
@@ -41,6 +43,9 @@ public class InfoDataModel {
     private List<UserProfile> individualConnections = new ArrayList<>();
     private List<String> companyUserIds = new ArrayList<>();
     private List<String> confirmedConnectionsList = new ArrayList<>();
+
+    private List<Integer> allUserScores = new ArrayList<>();
+    private int totalNumberOfUsers;
 
     private static final int ALLOWED_TOTAL_RECENT_ACTIVITIES = 51;
 
@@ -56,6 +61,11 @@ public class InfoDataModel {
         List<Integer> connectionMonths = new ArrayList<>();
         confirmedConnectionsList.clear();
         companyUserIds.clear();
+
+        if (dataManager.getSharedPrefs().isBusinessAccount()) {
+
+            isUserDetailsSaved = true;
+        }
 
         String userId = dataManager.getSharedPrefs().getUserId();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -88,16 +98,11 @@ public class InfoDataModel {
 
                         }
 
-                        if (!dataManager.getSharedPrefs().isBusinessAccount()) {
-
-                            getUserDetails(viewModel);
-
-                        }
-
                         setUserStats(viewModel);
                         setUserStatusOpportunities(viewModel);
                         setConnectionsMap(viewModel, connectionMonths);
                         setRecentActivity(viewModel);
+
 
                     } else {
 
@@ -260,6 +265,11 @@ public class InfoDataModel {
                             viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
                         }
 
+                        if (!dataManager.getSharedPrefs().isBusinessAccount()) {
+
+                            getUserDetails(viewModel);
+
+                        }
 
                     } else {
 
@@ -333,14 +343,10 @@ public class InfoDataModel {
             userStatsList.add(opportunities);
         }
 
-        /*****Get total individual users****/
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
 
-        int connections = 2 * confirmedConnectionsList.size();
-        int compTotal = 3 * companyTotal;
-        int oppTotal = 5 * totalOpportunities;
-        int algorithmTotal = connections + compTotal + oppTotal + individualConnections.size();
-
-        Logger.i("total score" + algorithmTotal);
+            userStatsList.add(userRanking);
+        }
 
     }
 
@@ -439,8 +445,12 @@ public class InfoDataModel {
 
                         List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
+                        totalNumberOfUsers = userProfiles.size();
+
                         //save the selected user profile
                         for (UserProfile profile : userProfiles) {
+
+                            allUserScores.add(profile.getScore());
 
                             try {
                                 if (profile.getId().equals(savedUserId)) {
@@ -459,7 +469,7 @@ public class InfoDataModel {
                                     }
 
                                 }
-                            } catch (Exception e){
+                            } catch (Exception e) {
 
                                 Logger.e("Invalid profile setup " + e.getLocalizedMessage());
                             }
@@ -467,9 +477,9 @@ public class InfoDataModel {
 
                         //This loops through all of the user's individual(non business) contacts and pulls their
                         //contacts and adds them to a list.
-                        for (UserProfile profile : userProfiles){
+                        for (UserProfile profile : userProfiles) {
 
-                            for (String connectionId : connectionIds){
+                            for (String connectionId : connectionIds) {
 
                                 try {
                                     if (profile.getId().equals(connectionId)) {
@@ -481,23 +491,14 @@ public class InfoDataModel {
                                             individualConnections.add(profile);
                                         }
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
 
                                     Logger.e("Invalid profile setup " + e.getLocalizedMessage());
                                 }
                             }
                         }
 
-                        if (isUserStatsSet && isUserOpportunitiesSet && isRecentActivitiesSet && isUserDetailsSaved) {
-
-                            isUserStatsSet = false;
-                            isUserOpportunitiesSet = false;
-                            isRecentActivitiesSet = false;
-                            isUserDetailsSaved = false;
-                            setUserStatsTotal(viewModel);
-
-                            viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
-                        }
+                        calculateAllUsersScore(viewModel);
 
                     } else {
 
@@ -506,6 +507,65 @@ public class InfoDataModel {
                     }
 
                 });
+
+    }
+
+    private void calculateAllUsersScore(InfoViewModel viewModel) {
+
+        int totalScoresLowerThanUsers = 0;
+        DecimalFormat df2 = new DecimalFormat(".##");
+
+        /*****Get total individual users****/
+
+        int connections = 2 * confirmedConnectionsList.size();
+        int compTotal = 3 * companyTotal;
+        int oppTotal = 5 * totalOpportunities;
+        int algorithmTotal = connections + compTotal + oppTotal + individualConnections.size();
+
+        for (Integer score : allUserScores) {
+
+            if (score < algorithmTotal) {
+
+                totalScoresLowerThanUsers += 1;
+            }
+        }
+
+        double finalPercentile = (double) totalScoresLowerThanUsers / totalNumberOfUsers * 100;
+
+        if (finalPercentile > 80) {
+
+            userRanking = "All-Star";
+
+        } else if (finalPercentile > 60) {
+
+            userRanking = "Expert";
+
+        } else if (finalPercentile > 40) {
+
+            userRanking = "Advanced";
+
+        } else if (finalPercentile > 20) {
+
+            userRanking =  "Intermediate";
+
+        } else {
+
+            userRanking = "Beginner";
+        }
+
+        Logger.i("total score" + algorithmTotal);
+        Logger.i("final score" + finalPercentile);
+
+        if (isUserStatsSet && isUserOpportunitiesSet && isRecentActivitiesSet && isUserDetailsSaved) {
+
+            isUserStatsSet = false;
+            isUserOpportunitiesSet = false;
+            isRecentActivitiesSet = false;
+            isUserDetailsSaved = false;
+            setUserStatsTotal(viewModel);
+
+            viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
+        }
 
     }
 
