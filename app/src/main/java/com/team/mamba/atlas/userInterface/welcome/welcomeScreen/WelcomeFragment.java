@@ -329,7 +329,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         hideProgressSpinner();
         hideBusinessLoginScreen();
-        startActivity(BusinessAccountsActivity.newIntent(getBaseActivity(),viewModel.getBusinessNamesMap()));
+        startActivity(BusinessAccountsActivity.newIntent(getBaseActivity(),viewModel.getBusinessProfileList()));
     }
 
     @Override

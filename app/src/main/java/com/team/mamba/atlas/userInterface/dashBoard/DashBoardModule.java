@@ -6,6 +6,7 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.business_profile.BusinessProfileViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.businessOpportunities.BusinessOpportunitiesViewModel;
@@ -83,5 +84,11 @@ public class DashBoardModule {
     UserProfileViewModel providesUserProfileViewModel(){
 
         return new UserProfileViewModel();
+    }
+
+    @Provides
+    BusinessProfileViewModel providesBusinessProfileViewModel(){
+
+        return new BusinessProfileViewModel();
     }
 }

@@ -5,6 +5,7 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.business_profile.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
 import com.team.mamba.atlas.userInterface.dashBoard.businessOpportunities.BusinessOpportunitiesFragment;
@@ -52,4 +53,9 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract UserProfileFragment bindUserProfileFragment();
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract BusinessProfileFragment bindBusinessProfileFragment();
+
+
 }

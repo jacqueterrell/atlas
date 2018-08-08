@@ -23,6 +23,7 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_busi
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.business_profile.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
 import com.team.mamba.atlas.userInterface.dashBoard.user_profile.UserProfileFragment;
@@ -169,6 +170,14 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         hideAddContactDialog();
         ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(),getSupportFragmentManager(),"UserProfile",null);
+        binding.layoutToolBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void openBusinessProfile() {
+
+        hideAddContactDialog();
+        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(),getSupportFragmentManager(),"Business Profile",null);
         binding.layoutToolBar.setVisibility(View.GONE);
     }
 

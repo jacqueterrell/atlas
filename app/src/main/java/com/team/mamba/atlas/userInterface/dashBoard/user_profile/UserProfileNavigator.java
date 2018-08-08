@@ -4,7 +4,7 @@ public interface UserProfileNavigator {
 
     void onUserProfileClicked();
 
-    void setBusinessProfile();
-
     void setUserDetails();
+
+    void onSettingsClicked();
 }

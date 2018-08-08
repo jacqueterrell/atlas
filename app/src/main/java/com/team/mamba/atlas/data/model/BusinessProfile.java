@@ -1,26 +1,28 @@
 package com.team.mamba.atlas.data.model;
 
+import android.support.annotation.Keep;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Keep
 public class BusinessProfile {
 
-    private String id;
-    private String code;
-    private String name;
-    private String contactName;
-    private String email;
-    private String phone;
-    private String fax;
-    private String street;
-    private String cityStateZip;
-    private String imageUrl;
-    private Map<String,String> announcements;
-    private Map<String,String> children;
-    private Map<String,String> contacts;
-    private List<Integer> shareNeeds;
+    public String id = "...";
+    public String code = "...";
+    public String name = "...";
+    public String contactName = "...";
+    public String email = "...";
+    public String phone = "...";
+    public String fax = "...";
+    public String street = "...";
+    public String cityStateZip = "...";
+    public String imageUrl = "...";
+    public Map<String,String> announcements;
+    public Map<String,String> children;
+    public Map<String,String> contacts;
+    public List<Integer> shareNeeds;
 
 
     public String getId() {

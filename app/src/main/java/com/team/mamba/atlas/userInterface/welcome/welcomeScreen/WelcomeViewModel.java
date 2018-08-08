@@ -2,6 +2,7 @@ package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 import com.team.mamba.atlas.utils.CommonUtils;
@@ -28,7 +29,7 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     private long dateOfBirth;
     private String phoneNumber;
     private boolean businessLogin = false;
-    private Map<String,String> businessesEmailList = new LinkedHashMap<>();
+    private List<BusinessProfile> businessProfileList = new ArrayList<>();
 
 
     /***************view logic************/
@@ -180,12 +181,12 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setBusinessNamesMap(Map<String,String> businessesNamesList) {
-        this.businessesEmailList = businessesNamesList;
+    public void setBusinessProfileList(List<BusinessProfile> businessProfileList) {
+        this.businessProfileList = businessProfileList;
     }
 
-    public Map<String,String> getBusinessNamesMap() {
-        return businessesEmailList;
+    public List<BusinessProfile> getBusinessProfileList() {
+        return businessProfileList;
     }
 
     /***************onclick listeners************/

@@ -9,11 +9,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -81,7 +83,7 @@ public class WelcomeDataModel {
         String token = FirebaseInstanceId.getInstance().getToken();
         DocumentReference newUserRef = db.collection(AppConstants.USERS_COLLECTION).document();
         String myId = newUserRef.getId();
-        String userCode = "35";
+        String userCode = "2";
 
         Map<String, Object> user = new HashMap<>();
         user.put("firstName", viewModel.getFirstName());
@@ -199,8 +201,6 @@ public class WelcomeDataModel {
         //if match found login as the business
         //if multiple matched recylerview to select the business to represent
 
-        Map<String, String> namesMap = new LinkedHashMap<>();
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)
@@ -210,25 +210,18 @@ public class WelcomeDataModel {
 
                     if (task.isSuccessful()) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
 
-                            Logger.i("email:" + document.getData().get("email"));
-                            String userId = document.getData().get("id").toString();
-                            String name = document.getData().get("name").toString();
+                        viewModel.setBusinessProfileList(businessProfiles);
 
-                            namesMap.put(userId, name);
-
-                        }
-
-                        viewModel.setBusinessNamesMap(namesMap);
-
-                        if (namesMap.isEmpty()) {
+                        if (viewModel.getBusinessProfileList().isEmpty()) {
 
                             //todo can this situation exist
                             viewModel.getNavigator().showBusinessNotFoundAlert();
 
-                        } else if (namesMap.size() == 1) {
+                        } else if (viewModel.getBusinessProfileList().size() == 1) {
 
+                            dataManager.getSharedPrefs().setUserId(businessProfiles.get(0).getId());
                             viewModel.getNavigator().openDashBoard();
 
                         } else {
@@ -238,7 +231,6 @@ public class WelcomeDataModel {
 
                     } else {
 
-                        viewModel.getNavigator().handleError("Error getting documents");
                         task.getException().printStackTrace();
                     }
                 });

@@ -13,6 +13,8 @@ public interface DashBoardActivityNavigator {
 
     void openUserProfile();
 
+    void openBusinessProfile();
+
     void onCrmClicked();
 
     void onNotificationsClicked();

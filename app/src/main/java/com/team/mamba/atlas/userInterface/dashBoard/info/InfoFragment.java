@@ -216,7 +216,14 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onUserProfileClicked() {
 
-        parentNavigator.openUserProfile();
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            parentNavigator.openBusinessProfile();
+
+        } else {
+
+            parentNavigator.openUserProfile();
+        }
     }
 
     @Override

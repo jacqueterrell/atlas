@@ -13,6 +13,7 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     private UserProfileDataModel dataModel;
 
 
+    /*******Getters and Setters********/
     public void setDataModel(UserProfileDataModel dataModel) {
         this.dataModel = dataModel;
     }
@@ -44,8 +45,10 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
         dataModel.getUserDetails(viewModel);
     }
 
-    public void getBusinessDetails(UserProfileViewModel viewModel){
 
-        dataModel.getBusinessDetails(viewModel);
+    /*******Onclick Listeners********/
+    public void onSettingsClicked(){
+
+        getNavigator().onSettingsClicked();
     }
 }

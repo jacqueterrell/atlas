@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.UserProfileLayoutBinding;
@@ -41,7 +42,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
     @Override
     public int getBindingVariable() {
-        return 0;
+        return BR.viewModel;
     }
 
     @Override
@@ -62,9 +63,8 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         parentNavigator = (DashBoardActivityNavigator) context;
-    }
+        }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,21 +78,15 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-         if (dataManager.getSharedPrefs().isBusinessAccount()){
-
-             viewModel.getBusinessDetails(getViewModel());
-
-         } else {
-
              viewModel.getUserDetails(getViewModel());
-         }
 
          return binding.getRoot();
     }
 
     @Override
-    public void setBusinessProfile() {
+    public void onSettingsClicked() {
 
+        parentNavigator.openSettingsScreen();
     }
 
     @Override

@@ -33,6 +33,8 @@
         android:scaleX="1.2"
         android:scaleY="1.2"
         android:src="@drawable/ic_settings"
+        android:layout_marginRight="15dp"
+        android:onClick="@{()-> viewModel.onSettingsClicked()}"
         />
 
     <ScrollView
@@ -189,7 +191,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_gravity="end|bottom"
+                android:layout_gravity="end"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 app:cardBackgroundColor="@color/white"
@@ -355,7 +357,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_gravity="end|bottom"
+                android:layout_gravity="end"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 app:cardBackgroundColor="@color/white"
@@ -437,7 +439,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_gravity="end|bottom"
+                android:layout_gravity="end"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 app:cardBackgroundColor="@color/white"
@@ -519,22 +521,20 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="end|bottom"
+                android:layout_height="16dp"
+                android:layout_gravity="end"
+                android:layout_marginRight="15dp"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
-                android:layout_marginRight="15dp"
-                app:cardElevation="3dp"
-                >
+                app:cardElevation="3dp">
 
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_edit"
-                    />
+                    android:src="@drawable/ic_edit" />
 
             </android.support.v7.widget.CardView>
 
@@ -576,7 +576,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_gravity="end|bottom"
+                android:layout_gravity="end"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 app:cardBackgroundColor="@color/white"

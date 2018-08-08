@@ -1,5 +1,10 @@
 package com.team.mamba.atlas.userInterface.dashBoard.user_profile;
 
+import android.support.annotation.NonNull;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
@@ -36,6 +41,7 @@ public class UserProfileDataModel {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = dataManager.getSharedPrefs().getUserId();
 
+
         db.collection(AppConstants.USERS_COLLECTION)
                 .whereEqualTo("id", userId)
                 .get()
@@ -45,119 +51,11 @@ public class UserProfileDataModel {
 
                         List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
-                        viewModel.setUserProfile(userProfiles.get(0));
-                        viewModel.getNavigator().setUserDetails();
-
-                    } else {
-
-                        Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
-                    }
-
-                });
-
-    }
-
-
-    public void getBusinessDetails(UserProfileViewModel viewModel){
-
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String savedUserId = dataManager.getSharedPrefs().getUserId();
-        BusinessProfile profile = new BusinessProfile();
-
-
-        db.collection(AppConstants.BUSINESSES_COLLECTION)
-                .whereEqualTo("id", savedUserId)
-                .get()
-                .addOnCompleteListener(task -> {
-
-                    if (task.isSuccessful()) {
-
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                            try{
-                                String code = document.getData().get("code").toString();
-                                profile.setCode(code);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-                            try{
-                                String name = document.getData().get("name").toString();
-                                profile.setName(name);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-
-                            try{
-                                String contactName = document.getData().get("contactName").toString();
-                                profile.setContactName(contactName);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-
-                            try{
-                                String email = document.getData().get("email").toString();
-                                profile.setEmail(email);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-                            try{
-                                String phone = document.getData().get("phone").toString();
-                                profile.setPhone(phone);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-
-                            try{
-                                String fax = document.getData().get("fax").toString();
-                                profile.setFax(fax);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-                            try{
-                                String street = document.getData().get("street").toString();
-                                profile.setStreet(street);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-                            try{
-                                String cityStateZip = document.getData().get("cityStateZip").toString();
-                                profile.setCityStateZip(cityStateZip);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-                            try{
-                                String imageUrl = document.getData().get("imageUrl").toString();
-                                profile.setImageUrl(imageUrl);
-                            }catch (Exception e){Logger.e(e.getMessage()); }
-
-
-//                            try{
-//                                document.do
-//                                Map<String,String> announcements = document.getData().get("cityStateZip");
-//                                profile.setCityStateZip(cityStateZip);
-//                            }catch (Exception e){Logger.e(e.getMessage()); }
-//
-//                            try{
-//                                String cityStateZip = document.getData().get("cityStateZip").toString();
-//                                profile.setCityStateZip(cityStateZip);
-//                            }catch (Exception e){Logger.e(e.getMessage()); }
-//
-//                            try{
-//                                String cityStateZip = document.getData().get("cityStateZip").toString();
-//                                profile.setCityStateZip(cityStateZip);
-//                            }catch (Exception e){Logger.e(e.getMessage()); }
-//
-//                            try{
-//                                String cityStateZip = document.getData().get("cityStateZip").toString();
-//                                profile.setCityStateZip(cityStateZip);
-//                            }catch (Exception e){Logger.e(e.getMessage()); }
-//
-//
-
+                        if (!userProfiles.isEmpty()) {
+                            viewModel.setUserProfile(userProfiles.get(0));
+                            viewModel.getNavigator().setUserDetails();
                         }
 
-
-
-//                            List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
-
-                        viewModel.setBusinessProfile(profile);
-                        viewModel.getNavigator().setBusinessProfile();
-
                     } else {
 
                         Logger.e(task.getException().getMessage());
@@ -167,4 +65,5 @@ public class UserProfileDataModel {
                 });
 
     }
+
 }
