@@ -5,11 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     >
 
     <data>
 
         <import type = "android.view.View"/>
+
+        <variable
+            name = "profile"
+            type = "com.team.mamba.atlas.data.model.BusinessProfile"/>
+
 
         <variable
             name = "viewModel"
@@ -48,6 +54,7 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="45dp"
+                android:text = "@{profile.getName()}"
                 />
 
             <FrameLayout
@@ -147,6 +154,7 @@
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             tools:text="..."
+            android:text = "@{profile.getCode()}"
             />
 
     </LinearLayout>
@@ -174,6 +182,7 @@
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 tools:text="..."
+                android:text = "@{profile.getContactName()}"
                 />
 
         </LinearLayout>
@@ -192,7 +201,8 @@
                 style="@style/App_Text_view"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Email"/>
+                android:text="Email"
+                />
 
 
             <TextView
@@ -201,6 +211,7 @@
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 tools:text="..."
+                android:text = "@{profile.getEmail()}"
                 />
 
         </LinearLayout>
@@ -228,6 +239,7 @@
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 tools:text="..."
+                android:text = "@{profile.getPhone()}"
                 />
 
         </LinearLayout>
@@ -255,6 +267,7 @@
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 tools:text="..."
+                android:text = "@{profile.getFax()}"
                 />
 
         </LinearLayout>
@@ -282,6 +295,7 @@
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 tools:text="..."
+                android:text = "@{profile.getCityStateZip()}"
                 />
 
         </LinearLayout>
@@ -292,6 +306,10 @@
 
     </LinearLayout>
 
+    <include
+        android:id="@+id/contact_profile"
+        layout="@layout/business_profile_contact"
+         />
 
 </FrameLayout>
 

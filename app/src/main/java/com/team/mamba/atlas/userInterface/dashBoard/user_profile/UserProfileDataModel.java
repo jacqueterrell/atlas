@@ -36,11 +36,9 @@ public class UserProfileDataModel {
 
 
 
-    public void getUserDetails(UserProfileViewModel viewModel) {
+    public void getUserDetails(UserProfileViewModel viewModel,String userId) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = dataManager.getSharedPrefs().getUserId();
-
 
         db.collection(AppConstants.USERS_COLLECTION)
                 .whereEqualTo("id", userId)

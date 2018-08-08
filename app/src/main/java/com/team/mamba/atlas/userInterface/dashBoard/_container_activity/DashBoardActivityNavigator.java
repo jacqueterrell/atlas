@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.data.model.UserProfile;
 
 public interface DashBoardActivityNavigator {
@@ -11,9 +12,9 @@ public interface DashBoardActivityNavigator {
 
     void onContactsClicked();
 
-    void openUserProfile();
+    void openUserProfile(UserProfile userProfile);
 
-    void openBusinessProfile();
+    void openBusinessProfile(BusinessProfile businessProfile);
 
     void onCrmClicked();
 

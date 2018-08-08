@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.BusinessProfileLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import javax.inject.Inject;
@@ -24,10 +25,12 @@ implements BusinessProfileNavigator{
     BusinessProfileDataModel dataModel;
 
     private BusinessProfileLayoutBinding binding;
+    private static BusinessProfile profile;
 
 
-    public static BusinessProfileFragment newInstance(){
+    public static BusinessProfileFragment newInstance(BusinessProfile businessProfile){
 
+        profile = businessProfile;
         return new BusinessProfileFragment();
     }
 
@@ -56,6 +59,8 @@ implements BusinessProfileNavigator{
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
+
+
     }
 
     @Override
@@ -63,14 +68,17 @@ implements BusinessProfileNavigator{
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-         if (viewModel.getBusinessProfile() == null){
+        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
 
-             viewModel.getBusinessDetails(getViewModel());
+            binding.contactProfile.layoutContactsProfile.setVisibility(View.GONE);
+            binding.setProfile(profile);
 
-         } else {
+        } else {
 
-             setBusinessDetails();
-         }
+            binding.contactProfile.layoutContactsProfile.setVisibility(View.VISIBLE);
+            binding.contactProfile.setProfile(profile);
+
+        }
 
          return binding.getRoot();
     }
@@ -83,7 +91,6 @@ implements BusinessProfileNavigator{
     @Override
     public void setBusinessDetails() {
 
-        BusinessProfile profile = viewModel.getBusinessProfile();
 
         binding.tvAddress.setText(profile.getCityStateZip());
         binding.tvCode.setText(profile.getCode());

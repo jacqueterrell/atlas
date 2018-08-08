@@ -28,29 +28,12 @@ public class BusinessProfileDataModel {
      * Retrieves the profile if the user signs in as a business
      * @param viewModel
      */
-    public void getBusinessDetails(BusinessProfileViewModel viewModel){
+    public void getBusinessDetails(BusinessProfileViewModel viewModel,String businessId){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String savedUserId = dataManager.getSharedPrefs().getUserId();
-
-//        DocumentReference reference = db.collection(AppConstants.BUSINESSES_COLLECTION).document(savedUserId);
-//        reference.get().addOnCompleteListener(task -> {
-//
-//            if (task.isSuccessful()){
-//
-//                BusinessProfile profile = task.getResult().toObject(BusinessProfile.class);
-//                viewModel.setBusinessProfile(profile);
-//                viewModel.getNavigator().setBusinessDetails();
-//
-//            }else {
-//
-//                Logger.e(task.getException().getMessage());
-//                task.getException().printStackTrace();
-//            }
-//        });
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)
-                .whereEqualTo("id", savedUserId)
+                .whereEqualTo("id", businessId)
                 .get()
                 .addOnCompleteListener(task -> {
 

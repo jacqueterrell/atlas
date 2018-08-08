@@ -40,9 +40,9 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
         getNavigator().onUserProfileClicked();
     }
 
-    public void getUserDetails(UserProfileViewModel viewModel){
+    public void getUserDetails(UserProfileViewModel viewModel,String userId){
 
-        dataModel.getUserDetails(viewModel);
+        dataModel.getUserDetails(viewModel,userId);
     }
 
 

@@ -16,6 +16,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
@@ -166,18 +167,18 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     }
 
     @Override
-    public void openUserProfile() {
+    public void openUserProfile(UserProfile profile) {
 
         hideAddContactDialog();
-        ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(),getSupportFragmentManager(),"UserProfile",null);
+        ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(profile),getSupportFragmentManager(),"UserProfile",null);
         binding.layoutToolBar.setVisibility(View.GONE);
     }
 
     @Override
-    public void openBusinessProfile() {
+    public void openBusinessProfile(BusinessProfile businessProfile) {
 
         hideAddContactDialog();
-        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(),getSupportFragmentManager(),"Business Profile",null);
+        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile),getSupportFragmentManager(),"Business Profile",null);
         binding.layoutToolBar.setVisibility(View.GONE);
     }
 

@@ -34,11 +34,14 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
     private UserProfileLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
+    private static UserProfile profile;
 
-    public static UserProfileFragment newInstance(){
+    public static UserProfileFragment newInstance(UserProfile userProfile){
 
+        profile = userProfile;
         return new UserProfileFragment();
     }
+
 
     @Override
     public int getBindingVariable() {
@@ -78,15 +81,8 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-         if (viewModel.getUserProfile() == null){
 
-             viewModel.getUserDetails(getViewModel());
-
-         } else {
-
-             setUserDetails();
-         }
-
+         setUserDetails();
          return binding.getRoot();
     }
 
@@ -99,11 +95,21 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     @Override
     public void setUserDetails() {
 
+        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+
+            showSnackbar("Is the User");
+
+        } else {
+
+            showSnackbar("Is a contact");
+            showNonEditableScreen();
+
+        }
+
 
         StringBuilder workHistoryBuilder = new StringBuilder();
         StringBuilder educationBuilder = new StringBuilder();
 
-        UserProfile profile = viewModel.getUserProfile();
 
         String name = profile.getFirstName() + " " + profile.getLastName();
         binding.tvName.setText(name);
@@ -157,6 +163,11 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
         binding.tvWorkHistory.setText(workHistoryBuilder.toString());
         binding.tvEducation.setText(educationBuilder.toString());
+
+    }
+
+    private void showNonEditableScreen(){
+
 
     }
 

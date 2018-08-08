@@ -19,9 +19,6 @@ public class BusinessProfileViewModel extends BaseViewModel<BusinessProfileNavig
         BusinessProfileViewModel.businessProfile = businessProfile;
     }
 
-    public BusinessProfile getBusinessProfile() {
-        return businessProfile;
-    }
 
     /*******Onclick Listeners*******/
     public void onProfileImageClicked(){
@@ -30,9 +27,4 @@ public class BusinessProfileViewModel extends BaseViewModel<BusinessProfileNavig
     }
 
 
-    /*******DataModel calls*******/
-    public void getBusinessDetails(BusinessProfileViewModel viewModel){
-
-        dataModel.getBusinessDetails(viewModel);
-    }
 }

@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.team.mamba.atlas.BR;
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.data.model.UserConnections;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
@@ -226,12 +227,26 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         if (dataManager.getSharedPrefs().isBusinessAccount()){
 
-            parentNavigator.openBusinessProfile();
+            for (BusinessProfile profile : viewModel.getBusinessProfileList()){
+
+                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+
+                    parentNavigator.openBusinessProfile(profile);
+
+                }
+            }
+
 
         } else {
 
-            parentNavigator.openUserProfile();
-        }
+            for (UserProfile profile : viewModel.getAllUsersList()){
+
+                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+
+                    parentNavigator.openUserProfile(profile);
+
+                }
+            }        }
     }
 
     @Override
@@ -248,6 +263,34 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onCrmClicked() {
 
+    }
+
+    @Override
+    public void onRecentActivitiesRowClicked(UserConnections userConnections) {
+
+        if (userConnections.isOrgBus){
+
+            for (BusinessProfile profile : viewModel.getBusinessProfileList()){
+
+                if (profile.getId().equals(userConnections.getConsentingUserID())){
+
+                    parentNavigator.openBusinessProfile(profile);
+
+                }
+            }
+
+
+        } else {
+
+            for (UserProfile profile : viewModel.getAllUsersList()){
+
+                if (profile.getId().equals(userConnections.getConsentingUserID())){
+
+                    parentNavigator.openUserProfile(profile);
+
+                }
+            }
+        }
     }
 
     @Override

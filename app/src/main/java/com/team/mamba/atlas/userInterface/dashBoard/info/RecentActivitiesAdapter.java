@@ -95,7 +95,8 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
         public void onClick(View v) {
 
             UserConnections record = connectionRecords.get(getAdapterPosition());
-            boolean isNeedsApproval = record.isNeedsApproval();
+            viewModel.getNavigator().onRecentActivitiesRowClicked(record);
+
         }
     }
 }

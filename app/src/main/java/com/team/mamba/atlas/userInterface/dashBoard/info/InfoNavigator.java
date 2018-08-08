@@ -36,5 +36,7 @@ public interface InfoNavigator {
 
     void handlerError(String msg);
 
+    void onRecentActivitiesRowClicked(UserConnections userConnections);
+
 
 }

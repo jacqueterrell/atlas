@@ -121,6 +121,7 @@ public class InfoDataModel {
                             if (connection.isConfirmed() && connection.getRequestingUserID().equals(userId)) {
 
                                 confirmedConnectionsList.add(connection.getConsentingUserID());
+
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.setTimeInMillis(connection.getTimestamp() * 1000);
                                 int month = calendar.get(Calendar.MONTH);
@@ -134,10 +135,7 @@ public class InfoDataModel {
 
                         }
 
-                        setUserStats(viewModel);
-                        setUserStatusOpportunities(viewModel);
                         setConnectionsMap(viewModel, connectionMonths);
-                        setRecentActivity(viewModel);
 
                     } else {
 
@@ -193,6 +191,9 @@ public class InfoDataModel {
 
             viewModel.getNavigator().setBarChartData();
         }
+
+        setUserStats(viewModel);
+
 
     }
 
@@ -256,6 +257,9 @@ public class InfoDataModel {
                             viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
                         }
 
+                        setUserStatusOpportunities(viewModel);
+
+
                     }
                 });
 
@@ -278,6 +282,8 @@ public class InfoDataModel {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = dataManager.getSharedPrefs().getUserId();
         List<Integer> opportunityStageNumbers = new ArrayList<>();
+
+        //TODO create the BusNotes Java POJO
 
         db.collection(AppConstants.BUS_NOTES_COLLECTION)
                 .whereEqualTo(AUTHOR_ID, userId)
@@ -314,6 +320,9 @@ public class InfoDataModel {
 
                             getUserDetails(viewModel);
                         }
+
+                        setRecentActivity(viewModel);
+
 
                     } else {
 
