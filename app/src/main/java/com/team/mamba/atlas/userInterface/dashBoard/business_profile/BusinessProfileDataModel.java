@@ -42,7 +42,6 @@ public class BusinessProfileDataModel {
                         BusinessProfile businessProfiles = task.getResult().toObjects(BusinessProfile.class).get(0);
 
                         viewModel.setBusinessProfile(businessProfiles);
-                        viewModel.getNavigator().setBusinessDetails();
 
                     } else {
 

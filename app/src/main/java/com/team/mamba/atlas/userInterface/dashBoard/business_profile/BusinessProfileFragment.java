@@ -1,17 +1,31 @@
 package com.team.mamba.atlas.userInterface.dashBoard.business_profile;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.BusinessProfileLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.utils.AppConstants;
+import com.team.mamba.atlas.utils.formatData.RegEx;
 import javax.inject.Inject;
 
 public class BusinessProfileFragment extends BaseFragment<BusinessProfileLayoutBinding, BusinessProfileViewModel>
@@ -84,19 +98,156 @@ implements BusinessProfileNavigator{
     }
 
     @Override
+    public void callBusinessContact() {
+
+        String phone = profile.getPhone().replaceAll(RegEx.REMOVE_NON_DIGITS,"");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseActivity());
+
+        builder.setMessage(profile.getPhone())
+                .setPositiveButton("Call", (dialog, id) -> {
+
+                    Long phone2 = Long.valueOf(phone);
+                    callPhone(phone2);
+                })
+
+                .setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
+
+        AlertDialog alert11 = builder.create();
+        alert11.show();
+
+
+    }
+
+    private void callPhone(Long phone){
+
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + phone));//change the number
+
+
+        if (isPhonePermissionsGranted()) {
+
+            try {
+
+                startActivity(callIntent);
+                showToastLong("dialing " + profile.getPhone());
+
+            } catch (Exception e) {
+                Logger.e(e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public void contactOnNameClicked() {
+
+        sendToClipBoard(profile.getName());
+    }
+
+    @Override
+    public void contactOnEmailClicked() {
+
+        sendToClipBoard(profile.getEmail());
+    }
+
+    @Override
+    public void contactOnFaxClicked() {
+
+        sendToClipBoard(profile.getFax());
+    }
+
+    @Override
+    public void contactOnAddressClicked() {
+
+        sendToClipBoard(profile.getCityStateZip());
+    }
+
+    @Override
+    public void contactOnCodeClicked() {
+
+        sendToClipBoard(profile.getCode());
+    }
+
+    @Override
+    public void contactOnContactNameClicked() {
+
+        sendToClipBoard(profile.getContactName());
+    }
+
+    @Override
     public void onProfileImageClicked() {
 
     }
 
+
+
+    public boolean isPhonePermissionsGranted() {
+
+        if (sdk >= marshMallow) {
+
+            if (ActivityCompat.checkSelfPermission(getBaseActivity(), Manifest.permission.CALL_PHONE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(getBaseActivity(),
+                        new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
+                        AppConstants.REQUEST_PHONE_PERMISSIONS);
+
+                return false;
+
+            } else {
+
+                return true;
+            }
+
+        } else {
+
+            return true;
+        }
+
+    }
+
     @Override
-    public void setBusinessDetails() {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == AppConstants.REQUEST_PHONE_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            callBusinessContact();
+        }
+    }
 
 
-        binding.tvAddress.setText(profile.getCityStateZip());
-        binding.tvCode.setText(profile.getCode());
-        binding.tvContactName.setText(profile.getContactName());
-        binding.tvEmail.setText(profile.getEmail());
-        binding.tvPhone.setText(profile.getPhone());
-        binding.tvFax.setText(profile.getFax());
+    /**
+     * Copys the text to the clip board
+     * @param text
+     */
+    private void sendToClipBoard(String text){
+
+        String label = text + " is copied to your clipboard";
+
+        if (!text.isEmpty() && !text.equals("...")){
+
+            try {
+
+                ClipboardManager clipboard = (ClipboardManager) getBaseActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText(label, text);
+                clipboard.setPrimaryClip(clip);
+                showToastShort(label);
+
+            } catch (Exception e){
+
+                Logger.e(e.getMessage());
+            }
+
+            try{
+
+                Vibrator v = (Vibrator) getBaseActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(400);
+
+            } catch (Exception e){
+
+                Logger.e(e.getMessage());
+            }
+        }
+
     }
 }

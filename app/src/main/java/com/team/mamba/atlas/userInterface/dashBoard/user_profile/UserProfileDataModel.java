@@ -51,7 +51,6 @@ public class UserProfileDataModel {
 
                         if (!userProfiles.isEmpty()) {
                             viewModel.setUserProfile(userProfiles.get(0));
-                            viewModel.getNavigator().setUserDetails();
                         }
 
                     } else {

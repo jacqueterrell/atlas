@@ -14,6 +14,11 @@ import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.user_profile.UserProfileViewModel;
 
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_address_info.EditAddressViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_education_info.EditEducationViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_email_info.EditEmailViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_phone_info.EditPhoneViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_work_history.EditWorkViewModel;
 import dagger.Module;
 import dagger.Provides;
 
@@ -90,5 +95,35 @@ public class DashBoardModule {
     BusinessProfileViewModel providesBusinessProfileViewModel(){
 
         return new BusinessProfileViewModel();
+    }
+
+    @Provides
+    EditAddressViewModel providesEditEducationViewModel(){
+
+        return new EditAddressViewModel();
+    }
+
+    @Provides
+    EditEducationViewModel providesEditEducationViewModell(){
+
+        return new EditEducationViewModel();
+    }
+
+    @Provides
+    EditEmailViewModel providesEditEmailViewModel(){
+
+        return new EditEmailViewModel();
+    }
+
+    @Provides
+    EditPhoneViewModel providesEditPhoneViewModel(){
+
+        return new EditPhoneViewModel();
+    }
+
+    @Provides
+    EditWorkViewModel providesEditWorkViewModel(){
+
+        return new EditWorkViewModel();
     }
 }

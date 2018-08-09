@@ -4,5 +4,18 @@ public interface BusinessProfileNavigator {
 
     void onProfileImageClicked();
 
-    void setBusinessDetails();
+    void callBusinessContact();
+
+    void contactOnNameClicked();
+
+    void contactOnEmailClicked();
+
+    void contactOnFaxClicked();
+
+    void contactOnAddressClicked();
+
+    void contactOnCodeClicked();
+
+    void contactOnContactNameClicked();
+
 }

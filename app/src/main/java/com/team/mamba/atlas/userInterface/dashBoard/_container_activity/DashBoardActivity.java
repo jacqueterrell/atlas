@@ -50,7 +50,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     DispatchingAndroidInjector<Fragment> fragmentInjector;
 
 
-
     private FragmentContainerBinding binding;
 
 

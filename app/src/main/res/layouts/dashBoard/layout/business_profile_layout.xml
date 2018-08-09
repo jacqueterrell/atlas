@@ -54,6 +54,9 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="45dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:onClick="@{()-> viewModel.contactOnNameClicked()}"
                 android:text = "@{profile.getName()}"
                 />
 
@@ -139,7 +142,9 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:background="?attr/selectableItemBackground"
-        >
+            android:onClick="@{()-> viewModel.contactOnCodeClicked()}"
+
+            >
 
         <TextView
             style="@style/App_Text_view"
@@ -167,6 +172,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:background="?attr/selectableItemBackground"
+            android:onClick="@{()-> viewModel.contactOnContactNameClicked()}"
             >
 
             <TextView
@@ -195,6 +201,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:background="?attr/selectableItemBackground"
+            android:onClick="@{()-> viewModel.contactOnEmailClicked()}"
             >
 
             <TextView
@@ -224,6 +231,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:background="?attr/selectableItemBackground"
+            android:onClick="@{()-> viewModel.callBusinessContact()}"
             >
 
             <TextView
@@ -252,6 +260,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:background="?attr/selectableItemBackground"
+            android:onClick="@{()-> viewModel.contactOnFaxClicked()}"
             >
 
             <TextView
@@ -280,6 +289,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:background="?attr/selectableItemBackground"
+            android:onClick="@{()-> viewModel.contactOnAddressClicked()}"
             >
 
             <TextView
@@ -309,6 +319,7 @@
     <include
         android:id="@+id/contact_profile"
         layout="@layout/business_profile_contact"
+        bind:viewModel="@{viewModel}"
          />
 
 </FrameLayout>

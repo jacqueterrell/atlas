@@ -172,7 +172,7 @@ android {
             res.srcDirs =
                     ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/welcome',
                      'src/main/res/layouts/dashBoard', 'src/main/res/layouts/main', 'src/main/res/layouts/dashboard/info',
-                     'src/main/res/layouts/dashBoard/addContacts']
+                     'src/main/res/layouts/dashBoard/addContacts', 'src/main/res/layouts/dashBoard/userProfile']
         }
     }
 }

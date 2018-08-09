@@ -12,6 +12,11 @@ import com.team.mamba.atlas.userInterface.dashBoard.businessOpportunities.Busine
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.user_profile.UserProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_address_info.EditAddressFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_education_info.EditEducationFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_email_info.EditEmailFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_phone_info.EditPhoneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_work_history.EditWorkFragment;
 import com.team.mamba.atlas.userInterface.welcome.ViewPagerActivityModule;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
 import dagger.Module;
@@ -56,6 +61,28 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract BusinessProfileFragment bindBusinessProfileFragment();
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract EditAddressFragment bindEditAddressFragment();
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract EditEducationFragment bindEditEducationFragment();
+
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract EditEmailFragment bindEditEmailFragment();
+
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract EditPhoneFragment bindEditPhoneFragment();
+
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract EditWorkFragment bindEditWorkFragment();
+
+
+
+
 
 
 }

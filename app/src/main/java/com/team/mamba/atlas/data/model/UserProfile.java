@@ -1,7 +1,11 @@
 package com.team.mamba.atlas.data.model;
 
+import android.graphics.Typeface;
 import android.support.annotation.Keep;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
@@ -14,6 +18,8 @@ import java.util.Map;
 
 @Keep
 public class UserProfile {
+
+
     @SerializedName("id")
     public String id;
 
@@ -78,11 +84,11 @@ public class UserProfile {
 
     @SerializedName("currentEmployer")
     @Expose
-    public String currentEmployer= "...";
+    public String currentEmployer= "";
 
     @SerializedName("currentPosition")
     @Expose
-    public String currentPosition= "...";
+    public String currentPosition= "";
 
     @SerializedName("workStreet")
     @Expose
@@ -235,16 +241,65 @@ public class UserProfile {
         this.cityStateZip = cityStateZip;
     }
 
-    public List<Map<String,String>> getWorkHistory() {
-        return workHistory;
+    public String getWorkHistory() {
+
+        StringBuilder workHistoryBuilder = new StringBuilder();
+
+        for (Map<String, String> map : workHistory) {
+
+            for (Map.Entry<String,String> entry : map.entrySet()){
+
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+                if (!key.toLowerCase().equals("industry")){
+
+                    workHistoryBuilder.append(value + "\n");
+
+                }
+            }
+            workHistoryBuilder.append("\n");
+
+        }
+
+        return workHistoryBuilder.toString();
     }
 
     public void setWorkHistory(List<Map<String,String>> workHistory) {
         this.workHistory = workHistory;
     }
 
-    public List<Map<String,String>> getEducation() {
-        return education;
+    public String getEducation() {
+
+        StringBuilder educationBuilder = new StringBuilder();
+
+        for (Map<String, String> map : education) {
+
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+                if (key.toLowerCase().equals("school")){
+
+                    SpannableString spannableString = new SpannableString(value);
+                    StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+                    spannableString.setSpan(boldSpan, 0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    educationBuilder.append(spannableString + "\n");
+
+                } else {
+
+                    educationBuilder.append(value)
+                            .append("\n");
+                }
+
+            }
+
+            educationBuilder.append("\n");
+        }
+
+        return educationBuilder.toString();
     }
 
     public void setEducation(List<Map<String,String>> education) {

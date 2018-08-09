@@ -8,6 +8,13 @@
 
     <data>
 
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard.business_profile.BusinessProfileViewModel"/>
+
+
         <variable
             name = "profile"
             type = "com.team.mamba.atlas.data.model.BusinessProfile"/>
@@ -22,7 +29,7 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="15dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <LinearLayout
@@ -48,6 +55,9 @@
                     android:textSize="15sp"
                     tools:text="Matt Maher"
                     android:text = "@{profile.getName()}"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:onClick="@{()-> viewModel.contactOnNameClicked()}"
                     />
 
                 <FrameLayout
@@ -108,7 +118,9 @@
                         android:background="?attr/selectableItemBackground"
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:onClick="@{()-> viewModel.contactOnCodeClicked()}"
+                        >
 
                         <TextView
                             style="@style/App_Text_view"
@@ -136,7 +148,9 @@
                         android:background="?attr/selectableItemBackground"
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:onClick="@{()-> viewModel.contactOnContactNameClicked()}"
+                        >
 
                         <TextView
                             style="@style/App_Text_view"
@@ -164,7 +178,9 @@
                         android:background="?attr/selectableItemBackground"
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:onClick="@{()-> viewModel.contactOnEmailClicked()}"
+                        >
 
                         <TextView
                             style="@style/App_Text_view"
@@ -193,7 +209,9 @@
                         android:background="?attr/selectableItemBackground"
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:onClick="@{()-> viewModel.callBusinessContact()}"
+                        >
 
                         <TextView
                             style="@style/App_Text_view"
@@ -221,7 +239,9 @@
                         android:background="?attr/selectableItemBackground"
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:onClick="@{()-> viewModel.contactOnFaxClicked()}"
+                        >
 
                         <TextView
                             style="@style/App_Text_view"
@@ -249,7 +269,9 @@
                         android:background="?attr/selectableItemBackground"
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:onClick="@{()-> viewModel.contactOnAddressClicked()}"
+                        >
 
                         <TextView
                             style="@style/App_Text_view"

@@ -1,15 +1,25 @@
 package com.team.mamba.atlas.userInterface.dashBoard.user_profile;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.UserProfile;
@@ -17,6 +27,14 @@ import com.team.mamba.atlas.databinding.UserProfileLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_address_info.EditAddressFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_email_info.EditEmailFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_phone_info.EditPhoneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_work_history.EditWorkFragment;
+import com.team.mamba.atlas.utils.AppConstants;
+import com.team.mamba.atlas.utils.ChangeFragments;
+import com.team.mamba.atlas.utils.formatData.RegEx;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +53,11 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     private UserProfileLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
     private static UserProfile profile;
+    private static final String CELL_PHONE = "cellPhone";
+    private static final String OFFICE_PHONE = "officePhone";
+    private static final String HOME_PHONE = "homePhone";
+    private static final String PERSONAL_PHONE = "personalPhone";
+
 
     public static UserProfileFragment newInstance(UserProfile userProfile){
 
@@ -81,8 +104,39 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
+        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
 
-         setUserDetails();
+            binding.setProfile(profile);
+            binding.contactProfile.layoutContactProfile.setVisibility(View.GONE);
+
+            if (profile.getImageUrl() != null){
+
+                Glide.with(getBaseActivity())
+                        .load(profile.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.ivUserProfile);
+            }
+
+        } else {
+
+            binding.contactProfile.layoutContactProfile.setVisibility(View.VISIBLE);
+            binding.contactProfile.setProfile(profile);
+
+            if (profile.getImageUrl() != null){
+
+                Glide.with(getBaseActivity())
+                        .load(profile.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.contactProfile.ivUserProfile);
+            }
+
+            if (binding.contactProfile.tvPosition.getText().toString().trim().equals(",")){
+
+                binding.contactProfile.tvPosition.setText("");
+            }
+
+        }
+
          return binding.getRoot();
     }
 
@@ -93,87 +147,240 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     }
 
     @Override
-    public void setUserDetails() {
+    public void contactCellPhoneClicked() {
 
-        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+        viewModel.setSelectedPhone(CELL_PHONE);
+        callPhone(profile.getPhone());
+    }
 
-            showSnackbar("Is the User");
+    @Override
+    public void contactOnOfficePhoneClicked() {
 
-        } else {
+        viewModel.setSelectedPhone(OFFICE_PHONE);
+        callPhone(profile.getWorkPhone());
+    }
 
-            showSnackbar("Is a contact");
-            showNonEditableScreen();
+    @Override
+    public void contactOnHomePhoneClicked() {
 
-        }
+        viewModel.setSelectedPhone(HOME_PHONE);
+        callPhone(profile.getHomePhone());
+    }
 
+    @Override
+    public void contactOnPersonalPhoneClicked() {
 
-        StringBuilder workHistoryBuilder = new StringBuilder();
-        StringBuilder educationBuilder = new StringBuilder();
+        viewModel.setSelectedPhone(PERSONAL_PHONE);
+        callPhone(profile.getPersonalPhone());
+    }
 
+    @Override
+    public void contactOnFaxClicked() {
 
-        String name = profile.getFirstName() + " " + profile.getLastName();
-        binding.tvName.setText(name);
-        binding.tvUserCode.setText(profile.getCode());
-        binding.tvCellPhone.setText(profile.getPhone());
-        binding.tvOfficePhone.setText(profile.getWorkPhone());
-        binding.tvHomeAddress.setText(profile.getCityStateZip());
-        binding.tvPersonalPhone.setText(profile.getPersonalPhone());
-        binding.tvFaxPhone.setText(profile.getFax());
-        binding.tvPersonalEmail.setText(profile.getEmail());
-        binding.tvWorkEmail.setText(profile.getWorkEmail());
-        binding.tvWorkAddress.setText(profile.getWorkCityStateZip());
+        sendToClipBoard(profile.getFax());
+    }
 
-        if (profile.getImageUrl() != null){
+    @Override
+    public void contactOnPersonalEmailClicked() {
 
-            Glide.with(getBaseActivity())
-                    .load(profile.getImageUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(binding.ivUserProfile);
-        }
+        sendToClipBoard(profile.getEmail());
+    }
 
+    @Override
+    public void contactOnWorkEmailClicked() {
 
+        sendToClipBoard(profile.getWorkEmail());
+    }
 
-        for (Map<String, String> map : profile.getWorkHistory()) {
+    @Override
+    public void contactOnHomeAddressClicked() {
 
-            for (Map.Entry<String,String> entry : map.entrySet()){
+        sendToClipBoard(profile.getCityStateZip());
+    }
 
-                String key = entry.getKey();
-                String value = entry.getValue();
+    @Override
+    public void contactOnWorkAddressClicked() {
 
-                workHistoryBuilder.append(value)
-                        .append("\n");
-            }
+        sendToClipBoard(profile.getWorkCityStateZip());
+    }
 
+    @Override
+    public void contactOnWorkHistoryClicked() {
 
-        }
+        sendToClipBoard(profile.getWorkHistory());
+    }
 
-        for (Map<String, String> map : profile.getEducation()) {
+    @Override
+    public void contactOnEducationClicked() {
 
-            for (Map.Entry<String,String> entry : map.entrySet()){
+        sendToClipBoard(profile.getEducation());
+    }
 
-                String key = entry.getKey();
-                String value = entry.getValue();
+    @Override
+    public void editPhoneInfo() {
 
-                educationBuilder.append(value)
-                        .append("\n");
-            }
+        ChangeFragments.addFragmentFadeIn(new EditPhoneFragment(),getBaseActivity()
+                .getSupportFragmentManager(),"AddUserLayout",null);
+    }
 
+    @Override
+    public void editEmailInfo() {
 
-        }
+        ChangeFragments.addFragmentFadeIn(new EditEmailFragment(),getBaseActivity()
+                .getSupportFragmentManager(),"AddUserLayout",null);
+    }
 
-        binding.tvWorkHistory.setText(workHistoryBuilder.toString());
-        binding.tvEducation.setText(educationBuilder.toString());
+    @Override
+    public void editAddressInfo() {
+
+        ChangeFragments.addFragmentFadeIn(new EditAddressFragment(),getBaseActivity()
+                .getSupportFragmentManager(),"AddUserLayout",null);
+    }
+
+    @Override
+    public void editWorkHistoryInfo() {
+
+        ChangeFragments.addFragmentFadeIn(new EditWorkFragment(),getBaseActivity()
+                .getSupportFragmentManager(),"AddUserLayout",null);
+    }
+
+    @Override
+    public void editEductionInfo() {
 
     }
 
-    private void showNonEditableScreen(){
-
-
-    }
 
 
     @Override
     public void onUserProfileClicked() {
 
     }
+
+    public boolean isPhonePermissionsGranted() {
+
+        if (sdk >= marshMallow) {
+
+            if (ActivityCompat.checkSelfPermission(getBaseActivity(), Manifest.permission.CALL_PHONE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(getBaseActivity(),
+                        new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
+                        AppConstants.REQUEST_PHONE_PERMISSIONS);
+
+                return false;
+
+            } else {
+
+                return true;
+            }
+
+        } else {
+
+            return true;
+        }
+
+    }
+
+    private void callPhone(String profilePhone){
+
+        String adjustedPhone = profilePhone.replaceAll(RegEx.REMOVE_NON_DIGITS,"");
+
+        if (adjustedPhone.isEmpty()){
+
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseActivity());
+
+        builder.setMessage(profile.getPhone())
+                .setPositiveButton("Call", (dialog, id) -> {
+
+                    Long phone2 = Long.valueOf(adjustedPhone);
+
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + phone2));//change the number
+
+
+                    if (isPhonePermissionsGranted()) {
+
+                        try {
+
+                            startActivity(callIntent);
+                            showToastLong("dialing " + profile.getPhone());
+
+                        } catch (Exception e) {
+                            Logger.e(e.getMessage());
+                        }
+                    }
+
+                })
+
+                .setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
+
+        AlertDialog alert11 = builder.create();
+        alert11.show();
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == AppConstants.REQUEST_PHONE_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            if (viewModel.getSelectedPhone().equals(CELL_PHONE)){
+
+                contactCellPhoneClicked();
+
+            } else if (viewModel.getSelectedPhone().equals(OFFICE_PHONE)){
+
+                contactOnOfficePhoneClicked();
+
+            } else if (viewModel.getSelectedPhone().equals(HOME_PHONE)){
+
+                contactOnHomePhoneClicked();
+
+            } else if (viewModel.getSelectedPhone().equals(PERSONAL_PHONE)){
+
+                contactOnPersonalPhoneClicked();
+            }
+        }
+    }
+
+
+    /**
+     * Copys the text to the clip board
+     * @param text
+     */
+    private void sendToClipBoard(String text){
+
+        String label = text + " is copied to your clipboard";
+
+        if (!text.isEmpty() && !text.equals("...")){
+
+            try {
+
+                ClipboardManager clipboard = (ClipboardManager) getBaseActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText(label, text);
+                clipboard.setPrimaryClip(clip);
+                showToastShort(label);
+
+            } catch (Exception e){
+
+                Logger.e(e.getMessage());
+            }
+
+            try{
+
+                Vibrator v = (Vibrator) getBaseActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(400);
+
+            } catch (Exception e){
+
+                Logger.e(e.getMessage());
+            }
+        }
+
+    }
+
 }

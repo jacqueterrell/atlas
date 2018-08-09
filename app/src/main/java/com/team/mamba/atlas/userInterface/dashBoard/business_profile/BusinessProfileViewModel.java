@@ -26,5 +26,38 @@ public class BusinessProfileViewModel extends BaseViewModel<BusinessProfileNavig
         getNavigator().onProfileImageClicked();
     }
 
+    public void callBusinessContact(){
 
+        getNavigator().callBusinessContact();
+    }
+
+    public void contactOnNameClicked(){
+
+        getNavigator().contactOnNameClicked();
+    }
+
+    public void contactOnEmailClicked(){
+
+        getNavigator().contactOnEmailClicked();
+    }
+
+    public void contactOnFaxClicked(){
+
+        getNavigator().contactOnFaxClicked();
+    }
+
+    public void contactOnAddressClicked(){
+
+        getNavigator().contactOnAddressClicked();
+    }
+
+    public void contactOnCodeClicked(){
+
+        getNavigator().contactOnCodeClicked();
+    }
+
+    public void contactOnContactNameClicked(){
+
+        getNavigator().contactOnContactNameClicked();
+    }
 }
