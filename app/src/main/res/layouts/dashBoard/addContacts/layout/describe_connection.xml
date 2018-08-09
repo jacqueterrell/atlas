@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <data>
+
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsViewModel"/>
+
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="#E0A850"
+                app:cardCornerRadius="7dp"
+                card_view:cardElevation="0dp"
+                >
+
+                <Button
+                    android:id="@+id/btn_finish"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/lato"
+                    android:text="Finish"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:onClick="@{()-> viewModel.onFinishButtonClicked()}"
+                    />
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="17sp"
+                android:text="Add Connection"
+                android:paddingLeft="15dp"/>
+
+            <TextView
+            style="@style/App_Text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:text="How would you describe your new connection?"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center_horizontal"
+                >
+
+                <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:text="Please check all that apply"
+                    android:layout_gravity="center_vertical"/>
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:src="@drawable/ic_info_circle_solid"
+                    android:tint="@color/grey"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="10dp"
+                    android:onClick="@{()-> viewModel.onInfoClicked()}"
+                    />
+
+            </LinearLayout>
+
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_marginLeft="60dp">
+
+               <TextView
+                   style="@style/App_Text_view"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Share full profile info"
+                   android:layout_marginBottom="5dp"
+                   android:textStyle="bold"
+                   android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                   android:layout_marginLeft="7dp"/>
+
+               <LinearLayout
+                   android:id = "@+id/layout_family_member"
+                   android:orientation = "horizontal"
+                   android:layout_width = "wrap_content"
+                   android:layout_height = "wrap_content"
+                   android:layout_marginBottom = "10dp"
+                   >
+
+                   <android.support.v7.widget.AppCompatCheckBox
+                       android:id = "@+id/chk_box_family_member"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       app:buttonTint = "@color/black"
+                       />
+
+                   <TextView
+                       android:id = "@+id/tv_family_member"
+                       style="@style/App_Text_view"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       android:text = "Family Member"
+                       android:layout_margin = "5dp"
+                       android:layout_gravity="center_vertical"
+                       android:textSize="15sp"
+                       android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                       />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:id = "@+id/layout_personal_friend"
+                   android:orientation = "horizontal"
+                   android:layout_width = "wrap_content"
+                   android:layout_height = "wrap_content"
+                   android:layout_marginBottom = "10dp"
+                   >
+
+                   <android.support.v7.widget.AppCompatCheckBox
+                       android:id = "@+id/chk_box_personal_friend"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       app:buttonTint = "@color/black"
+                       />
+
+                   <TextView
+                       android:id = "@+id/tv_personal_friend"
+                       style="@style/App_Text_view"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       android:text = "Personal Friend"
+                       android:layout_margin = "5dp"
+                       android:layout_gravity="center_vertical"
+                       android:textSize="15sp"
+                       android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                       />
+
+               </LinearLayout>
+
+               <TextView
+                   style="@style/App_Text_view"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Share work info only"
+                   android:layout_marginBottom="5dp"
+                   android:textStyle="bold"
+                   android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                   android:layout_marginLeft="7dp"/>
+
+               <LinearLayout
+                   android:id = "@+id/layout_new_acquaintance"
+                   android:orientation = "horizontal"
+                   android:layout_width = "wrap_content"
+                   android:layout_height = "wrap_content"
+                   android:layout_marginBottom = "10dp"
+                   >
+
+                   <android.support.v7.widget.AppCompatCheckBox
+                       android:id = "@+id/chk_box_new_acquaintance"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       app:buttonTint = "@color/black"
+                       />
+
+                   <TextView
+                       android:id = "@+id/tv_new_acquaintance"
+                       style="@style/App_Text_view"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       android:text = "New Acquaintance"
+                       android:layout_margin = "5dp"
+                       android:layout_gravity="center_vertical"
+                       android:textSize="15sp"
+                       android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                       />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:id = "@+id/layout_business_contact"
+                   android:orientation = "horizontal"
+                   android:layout_width = "wrap_content"
+                   android:layout_height = "wrap_content"
+                   android:layout_marginBottom = "10dp"
+                   >
+
+                   <android.support.v7.widget.AppCompatCheckBox
+                       android:id = "@+id/chk_box_business_contact"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       app:buttonTint = "@color/black"
+                       />
+
+                   <TextView
+                       android:id = "@+id/tv_business_contact"
+                       style="@style/App_Text_view"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       android:text = "Business Contact"
+                       android:layout_margin = "5dp"
+                       android:layout_gravity="center_vertical"
+                       android:textSize="15sp"
+                       android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                       />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:id = "@+id/layout_colleague"
+                   android:orientation = "horizontal"
+                   android:layout_width = "wrap_content"
+                   android:layout_height = "wrap_content"
+                   android:layout_marginBottom = "10dp"
+                   >
+
+                   <android.support.v7.widget.AppCompatCheckBox
+                       android:id = "@+id/chk_box_colleague"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       app:buttonTint = "@color/black"
+                       />
+
+                   <TextView
+                       android:id = "@+id/tv_colleague"
+                       style="@style/App_Text_view"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       android:text = "Colleague"
+                       android:layout_margin = "5dp"
+                       android:layout_gravity="center_vertical"
+                       android:textSize="15sp"
+                       android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                       />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:id = "@+id/layout_client"
+                   android:orientation = "horizontal"
+                   android:layout_width = "wrap_content"
+                   android:layout_height = "wrap_content"
+                   android:layout_marginBottom = "10dp"
+                   >
+
+                   <android.support.v7.widget.AppCompatCheckBox
+                       android:id = "@+id/chk_box_client"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       app:buttonTint = "@color/black"
+                       />
+
+                   <TextView
+                       android:id = "@+id/tv_client"
+                       style="@style/App_Text_view"
+                       android:layout_width = "wrap_content"
+                       android:layout_height = "wrap_content"
+                       android:text = "Client"
+                       android:layout_margin = "5dp"
+                       android:layout_gravity="center_vertical"
+                       android:textSize="15sp"
+                       android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                       />
+
+               </LinearLayout>
+
+           </LinearLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/dialog_connections_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            tools:visibility="gone"
+            android:onClick="@{()-> viewModel.hideConnectionsInfo()}"
+            >
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="55dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="15dp"
+                app:contentPadding="15dp"
+                card_view:cardElevation="1dp">
+
+                <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/describe_connections_info"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"/>
+
+            </android.support.v7.widget.CardView>
+
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+</layout>

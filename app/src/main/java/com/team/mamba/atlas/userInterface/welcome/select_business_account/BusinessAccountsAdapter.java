@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessAccountsListRowBinding;
 
 import java.util.List;
@@ -14,13 +15,13 @@ import java.util.List;
 public class BusinessAccountsAdapter extends RecyclerView.Adapter<BusinessAccountsAdapter.BusinessViewHolder> {
 
 
-    private List<String> namesList;
+    private List<BusinessProfile> businessProfileList;
     private BusinessAccountsViewModel viewModel;
 
 
-    public BusinessAccountsAdapter(BusinessAccountsViewModel viewModel, List<String> namesList){
+    public BusinessAccountsAdapter(BusinessAccountsViewModel viewModel, List<BusinessProfile> businessProfiles){
 
-        this.namesList = namesList;
+        this.businessProfileList = businessProfiles;
         this.viewModel = viewModel;
     }
 
@@ -41,16 +42,16 @@ public class BusinessAccountsAdapter extends RecyclerView.Adapter<BusinessAccoun
     @Override
     public void onBindViewHolder(@NonNull BusinessViewHolder holder, int position) {
 
-        String name = namesList.get(position);
+        BusinessProfile profile = businessProfileList.get(position);
 
-        holder.binding.btnAccountName.setText(name);
+        holder.binding.btnAccountName.setText(profile.getName());
 
-        holder.binding.btnAccountName.setOnClickListener(view -> viewModel.getNavigator().getSelectedPosition(position));
+        holder.binding.btnAccountName.setOnClickListener(view -> viewModel.getNavigator().onAccountSelected(profile));
     }
 
     @Override
     public int getItemCount() {
-        return namesList.size();
+        return businessProfileList.size();
     }
 
     public class BusinessViewHolder extends RecyclerView.ViewHolder {

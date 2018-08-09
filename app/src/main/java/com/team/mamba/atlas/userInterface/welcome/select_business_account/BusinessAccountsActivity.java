@@ -4,37 +4,41 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessAccountsRecyclerViewBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-public class BusinessAccountsActivity extends BaseActivity<BusinessAccountsRecyclerViewBinding,BusinessAccountsViewModel>
- implements BusinessAccountsNavigator {
+public class BusinessAccountsActivity
+        extends BaseActivity<BusinessAccountsRecyclerViewBinding, BusinessAccountsViewModel>
+        implements BusinessAccountsNavigator {
 
 
     @Inject
     BusinessAccountsViewModel viewModel;
 
     private BusinessAccountsRecyclerViewBinding binding;
-    private List<String> namesList = new ArrayList<>();
-    private List<String> businessIdList = new ArrayList<>();
-    private static Map<String,String> accountsMap;
+    private static List<BusinessProfile> businessProfiles = new ArrayList<>();
 
 
-    public static Intent newIntent(Context context, Map<String,String> namesMap) {
 
-        accountsMap = namesMap;
+    public static Intent newIntent(Context context, List<BusinessProfile>profiles) {
+
+        businessProfiles = profiles;
         return new Intent(context, BusinessAccountsActivity.class);
     }
 
@@ -59,13 +63,31 @@ public class BusinessAccountsActivity extends BaseActivity<BusinessAccountsRecyc
     }
 
     @Override
-    public void getSelectedPosition(int position) {
+    public void onAccountSelected(BusinessProfile profile) {
 
-        String userId = businessIdList.get(position);
-        dataManager.getSharedPrefs().setUserId(userId);
-        finish();
-        //open Dashboard
-        //startActivity(DashBoardActivity.newIntent(BusinessAccountsActivity.this));
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        String title = "Login as " + profile.getName() + "?";
+        String msg = "You are an authorized representative for " + profile.getName();
+
+        dialog.setTitle(title)
+                .setMessage(msg)
+                .setNegativeButton("No", (paramDialogInterface, paramInt) -> {
+
+                })
+                .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
+
+                    finishAffinity();
+
+                    dataManager.getSharedPrefs().setUserId(profile.getId());
+                    dataManager.getSharedPrefs().setUserLoggedIn(true);
+                    dataManager.getSharedPrefs().setBusinessAccount(true);
+                    startActivity(DashBoardActivity.newIntent(BusinessAccountsActivity.this));
+                });
+
+        dialog.show();
+
     }
 
     @Override
@@ -74,17 +96,8 @@ public class BusinessAccountsActivity extends BaseActivity<BusinessAccountsRecyc
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
 
-        for (Map.Entry<String, String> entry : accountsMap.entrySet()) {
 
-            String businessId = entry.getKey();
-            String businessName = entry.getValue();
-
-            businessIdList.add(businessId);
-            namesList.add(businessName);
-
-        }
-
-            BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(),namesList);
+        BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(), businessProfiles);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(accountsAdapter);

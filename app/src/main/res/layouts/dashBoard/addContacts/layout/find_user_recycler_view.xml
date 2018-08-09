@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <data>
+
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserViewModel"/>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:textSize="17sp"
+            android:text="Find Users"
+            android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="95dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:layout_marginLeft="10dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="#E0A850"
+                app:cardCornerRadius="7dp"
+                card_view:cardElevation="0dp"
+                >
+
+                <Button
+                    android:id="@+id/btn_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/lato"
+                    android:text="Search"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:onClick="@{()-> viewModel.onNextButtonClicked()}"
+                    />
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="25dp"
+                android:layout_weight="1">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

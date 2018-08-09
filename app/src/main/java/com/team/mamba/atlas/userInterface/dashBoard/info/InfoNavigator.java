@@ -1,12 +1,16 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
+import com.team.mamba.atlas.data.model.UserConnections;
+
+import java.util.List;
+
 public interface InfoNavigator {
 
     void onNetworkButtonClicked();
 
     void onOpportunitiesButtonClicked();
 
-    void onAddButtonClicked();
+    void onAddContactClicked();
 
     void onUserProfileClicked();
 
@@ -25,4 +29,16 @@ public interface InfoNavigator {
     void hideRecentActivityInfoDialog();
 
     void hideUserStatusInfoDialog();
+
+    void setBarChartData();
+
+    void setUserStatsAdapter(List<String> userStats,List<UserConnections> connectionRecords);
+
+    void handlerError(String msg);
+
+    void onRecentActivitiesRowClicked(UserConnections userConnections);
+
+    void restartApplication();
+
+
 }

@@ -1,37 +1,44 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.androidanimations.library.YoYo.AnimatorCallback;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.team.mamba.atlas.BR;
+import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.UserConnections;
+import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import java.util.Collections;
+import java.util.Map;
 import javax.inject.Inject;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
+public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         implements InfoNavigator {
 
     @Inject
@@ -42,9 +49,14 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
 
     private InfoLayoutBinding binding;
     float barWidth = 0.65f; // x2 dataset
+    private static List<String> userStatsList = new ArrayList<>();
+    private UserStatsAdapter userStatsAdapter;
+    private RecentActivitiesAdapter recentActivitiesAdapter;
+    private static List<UserConnections> recentActivityConnections = new ArrayList<>();
+    private DashBoardActivityNavigator parentNavigator;
 
 
-    public static InfoFragment newInstance(){
+    public static InfoFragment newInstance() {
 
         return new InfoFragment();
     }
@@ -71,21 +83,59 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
 
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        parentNavigator = (DashBoardActivityNavigator) context;
+        parentNavigator.showToolBar();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-         binding = getViewDataBinding();
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = getViewDataBinding();
 
-         setLabels();
-         setBarChart();
+        userStatsAdapter = new UserStatsAdapter(userStatsList);
+        binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerUserStats.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerUserStats.setAdapter(userStatsAdapter);
 
-         return binding.getRoot();
+        recentActivitiesAdapter = new RecentActivitiesAdapter(getViewModel(), recentActivityConnections);
+        binding.recyclerRecentActivity.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerRecentActivity.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerRecentActivity.setAdapter(recentActivitiesAdapter);
+
+        binding.swipeContainerRecentActiviy.setOnRefreshListener(() -> {
+
+            viewModel.getAllUsers(getViewModel());
+
+        });
+
+        binding.swipeContainerUserStats.setOnRefreshListener(() -> {
+
+            viewModel.getAllUsers(getViewModel());
+
+        });
+
+        if (!viewModel.getUserStatsList().isEmpty()){
+
+           // setUserStatsAdapter(viewModel.getUserStatsList(),viewModel.getRecentActivityConnections());
+            viewModel.getAllUsers(getViewModel());
+
+        } else {
+
+            viewModel.getAllUsers(getViewModel());
+        }
+
+        return binding.getRoot();
     }
 
     @Override
@@ -132,6 +182,18 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
 
         binding.layoutOpportunityNotSelected.setVisibility(View.VISIBLE);
         binding.layoutOpportunitySelected.setVisibility(View.GONE);
+
+        viewModel.setNetworkChartSelected(true);
+
+        if (viewModel.getNetworksMap().isEmpty()){
+
+            viewModel.getAllUsers(getViewModel());
+
+        } else {
+
+            setNetworksBarChart();
+        }
+
     }
 
     @Override
@@ -142,21 +204,57 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
 
         binding.layoutOpportunityNotSelected.setVisibility(View.GONE);
         binding.layoutOpportunitySelected.setVisibility(View.VISIBLE);
+
+        viewModel.setNetworkChartSelected(false);
+
+        if (viewModel.getOpportunitiesMap().isEmpty()){
+
+            viewModel.getAllUsers(getViewModel());
+
+        } else {
+
+            setOpportunitiesBarChart();
+        }
+
     }
 
     @Override
-    public void onAddButtonClicked() {
+    public void onAddContactClicked() {
 
+        parentNavigator.openAddContactDialog();
     }
 
     @Override
     public void onUserProfileClicked() {
 
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            for (BusinessProfile profile : viewModel.getBusinessProfileList()){
+
+                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+
+                    parentNavigator.openBusinessProfile(profile);
+
+                }
+            }
+
+
+        } else {
+
+            for (UserProfile profile : viewModel.getAllUsersList()){
+
+                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+
+                    parentNavigator.openUserProfile(profile);
+
+                }
+            }        }
     }
 
     @Override
     public void onSettingsClicked() {
 
+        parentNavigator.openSettingsScreen();
     }
 
     @Override
@@ -170,51 +268,170 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
     }
 
     @Override
+    public void onRecentActivitiesRowClicked(UserConnections userConnections) {
+
+        if (userConnections.isOrgBus){
+
+            for (BusinessProfile profile : viewModel.getBusinessProfileList()){
+
+                if (profile.getId().equals(userConnections.getConsentingUserID())){
+
+                    parentNavigator.openBusinessProfile(profile);
+
+                }
+            }
+
+
+        } else {
+
+            for (UserProfile profile : viewModel.getAllUsersList()){
+
+                if (profile.getId().equals(userConnections.getConsentingUserID())){
+
+                    parentNavigator.openUserProfile(profile);
+
+                }
+            }
+        }
+    }
+
+    @Override
     public void onNotificationsClicked() {
 
     }
 
-    private List<String> setLabels(){
+    @Override
+    public void setUserStatsAdapter(List<String> userStats, List<UserConnections> connectionRecords) {
+
+
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            binding.tvUserId.setText(viewModel.getBusinessProfile().getCode());
+
+        } else {
+
+            binding.tvUserId.setText(viewModel.getUserProfile().getCode());
+        }
+
+        Collections.sort(connectionRecords,(o1,o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
+
+        userStatsList.clear();
+        userStatsList.addAll(userStats);
+        recentActivityConnections.clear();
+        recentActivityConnections.addAll(connectionRecords);
+
+        userStatsAdapter.notifyDataSetChanged();
+        recentActivitiesAdapter.notifyDataSetChanged();
+        hideSplashScreen();
+        binding.swipeContainerUserStats.setRefreshing(false);
+        binding.swipeContainerRecentActiviy.setRefreshing(false);
+
+        UserProfile profile = viewModel.getUserProfile();
+        parentNavigator.setUserProfile(profile);
+
+    }
+
+
+    @Override
+    public void handlerError(String msg) {
+
+        showSnackbar(msg);
+        hideSplashScreen();
+        binding.swipeContainerUserStats.setRefreshing(false);
+        binding.swipeContainerRecentActiviy.setRefreshing(false);
+    }
+
+    @Override
+    public void restartApplication() {
+
+        dataManager.getSharedPrefs().setUserLoggedIn(false);
+        getBaseActivity().finishAffinity();
+        startActivity(ViewPagerActivity.newIntent(getBaseActivity()));
+    }
+
+    @Override
+    public void setBarChartData() {
+
+        if (viewModel.isNetworkChartSelected()){
+
+            setNetworksBarChart();
+
+        } else {
+
+            setOpportunitiesBarChart();
+
+        }
+    }
+
+
+    private List<String> setNetworkLabels() {
 
         List<String> labels = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH);
 
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < 6; i++) {
 
             calendar.set(Calendar.MONTH, currentMonth - i);
 
             labels.add(getMonthsList().get(currentMonth));
 
-            currentMonth -=1;
+            currentMonth -= 1;
 
         }
 
         return labels;
     }
 
-    private List<BarEntry> setNetworkBarValues(){
+    private List<BarEntry> setNetworkBarValues() {
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 100));
-        entries.add(new BarEntry(1, 50));
-        entries.add(new BarEntry(2, 30));
-        entries.add(new BarEntry(3, 10));
-        entries.add(new BarEntry(4, 20));
-        entries.add(new BarEntry(5, 0));
+
+        int count = 0;
+
+        for (Map.Entry<Integer, Integer> entry : viewModel.getNetworksMap().entrySet()) {
+
+            entries.add(new BarEntry(count, entry.getValue()));
+            count += 1;
+        }
+
+        return entries;
+    }
+
+    private List<String> setOpportunitiesLabels(){
+
+        List<String> labels = new ArrayList<>();
+
+        labels.add("New");
+        labels.add("Qualified");
+        labels.add("Proposal");
+        labels.add("Negotiation");
+        labels.add("Closed");
+
+        return labels;
+    }
+
+    private List<BarEntry> setOpportunitiesBarValues() {
+
+        List<BarEntry> entries = new ArrayList<>();
+
+        int count = 0;
+
+        for (Map.Entry<Integer, Integer> entry : viewModel.getOpportunitiesMap().entrySet()) {
+
+            entries.add(new BarEntry(count, entry.getValue()));
+            count += 1;
+        }
 
         return entries;
     }
 
 
-    private void setBarChart(){
+    private void setNetworksBarChart() {
 
         BarDataSet dataSet = new BarDataSet(setNetworkBarValues(), "New Connections");
 
-        List<Integer> colors = new ArrayList<>();
-        colors.add(R.color.chart_blue);
-
-        dataSet.setColor(ContextCompat.getColor(getBaseActivity(),R.color.chart_blue));
+        dataSet.setColor(ContextCompat.getColor(getBaseActivity(), R.color.chart_blue));
         dataSet.setValueTextColor(R.color.black);
         dataSet.setValueTextSize(14f);
         dataSet.setValueFormatter(new LargeValueFormatter());
@@ -230,9 +447,12 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
         xAxis.setGranularityEnabled(true);
         xAxis.setAxisLineColor(R.color.black);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter((value, axis) -> setLabels().get((int) value));
-
-                //Y-axis
+        xAxis.setValueFormatter((value, axis) -> {
+            if (setNetworkLabels().size() > (int) value) {
+                return setNetworkLabels().get((int) value);
+            } else return null;
+        });
+        //Y-axis
         YAxis rightAxis = binding.barChartNetwork.getAxisRight();
         rightAxis.setEnabled(false);
         rightAxis.setDrawGridLines(false);
@@ -243,16 +463,72 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
         leftAxis.setEnabled(false);
         leftAxis.setDrawLabels(false);
 
+        binding.barChartNetwork.setFitBars(true);
+        binding.barChartNetwork.setData(data);
+
+        binding.barChartNetwork.getLegend().setTextColor(ContextCompat.getColor(getBaseActivity(), R.color.black));
+        binding.barChartNetwork.invalidate();
+        binding.barChartNetwork.animateXY(1000, 1000);
+        binding.barChartNetwork.getDescription().setText("");
+        binding.barChartNetwork.setFocusable(false);
+
+        binding.barChartNetwork.setVisibility(View.INVISIBLE);
+        Handler handler = new Handler();
+        binding.barChartNetwork.animateXY(1000, 1000);
+        handler.postDelayed(() -> binding.barChartNetwork.setVisibility(View.VISIBLE),400);
+
+    }
+
+    private void setOpportunitiesBarChart() {
+
+        BarDataSet dataSet = new BarDataSet(setOpportunitiesBarValues(), "Opportunities");
+
+        dataSet.setColor(ContextCompat.getColor(getBaseActivity(), R.color.chart_red));
+        dataSet.setValueTextColor(R.color.black);
+        dataSet.setValueTextSize(14f);
+        dataSet.setValueFormatter(new LargeValueFormatter());
+
+        BarData data = new BarData(dataSet);
+        data.setBarWidth(barWidth);
+
+        //X-axis
+        XAxis xAxis = binding.barChartNetwork.getXAxis();
+        xAxis.setTextColor(R.color.black);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setAxisLineColor(R.color.black);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter((value, axis) -> {
+            if (setOpportunitiesLabels().size() > (int) value) {
+                return setOpportunitiesLabels().get((int) value);
+            } else return null;
+        });
+        //Y-axis
+        YAxis rightAxis = binding.barChartNetwork.getAxisRight();
+        rightAxis.setEnabled(false);
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawLabels(false);
+
+        YAxis leftAxis = binding.barChartNetwork.getAxisLeft();
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setEnabled(false);
+        leftAxis.setDrawLabels(false);
 
         binding.barChartNetwork.setData(data);
         binding.barChartNetwork.setFitBars(true);
         binding.barChartNetwork.getLegend().setTextColor(ContextCompat.getColor(getBaseActivity(), R.color.black));
-        binding.barChartNetwork.animateXY(1000, 1000);
         binding.barChartNetwork.getDescription().setText("");
+        binding.barChartNetwork.setClickable(false);
+
+        binding.barChartNetwork.setVisibility(View.INVISIBLE);
+        Handler handler = new Handler();
+        binding.barChartNetwork.animateXY(1000, 1000);
+        handler.postDelayed(() -> binding.barChartNetwork.setVisibility(View.VISIBLE),400);
 
     }
 
-        private List<String> getMonthsList(){
+    private List<String> getMonthsList() {
 
         List<String> monthsList = new ArrayList<>();
 
@@ -270,6 +546,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding,InfoViewModel>
         monthsList.add("Dec");
 
         return monthsList;
+    }
+
+
+    private void hideSplashScreen() {
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(500)
+                .onEnd(animator -> binding.layoutSplashScreen.setVisibility(View.GONE))
+                .playOn(binding.layoutSplashScreen);
     }
 
 }

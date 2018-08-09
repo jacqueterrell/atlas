@@ -122,7 +122,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onFirstNameNextClicked() {
 
-        String name = binding.dialogEnterFirstName.etFirstName.getText().toString();
+        String name = binding.dialogEnterFirstName.etFirstName.getText().toString().trim();
 
         if (viewModel.isNameValid(name)) {
 
@@ -145,7 +145,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onLastNameNextClicked() {
 
-        String name = binding.dialogEnterLastName.etLastName.getText().toString();
+        String name = binding.dialogEnterLastName.etLastName.getText().toString().trim();
 
         if (viewModel.isNameValid(name)) {
 
@@ -271,7 +271,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onBusinessScreenLearnMoreClicked() {
 
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_SITE_URL));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
         startActivity(i);
     }
 
@@ -285,7 +285,16 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         if (email.isEmpty() && password.equals("admin")){
 
-            loginAsAdmin();
+            dataManager.getSharedPrefs().setUserId("S0URPfcKiVanC5NhHd4n9ejcEWZ2");
+            viewModel.setBusinessLogin(false);
+            openDashBoard();
+
+        } else if (email.isEmpty() && password.equals("test")){
+
+            dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2");
+            viewModel.setBusinessLogin(false);
+
+            openDashBoard();
 
         } else {
 
@@ -320,7 +329,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         hideProgressSpinner();
         hideBusinessLoginScreen();
-        startActivity(BusinessAccountsActivity.newIntent(getBaseActivity(),viewModel.getBusinessNamesMap()));
+        startActivity(BusinessAccountsActivity.newIntent(getBaseActivity(),viewModel.getBusinessProfileList()));
     }
 
     @Override
@@ -332,19 +341,9 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         showAlert(title,body);
     }
 
-    @Override
-    public void loginAsAdmin() {
-
-       //todo login as admin
-
-    }
 
     @Override
     public void openDashBoard() {
-
-        dataManager.getSharedPrefs().setFirstName(viewModel.getFirstName());
-        dataManager.getSharedPrefs().setLastName(viewModel.getLastName());
-        dataManager.getSharedPrefs().setPhoneNumber(viewModel.getPhoneNumber());
 
 
         hideEnterSMSCode();
@@ -352,13 +351,15 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         if (viewModel.isBusinessLogin()){
 
-            showAlert("Business Login","Dashboard is open");
+            dataManager.getSharedPrefs().setBusinessAccount(true);
+            getBaseActivity().finishAffinity();
+            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
 
         } else {
 
+            dataManager.getSharedPrefs().setBusinessAccount(false);
             getBaseActivity().finishAffinity();
             startActivity(DashBoardActivity.newIntent(getBaseActivity()));
-            showAlert("Success","Dashboard is open");
 
         }
 
@@ -628,6 +629,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
                 Logger.d("onVerificationCompleted: " + phoneAuthCredential);
                 viewModel.setPhoneAuthCredential(phoneAuthCredential);
                 viewModel.signInWithPhoneAuthCredential(getViewModel());
+                showToastShort("Auto-verified");
 
             }
 

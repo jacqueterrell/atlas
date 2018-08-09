@@ -9,10 +9,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
+import com.team.mamba.atlas.data.model.BusinessProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
+import com.team.mamba.atlas.utils.formatData.AppFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +24,7 @@ import javax.inject.Inject;
 public class WelcomeDataModel {
 
     private AppDataManager dataManager;
+    private boolean isUser = false;
 
     @Inject
     public WelcomeDataModel(AppDataManager dataManager) {
@@ -53,16 +57,7 @@ public class WelcomeDataModel {
 
                     if (task.isSuccessful()) {
 
-                        if (isCurrentUser(viewModel)) {
-
-                            viewModel.getNavigator().openDashBoard();
-
-                        } else {
-
-                            addUserToFirebaseDatabase(viewModel);
-                            viewModel.getNavigator().handleError("Adding New User");
-
-                        }
+                        saveUser(viewModel);
                         Logger.d("signInWithCredential:success");
 
                     } else {
@@ -88,6 +83,7 @@ public class WelcomeDataModel {
         String token = FirebaseInstanceId.getInstance().getToken();
         DocumentReference newUserRef = db.collection(AppConstants.USERS_COLLECTION).document();
         String myId = newUserRef.getId();
+        String userCode = "2";
 
         Map<String, Object> user = new HashMap<>();
         user.put("firstName", viewModel.getFirstName());
@@ -98,13 +94,15 @@ public class WelcomeDataModel {
         user.put("deviceToken", token);
         user.put("id", myId);
         user.put("badgeCount", 0);
-        user.put("code", 1);
+        user.put("code", userCode);
         user.put("score", 0);
 
         newUserRef.set(user)
                 .addOnSuccessListener(documentReference -> {
 
                     dataManager.getSharedPrefs().setUserId(myId);
+                    dataManager.getSharedPrefs().setUserCode(userCode);
+
                     viewModel.getNavigator().openDashBoard();
 
                 })
@@ -117,51 +115,81 @@ public class WelcomeDataModel {
 
     /**
      * Checks to see if the user's details have already been saved
-     *
-     * @return
      */
-    private boolean isCurrentUser(WelcomeViewModel viewModel) {
+    private void saveUser(WelcomeViewModel viewModel) {
 
         String phone = viewModel.getPhoneNumber();
         String firstName = viewModel.getFirstName();
         String lastName = viewModel.getLastName();
+        String dateOfBirth = Long.toString(viewModel.getDateOfBirth());
 
-        String cachedPhone = dataManager.getSharedPrefs().getPhoneNumber();
-        String cachedFirstName = dataManager.getSharedPrefs().getFirstName();
-        String cachedLastName = dataManager.getSharedPrefs().getLastName();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        db.collection(AppConstants.USERS_COLLECTION)
+                .whereEqualTo("firstName", firstName)
+                .get()
+                .addOnCompleteListener(task -> {
 
-        if (phone.equals(cachedPhone)
-                && firstName.equals(cachedFirstName)
-                && lastName.equals(cachedLastName)) {
+                    if (task.isSuccessful()) {
 
-            return true;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
 
-        } else {
+                            String userId = document.getData().get("id").toString();
+                            String userCode = document.getData().get("code").toString();
+                            String last = document.getData().get("lastName").toString();
+                            String phoneNumber = document.getData().get("phone").toString();
+                            String dob = document.getData().get("dob").toString();
 
-            return false;
-        }
+                            String adjustedDob = AppFormatter.timeStampFormatter.format(Double.valueOf(dob));
+
+                            if (last.equals(lastName)
+                                    && phoneNumber.equals(phone)
+                                    && adjustedDob.equals(dateOfBirth)) {
+
+                                isUser = true;
+
+                                dataManager.getSharedPrefs().setUserId(userId);
+                                dataManager.getSharedPrefs().setUserCode(userCode);
+                                break;
+                            }
+                        }
+
+                        if (isUser) {
+
+                            viewModel.getNavigator().openDashBoard();
+
+                        } else {
+
+                            addUserToFirebaseDatabase(viewModel);
+                        }
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                        task.getException().printStackTrace();
+                    }
+
+                });
+
     }
 
 
-    public void firebaseAuthenticateByEmail(WelcomeViewModel viewModel,String email,String password){
+    public void firebaseAuthenticateByEmail(WelcomeViewModel viewModel, String email, String password) {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        mAuth.signInWithEmailAndPassword(email,password)
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(viewModel.getNavigator().getParentActivity(), task -> {
 
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
 
-                        viewModel.getNavigator().handleError("success");
-                        checkAllBusinesses(viewModel,email);
+                        checkAllBusinesses(viewModel, email);
 
                     } else {
 
                         viewModel.getNavigator().showBusinessNotFoundAlert();
                     }
                 });
-
 
         // checkAllBusinesses(viewModel,email);
 
@@ -173,8 +201,6 @@ public class WelcomeDataModel {
         //if match found login as the business
         //if multiple matched recylerview to select the business to represent
 
-        Map<String,String> namesMap = new LinkedHashMap<>();
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)
@@ -184,26 +210,18 @@ public class WelcomeDataModel {
 
                     if (task.isSuccessful()) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
 
-                            Logger.i("email:" + document.getData().get("email"));
-                            String userId = document.getData().get("id").toString();
-                            String name = document.getData().get("name").toString();
+                        viewModel.setBusinessProfileList(businessProfiles);
 
-                            namesMap.put(userId,name);
-
-
-                        }
-
-                        viewModel.setBusinessNamesMap(namesMap);
-
-                        if (namesMap.isEmpty()){
+                        if (viewModel.getBusinessProfileList().isEmpty()) {
 
                             //todo can this situation exist
                             viewModel.getNavigator().showBusinessNotFoundAlert();
 
-                        } else if (namesMap.size() == 1){
+                        } else if (viewModel.getBusinessProfileList().size() == 1) {
 
+                            dataManager.getSharedPrefs().setUserId(businessProfiles.get(0).getId());
                             viewModel.getNavigator().openDashBoard();
 
                         } else {
@@ -213,13 +231,11 @@ public class WelcomeDataModel {
 
                     } else {
 
-                        viewModel.getNavigator().handleError("Error getting documents");
                         task.getException().printStackTrace();
                     }
                 });
 
     }
-
 
 
 }

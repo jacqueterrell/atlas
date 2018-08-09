@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-
     <string name="accessories_button">Accessories</string>
+
+    <string name="add_contact_body">Would you like to add a person or an organization/business?</string>
 
     <string name="business_login_title">Business Organizational Login</string>
     <string name="business_not_found_body">We couldn\'t find your business or organization with the provided credentials.
@@ -24,11 +25,22 @@
 
     <string name="my_birthday">My Birthday:</string>
 
+    <string name="network">Network</string>
+
+    <string name="opportunities">Opportunities</string>
+
     <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. <br/> Standard message rates apply.</string>
     <string name="phone_number_warning_title">Login to Atlas with Your Phone Number</string>
 
+    <string name="recent_activity">Recent Activity</string>
+
     <string name="up_to_date_body">As your network moves over time, your access to them never does. When they updater their profiles, you\'re always ready. Every time</string>
     <string name="up_to_date_title">Up-to-Date Always</string>
+
+    <string name="user_stats">User Stats</string>
+    <string name="user_status_info">Your user statistics show you the number of individuals you\'re connected to in your network, the number of companies
+    that people in your network work for, and the number opportunities you\'ve logged inside Atlas. Your user score is based on these network statistics
+    and changed over time relative to Atlas' entire user base.</string>
 
     <string name="verify">Verify</string>
     <string name="verify_age_body">To create an account on Atlas, you must be a minimum of 13 years old.</string>
@@ -36,16 +48,12 @@
 
     <string name="what_is_your_cell">What\'s your cell phone number?</string>
 
-    <string name="network">Network</string>
+    <string name="describe_connections_info">Atlas uses the following designations to determine how much information
+        you share with your connection. Atlas will only share your work information with the Business Contact, Colleague,
+        New Acquaintance, and Client designations (similar to if you shared your business card). Should you have personal
+        contact information (e.g., home address, personal email, etc.), Atlas will share personal information with connections
+        designated as Personal Friend or Family Member.
+    </string>
 
-    <string name="opportunities">Opportunities</string>
-
-    <string name="recent_activity">Recent Activity</string>
-
-    <string name="user_stats">User Stats</string>
-
-    <string name="user_status_info">Your user statistics show you the number of individuals you\'re connected to in your network, the number of companies
-    that people in your network work for, and the number opportunities you\'ve logged inside Atlas. Your user score is based on these network statistics
-    and changed over time relative to Atlas' entire user base.</string>
 
 </resources>
