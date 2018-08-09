@@ -26,11 +26,13 @@ import com.team.mamba.atlas.data.model.UserConnections;
 import com.team.mamba.atlas.data.model.UserProfile;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import java.util.Collections;
 import java.util.Map;
 import javax.inject.Inject;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -337,6 +339,14 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         hideSplashScreen();
         binding.swipeContainerUserStats.setRefreshing(false);
         binding.swipeContainerRecentActiviy.setRefreshing(false);
+    }
+
+    @Override
+    public void restartApplication() {
+
+        dataManager.getSharedPrefs().setUserLoggedIn(false);
+        getBaseActivity().finishAffinity();
+        startActivity(ViewPagerActivity.newIntent(getBaseActivity()));
     }
 
     @Override

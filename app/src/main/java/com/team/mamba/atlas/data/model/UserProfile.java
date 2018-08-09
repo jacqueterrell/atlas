@@ -6,6 +6,9 @@ import android.support.annotation.Keep;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
@@ -16,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@Keep
+@IgnoreExtraProperties
 public class UserProfile {
 
 
@@ -122,7 +125,6 @@ public class UserProfile {
     @SerializedName("phone")
     @Expose
     public String phone= "...";
-
 
     public UserProfile() {
 
@@ -241,7 +243,12 @@ public class UserProfile {
         this.cityStateZip = cityStateZip;
     }
 
-    public String getWorkHistory() {
+    public List<Map<String,String>> getWorkHistory() {
+
+        return workHistory;
+    }
+
+   @Exclude public String getWorkHistoryString(){
 
         StringBuilder workHistoryBuilder = new StringBuilder();
 
@@ -265,11 +272,18 @@ public class UserProfile {
         return workHistoryBuilder.toString();
     }
 
+
+
     public void setWorkHistory(List<Map<String,String>> workHistory) {
         this.workHistory = workHistory;
     }
 
-    public String getEducation() {
+    public List<Map<String,String>> getEducation() {
+
+       return education;
+    }
+
+  @Exclude  public String getEducationString(){
 
         StringBuilder educationBuilder = new StringBuilder();
 
@@ -363,6 +377,12 @@ public class UserProfile {
     }
 
     public long getTimestamp() {
+
+        String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
+
+        return Long.parseLong(adjustedTime);    }
+
+    public long getAdjustedTimeStamp(){
 
         String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
 

@@ -45,7 +45,7 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
 
         holder.binding.tvUserStat.setText(record.getConsentingUserName());
 
-        if (record.isBusiness() && !record.isNeedsApproval() && !record.isRecentActivity()){ //confirmed business record
+        if (record.isBusiness()){ //confirmed business record
 
             holder.binding.ivConfirmedConnectionBusiness.setVisibility(View.VISIBLE);
             holder.binding.ivConfirmedConnectionIndividual.setVisibility(View.GONE);

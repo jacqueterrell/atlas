@@ -13,7 +13,7 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.user_profile.UserProfileViewModel" />
+            type="com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileViewModel" />
 
         <variable
             name = "profile"
@@ -434,7 +434,7 @@
                             style="@style/App_Text_view"
                             android:layout_width="170dp"
                             android:layout_height="wrap_content"
-                            android:text = "@{profile.getCityStateZip()}"
+                            android:text = "@{profile.getStreet() + ` ` +  profile.getCityStateZip()}"
                             tools:text="2366" />
 
                         <View
@@ -486,7 +486,7 @@
                             style="@style/App_Text_view"
                             android:layout_width="170dp"
                             android:layout_height="wrap_content"
-                            android:text = "@{profile.getWorkCityStateZip()}"
+                            android:text = "@{profile.getWorkStreet() + ` ` +  profile.getWorkCityStateZip()}"
                             tools:text="..." />
 
                     </LinearLayout>
@@ -516,7 +516,7 @@
                             style="@style/App_Text_view"
                             android:layout_width="270dp"
                             android:layout_height="wrap_content"
-                            android:text = "@{profile.getWorkHistory()}"
+                            android:text = "@{profile.getWorkHistoryString()}"
                             tools:text="Rural King Android" />
 
                         <View
@@ -571,7 +571,7 @@
                             style="@style/App_Text_view"
                             android:layout_width="270dp"
                             android:layout_height="wrap_content"
-                            android:text = "@{profile.getEducation()}"
+                            android:text = "@{profile.getEducationString()}"
                             tools:text="..." />
 
                         <View

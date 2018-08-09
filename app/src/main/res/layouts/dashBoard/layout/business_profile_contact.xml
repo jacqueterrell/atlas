@@ -12,7 +12,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.business_profile.BusinessProfileViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileViewModel"/>
 
 
         <variable

@@ -5,18 +5,18 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.business_profile.BusinessProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
-import com.team.mamba.atlas.userInterface.dashBoard.businessOpportunities.BusinessOpportunitiesFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.user_profile.UserProfileFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_address_info.EditAddressFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_education_info.EditEducationFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_email_info.EditEmailFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_phone_info.EditPhoneFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.user_profile.edit_work_history.EditWorkFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_phone_info.EditPhoneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history.EditWorkFragment;
 import com.team.mamba.atlas.userInterface.welcome.ViewPagerActivityModule;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
 import dagger.Module;
@@ -30,7 +30,7 @@ public abstract class FragmentBuilder {
     abstract WelcomeFragment bindWelcomeFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
-    abstract BusinessOpportunitiesFragment bindBusinessOpportunitiesFragment();
+    abstract CrmFragment bindBusinessOpportunitiesFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract ContactsFragment bindContactsFragment();

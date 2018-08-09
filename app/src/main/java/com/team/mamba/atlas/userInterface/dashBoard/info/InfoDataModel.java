@@ -83,6 +83,10 @@ public class InfoDataModel {
                         viewModel.setAllUsersList(adjustedProfileList);
 
                         checkAllConnections(viewModel);
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                        viewModel.getNavigator().restartApplication();
                     }
 
                 });
@@ -451,7 +455,7 @@ public class InfoDataModel {
 
                             if (profile.getId().equals(record.getConsentingUserID())) {
 
-                                calendar.setTimeInMillis(profile.getTimestamp() * 1000);
+                                calendar.setTimeInMillis(profile.getAdjustedTimeStamp() * 1000);
                                 int lastTimeUpdating = calendar.get(Calendar.DAY_OF_YEAR);
 
                                 if (today - lastTimeUpdating <= 2) {

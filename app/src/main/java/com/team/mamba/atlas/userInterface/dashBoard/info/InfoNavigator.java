@@ -38,5 +38,7 @@ public interface InfoNavigator {
 
     void onRecentActivitiesRowClicked(UserConnections userConnections);
 
+    void restartApplication();
+
 
 }

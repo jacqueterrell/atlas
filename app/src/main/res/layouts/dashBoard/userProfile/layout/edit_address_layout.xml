@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressViewModel"/>
 
     </data>
 
@@ -31,31 +31,71 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="105dp"
-                android:layout_height="40dp"
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_gravity="end"
-                android:layout_marginLeft="10dp"
-                android:innerRadius="0dp"
-                android:shape="ring"
-                app:cardBackgroundColor="#E0A850"
-                app:cardCornerRadius="7dp"
-                card_view:cardElevation="0dp"
-                >
+                android:layout_marginBottom="20dp">
 
-                <Button
-                    android:id="@+id/btn_next"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:fontFamily="@font/lato"
-                    android:text="Next"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:onClick="@{()-> viewModel.onNextButtonClicked()}"
-                    />
 
-            </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="105dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="10dp"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    app:cardBackgroundColor="@color/grey"
+                    app:cardCornerRadius="7dp"
+                    card_view:cardElevation="0dp"
+                    >
+
+                    <Button
+                        android:id="@+id/btn_save_close"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:fontFamily="@font/lato"
+                        android:text="Save &amp; Close"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:onClick="@{()-> viewModel.onSaveAndCloseClicked()}"
+                        />
+
+                </android.support.v7.widget.CardView>
+
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="105dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="10dp"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    app:cardBackgroundColor="#E0A850"
+                    app:cardCornerRadius="7dp"
+                    card_view:cardElevation="0dp"
+                    >
+
+                    <Button
+                        android:id="@+id/btn_next"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:fontFamily="@font/lato"
+                        android:text="Education"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:onClick="@{()-> viewModel.onEducationClicked()}"
+                        />
+
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
 
             <TextView
                 style="@style/App_Text_view"
@@ -63,30 +103,19 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                 android:textSize="17sp"
-                android:text="Add Connection"/>
+                android:text="Contact Information"/>
 
-            <TextView
-                style="@style/App_Text_view"
-                android:layout_width="wrap_content"
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:layout_marginTop="15dp"
-                android:layout_gravity="center_horizontal"
-                android:text="What is the last name?"/>
-
-
-                <EditText
-                    android:id="@+id/et_last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@null"
-                    android:cursorVisible="true"
-                    android:fontFamily="@font/lato"
-                    android:hint="Last Name"
-                    android:textAlignment="center"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapWords"
-                     />
+                android:orientation="vertical">
 
 
             <TextView
@@ -96,22 +125,94 @@
                 android:textSize="17sp"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center_horizontal"
-                android:text="What is the User ID Code?"/>
+                android:text="What's your home street address?"/>
 
 
                 <EditText
-                    android:id="@+id/et_user_code"
+                    android:id="@+id/et_street_address"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@null"
                     android:cursorVisible="true"
                     android:fontFamily="@font/lato"
-                    android:hint="1234"
+                    android:hint="Street Address"
                     android:textAlignment="center"
                     android:imeOptions="actionDone"
-                    android:inputType="number"
+                    android:inputType="text"
                     />
 
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:text="What's your home city, state, and zip?"/>
+
+
+            <EditText
+                android:id="@+id/et_city_state_zip"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="City State, Zip"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                />
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:text="What's your work street address?"/>
+
+
+            <EditText
+                android:id="@+id/et_work_street_address"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="Street Address"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                />
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:text="What's your work city, state, zip?"/>
+
+
+            <EditText
+                android:id="@+id/et_work_city_state_zip"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="City State, Zip"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                />
+
+            </LinearLayout>
+
+            </ScrollView>
 
         </LinearLayout>
 

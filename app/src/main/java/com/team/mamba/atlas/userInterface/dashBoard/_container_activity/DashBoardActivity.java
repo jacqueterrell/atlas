@@ -24,12 +24,11 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_busi
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.business_profile.BusinessProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
-import com.team.mamba.atlas.userInterface.dashBoard.user_profile.UserProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileFragment;
 import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
-import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
