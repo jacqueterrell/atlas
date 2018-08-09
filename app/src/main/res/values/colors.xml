@@ -22,5 +22,6 @@
     <color name="chart_red">#700d08</color>
     <color name="orange">#fa7847</color>
     <color name="green">#638143</color>
+    <color name="pastel_dark_red">#f05847</color>
 
 </resources>
