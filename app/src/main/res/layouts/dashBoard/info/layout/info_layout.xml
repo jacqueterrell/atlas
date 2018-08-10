@@ -643,6 +643,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/splash_image"
             tools:visibility="gone"
+            android:visibility="gone"
             >
 
             <ImageView

@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessAccountsListRowBinding;
 
 import java.util.List;

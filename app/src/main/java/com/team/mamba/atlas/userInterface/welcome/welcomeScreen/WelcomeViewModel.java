@@ -2,17 +2,13 @@ package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 import com.team.mamba.atlas.utils.CommonUtils;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
 

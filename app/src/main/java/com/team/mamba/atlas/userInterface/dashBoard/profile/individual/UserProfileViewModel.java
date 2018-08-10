@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual;
 
-import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {

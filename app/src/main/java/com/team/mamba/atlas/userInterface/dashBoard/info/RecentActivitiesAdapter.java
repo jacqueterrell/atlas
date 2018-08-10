@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.UserConnections;
+import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.databinding.RecentActivitiesListRowBinding;
 import com.team.mamba.atlas.userInterface.dashBoard.info.RecentActivitiesAdapter.RecentActivitiesHolder;
 

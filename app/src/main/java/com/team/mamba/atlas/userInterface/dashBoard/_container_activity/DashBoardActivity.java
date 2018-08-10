@@ -16,10 +16,11 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
@@ -121,6 +122,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         hideContactsIcon();
         hideInfoIcon();
         hideNotificationsIcon();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (!(fragment instanceof CrmFragment)){
+
+            ChangeFragments.replaceFadeInBackstack(new CrmFragment(),getSupportFragmentManager(),"CrmFragment",null);
+        }
     }
 
     @Override
@@ -139,6 +147,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         hideContactsIcon();
         hideCrmIcon();
         hideNotificationsIcon();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (!(fragment instanceof InfoFragment)){
+
+            ChangeFragments.replaceFadeInBackstack(InfoFragment.newInstance(),getSupportFragmentManager(),"UserProfile",null);
+        }
     }
 
     @Override

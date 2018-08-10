@@ -1,7 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
-import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 
 public interface DashBoardActivityNavigator {
 

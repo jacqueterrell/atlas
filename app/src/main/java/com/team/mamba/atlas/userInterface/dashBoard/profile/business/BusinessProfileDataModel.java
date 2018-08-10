@@ -3,7 +3,7 @@ package com.team.mamba.atlas.userInterface.dashBoard.profile.business;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
-import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 import javax.inject.Inject;
 

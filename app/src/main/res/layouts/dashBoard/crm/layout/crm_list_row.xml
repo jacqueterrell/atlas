@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmViewModel"/>
+
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/layout_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_month"
+            style="@style/App_Text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="August"
+            android:textColor="@color/white"
+            android:background="@color/material_icon"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"/>
+
+        <ImageView
+            android:id="@+id/iv_info"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/ic_info_circle_solid"
+            android:tint="@color/black"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="end"
+            />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/tv_note_name"
+            style="@style/App_Text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Test Opportunity"
+            android:textSize="15sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:layout_gravity="center_vertical"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_stage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:src="@drawable/pie5"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/material_icon"/>
+
+
+
+</LinearLayout>
+
+</layout>

@@ -4,9 +4,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
-import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.UserConnections;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.UserConnections;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
 import java.text.DecimalFormat;
@@ -287,7 +287,7 @@ public class InfoDataModel {
         String userId = dataManager.getSharedPrefs().getUserId();
         List<Integer> opportunityStageNumbers = new ArrayList<>();
 
-        //TODO create the BusNotes Java POJO
+        //TODO create the CrmNotes Java POJO
 
         db.collection(AppConstants.BUS_NOTES_COLLECTION)
                 .whereEqualTo(AUTHOR_ID, userId)

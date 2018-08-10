@@ -9,12 +9,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
-import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;

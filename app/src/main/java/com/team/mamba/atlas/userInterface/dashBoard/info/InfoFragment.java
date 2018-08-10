@@ -21,12 +21,11 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.team.mamba.atlas.BR;
-import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.UserConnections;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.UserConnections;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import java.util.Collections;
 import java.util.Map;
@@ -127,11 +126,13 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         if (!viewModel.getUserStatsList().isEmpty()){
 
-           // setUserStatsAdapter(viewModel.getUserStatsList(),viewModel.getRecentActivityConnections());
-            viewModel.getAllUsers(getViewModel());
+            setUserStatsAdapter(viewModel.getUserStatsList(),viewModel.getRecentActivityConnections());
+            setBarChartData();
+           // viewModel.getAllUsers(getViewModel());
 
         } else {
 
+            binding.layoutSplashScreen.setVisibility(View.VISIBLE);
             viewModel.getAllUsers(getViewModel());
         }
 
