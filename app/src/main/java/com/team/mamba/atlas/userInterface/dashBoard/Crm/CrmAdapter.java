@@ -162,6 +162,8 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
         holder.binding.layoutRow.setOnClickListener(v -> {
 
             viewModel.getNavigator().onRowClicked(notes);
+            viewModel.setSelectedOpportunity(notes);
+            viewModel.setSelectedRowPosition(position);
 
         });
 

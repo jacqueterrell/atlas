@@ -28,8 +28,11 @@ import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.CrmLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.utils.AppConstants;
+import com.team.mamba.atlas.utils.ChangeFragments;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -52,6 +55,9 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     private CrmAdapter crmAdapter;
     private DashBoardActivityNavigator parentNavigator;
     private static final int SEND_CSV = 0;
+    private boolean isOpportunitiesChecked = false;
+    private boolean isContactsChecked = false;
+
 
 
     @Override
@@ -94,6 +100,8 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
+         parentNavigator.showToolBar();
+
          crmAdapter = new CrmAdapter(getViewModel(),crmNotesList);
          binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
          binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -107,7 +115,16 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
          } else {
 
-             onCrmDataReturned();
+             if (SelectedCrmFragment.isNoteDeleted){
+
+                 viewModel.requestAllOpportunities(getViewModel());
+                 SelectedCrmFragment.isNoteDeleted = false;
+
+             } else {
+
+                 onCrmDataReturned();
+             }
+
          }
 
          return binding.getRoot();
@@ -124,8 +141,11 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     @Override
     public void onRowClicked(CrmNotes notes) {
 
-        //todo open crm details
+        ChangeFragments.replaceFragmentVertically(SelectedCrmFragment.newInstance(notes),getBaseActivity().getSupportFragmentManager(),"SelectedCrm",null);
+       parentNavigator.hideToolBar();
     }
+
+
 
     @Override
     public void onInfoClicked() {
@@ -187,7 +207,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     @Override
     public void hideExportScreen() {
 
-        YoYo.with(Techniques.FadeOut)
+        YoYo.with(Techniques.SlideOutDown)
                 .duration(500)
                 .onEnd(animator -> binding.dialogExport.layoutExport.setVisibility(View.GONE))
                 .playOn(binding.dialogExport.layoutExport);
@@ -195,11 +215,12 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
     private void showExportDialog(){
 
-        YoYo.with(Techniques.FadeIn)
+        YoYo.with(Techniques.SlideInUp)
                 .duration(500)
                 .onStart(animator -> binding.dialogExport.layoutExport.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogExport.layoutExport);
     }
+
 
     @Override
     public void onExportButtonClicked() {
@@ -222,28 +243,58 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
     private void setUpListeners(){
 
-        binding.dialogExport.chkBoxContacts.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            binding.dialogExport.chkBoxContacts.setOnClickListener(view -> {
 
+                if (binding.dialogExport.chkBoxContacts.isChecked()){
 
-            if (isChecked){
+                    binding.dialogExport.chkBoxOpportunities.setChecked(false);
 
-                binding.dialogExport.chkBoxOpportunities.setChecked(false);
+                } else {
 
-            }
-        });
+                    binding.dialogExport.chkBoxOpportunities.setChecked(false);
+                    binding.dialogExport.chkBoxContacts.setChecked(true);
+                }
+            });
 
-        binding.dialogExport.chkBoxOpportunities.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.dialogExport.chkBoxOpportunities.setOnClickListener(view -> {
 
-            if (isChecked){
+            if (binding.dialogExport.chkBoxOpportunities.isChecked()){
 
                 binding.dialogExport.chkBoxContacts.setChecked(false);
 
+            } else {
+
+                binding.dialogExport.chkBoxOpportunities.setChecked(true);
+                binding.dialogExport.chkBoxContacts.setChecked(false);
             }
         });
 
-        binding.dialogExport.layoutContacts.setOnClickListener(v -> binding.dialogExport.chkBoxContacts.setChecked(true));
 
-        binding.dialogExport.layoutOpportunities.setOnClickListener(v -> binding.dialogExport.chkBoxOpportunities.setChecked(true));
+        binding.dialogExport.layoutContacts.setOnClickListener(v -> {
+
+            if (binding.dialogExport.chkBoxContacts.isChecked()){
+
+                binding.dialogExport.chkBoxOpportunities.setChecked(false);
+
+            } else {
+
+                binding.dialogExport.chkBoxOpportunities.setChecked(false);
+                binding.dialogExport.chkBoxContacts.setChecked(true);
+            }
+        });
+
+        binding.dialogExport.layoutOpportunities.setOnClickListener(v -> {
+
+            if (binding.dialogExport.chkBoxOpportunities.isChecked()){
+
+                binding.dialogExport.chkBoxContacts.setChecked(false);
+
+            } else {
+
+                binding.dialogExport.chkBoxOpportunities.setChecked(true);
+                binding.dialogExport.chkBoxContacts.setChecked(false);
+            }
+        });
 
     }
 
@@ -259,6 +310,9 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     }
 
 
+    /**
+     * Takes all of the User's Contacts and exports them as a CSV file
+     */
     private void exportContacts(){
 
         File root = Environment.getExternalStorageDirectory();
@@ -320,38 +374,75 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
     }
 
+    /**
+     * Takes all of the User's opportunities and exports them as a CSV file
+     */
     private void exportOpportunities(){
 
         File root = Environment.getExternalStorageDirectory();
         File csvFile = new File(root, "CRM_from_Atlas.csv");
         Uri uri;
+        UserProfile profile = viewModel.getUserProfile();
+
 
         FileWriter writer;
 
         try {
 
             writer = new FileWriter(csvFile);
-            writeCsvHeader(writer,"First Name");
-            writeCsvHeader(writer,"Last Name");
-            writeCsvHeader(writer,"Email Name");
-            writeCsvHeader(writer,"Work Phone");
-            writeCsvHeader(writer,"Current Employer");
-            writeCsvHeader(writer,"Current Position");
-            writeCsvHeader(writer,"Work Street");
+            writeCsvHeader(writer,"Point of Contact,");
+            writeCsvHeader(writer,"Opportunity Name,");
+            writeCsvHeader(writer,"Where Met City/State,");
+            writeCsvHeader(writer,"Where Met Event Name,");
+            writeCsvHeader(writer,"How Met,");
+            writeCsvHeader(writer,"Stage,");
+            writeCsvHeader(writer,"Type,");
+
+            writeCsvHeader(writer,"Opportunity Goal,");
+            writeCsvHeader(writer,"Description,");
+            writeCsvHeader(writer,"Next Step,");
+            writeCsvHeader(writer,"Date Created,");
+            writeCsvHeader(writer,"Date Closed,");
+
+            writeCsvHeader(writer,"First Name,");
+            writeCsvHeader(writer,"Last Name,");
+            writeCsvHeader(writer,"Email,");
+            writeCsvHeader(writer,"Work Phone,");
+            writeCsvHeader(writer,"Current Employer,");
+            writeCsvHeader(writer,"Current Position,");
+            writeCsvHeader(writer,"Work Street,");
             writeCsvHeader(writer,"Work City/State/Zip\n");
 
-            for (UserProfile profile : viewModel.getUsersContactProfiles()){
 
-                writeCsvData(writer,profile.getFirstName());
-                writeCsvData(writer,profile.getLastName());
-                writeCsvData(writer,profile.getEmail());
-                writeCsvData(writer,profile.getWorkPhone());
-                writeCsvData(writer,profile.getCurrentEmployer());
-                writeCsvData(writer,profile.getCurrentPosition());
-                writeCsvData(writer,profile.getWorkStreet());
+            for (CrmNotes notes : viewModel.getCrmNotesList()){
+
+                writeCsvData(writer,notes.getPoc() + ",");
+                writeCsvData(writer,notes.getNoteName() + ",");
+                writeCsvData(writer,notes.getWhereMetCitySt() + ",");
+                writeCsvData(writer,notes.getWhereMetEventName() + ",");
+                writeCsvData(writer,notes.getHowMetToString() + ",");
+                writeCsvData(writer,notes.getStageToString() + ",");
+                writeCsvData(writer,notes.getTypeToString() + ",");
+                writeCsvData(writer,notes.getOpportunityGoalToString() + ",");
+                writeCsvData(writer,notes.getDesc() + ",");
+                writeCsvData(writer,notes.getNextStepToString() + ",");
+                writeCsvData(writer,notes.getDateCreatedToString() + ",");
+                writeCsvData(writer,notes.getDateClosedToString() + ",");
+
+                //Fixme the second iteration puts the first name in the wrong place
+                writeCsvData(writer,profile.getFirstName().replace(","," ") + ",");
+                writeCsvData(writer,profile.getLastName().replace(","," ") + ",");
+                writeCsvData(writer,profile.getEmail().replace(","," ") + ",");
+                writeCsvData(writer,profile.getWorkPhone().replace(","," ") + ",");
+                writeCsvData(writer,profile.getCurrentEmployer().replace(","," ") + ",");
+                writeCsvData(writer,profile.getCurrentPosition().replace(","," ") + ",");
+                writeCsvData(writer,profile.getWorkStreet().replace(","," ")+ ",");
                 writeCsvData(writer,profile.getWorkCityStateZip() + "\n");
 
             }
+
+
+
 
             writer.flush();
             writer.close();
@@ -419,5 +510,11 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        int code = requestCode;
+    }
 
 }

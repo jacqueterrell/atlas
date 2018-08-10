@@ -12,7 +12,9 @@ public class CrmViewModel extends BaseViewModel<CrmNavigator> {
     private CrmDataModel dataModel;
     private static List<CrmNotes> crmNotesList = new ArrayList<>();
     private static List<UserProfile> usersContactProfiles = new ArrayList<>();
-
+    private static UserProfile userProfile;
+    private static CrmNotes selectedOpportunity;
+    private int selectedRowPosition;
 
     public void setDataModel(CrmDataModel dataModel) {
         this.dataModel = dataModel;
@@ -32,6 +34,30 @@ public class CrmViewModel extends BaseViewModel<CrmNavigator> {
 
     public List<UserProfile> getUsersContactProfiles() {
         return usersContactProfiles;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        CrmViewModel.userProfile = userProfile;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setSelectedOpportunity(CrmNotes selectedOpportunity) {
+        CrmViewModel.selectedOpportunity = selectedOpportunity;
+    }
+
+    public CrmNotes getSelectedOpportunity() {
+        return selectedOpportunity;
+    }
+
+    public void setSelectedRowPosition(int selectedRowPosition) {
+        this.selectedRowPosition = selectedRowPosition;
+    }
+
+    public int getSelectedRowPosition() {
+        return selectedRowPosition;
     }
 
     /******OnClick Listeners**********/

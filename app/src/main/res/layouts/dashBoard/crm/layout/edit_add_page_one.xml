@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+
+        <variable
+            name = "crmNote"
+            type = "com.team.mamba.atlas.data.model.api.CrmNotes"/>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginLeft="10dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="#E0A850"
+                app:cardCornerRadius="7dp"
+                card_view:cardElevation="0dp"
+                >
+
+                <Button
+                    android:id="@+id/btn_continue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/lato"
+                    android:text="Continue"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    />
+
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                android:layout_margin="15dp"
+                >
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="12dp"
+                    android:layout_height="8dp"
+                    android:innerRadius = "0dp"
+                    android:shape = "ring"
+                    card_view:cardElevation="0dp"
+                    app:cardCornerRadius = "4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/material_icon"
+                    >
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="12dp"
+                    android:layout_height="8dp"
+                    android:innerRadius = "0dp"
+                    android:shape = "ring"
+                    card_view:cardElevation="0dp"
+                    app:cardCornerRadius = "4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/material_icons_light"
+                    >
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="12dp"
+                    android:layout_height="8dp"
+                    android:innerRadius = "0dp"
+                    android:shape = "ring"
+                    card_view:cardElevation="0dp"
+                    app:cardCornerRadius = "4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/material_icons_light"
+                    >
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="12dp"
+                    android:layout_height="8dp"
+                    android:innerRadius = "0dp"
+                    android:shape = "ring"
+                    card_view:cardElevation="0dp"
+                    app:cardCornerRadius = "4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/material_icons_light"
+                    >
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="12dp"
+                    android:layout_height="8dp"
+                    android:innerRadius = "0dp"
+                    android:shape = "ring"
+                    card_view:cardElevation="0dp"
+                    app:cardCornerRadius = "5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/material_icons_light"
+                    >
+
+                </android.support.v7.widget.CardView>
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="12dp"
+                    android:layout_height="8dp"
+                    android:innerRadius = "0dp"
+                    android:shape = "ring"
+                    card_view:cardElevation="0dp"
+                    app:cardCornerRadius = "5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/material_icons_light"
+                    >
+
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="17sp"
+                android:text="Opportunity Details"/>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:text="What would you like to call this opportunity?"/>
+
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="Opportunity Name"
+                android:textAlignment="center"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords"
+                android:text="@{crmNote.getNoteName()}"
+                />
+
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:text="@string/who_did_you_meet_body"/>
+
+
+            <EditText
+                android:id="@+id/et_point_of_contact"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="Primary Contact"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="@{crmNote.getPoc()}"
+                />
+
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:text="@string/where_did_you_meet"/>
+
+
+            <EditText
+                android:id="@+id/et_where"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="location"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="@{crmNote.getWhereMetEventName()}"
+                />
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

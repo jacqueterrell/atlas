@@ -71,6 +71,11 @@ public class CrmDataModel {
 
                             if (profile.getId() != null){
 
+                                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+
+                                    viewModel.setUserProfile(profile);
+                                }
+
                                 adjustedProfileList.add(profile);
                             }
                         }

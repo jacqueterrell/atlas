@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.dependencyInjection.builder;
 
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsFragment;
@@ -79,6 +80,9 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract EditWorkFragment bindEditWorkFragment();
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract SelectedCrmFragment bindSelectedCrmFragment();
 
 
 

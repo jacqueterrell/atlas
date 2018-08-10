@@ -27,4 +27,5 @@ public interface CrmNavigator {
     boolean isExportScreenShown();
 
     void hideExportScreen();
+
 }

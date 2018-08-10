@@ -17,6 +17,7 @@ import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.CrmNotes;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
@@ -326,6 +327,21 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     }
 
     @Override
+    public boolean isCreatingNewCrmNote() {
+        return false;
+    }
+
+    @Override
+    public CrmNotes getEditingCrmNote() {
+        return null;
+    }
+
+    @Override
+    public void setEditingCrmNote(CrmNotes note) {
+
+    }
+
+    @Override
     public void onDeleteMyAccountClicked() {
 
     }
@@ -338,6 +354,12 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         }catch (Exception e){
 
         }
+    }
+
+    @Override
+    public void hideToolBar() {
+
+        binding.layoutToolBar.setVisibility(View.GONE);
     }
 
     private void showContactsIcon(){

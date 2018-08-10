@@ -65,4 +65,15 @@
     <string name="export_personal_notes">Personal notes are not exported.</string>
     <string name="export_select_fields">Please select the fields you would like to export.</string>
 
+    <string name="who_did_you_meet_body">Who did you meet? \n (i.e., Primary Point of Contact)</string>
+    <string name="where_did_you_meet">Where did you meet? \n(City, State)</string>
+    <string name="where_did_you_meet_event">Where did you meet? \n(i.e., Name of the Event)</string>
+    <string name="how_did_you_meet">How did you meet? \n please select one.</string>
+    <string name="what_stage_of_opp">What stage is the opportunity? \n Please select one.</string>
+    <string name="what_type_of_opp">What type of opportunity? \n Please select one.</string>
+    <string name="what_is_the_opp">What is the opportunity? \n Please select one.</string>
+    <string name="describe_the_opp">Please describe the opportunity.</string>
+    <string name="what_is_next_step">What is the next step? \n Please select one.</string>
+
+
 </resources>

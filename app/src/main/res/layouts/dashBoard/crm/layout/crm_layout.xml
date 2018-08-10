@@ -179,7 +179,9 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="10dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@drawable/pie0" />
+                            android:src="@drawable/pie0"
+                            android:padding="5dp"
+                            />
 
                         <TextView
                             style="@style/App_Text_view"
@@ -204,8 +206,9 @@
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="10dp"
-                            android:padding="8dp"
-                            android:src="@drawable/pie1" />
+                            android:src="@drawable/pie1"
+                            android:padding="5dp"
+                            />
 
                         <TextView
                             style="@style/App_Text_view"
@@ -231,8 +234,9 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="10dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/pie2"
                             android:padding="5dp"
-                            android:src="@drawable/pie2" />
+                            />
 
                         <TextView
                             style="@style/App_Text_view"
@@ -256,8 +260,9 @@
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="10dp"
-                            android:padding="8dp"
-                            android:src="@drawable/pie3" />
+                            android:src="@drawable/pie3"
+                            android:padding="5dp"
+                            />
 
                         <TextView
                             style="@style/App_Text_view"
@@ -280,7 +285,7 @@
                             android:layout_height="45dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="10dp"
-                            android:padding="8dp"
+                            android:padding="5dp"
                             android:src="@drawable/pie4" />
 
                         <TextView

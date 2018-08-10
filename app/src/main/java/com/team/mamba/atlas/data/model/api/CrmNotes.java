@@ -1,8 +1,14 @@
 package com.team.mamba.atlas.data.model.api;
 
 
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
+import com.team.mamba.atlas.utils.formatData.RegEx;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 @IgnoreExtraProperties
 public class CrmNotes {
@@ -156,5 +162,179 @@ public class CrmNotes {
 
     public void setCloseTimestamp(double closeTimestamp) {
         this.closeTimestamp = closeTimestamp;
+    }
+
+
+   @Exclude public String getHowMetToString(){
+
+        if (howMet == 0){
+
+            return "Exhibit Booth";
+
+        } else if ( howMet == 1){
+
+            return "Networking";
+
+        } else {
+
+            return "Meeting";
+        }
+    }
+
+    @Exclude public String getStageToString(){
+
+        if (stage == 0){
+
+            return "New";
+
+        } else if ( stage == 1){
+
+            return "Qualified";
+
+        } else if (stage == 2){
+
+            return "Proposal";
+        } else if (stage == 3){
+
+            return "Negotiation";
+
+        } else if (stage == 4){
+
+            return "Closed Won";
+
+        } else {
+
+            return "Closed Lost";
+        }
+    }
+
+    @Exclude public String getTypeToString(){
+
+        if (type == 0){
+
+            return "Commercial";
+
+        } else if ( type == 1){
+
+            return "Non-Profit";
+
+        } else if (type == 2){
+
+            return "Federal";
+        } else if (type == 3){
+
+            return "Local";
+
+        } else {
+
+            return "State";
+        }
+    }
+
+    @Exclude public String getOpportunityGoalToString(){
+
+        if (oppGoal == 0){
+
+            return "Solicitation";
+
+        } else if ( oppGoal == 1){
+
+            return "Teaming";
+
+        } else {
+
+            return "Direct Sell";
+        }
+    }
+
+    @Exclude public String getNextStepToString(){
+
+        if (nextStep == 0){
+
+            return "Email";
+
+        } else if ( nextStep == 1){
+
+            return "Phone Call";
+
+        } else if (nextStep == 2){
+
+            return "Teleconference";
+
+        } else if (nextStep == 3){
+
+            return "Meeting";
+
+        } else {
+
+            return "Proposal";
+        }
+    }
+
+
+    @Exclude public String getDateCreatedToString(){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getAdjustedTimeStamp() * 1000);
+
+        int month = calendar.get(Calendar.MONTH);
+        String monthName = getMonth(month);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+
+        String stamp = String.valueOf(timestamp);
+
+        if (!stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
+
+            return monthName + " " + day + " " + year;
+
+        } else {
+
+            return "";
+        }
+    }
+
+    @Exclude public String getDateClosedToString(){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getAdjustedCloseTimeStamp() * 1000);
+
+        int month = calendar.get(Calendar.MONTH);
+        String monthName = getMonth(month);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        String stamp = String.valueOf(closeTimestamp);
+
+        if (!stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
+
+            return monthName + " " + day + " " + year;
+
+        } else {
+
+            return "";
+        }
+
+    }
+
+    @Exclude private String getMonth(int index) {
+
+        List<String> monthsList = new ArrayList<>();
+
+        monthsList.add("Jan");
+        monthsList.add("Feb");
+        monthsList.add("Mar");
+        monthsList.add("Apr");
+        monthsList.add("May");
+        monthsList.add("Jun");
+        monthsList.add("Jul");
+        monthsList.add("Aug");
+        monthsList.add("Sep");
+        monthsList.add("Oct");
+        monthsList.add("Nov");
+        monthsList.add("Dec");
+
+        return monthsList.get(index);
     }
 }
