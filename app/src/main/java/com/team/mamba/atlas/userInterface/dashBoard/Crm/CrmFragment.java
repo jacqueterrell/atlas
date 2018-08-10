@@ -281,13 +281,13 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
             for (UserProfile profile : viewModel.getUsersContactProfiles()){
 
-                writeCsvData(writer,profile.getFirstName() + ",");
-                writeCsvData(writer,profile.getLastName() + ",");
-                writeCsvData(writer,profile.getEmail() + ",");
-                writeCsvData(writer,profile.getWorkPhone() + ",");
-                writeCsvData(writer,profile.getCurrentEmployer() + ",");
-                writeCsvData(writer,profile.getCurrentPosition() + ",");
-                writeCsvData(writer,profile.getWorkStreet() + ",");
+                writeCsvData(writer,profile.getFirstName().replace(","," ") + ",");
+                writeCsvData(writer,profile.getLastName().replace(","," ") + ",");
+                writeCsvData(writer,profile.getEmail().replace(","," ") + ",");
+                writeCsvData(writer,profile.getWorkPhone().replace(","," ") + ",");
+                writeCsvData(writer,profile.getCurrentEmployer().replace(","," ") + ",");
+                writeCsvData(writer,profile.getCurrentPosition().replace(","," ") + ",");
+                writeCsvData(writer,profile.getWorkStreet().replace(","," ")+ ",");
                 writeCsvData(writer,profile.getWorkCityStateZip() + "\n");
 
             }
