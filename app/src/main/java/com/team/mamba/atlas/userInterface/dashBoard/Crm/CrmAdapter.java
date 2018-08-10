@@ -85,6 +85,7 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
         calendar.setTimeInMillis(notes.getAdjustedTimeStamp() * 1000);
         int month = calendar.get(Calendar.MONTH);
         String monthName = holder.getMonth(month);
+        holder.binding.setViewModel(viewModel);
 
         if (!monthsList.contains(monthName)){
 
@@ -163,6 +164,7 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
             viewModel.getNavigator().onRowClicked(notes);
 
         });
+
     }
 
     @Override

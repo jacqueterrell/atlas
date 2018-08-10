@@ -9,4 +9,22 @@ public interface CrmNavigator {
     void onRowClicked(CrmNotes notes);
 
     void onInfoClicked();
+
+    void onSettingsClicked();
+
+    void onShareClicked();
+
+    void onCreateNewNoteClicked();
+
+    void onFilterClicked();
+
+    void hideCrmInfoDialog();
+
+    boolean isInfoDialogShown();
+
+    void onExportButtonClicked();
+
+    boolean isExportScreenShown();
+
+    void hideExportScreen();
 }

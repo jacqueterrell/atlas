@@ -21,6 +21,7 @@ import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
 import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
@@ -127,7 +128,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         if (!(fragment instanceof CrmFragment)){
 
-            ChangeFragments.replaceFadeInBackstack(new CrmFragment(),getSupportFragmentManager(),"CrmFragment",null);
+            ChangeFragments.replaceHorizontallyFromBackStack(new CrmFragment(),getSupportFragmentManager(),"CrmFragment",null);
         }
     }
 
@@ -152,7 +153,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         if (!(fragment instanceof InfoFragment)){
 
-            ChangeFragments.replaceFadeInBackstack(InfoFragment.newInstance(),getSupportFragmentManager(),"UserProfile",null);
+            ChangeFragments.replaceHorizontallyFromBackStack(InfoFragment.newInstance(),getSupportFragmentManager(),"UserProfile",null);
         }
     }
 
@@ -424,6 +425,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         if (keyCode == 4){
 
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
             if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
 
@@ -433,13 +435,28 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
                 hideAddContactDialog();
 
-            } else {
+            } else  if (fragment instanceof CrmFragment){
 
-                onBackPressed();
+                CrmNavigator navigator = (CrmNavigator) fragment;
 
+                if (navigator.isInfoDialogShown()){
+
+                    navigator.hideCrmInfoDialog();
+
+                } else if (navigator.isExportScreenShown()){
+
+                    navigator.hideExportScreen();
+
+                } else {
+                    onBackPressed();
+                }
             }
 
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            else {
+
+                onBackPressed();
+            }
+
 
             if (fragment instanceof InfoFragment){
 

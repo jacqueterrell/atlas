@@ -55,5 +55,14 @@
         designated as Personal Friend or Family Member.
     </string>
 
+    <string name="crm_stage_zero">New opportunity that you\'re still learning about</string>
+    <string name="crm_stage_one">The qualification stage. You\'re evaluating whether to this is a real opportunity and meeting with the client</string>
+    <string name="crm_stage_two">You\'ve submitted a formal proposal to the client</string>
+    <string name="crm_stage_three">Your\'re currently negotiating with the client</string>
+    <string name="crm_stage_four">Congratulations are in order</string>
+
+    <string name="export_generate_csv">The export function generates a CSV file that is sent to your work email address.</string>
+    <string name="export_personal_notes">Personal notes are not exported.</string>
+    <string name="export_select_fields">Please select the fields you would like to export.</string>
 
 </resources>

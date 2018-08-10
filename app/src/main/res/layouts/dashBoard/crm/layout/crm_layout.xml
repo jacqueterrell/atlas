@@ -1,139 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmViewModel" />
+
+    </data>
 
 
-
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_add_new"
+                    style="@style/IconImageView"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{()-> viewModel.onCreateNewNoteClicked()}"
+                    android:src="@drawable/ic_edit"
+                    android:tint="@color/colorPrimary" />
+
+                <ImageView
+                    android:id="@+id/iv_share"
+                    style="@style/IconImageView"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{()-> viewModel.onShareClicked()}"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:src="@drawable/ic_share_alt_square_solid"
+                    android:tint="@color/chart_red" />
+
+                <ImageView
+                    android:id="@+id/iv_settings"
+                    style="@style/IconImageView"
+                    android:layout_gravity="center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{()-> viewModel.onSettingsClicked()}"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:src="@drawable/ic_settings" />
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_gravity="end">
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_add_new"
-            style="@style/IconImageView"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@color/colorPrimary"
-            android:src="@drawable/ic_edit"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="horizontal"
 
-        <ImageView
-            android:id="@+id/iv_share"
-            style="@style/IconImageView"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            android:src="@drawable/ic_share_alt_square_solid"
-            android:tint="@color/chart_red"
-            />
+                >
 
-        <ImageView
-            android:id="@+id/iv_settings"
-            style="@style/IconImageView"
-            android:layout_gravity="center_vertical"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            android:src="@drawable/ic_settings"
-            />
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    app:cardBackgroundColor="@color/black"
+                    app:cardCornerRadius="7dp"
+                    card_view:cardElevation="0dp">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="1dp"
+                        android:innerRadius="0dp"
+                        android:shape="ring"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="7dp"
+                        card_view:cardElevation="0dp">
+
+                        <EditText
+                            android:id="@+id/et_business_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/lato"
+                            android:hint="Search..."
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapWords"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp" />
 
 
-    </LinearLayout>
+                    </android.support.v7.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="15dp"
+                </android.support.v7.widget.CardView>
 
-        >
+                <ImageView
+                    style="@style/IconImageView"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{()-> viewModel.onFilterClicked()}"
+                    android:scaleX="1.3"
+                    android:scaleY="1.3"
+                    android:src="@drawable/ic_filter" />
 
-        <android.support.v7.widget.CardView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:innerRadius="0dp"
-            android:shape="ring"
-            app:cardBackgroundColor="@color/black"
-            app:cardCornerRadius="7dp"
-            card_view:cardElevation="0dp"
-            >
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/dialog_crm_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{()-> viewModel.hideCrmInfoDialog()}"
+            android:visibility="gone"
+            tools:visibility="gone">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="1dp"
+                android:layout_margin="55dp"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="7dp"
-                card_view:cardElevation="0dp">
+                app:cardCornerRadius="15dp"
+                app:contentPadding="15dp"
+                card_view:cardElevation="1dp">
 
-                <EditText
-                    android:id="@+id/et_business_name"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
-                    android:cursorVisible="true"
-                    android:fontFamily="@font/lato"
-                    android:hint="Search..."
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapWords"
-                    />
+                    android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="horizontal">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/pie0" />
+
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/crm_stage_zero"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="horizontal">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:padding="8dp"
+                            android:src="@drawable/pie1" />
+
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/crm_stage_one"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="horizontal">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="5dp"
+                            android:src="@drawable/pie2" />
+
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/crm_stage_two"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="horizontal">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:padding="8dp"
+                            android:src="@drawable/pie3" />
+
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/crm_stage_three"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:padding="8dp"
+                            android:src="@drawable/pie4" />
+
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/crm_stage_four"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
-        </android.support.v7.widget.CardView>
+        </FrameLayout>
 
-        <ImageView
-            style="@style/IconImageView"
-            android:layout_gravity="center_vertical"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_filter"
-            android:layout_marginLeft="15dp"
-            android:scaleY="1.3"
-            android:scaleX="1.3"
-            />
+        <include
+            android:id="@+id/dialog_export"
+            layout="@layout/crm_export"
+            bind:viewModel="@{viewModel}" />
 
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-    </android.support.v7.widget.RecyclerView>
-
-    </LinearLayout>
-
-</FrameLayout>
+    </FrameLayout>
 
 </layout>
