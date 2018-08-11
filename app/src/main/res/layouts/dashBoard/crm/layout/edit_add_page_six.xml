@@ -182,17 +182,16 @@
             <EditText
                 android:id="@+id/et_description"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:maxHeight="80dp"
+                android:layout_height="wrap_content"
                 android:background="@null"
+                android:maxLines="3"
+                android:inputType="textMultiLine"
                 android:cursorVisible="true"
                 android:fontFamily="@font/lato"
                 android:hint="description"
                 android:textAlignment="center"
                 android:imeOptions="actionDone"
-                android:inputType="text"
-
-                tools:text="jffffjjfljlkjfksljlsjlsjljsfkljkljljksfljflkjslfjwljsljsfjlsljflsjls"
+                tools:text="jffffjjfljlkjfksljlsjlsjljsppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppfkljkljljksfljflkjslfjwljsljsfjlsljflsjls"
                 android:text="@{crmNote.getWhereMetEventName()}"
                 />
 

@@ -15,6 +15,7 @@ public class CrmViewModel extends BaseViewModel<CrmNavigator> {
     private static CrmNotes selectedOpportunity;
     private int selectedRowPosition;
 
+
     public void setDataModel(CrmDataModel dataModel) {
         this.dataModel = dataModel;
     }

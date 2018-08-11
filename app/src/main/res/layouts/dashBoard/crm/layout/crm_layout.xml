@@ -98,16 +98,12 @@
                         app:cardCornerRadius="7dp"
                         card_view:cardElevation="0dp">
 
-                        <EditText
-                            android:id="@+id/et_business_name"
+                        <android.support.v7.widget.SearchView
+                            android:id="@+id/search_view"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@null"
-                            android:cursorVisible="true"
                             android:fontFamily="@font/lato"
-                            android:hint="Search..."
-                            android:imeOptions="actionNext"
-                            android:inputType="textCapWords"
+                            android:queryHint="Search..."
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp" />
 
@@ -318,6 +314,7 @@
             android:id="@+id/dialog_export"
             layout="@layout/crm_export"
             bind:viewModel="@{viewModel}" />
+
 
     </FrameLayout>
 

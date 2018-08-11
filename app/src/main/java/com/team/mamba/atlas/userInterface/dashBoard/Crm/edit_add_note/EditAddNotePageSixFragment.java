@@ -108,7 +108,7 @@ implements EditAddNotePageSixNavigator{
         binding = getViewDataBinding();
 
         setUpListeners();
-
+        setCachedData();
 
         return binding.getRoot();
     }
@@ -221,6 +221,53 @@ implements EditAddNotePageSixNavigator{
 
         });
 
+    }
+
+    private void setCachedData(){
+
+       // binding.setCrmNote(notes);
+
+
+        if (notes.getNextStep() == 0){
+
+            binding.chkBoxEmail.setChecked(true);
+            binding.chkBoxProposal.setChecked(false);
+            binding.chkBoxTeleconference.setChecked(false);
+            binding.chkBoxMeeting.setChecked(false);
+            binding.chkBoxPhoneCall.setChecked(false);
+
+        } else if (notes.getNextStep() == 1){
+
+            binding.chkBoxEmail.setChecked(false);
+            binding.chkBoxProposal.setChecked(false);
+            binding.chkBoxTeleconference.setChecked(false);
+            binding.chkBoxMeeting.setChecked(false);
+            binding.chkBoxPhoneCall.setChecked(true);
+
+        } else if (notes.getNextStep() == 2){
+
+            binding.chkBoxEmail.setChecked(false);
+            binding.chkBoxProposal.setChecked(false);
+            binding.chkBoxTeleconference.setChecked(true);
+            binding.chkBoxMeeting.setChecked(false);
+            binding.chkBoxPhoneCall.setChecked(false);
+
+        } else if (notes.getNextStep() == 3){
+
+            binding.chkBoxEmail.setChecked(false);
+            binding.chkBoxProposal.setChecked(false);
+            binding.chkBoxTeleconference.setChecked(false);
+            binding.chkBoxMeeting.setChecked(true);
+            binding.chkBoxPhoneCall.setChecked(false);
+
+        } else {
+
+            binding.chkBoxEmail.setChecked(false);
+            binding.chkBoxProposal.setChecked(true);
+            binding.chkBoxTeleconference.setChecked(false);
+            binding.chkBoxMeeting.setChecked(false);
+            binding.chkBoxPhoneCall.setChecked(false);
+        }
     }
 
 }

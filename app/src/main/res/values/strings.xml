@@ -75,5 +75,25 @@
     <string name="describe_the_opp">Please describe the opportunity.</string>
     <string name="what_is_next_step">What is the next step? \n Please select one.</string>
 
+    <string-array name="status_array">
+        <item>New</item>
+        <item>Qualified</item>
+        <item>Proposal</item>
+        <item>Negotiation</item>
+        <item>Closed</item>
+    </string-array>
+
+    <string-array name="opportunity_array">
+        <item>Solicitation</item>
+        <item>Teaming</item>
+        <item>Direct Sell</item>
+    </string-array>
+
+    <string-array name="next_step_array">
+        <item>Email</item>
+        <item>Phone Call</item>
+        <item>Teleconference</item>
+        <item>Meeting</item>
+    </string-array>
 
 </resources>

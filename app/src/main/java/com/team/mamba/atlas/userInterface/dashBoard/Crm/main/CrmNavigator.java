@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.Crm.main;
 
 import com.team.mamba.atlas.data.model.api.CrmNotes;
+import java.util.List;
 
 public interface CrmNavigator {
 
@@ -30,4 +31,5 @@ public interface CrmNavigator {
 
     void handleError(String error);
 
+    List<CrmNotes> getPerCrmNotesList();
 }

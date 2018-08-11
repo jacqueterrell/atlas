@@ -14,6 +14,7 @@ import com.team.mamba.atlas.databinding.CrmListRowBinding;
 import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmAdapter.CrmViewHolder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
@@ -25,8 +26,13 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
 
     public CrmAdapter(CrmViewModel viewModel,List<CrmNotes> crmNotes){
 
+        monthsList.clear();
+        monthPositions.clear();
         this.crmNotesList = crmNotes;
         this.viewModel = viewModel;
+
+        Collections.sort(crmNotesList,(o1,o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
+
     }
 
     public class CrmViewHolder extends RecyclerView.ViewHolder {
@@ -171,5 +177,27 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
     @Override
     public int getItemCount() {
         return crmNotesList.size();
+    }
+
+    public void filter(String text){
+        crmNotesList.clear();
+
+        if (text.equals("")){
+
+            crmNotesList.addAll(viewModel.getNavigator().getPerCrmNotesList());
+
+        } else {
+
+            text = text.toLowerCase();
+            for (CrmNotes notes : viewModel.getNavigator().getPerCrmNotesList()){
+
+                if (notes.getNoteName().toLowerCase().contains(text)){
+
+                    crmNotesList.add(notes);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
     }
 }

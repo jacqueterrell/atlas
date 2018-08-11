@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.CrmNotes;
 import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.CrmLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
@@ -46,7 +48,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
-        implements CrmNavigator {
+        implements CrmNavigator, SearchView.OnQueryTextListener {
 
 
     @Inject
@@ -60,8 +62,8 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     private CrmAdapter crmAdapter;
     private DashBoardActivityNavigator parentNavigator;
     private static final int SEND_CSV = 0;
-    private boolean isOpportunitiesChecked = false;
-    private boolean isContactsChecked = false;
+    private List<CrmNotes> permCrmNotesList = new ArrayList<>();
+
 
 
 
@@ -110,8 +112,10 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
          crmAdapter = new CrmAdapter(getViewModel(),crmNotesList);
          binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
          binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-         binding.recyclerView.setAdapter(crmAdapter);
 
+         binding.searchView.setOnQueryTextListener(this);
+         binding.searchView.setIconifiedByDefault(false);
+         binding.searchView.setFocusable(false);
 
         binding.swipeContainer.setOnRefreshListener(() -> {
 
@@ -127,7 +131,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
          } else {
 
-                 onCrmDataReturned();
+             onCrmDataReturned();
 
              viewModel.requestAllOpportunities(getViewModel());
 
@@ -146,9 +150,20 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     public void onCrmDataReturned() {
 
         crmNotesList.clear();
-        crmNotesList.addAll(viewModel.getCrmNotesList());
+        permCrmNotesList.clear();
+
+        //todo ensure that this works
+        crmNotesList.addAll(getFilteredNotes());
+        permCrmNotesList.addAll(getFilteredNotes());
+        binding.recyclerView.setAdapter(crmAdapter);
+
         crmAdapter.notifyDataSetChanged();
         binding.swipeContainer.setRefreshing(false);
+    }
+
+    @Override
+    public List<CrmNotes> getPerCrmNotesList() {
+        return permCrmNotesList;
     }
 
     @Override
@@ -198,6 +213,8 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     @Override
     public void onFilterClicked() {
 
+        ChangeFragments.replaceFragmentVertically(new CrmFilterSettingsFragment(),getBaseActivity().getSupportFragmentManager(),"FilterCrm",null);
+        //parentNavigator.hideToolBar();
     }
 
     @Override
@@ -213,7 +230,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
                 .onEnd(animator -> binding.dialogCrmInfo.setVisibility(View.GONE))
                 .playOn(binding.dialogCrmInfo);
     }
-
 
 
     private void showInfoDialog(){
@@ -245,6 +261,8 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
                 .onStart(animator -> binding.dialogExport.layoutExport.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogExport.layoutExport);
 
+
+        //todo wait one second and show the recyclerview
     }
 
 
@@ -541,6 +559,77 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
         super.onActivityResult(requestCode, resultCode, data);
 
         int code = requestCode;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        crmAdapter.filter(newText);
+        return true;
+    }
+
+
+    //todo filter the list
+    private List<CrmNotes> getFilteredNotes(){
+
+
+        List<CrmNotes> filteredList = new ArrayList<>();
+
+        if (parentNavigator.getCrmFilter() == null){
+
+            return viewModel.getCrmNotesList();
+
+        } else {
+
+            //filter by status
+            for (CrmNotes notes : viewModel.getCrmNotesList()){
+
+                CrmFilter crmFilter = new CrmFilter(parentNavigator.getCrmFilter());
+                // first give a valid value to each field
+                if (crmFilter.getNextStep() < 0){
+
+                    crmFilter.setNextStep(notes.getNextStep());
+                }
+
+                if (crmFilter.getStatus() < 0){
+
+                    crmFilter.setStatus(notes.getStage());
+                }
+
+                if (crmFilter.getOpportunity() < 0){
+
+                    crmFilter.setOpportunity(notes.getOppGoal());
+                }
+
+
+                //second filter the list by all set values
+                if (crmFilter.getOpportunity() == notes.getOppGoal()
+                        && crmFilter.getStatus() == notes.getStage()
+                        && crmFilter.getNextStep() == notes.getNextStep()){
+
+                    filteredList.add(notes);
+
+                }
+
+
+
+                crmFilter = parentNavigator.getCrmFilter();
+            }
+
+            //third return our list
+            return filteredList;
+
+        }
+
+    }
+
+    private CrmFilter getSavedFilter(){
+
+        return parentNavigator.getCrmFilter();
     }
 
 }

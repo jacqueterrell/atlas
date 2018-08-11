@@ -3,6 +3,8 @@ package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.CrmNotes;
 import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.local.CrmFilter;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmFragment;
 
 public interface DashBoardActivityNavigator {
 
@@ -59,12 +61,10 @@ public interface DashBoardActivityNavigator {
 
     void setUserProfile(UserProfile userProfile);
 
-    CrmNotes getEditingCrmNote();
-
-    void setEditingCrmNote(CrmNotes note);
-
-    boolean isCreatingNewCrmNote();
-
     UserProfile getUserProfile();
+
+    CrmFilter getCrmFilter();
+
+    void setCrmFilter(CrmFilter crmFilter);
 
 }

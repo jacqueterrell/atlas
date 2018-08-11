@@ -80,14 +80,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:fontFamily="@font/lato_light"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Specifics"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                android:textSize="17sp" />
-
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -99,6 +91,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:fontFamily="@font/lato_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Specifics"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textSize="20sp" />
 
 
                     <LinearLayout
@@ -316,7 +316,7 @@
                         android:layout_height="wrap_content"
                         android:text="Summary"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                        android:textSize="17sp"
+                        android:textSize="20sp"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"/>
 
@@ -337,7 +337,7 @@
                         android:layout_height="wrap_content"
                         android:text="Activity"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                        android:textSize="17sp"
+                        android:textSize="20sp"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"/>
 
