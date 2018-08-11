@@ -180,7 +180,7 @@
                 android:fontFamily="@font/lato"
                 android:hint="Event Name"
                 android:textAlignment="center"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:inputType="textCapWords"
                 android:text="@{crmNote.getWhereMetEventName()}"
                 />

@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard.Crm;
+package com.team.mamba.atlas.userInterface.dashBoard.Crm.main;
 
 import android.Manifest;
 import android.content.Context;
@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
@@ -28,6 +30,9 @@ import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.CrmLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageOneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixDataModel;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.utils.AppConstants;
@@ -107,6 +112,13 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
          binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
          binding.recyclerView.setAdapter(crmAdapter);
 
+
+        binding.swipeContainer.setOnRefreshListener(() -> {
+
+            viewModel.requestAllOpportunities(getViewModel());
+
+        });
+
          setUpListeners();
 
          if (viewModel.getCrmNotesList().isEmpty()){
@@ -115,19 +127,19 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
          } else {
 
-             if (SelectedCrmFragment.isNoteDeleted){
-
-                 viewModel.requestAllOpportunities(getViewModel());
-                 SelectedCrmFragment.isNoteDeleted = false;
-
-             } else {
-
                  onCrmDataReturned();
-             }
+
+             viewModel.requestAllOpportunities(getViewModel());
 
          }
 
          return binding.getRoot();
+    }
+
+    @Override
+    public void handleError(String error) {
+
+        binding.swipeContainer.setRefreshing(false);
     }
 
     @Override
@@ -136,6 +148,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
         crmNotesList.clear();
         crmNotesList.addAll(viewModel.getCrmNotesList());
         crmAdapter.notifyDataSetChanged();
+        binding.swipeContainer.setRefreshing(false);
     }
 
     @Override
@@ -167,6 +180,18 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
     @Override
     public void onCreateNewNoteClicked() {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference newUserRef = db.collection(AppConstants.USERS_COLLECTION).document();
+        String noteId = newUserRef.getId();
+        Long timeStamp = System.currentTimeMillis() / 1000;
+
+        CrmNotes crmNotes = new CrmNotes();
+        crmNotes.setId(noteId);
+        crmNotes.setAuthorID(dataManager.getSharedPrefs().getUserId());
+        crmNotes.setTimestamp(timeStamp);
+
+        ChangeFragments.replaceFragmentVertically(EditAddNotePageOneFragment.newInstance(crmNotes),getBaseActivity().getSupportFragmentManager(),"PageOne",null);
 
     }
 
@@ -219,6 +244,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
                 .duration(500)
                 .onStart(animator -> binding.dialogExport.layoutExport.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogExport.layoutExport);
+
     }
 
 

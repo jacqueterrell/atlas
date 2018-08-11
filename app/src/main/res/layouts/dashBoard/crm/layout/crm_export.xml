@@ -13,7 +13,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmViewModel"/>
 
     </data>
 

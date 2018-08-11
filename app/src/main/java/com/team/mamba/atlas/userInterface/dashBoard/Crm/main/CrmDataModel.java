@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard.Crm;
+package com.team.mamba.atlas.userInterface.dashBoard.Crm.main;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.orhanobut.logger.Logger;
@@ -6,8 +6,6 @@ import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.CrmNotes;
 import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.data.model.api.UserProfile;
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +45,7 @@ public class CrmDataModel {
 
                     } else {
 
+                        viewModel.getNavigator().handleError(task   .getException().getMessage());
                         Logger.e(task.getException().getMessage());
                     }
 
@@ -85,6 +84,8 @@ public class CrmDataModel {
 
                         Logger.e(task.getException().getMessage());
                         task.getException().printStackTrace();
+                        viewModel.getNavigator().handleError(task   .getException().getMessage());
+
                     }
 
                 });
@@ -124,6 +125,8 @@ public class CrmDataModel {
 
                         Logger.e(task.getException().getMessage());
                         task.getException().printStackTrace();
+                        viewModel.getNavigator().handleError(task   .getException().getMessage());
+
                     }
 
                 });

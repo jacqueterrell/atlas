@@ -205,8 +205,8 @@
                 android:fontFamily="@font/lato"
                 android:hint="Primary Contact"
                 android:textAlignment="center"
-                android:imeOptions="actionDone"
-                android:inputType="number"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords"
                 android:text="@{crmNote.getPoc()}"
                 />
 
@@ -233,8 +233,8 @@
                 android:hint="location"
                 android:textAlignment="center"
                 android:imeOptions="actionDone"
-                android:inputType="number"
-                android:text="@{crmNote.getWhereMetEventName()}"
+                android:inputType="text"
+                android:text="@{crmNote.getWhereMetCitySt()}"
                 />
 
 

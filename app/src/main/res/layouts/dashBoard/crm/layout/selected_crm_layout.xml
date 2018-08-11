@@ -399,6 +399,19 @@
 
         </LinearLayout>
 
+        <net.bohush.geometricprogressview.GeometricProgressView
+            android:id="@+id/progress_spinner"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:gp_color="@color/grey"
+            app:gp_duration="800"
+            app:gp_figure_padding="3dp"
+            app:gp_number_of_angles="12"
+            app:gp_type="triangle"
+            android:layout_marginBottom="100dp"/>
 
     </FrameLayout>
 

@@ -9,6 +9,13 @@
 
     <data>
 
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixViewModel"/>
+
+
         <variable
             name = "crmNote"
             type = "com.team.mamba.atlas.data.model.api.CrmNotes"/>
@@ -46,9 +53,10 @@
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackground"
                     android:fontFamily="@font/lato"
-                    android:text="Continue"
+                    android:text="Finish"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
+                    android:onClick="@{()-> viewModel.onFinishButtonClicked()}"
                     />
 
             </android.support.v7.widget.CardView>
@@ -99,7 +107,7 @@
                     app:cardCornerRadius = "4dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="5dp"
-                    app:cardBackgroundColor="@color/material_icons_light"
+                    app:cardBackgroundColor="@color/material_icon"
                     >
 
                 </android.support.v7.widget.CardView>
@@ -113,7 +121,7 @@
                     app:cardCornerRadius = "4dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="5dp"
-                    app:cardBackgroundColor="@color/material_icons_light"
+                    app:cardBackgroundColor="@color/material_icon"
                     >
 
                 </android.support.v7.widget.CardView>
@@ -127,7 +135,7 @@
                     app:cardCornerRadius = "5dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="5dp"
-                    app:cardBackgroundColor="@color/material_icons_light"
+                    app:cardBackgroundColor="@color/material_icon"
                     >
 
                 </android.support.v7.widget.CardView>
@@ -142,7 +150,7 @@
                     app:cardCornerRadius = "5dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="5dp"
-                    app:cardBackgroundColor="@color/material_icons_light"
+                    app:cardBackgroundColor="@color/material_icon"
                     >
 
                 </android.support.v7.widget.CardView>
@@ -172,16 +180,19 @@
 
 
             <EditText
-                android:id="@+id/et_event"
+                android:id="@+id/et_description"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:maxHeight="80dp"
                 android:background="@null"
                 android:cursorVisible="true"
                 android:fontFamily="@font/lato"
                 android:hint="description"
                 android:textAlignment="center"
-                android:imeOptions="actionNext"
-                android:inputType="textCapWords"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+
+                tools:text="jffffjjfljlkjfksljlsjlsjljsfkljkljljksfljflkjslfjwljsljsfjlsljflsjls"
                 android:text="@{crmNote.getWhereMetEventName()}"
                 />
 
@@ -351,6 +362,20 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <net.bohush.geometricprogressview.GeometricProgressView
+            android:id="@+id/progress_spinner"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:gp_color="@color/grey"
+            app:gp_duration="800"
+            app:gp_figure_padding="3dp"
+            app:gp_number_of_angles="12"
+            app:gp_type="triangle"
+            android:layout_marginBottom="100dp"/>
 
     </FrameLayout>
 

@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.dependencyInjection.builder;
 
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
@@ -9,7 +10,7 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggeste
 import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileFragment;
@@ -69,14 +70,11 @@ public abstract class FragmentBuilder {
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract EditEducationFragment bindEditEducationFragment();
 
-
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract EditEmailFragment bindEditEmailFragment();
 
-
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract EditPhoneFragment bindEditPhoneFragment();
-
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract EditWorkFragment bindEditWorkFragment();
@@ -84,9 +82,7 @@ public abstract class FragmentBuilder {
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract SelectedCrmFragment bindSelectedCrmFragment();
 
-
-
-
-
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract EditAddNotePageSixFragment bindEditAddNotePageSixFragment();
 
 }

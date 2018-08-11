@@ -146,22 +146,24 @@ public class CrmNotes {
         return closeTimestamp;
     }
 
-    public long getAdjustedTimeStamp(){
+
+    public void setCloseTimestamp(double closeTimestamp) {
+        this.closeTimestamp = closeTimestamp;
+    }
+
+
+   @Exclude public long getAdjustedTimeStamp(){
 
         String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
 
         return Long.parseLong(adjustedTime);
     }
 
-    public long getAdjustedCloseTimeStamp(){
+    @Exclude public long getAdjustedCloseTimeStamp(){
 
         String adjustedTime = AppFormatter.timeStampFormatter.format(closeTimestamp);
 
         return Long.parseLong(adjustedTime);
-    }
-
-    public void setCloseTimestamp(double closeTimestamp) {
-        this.closeTimestamp = closeTimestamp;
     }
 
 
@@ -221,6 +223,7 @@ public class CrmNotes {
         } else if (type == 2){
 
             return "Federal";
+
         } else if (type == 3){
 
             return "Local";

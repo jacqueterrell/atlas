@@ -98,7 +98,7 @@ public class EditAddressFragment extends BaseFragment<EditAddressLayoutBinding,E
     public void onEducationClicked() {
 
         ChangeFragments.addFragmentFadeIn(new EditEducationFragment(),getBaseActivity()
-                .getSupportFragmentManager(),"AddUserLayout",null);
+                .getSupportFragmentManager(),"EducationFragment",null);
     }
 
     @Override

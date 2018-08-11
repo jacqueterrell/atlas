@@ -84,7 +84,7 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
     public void onContinueClicked() {
 
         ChangeFragments.addFragmentFadeIn(new EditEmailFragment(),getBaseActivity()
-                .getSupportFragmentManager(),"AddUserLayout",null);
+                .getSupportFragmentManager(),"EmailFragment",null);
     }
 
     @Override

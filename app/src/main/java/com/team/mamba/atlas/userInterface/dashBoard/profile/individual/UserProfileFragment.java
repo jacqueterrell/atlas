@@ -217,28 +217,28 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     public void editPhoneInfo() {
 
         ChangeFragments.addFragmentFadeIn(EditPhoneFragment.newInstance(profile),getBaseActivity()
-                .getSupportFragmentManager(),"AddUserLayout",null);
+                .getSupportFragmentManager(),"EditPhone",null);
     }
 
     @Override
     public void editEmailInfo() {
 
         ChangeFragments.addFragmentFadeIn(new EditEmailFragment(),getBaseActivity()
-                .getSupportFragmentManager(),"AddUserLayout",null);
+                .getSupportFragmentManager(),"EditEmail",null);
     }
 
     @Override
     public void editAddressInfo() {
 
         ChangeFragments.addFragmentFadeIn(EditAddressFragment.newInstance(profile),getBaseActivity()
-                .getSupportFragmentManager(),"AddUserLayout",null);
+                .getSupportFragmentManager(),"EditAddress",null);
     }
 
     @Override
     public void editWorkHistoryInfo() {
 
         ChangeFragments.addFragmentFadeIn(new EditWorkFragment(),getBaseActivity()
-                .getSupportFragmentManager(),"AddUserLayout",null);
+                .getSupportFragmentManager(),"EditWorkHistory",null);
     }
 
     @Override

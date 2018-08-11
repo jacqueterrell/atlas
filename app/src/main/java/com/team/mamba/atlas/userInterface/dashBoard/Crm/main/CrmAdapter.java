@@ -1,18 +1,17 @@
-package com.team.mamba.atlas.userInterface.dashBoard.Crm;
+package com.team.mamba.atlas.userInterface.dashBoard.Crm.main;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.CrmNotes;
 import com.team.mamba.atlas.databinding.CrmListRowBinding;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmAdapter.CrmViewHolder;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmAdapter.CrmViewHolder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;

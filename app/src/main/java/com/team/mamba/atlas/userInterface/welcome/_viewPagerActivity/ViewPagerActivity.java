@@ -91,7 +91,6 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, Vie
         welcomePager = new WelcomePager(getSupportFragmentManager());
         binding.viewPagerWelcome.setAdapter(welcomePager);
 
-        setFirebaseSettings();
     }
 
     private class WelcomePager extends FragmentStatePagerAdapter {
@@ -207,14 +206,7 @@ public class ViewPagerActivity extends BaseActivity<WelcomeViewPagerBinding, Vie
     }
 
 
-    private void setFirebaseSettings(){
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
-        firestore.setFirestoreSettings(settings);
-    }
 
 }
 

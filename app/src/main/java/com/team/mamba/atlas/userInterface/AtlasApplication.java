@@ -6,6 +6,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.dependencyInjection.component.DaggerApplicationComponent;
@@ -26,6 +28,7 @@ public class AtlasApplication extends Application implements HasActivityInjector
         super.onCreate();
 
         initializeLogger();
+        setFirebaseSettings();
 
         DaggerApplicationComponent.builder()
                 .application(this)
@@ -51,6 +54,15 @@ public class AtlasApplication extends Application implements HasActivityInjector
                 return AppConstants.APP_DEBUG;
             }
         });
+    }
+
+    private void setFirebaseSettings(){
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        firestore.setFirestoreSettings(settings);
     }
 
 }

@@ -13,6 +13,8 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.CrmNotes;
 import com.team.mamba.atlas.databinding.SelectedCrmLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageOneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmViewModel;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
 import javax.inject.Inject;
@@ -54,7 +56,7 @@ implements SelectedCrmNavigator{
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
     @Override
@@ -77,13 +79,15 @@ implements SelectedCrmNavigator{
     @Override
     public void onSuccess() {
 
+        CrmViewModel.crmNotesList.clear();
+        hideProgressSpinner();
         getBaseActivity().onBackPressed();
     }
 
     @Override
     public void onEditClicked() {
 
-        ChangeFragments.replaceFragmentVertically(SelectedCrmFragment.newInstance(notes),getBaseActivity().getSupportFragmentManager(),"SelectedCrm",null);
+        ChangeFragments.replaceFragmentVertically(EditAddNotePageOneFragment.newInstance(notes),getBaseActivity().getSupportFragmentManager(),"SelectedCrm",null);
 
     }
 
@@ -103,6 +107,7 @@ implements SelectedCrmNavigator{
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
 
+                    showProgressSpinner();
                     viewModel.deleteNote(getViewModel(),notes);
                 });
 

@@ -21,12 +21,14 @@ import com.team.mamba.atlas.data.model.api.CrmNotes;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
@@ -480,9 +482,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
             }
 
 
-            if (fragment instanceof InfoFragment){
+            if (fragment instanceof InfoFragment
+                    || fragment instanceof CrmFragment
+                    || fragment instanceof NotificationsFragment
+                    || fragment instanceof ContactsFragment){
 
                 binding.layoutToolBar.setVisibility(View.VISIBLE);
+
             }
 
         }

@@ -1,7 +1,6 @@
-package com.team.mamba.atlas.userInterface.dashBoard.Crm;
+package com.team.mamba.atlas.userInterface.dashBoard.Crm.main;
 
 import com.team.mamba.atlas.data.model.api.CrmNotes;
-import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.List;
 public class CrmViewModel extends BaseViewModel<CrmNavigator> {
 
     private CrmDataModel dataModel;
-    private static List<CrmNotes> crmNotesList = new ArrayList<>();
+    public static List<CrmNotes> crmNotesList = new ArrayList<>();
     private static List<UserProfile> usersContactProfiles = new ArrayList<>();
     private static UserProfile userProfile;
     private static CrmNotes selectedOpportunity;

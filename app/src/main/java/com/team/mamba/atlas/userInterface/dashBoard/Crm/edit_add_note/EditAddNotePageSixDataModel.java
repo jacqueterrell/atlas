@@ -1,14 +1,19 @@
 package com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.CrmNotes;
 
+import com.team.mamba.atlas.utils.AppConstants;
 import javax.inject.Inject;
 
 public class EditAddNotePageSixDataModel {
 
 
     private AppDataManager dataManager;
+    public static boolean shouldReloadCrm = false;
 
     @Inject
     public EditAddNotePageSixDataModel(AppDataManager dataManager){
@@ -17,9 +22,25 @@ public class EditAddNotePageSixDataModel {
     }
 
 
-    public void setCrmNote(EditAddNotePageSixViewModel viewModel, CrmNotes notes){
+    public void setNoteRequest(EditAddNotePageSixViewModel viewModel, CrmNotes notes){
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        db.collection(AppConstants.BUS_NOTES_COLLECTION)
+                .document(notes.id)
+                .set(notes)
+                .addOnCompleteListener(task -> {
 
+                    if (task.isSuccessful()) {
+
+                        viewModel.getNavigator().onNoteSubmitted();
+                        shouldReloadCrm = true;
+
+                    } else {
+
+                        Logger.e("Could not update address: " + task.getException());
+                    }
+
+                });
     }
 }

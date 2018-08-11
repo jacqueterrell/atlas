@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard.Crm;
+package com.team.mamba.atlas.userInterface.dashBoard.Crm.main;
 
 import com.team.mamba.atlas.data.model.api.CrmNotes;
 
@@ -27,5 +27,7 @@ public interface CrmNavigator {
     boolean isExportScreenShown();
 
     void hideExportScreen();
+
+    void handleError(String error);
 
 }
