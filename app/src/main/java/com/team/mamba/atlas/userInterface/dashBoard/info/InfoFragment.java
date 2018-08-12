@@ -26,6 +26,7 @@ import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import java.util.Collections;
 import java.util.Map;
@@ -53,6 +54,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     private RecentActivitiesAdapter recentActivitiesAdapter;
     private static List<UserConnections> recentActivityConnections = new ArrayList<>();
     private DashBoardActivityNavigator parentNavigator;
+    private DashBoardActivity parentActivity;
 
 
     public static InfoFragment newInstance() {
@@ -86,7 +88,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         super.onAttach(context);
 
         parentNavigator = (DashBoardActivityNavigator) context;
-        parentNavigator.showToolBar();
     }
 
     @Override
@@ -101,6 +102,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
+
+        parentNavigator.showToolBar();
 
         userStatsAdapter = new UserStatsAdapter(userStatsList);
         binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
@@ -137,6 +140,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         }
 
         return binding.getRoot();
+    }
+
+    private void setUpToolBar(){
+
+        parentNavigator.showToolBar();
+        parentActivity.showCrmIcon();
+        parentActivity.hideContactsIcon();
+        parentActivity.hideInfoIcon();
+        parentActivity.hideNotificationsIcon();
     }
 
     @Override

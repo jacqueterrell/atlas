@@ -1,10 +1,10 @@
 package com.team.mamba.atlas.userInterface.dashBoard;
 
 
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.filter_list.CrmFilterViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageSixViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.filter_list.CrmFilterViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.selected_crm.SelectedCrmViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsViewModel;
@@ -14,7 +14,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessPro
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileViewModel;
 
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressViewModel;
@@ -53,9 +53,9 @@ public class DashBoardModule {
     }
 
     @Provides
-    NotificationsViewModel providesNotificationsViewModel(){
+    AnnouncementsViewModel providesNotificationsViewModel(){
 
-        return new NotificationsViewModel();
+        return new AnnouncementsViewModel();
     }
 
     @Provides

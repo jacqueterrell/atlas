@@ -1,8 +1,9 @@
 package com.team.mamba.atlas.dependencyInjection.builder;
 
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.filter_list.CrmFilterSettingsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageSixFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.filter_list.CrmFilterSettingsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.selected_crm.SelectedCrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsFragment;
@@ -11,9 +12,8 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggeste
 import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationFragment;
@@ -42,7 +42,7 @@ public abstract class FragmentBuilder {
     abstract InfoFragment bindDashBoardHomeFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
-    abstract NotificationsFragment bindNotificationsFragment();
+    abstract AnnouncementsFragment bindNotificationsFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract AddUserFragment bindAddContactsFragment();
