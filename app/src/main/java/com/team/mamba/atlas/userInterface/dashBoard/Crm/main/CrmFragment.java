@@ -161,7 +161,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         crmNotesList.clear();
         permCrmNotesList.clear();
 
-        //todo ensure that this works
         crmNotesList.addAll(getFilteredNotes());
         permCrmNotesList.addAll(getFilteredNotes());
         binding.recyclerView.setAdapter(crmAdapter);

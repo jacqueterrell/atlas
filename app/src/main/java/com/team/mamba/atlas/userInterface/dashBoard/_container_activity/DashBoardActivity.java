@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
@@ -343,7 +345,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         try {
             binding.layoutToolBar.setVisibility(View.VISIBLE);
         }catch (Exception e){
-
+            Logger.e(e.getMessage());
         }
     }
 
@@ -493,15 +495,15 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 onBackPressed();
             }
 
-
-            if (fragment instanceof InfoFragment
+            Fragment newFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if (newFragment instanceof InfoFragment
                     || fragment instanceof CrmFragment
                     || fragment instanceof NotificationsFragment
-                    || fragment instanceof ContactsFragment){
+                    || fragment instanceof ContactsFragment) {
 
                 binding.layoutToolBar.setVisibility(View.VISIBLE);
-
             }
+
 
         }
 
