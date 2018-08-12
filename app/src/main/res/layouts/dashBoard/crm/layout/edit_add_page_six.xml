@@ -13,7 +13,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageSixViewModel"/>
 
 
         <variable

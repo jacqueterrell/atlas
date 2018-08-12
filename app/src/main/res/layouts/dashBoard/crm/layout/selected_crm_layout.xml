@@ -13,7 +13,7 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmViewModel" />
+            type="com.team.mamba.atlas.userInterface.dashBoard.crm.selected_crm.SelectedCrmViewModel" />
 
         <variable
             name = "crmNote"

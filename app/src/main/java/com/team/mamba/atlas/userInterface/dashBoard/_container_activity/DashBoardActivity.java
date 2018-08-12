@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,21 +18,20 @@ import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
-import com.team.mamba.atlas.data.model.api.CrmNotes;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageOneFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditPageOneNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageOneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditPageOneNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
@@ -147,6 +145,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         hideInfoIcon();
         hideCrmIcon();
         hideContactsIcon();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (!(fragment instanceof AnnouncementsFragment)){
+
+            ChangeFragments.replaceHorizontallyFromBackStack(AnnouncementsFragment.newInstance(),getSupportFragmentManager(),"Announcements",null);
+        }
     }
 
     @Override
@@ -498,7 +503,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
             Fragment newFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if (newFragment instanceof InfoFragment
                     || fragment instanceof CrmFragment
-                    || fragment instanceof NotificationsFragment
+                    || fragment instanceof AnnouncementsFragment
                     || fragment instanceof ContactsFragment) {
 
                 binding.layoutToolBar.setVisibility(View.VISIBLE);

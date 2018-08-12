@@ -12,7 +12,7 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmViewModel" />
+            type="com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel" />
 
     </data>
 
@@ -53,7 +53,7 @@
                     android:scaleX="1.2"
                     android:scaleY="1.2"
                     android:src="@drawable/ic_share_alt_square_solid"
-                    android:tint="@color/chart_red" />
+                    android:tint="#cd6d5d" />
 
                 <ImageView
                     android:id="@+id/iv_settings"
@@ -67,6 +67,7 @@
 
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,8 +105,10 @@
                             android:layout_height="match_parent"
                             android:fontFamily="@font/lato"
                             android:queryHint="Search..."
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp" />
+                           app:iconifiedByDefault="false"
+                        android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:background="@null"/>
 
 
                     </android.support.v7.widget.CardView>
