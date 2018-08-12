@@ -74,7 +74,7 @@ public class InfoDataModelTest {
     }
 
     @Test
-    public void testtLongList(){
+    public void testLongList(){
 
         List<Long> timeStampList = new ArrayList<>();
         timeStampList.add(1531600332L);

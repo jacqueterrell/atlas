@@ -53,6 +53,11 @@ public class CrmDataModel {
     }
 
 
+    /**
+     * Gets a list of all profiles and saves the user's profile
+     *
+     * @param viewModel
+     */
     private void getUserDetails(CrmViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();

@@ -33,9 +33,9 @@ import com.team.mamba.atlas.databinding.CrmLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
 import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageOneFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixDataModel;
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.filter_list.CrmFilterSettingsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeFragments;
@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
+public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         implements CrmNavigator, SearchView.OnQueryTextListener {
 
 
@@ -61,10 +61,9 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     private List<CrmNotes> crmNotesList = new ArrayList<>();
     private CrmAdapter crmAdapter;
     private DashBoardActivityNavigator parentNavigator;
+    private DashBoardActivity parentActivity;
     private static final int SEND_CSV = 0;
     private List<CrmNotes> permCrmNotesList = new ArrayList<>();
-
-
 
 
     @Override
@@ -93,6 +92,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
         super.onAttach(context);
 
         parentNavigator = (DashBoardActivityNavigator) context;
+        parentActivity = (DashBoardActivity) context;
     }
 
     @Override
@@ -104,18 +104,18 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-         binding = getViewDataBinding();
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = getViewDataBinding();
 
-         parentNavigator.showToolBar();
+        setUpToolBar();
 
-         crmAdapter = new CrmAdapter(getViewModel(),crmNotesList);
-         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
-         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        crmAdapter = new CrmAdapter(getViewModel(), crmNotesList);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-         binding.searchView.setOnQueryTextListener(this);
-         binding.searchView.setIconifiedByDefault(false);
-         binding.searchView.setFocusable(false);
+        binding.searchView.setOnQueryTextListener(this);
+        binding.searchView.setIconifiedByDefault(false);
+        binding.searchView.setFocusable(false);
 
         binding.swipeContainer.setOnRefreshListener(() -> {
 
@@ -123,21 +123,30 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
         });
 
-         setUpListeners();
+        setUpListeners();
 
-         if (viewModel.getCrmNotesList().isEmpty()){
+        if (viewModel.getCrmNotesList().isEmpty()) {
 
-             viewModel.requestAllOpportunities(getViewModel());
+            viewModel.requestAllOpportunities(getViewModel());
 
-         } else {
+        } else {
 
-             onCrmDataReturned();
+            onCrmDataReturned();
 
-             viewModel.requestAllOpportunities(getViewModel());
+            viewModel.requestAllOpportunities(getViewModel());
 
-         }
+        }
 
-         return binding.getRoot();
+        return binding.getRoot();
+    }
+
+    private void setUpToolBar(){
+
+        parentNavigator.showToolBar();
+        parentActivity.showCrmIcon();
+        parentActivity.hideContactsIcon();
+        parentActivity.hideInfoIcon();
+        parentActivity.hideNotificationsIcon();
     }
 
     @Override
@@ -169,10 +178,10 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     @Override
     public void onRowClicked(CrmNotes notes) {
 
-        ChangeFragments.replaceFragmentVertically(SelectedCrmFragment.newInstance(notes),getBaseActivity().getSupportFragmentManager(),"SelectedCrm",null);
-       parentNavigator.hideToolBar();
+        ChangeFragments.replaceFragmentVertically(SelectedCrmFragment.newInstance(notes),
+                getBaseActivity().getSupportFragmentManager(), "SelectedCrm", null);
+        parentNavigator.hideToolBar();
     }
-
 
 
     @Override
@@ -206,14 +215,16 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
         crmNotes.setAuthorID(dataManager.getSharedPrefs().getUserId());
         crmNotes.setTimestamp(timeStamp);
 
-        ChangeFragments.replaceFragmentVertically(EditAddNotePageOneFragment.newInstance(crmNotes),getBaseActivity().getSupportFragmentManager(),"PageOne",null);
+        ChangeFragments.replaceFragmentVertically(EditAddNotePageOneFragment.newInstance(crmNotes,true),
+                getBaseActivity().getSupportFragmentManager(), "PageOne", null);
 
     }
 
     @Override
     public void onFilterClicked() {
 
-        ChangeFragments.replaceFragmentVertically(new CrmFilterSettingsFragment(),getBaseActivity().getSupportFragmentManager(),"FilterCrm",null);
+        ChangeFragments.replaceFragmentVertically(new CrmFilterSettingsFragment(),
+                getBaseActivity().getSupportFragmentManager(), "FilterCrm", null);
         //parentNavigator.hideToolBar();
     }
 
@@ -232,7 +243,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     }
 
 
-    private void showInfoDialog(){
+    private void showInfoDialog() {
 
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
@@ -254,13 +265,12 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
                 .playOn(binding.dialogExport.layoutExport);
     }
 
-    private void showExportDialog(){
+    private void showExportDialog() {
 
         YoYo.with(Techniques.SlideInUp)
                 .duration(500)
                 .onStart(animator -> binding.dialogExport.layoutExport.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogExport.layoutExport);
-
 
         //todo wait one second and show the recyclerview
     }
@@ -269,12 +279,11 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     @Override
     public void onExportButtonClicked() {
 
-
-        if (isExternalStoragePermissionsGranted()){
+        if (isExternalStoragePermissionsGranted()) {
 
             hideExportScreen();
 
-            if (binding.dialogExport.chkBoxContacts.isChecked()){
+            if (binding.dialogExport.chkBoxContacts.isChecked()) {
 
                 exportContacts();
 
@@ -285,24 +294,24 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
         }
     }
 
-    private void setUpListeners(){
+    private void setUpListeners() {
 
-            binding.dialogExport.chkBoxContacts.setOnClickListener(view -> {
+        binding.dialogExport.chkBoxContacts.setOnClickListener(view -> {
 
-                if (binding.dialogExport.chkBoxContacts.isChecked()){
+            if (binding.dialogExport.chkBoxContacts.isChecked()) {
 
-                    binding.dialogExport.chkBoxOpportunities.setChecked(false);
+                binding.dialogExport.chkBoxOpportunities.setChecked(false);
 
-                } else {
+            } else {
 
-                    binding.dialogExport.chkBoxOpportunities.setChecked(false);
-                    binding.dialogExport.chkBoxContacts.setChecked(true);
-                }
-            });
+                binding.dialogExport.chkBoxOpportunities.setChecked(false);
+                binding.dialogExport.chkBoxContacts.setChecked(true);
+            }
+        });
 
         binding.dialogExport.chkBoxOpportunities.setOnClickListener(view -> {
 
-            if (binding.dialogExport.chkBoxOpportunities.isChecked()){
+            if (binding.dialogExport.chkBoxOpportunities.isChecked()) {
 
                 binding.dialogExport.chkBoxContacts.setChecked(false);
 
@@ -313,10 +322,9 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
             }
         });
 
-
         binding.dialogExport.layoutContacts.setOnClickListener(v -> {
 
-            if (binding.dialogExport.chkBoxContacts.isChecked()){
+            if (binding.dialogExport.chkBoxContacts.isChecked()) {
 
                 binding.dialogExport.chkBoxOpportunities.setChecked(false);
 
@@ -329,7 +337,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
         binding.dialogExport.layoutOpportunities.setOnClickListener(v -> {
 
-            if (binding.dialogExport.chkBoxOpportunities.isChecked()){
+            if (binding.dialogExport.chkBoxOpportunities.isChecked()) {
 
                 binding.dialogExport.chkBoxContacts.setChecked(false);
 
@@ -357,7 +365,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     /**
      * Takes all of the User's Contacts and exports them as a CSV file
      */
-    private void exportContacts(){
+    private void exportContacts() {
 
         File root = Environment.getExternalStorageDirectory();
         File csvFile = new File(root, "CRM_from_Atlas.csv");
@@ -368,25 +376,25 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
         try {
 
             writer = new FileWriter(csvFile);
-            writeCsvHeader(writer,"First Name,");
-            writeCsvHeader(writer,"Last Name,");
-            writeCsvHeader(writer,"Email Name,");
-            writeCsvHeader(writer,"Work Phone,");
-            writeCsvHeader(writer,"Current Employer,");
-            writeCsvHeader(writer,"Current Position,");
-            writeCsvHeader(writer,"Work Street,");
-            writeCsvHeader(writer,"Work City/State/Zip\n");
+            writeCsvHeader(writer, "First Name,");
+            writeCsvHeader(writer, "Last Name,");
+            writeCsvHeader(writer, "Email Name,");
+            writeCsvHeader(writer, "Work Phone,");
+            writeCsvHeader(writer, "Current Employer,");
+            writeCsvHeader(writer, "Current Position,");
+            writeCsvHeader(writer, "Work Street,");
+            writeCsvHeader(writer, "Work City/State/Zip\n");
 
-            for (UserProfile profile : viewModel.getUsersContactProfiles()){
+            for (UserProfile profile : viewModel.getUsersContactProfiles()) {
 
-                writeCsvData(writer,profile.getFirstName().replace(","," ") + ",");
-                writeCsvData(writer,profile.getLastName().replace(","," ") + ",");
-                writeCsvData(writer,profile.getEmail().replace(","," ") + ",");
-                writeCsvData(writer,profile.getWorkPhone().replace(","," ") + ",");
-                writeCsvData(writer,profile.getCurrentEmployer().replace(","," ") + ",");
-                writeCsvData(writer,profile.getCurrentPosition().replace(","," ") + ",");
-                writeCsvData(writer,profile.getWorkStreet().replace(","," ")+ ",");
-                writeCsvData(writer,profile.getWorkCityStateZip() + "\n");
+                writeCsvData(writer, profile.getFirstName().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getLastName().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getEmail().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkPhone().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getCurrentEmployer().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getCurrentPosition().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkStreet().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkCityStateZip() + "\n");
 
             }
 
@@ -411,7 +419,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
             startActivityForResult(Intent.createChooser(emailIntent, "Pick an Email provider"), SEND_CSV);
 
 
-        } catch (Exception e){
+        } catch (Exception e) {
 
             Logger.e(e.getMessage());
         }
@@ -421,72 +429,67 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     /**
      * Takes all of the User's opportunities and exports them as a CSV file
      */
-    private void exportOpportunities(){
+    private void exportOpportunities() {
 
         File root = Environment.getExternalStorageDirectory();
         File csvFile = new File(root, "CRM_from_Atlas.csv");
         Uri uri;
         UserProfile profile = viewModel.getUserProfile();
 
-
         FileWriter writer;
 
         try {
 
             writer = new FileWriter(csvFile);
-            writeCsvHeader(writer,"Point of Contact,");
-            writeCsvHeader(writer,"Opportunity Name,");
-            writeCsvHeader(writer,"Where Met City/State,");
-            writeCsvHeader(writer,"Where Met Event Name,");
-            writeCsvHeader(writer,"How Met,");
-            writeCsvHeader(writer,"Stage,");
-            writeCsvHeader(writer,"Type,");
+            writeCsvHeader(writer, "Point of Contact,");
+            writeCsvHeader(writer, "Opportunity Name,");
+            writeCsvHeader(writer, "Where Met City/State,");
+            writeCsvHeader(writer, "Where Met Event Name,");
+            writeCsvHeader(writer, "How Met,");
+            writeCsvHeader(writer, "Stage,");
+            writeCsvHeader(writer, "Type,");
 
-            writeCsvHeader(writer,"Opportunity Goal,");
-            writeCsvHeader(writer,"Description,");
-            writeCsvHeader(writer,"Next Step,");
-            writeCsvHeader(writer,"Date Created,");
-            writeCsvHeader(writer,"Date Closed,");
+            writeCsvHeader(writer, "Opportunity Goal,");
+            writeCsvHeader(writer, "Description,");
+            writeCsvHeader(writer, "Next Step,");
+            writeCsvHeader(writer, "Date Created,");
+            writeCsvHeader(writer, "Date Closed,");
 
-            writeCsvHeader(writer,"First Name,");
-            writeCsvHeader(writer,"Last Name,");
-            writeCsvHeader(writer,"Email,");
-            writeCsvHeader(writer,"Work Phone,");
-            writeCsvHeader(writer,"Current Employer,");
-            writeCsvHeader(writer,"Current Position,");
-            writeCsvHeader(writer,"Work Street,");
-            writeCsvHeader(writer,"Work City/State/Zip\n");
+            writeCsvHeader(writer, "First Name,");
+            writeCsvHeader(writer, "Last Name,");
+            writeCsvHeader(writer, "Email,");
+            writeCsvHeader(writer, "Work Phone,");
+            writeCsvHeader(writer, "Current Employer,");
+            writeCsvHeader(writer, "Current Position,");
+            writeCsvHeader(writer, "Work Street,");
+            writeCsvHeader(writer, "Work City/State/Zip\n");
 
+            for (CrmNotes notes : viewModel.getCrmNotesList()) {
 
-            for (CrmNotes notes : viewModel.getCrmNotesList()){
-
-                writeCsvData(writer,notes.getPoc() + ",");
-                writeCsvData(writer,notes.getNoteName() + ",");
-                writeCsvData(writer,notes.getWhereMetCitySt() + ",");
-                writeCsvData(writer,notes.getWhereMetEventName() + ",");
-                writeCsvData(writer,notes.getHowMetToString() + ",");
-                writeCsvData(writer,notes.getStageToString() + ",");
-                writeCsvData(writer,notes.getTypeToString() + ",");
-                writeCsvData(writer,notes.getOpportunityGoalToString() + ",");
-                writeCsvData(writer,notes.getDesc() + ",");
-                writeCsvData(writer,notes.getNextStepToString() + ",");
-                writeCsvData(writer,notes.getDateCreatedToString() + ",");
-                writeCsvData(writer,notes.getDateClosedToString() + ",");
+                writeCsvData(writer, notes.getPoc() + ",");
+                writeCsvData(writer, notes.getNoteName() + ",");
+                writeCsvData(writer, notes.getWhereMetCitySt() + ",");
+                writeCsvData(writer, notes.getWhereMetEventName() + ",");
+                writeCsvData(writer, notes.getHowMetToString() + ",");
+                writeCsvData(writer, notes.getStageToString() + ",");
+                writeCsvData(writer, notes.getTypeToString() + ",");
+                writeCsvData(writer, notes.getOpportunityGoalToString() + ",");
+                writeCsvData(writer, notes.getDesc() + ",");
+                writeCsvData(writer, notes.getNextStepToString() + ",");
+                writeCsvData(writer, notes.getDateCreatedToString() + ",");
+                writeCsvData(writer, notes.getDateClosedToString() + ",");
 
                 //Fixme the second iteration puts the first name in the wrong place
-                writeCsvData(writer,profile.getFirstName().replace(","," ") + ",");
-                writeCsvData(writer,profile.getLastName().replace(","," ") + ",");
-                writeCsvData(writer,profile.getEmail().replace(","," ") + ",");
-                writeCsvData(writer,profile.getWorkPhone().replace(","," ") + ",");
-                writeCsvData(writer,profile.getCurrentEmployer().replace(","," ") + ",");
-                writeCsvData(writer,profile.getCurrentPosition().replace(","," ") + ",");
-                writeCsvData(writer,profile.getWorkStreet().replace(","," ")+ ",");
-                writeCsvData(writer,profile.getWorkCityStateZip() + "\n");
+                writeCsvData(writer, profile.getFirstName().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getLastName().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getEmail().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkPhone().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getCurrentEmployer().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getCurrentPosition().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkStreet().replace(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkCityStateZip() + "\n");
 
             }
-
-
-
 
             writer.flush();
             writer.close();
@@ -509,7 +512,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
             startActivityForResult(Intent.createChooser(emailIntent, "Pick an Email provider"), SEND_CSV);
 
 
-        } catch (Exception e){
+        } catch (Exception e) {
 
             Logger.e(e.getMessage());
         }
@@ -525,7 +528,8 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
                     != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(getBaseActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},   //request specific permission from user
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        //request specific permission from user
                         AppConstants.REQUEST_EXTERNAL_STORAGE_PERMISSIONS);
 
                 return false;
@@ -544,10 +548,12 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == AppConstants.REQUEST_EXTERNAL_STORAGE_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == AppConstants.REQUEST_EXTERNAL_STORAGE_PERMISSIONS
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             onExportButtonClicked();
 
@@ -573,51 +579,51 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
     }
 
 
-    //todo filter the list
-    private List<CrmNotes> getFilteredNotes(){
-
+    /**
+     * This takes the list and filters it by the params
+     * defined in {@link CrmFilterSettingsFragment}
+     *
+     * @return returns the filtered list
+     */
+    private List<CrmNotes> getFilteredNotes() {
 
         List<CrmNotes> filteredList = new ArrayList<>();
 
-        if (parentNavigator.getCrmFilter() == null){
+        if (parentNavigator.getCrmFilter() == null) {
 
             return viewModel.getCrmNotesList();
 
         } else {
 
             //filter by status
-            for (CrmNotes notes : viewModel.getCrmNotesList()){
+            for (CrmNotes notes : viewModel.getCrmNotesList()) {
 
                 CrmFilter crmFilter = new CrmFilter(parentNavigator.getCrmFilter());
                 // first give a valid value to each field
-                if (crmFilter.getNextStep() < 0){
+                if (crmFilter.getNextStep() < 0) {
 
                     crmFilter.setNextStep(notes.getNextStep());
                 }
 
-                if (crmFilter.getStatus() < 0){
+                if (crmFilter.getStatus() < 0) {
 
                     crmFilter.setStatus(notes.getStage());
                 }
 
-                if (crmFilter.getOpportunity() < 0){
+                if (crmFilter.getOpportunity() < 0) {
 
                     crmFilter.setOpportunity(notes.getOppGoal());
                 }
 
-
                 //second filter the list by all set values
                 if (crmFilter.getOpportunity() == notes.getOppGoal()
                         && crmFilter.getStatus() == notes.getStage()
-                        && crmFilter.getNextStep() == notes.getNextStep()){
+                        && crmFilter.getNextStep() == notes.getNextStep()) {
 
                     filteredList.add(notes);
 
                 }
 
-
-
-                crmFilter = parentNavigator.getCrmFilter();
             }
 
             //third return our list
@@ -625,11 +631,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding,CrmViewModel>
 
         }
 
-    }
-
-    private CrmFilter getSavedFilter(){
-
-        return parentNavigator.getCrmFilter();
     }
 
 }

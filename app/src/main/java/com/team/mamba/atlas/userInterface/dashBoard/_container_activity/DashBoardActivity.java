@@ -22,6 +22,8 @@ import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageOneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditPageOneNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
@@ -362,49 +364,49 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         binding.layoutToolBar.setVisibility(View.GONE);
     }
 
-    private void showContactsIcon(){
+    public void showContactsIcon(){
 
         binding.ivContactsSelected.setVisibility(View.VISIBLE);
         binding.ivContactsNotSelected.setVisibility(View.GONE);
     }
 
-    private void hideContactsIcon(){
+    public void hideContactsIcon(){
 
         binding.ivContactsSelected.setVisibility(View.GONE);
         binding.ivContactsNotSelected.setVisibility(View.VISIBLE);
     }
 
-    private void showCrmIcon(){
+    public void showCrmIcon(){
 
         binding.ivCrmSelected.setVisibility(View.VISIBLE);
         binding.ivCrmNotSelected.setVisibility(View.GONE);
     }
 
-    private void hideCrmIcon(){
+    public void hideCrmIcon(){
 
         binding.ivCrmSelected.setVisibility(View.GONE);
         binding.ivCrmNotSelected.setVisibility(View.VISIBLE);
     }
 
-    private void showInfoIcon(){
+    public void showInfoIcon(){
 
         binding.ivInfoSelected.setVisibility(View.VISIBLE);
         binding.ivInfoNotSelected.setVisibility(View.GONE);
     }
 
-    private void hideInfoIcon(){
+    public void hideInfoIcon(){
 
         binding.ivInfoSelected.setVisibility(View.GONE);
         binding.ivInfoNotSelected.setVisibility(View.VISIBLE);
     }
 
-    private void showNotificationsIcon(){
+    public void showNotificationsIcon(){
 
         binding.ivNotificationsSelected.setVisibility(View.VISIBLE);
         binding.ivNotificationsNotSelected.setVisibility(View.GONE);
     }
 
-    private void hideNotificationsIcon(){
+    public void hideNotificationsIcon(){
 
         binding.ivNotificationsSelected.setVisibility(View.GONE);
         binding.ivNotificationsNotSelected.setVisibility(View.VISIBLE);
@@ -472,9 +474,21 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 } else {
                     onBackPressed();
                 }
-            }
 
-            else {
+            } else if (fragment instanceof EditAddNotePageOneFragment){
+
+                EditPageOneNavigator navigator = (EditPageOneNavigator) fragment;
+
+                if (navigator.isContactsScreenShown()){
+
+                    navigator.closeContactsScreen();
+
+                } else {
+
+                    onBackPressed();
+                }
+
+            } else {
 
                 onBackPressed();
             }

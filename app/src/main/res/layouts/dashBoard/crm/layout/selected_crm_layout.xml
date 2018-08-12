@@ -187,11 +187,39 @@
                             style="@style/App_Text_view"
                             android:layout_width="170dp"
                             android:layout_height="wrap_content"
-                            android:text="@{crmNote.getWhereMetEventName()}"
+                            android:text="@{crmNote.getWhereMetCitySt()}"
                             tools:text="..." />
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        >
+
+                        <TextView
+                            style="@style/App_Text_view"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            android:textSize="15sp"
+                            android:text="Origin:" />
+
+
+                        <TextView
+                            android:id="@+id/tv_origin"
+                            style="@style/App_Text_view"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:text="@{crmNote.getWhereMetEventName()}"
+                            tools:text="..." />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

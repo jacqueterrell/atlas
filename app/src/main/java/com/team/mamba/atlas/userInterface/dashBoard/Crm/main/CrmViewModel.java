@@ -10,7 +10,7 @@ public class CrmViewModel extends BaseViewModel<CrmNavigator> {
 
     private CrmDataModel dataModel;
     public static List<CrmNotes> crmNotesList = new ArrayList<>();
-    private static List<UserProfile> usersContactProfiles = new ArrayList<>();
+    public static List<UserProfile> usersContactProfiles = new ArrayList<>();
     private static UserProfile userProfile;
     private static CrmNotes selectedOpportunity;
     private int selectedRowPosition;

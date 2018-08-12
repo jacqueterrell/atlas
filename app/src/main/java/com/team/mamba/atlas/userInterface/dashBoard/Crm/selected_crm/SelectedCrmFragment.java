@@ -87,7 +87,7 @@ implements SelectedCrmNavigator{
     @Override
     public void onEditClicked() {
 
-        ChangeFragments.replaceFragmentVertically(EditAddNotePageOneFragment.newInstance(notes),getBaseActivity().getSupportFragmentManager(),"SelectedCrm",null);
+        ChangeFragments.replaceFragmentVertically(EditAddNotePageOneFragment.newInstance(notes,false),getBaseActivity().getSupportFragmentManager(),"SelectedCrm",null);
 
     }
 
