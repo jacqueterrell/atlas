@@ -8,7 +8,6 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     >
 
-
     <data>
 
         <import type = "android.view.View"/>
@@ -643,6 +642,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/splash_image"
             tools:visibility="gone"
+            android:visibility="gone"
             >
 
             <ImageView

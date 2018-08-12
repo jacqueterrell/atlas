@@ -16,14 +16,22 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.CrmNotes;
+import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageOneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditPageOneNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.notifications.NotificationsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
@@ -121,6 +129,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         hideContactsIcon();
         hideInfoIcon();
         hideNotificationsIcon();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (!(fragment instanceof CrmFragment)){
+
+            ChangeFragments.replaceHorizontallyFromBackStack(new CrmFragment(),getSupportFragmentManager(),"CrmFragment",null);
+        }
     }
 
     @Override
@@ -139,6 +154,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         hideContactsIcon();
         hideCrmIcon();
         hideNotificationsIcon();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (!(fragment instanceof InfoFragment)){
+
+            ChangeFragments.replaceHorizontallyFromBackStack(InfoFragment.newInstance(),getSupportFragmentManager(),"UserProfile",null);
+        }
     }
 
     @Override
@@ -309,6 +331,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
     }
 
+
     @Override
     public void onDeleteMyAccountClicked() {
 
@@ -324,49 +347,66 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         }
     }
 
-    private void showContactsIcon(){
+    @Override
+    public void setCrmFilter(CrmFilter crmFilter) {
+
+        viewModel.setCrmFilter(crmFilter);
+    }
+
+    @Override
+    public CrmFilter getCrmFilter() {
+        return viewModel.getCrmFilter();
+    }
+
+    @Override
+    public void hideToolBar() {
+
+        binding.layoutToolBar.setVisibility(View.GONE);
+    }
+
+    public void showContactsIcon(){
 
         binding.ivContactsSelected.setVisibility(View.VISIBLE);
         binding.ivContactsNotSelected.setVisibility(View.GONE);
     }
 
-    private void hideContactsIcon(){
+    public void hideContactsIcon(){
 
         binding.ivContactsSelected.setVisibility(View.GONE);
         binding.ivContactsNotSelected.setVisibility(View.VISIBLE);
     }
 
-    private void showCrmIcon(){
+    public void showCrmIcon(){
 
         binding.ivCrmSelected.setVisibility(View.VISIBLE);
         binding.ivCrmNotSelected.setVisibility(View.GONE);
     }
 
-    private void hideCrmIcon(){
+    public void hideCrmIcon(){
 
         binding.ivCrmSelected.setVisibility(View.GONE);
         binding.ivCrmNotSelected.setVisibility(View.VISIBLE);
     }
 
-    private void showInfoIcon(){
+    public void showInfoIcon(){
 
         binding.ivInfoSelected.setVisibility(View.VISIBLE);
         binding.ivInfoNotSelected.setVisibility(View.GONE);
     }
 
-    private void hideInfoIcon(){
+    public void hideInfoIcon(){
 
         binding.ivInfoSelected.setVisibility(View.GONE);
         binding.ivInfoNotSelected.setVisibility(View.VISIBLE);
     }
 
-    private void showNotificationsIcon(){
+    public void showNotificationsIcon(){
 
         binding.ivNotificationsSelected.setVisibility(View.VISIBLE);
         binding.ivNotificationsNotSelected.setVisibility(View.GONE);
     }
 
-    private void hideNotificationsIcon(){
+    public void hideNotificationsIcon(){
 
         binding.ivNotificationsSelected.setVisibility(View.GONE);
         binding.ivNotificationsNotSelected.setVisibility(View.VISIBLE);
@@ -409,6 +449,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         if (keyCode == 4){
 
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
             if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
 
@@ -418,17 +459,48 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
                 hideAddContactDialog();
 
+            } else  if (fragment instanceof CrmFragment){
+
+                CrmNavigator navigator = (CrmNavigator) fragment;
+
+                if (navigator.isInfoDialogShown()){
+
+                    navigator.hideCrmInfoDialog();
+
+                } else if (navigator.isExportScreenShown()){
+
+                    navigator.hideExportScreen();
+
+                } else {
+                    onBackPressed();
+                }
+
+            } else if (fragment instanceof EditAddNotePageOneFragment){
+
+                EditPageOneNavigator navigator = (EditPageOneNavigator) fragment;
+
+                if (navigator.isContactsScreenShown()){
+
+                    navigator.closeContactsScreen();
+
+                } else {
+
+                    onBackPressed();
+                }
+
             } else {
 
                 onBackPressed();
-
             }
 
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-            if (fragment instanceof InfoFragment){
+            if (fragment instanceof InfoFragment
+                    || fragment instanceof CrmFragment
+                    || fragment instanceof NotificationsFragment
+                    || fragment instanceof ContactsFragment){
 
                 binding.layoutToolBar.setVisibility(View.VISIBLE);
+
             }
 
         }

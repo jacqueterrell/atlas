@@ -1,7 +1,10 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
-import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.CrmNotes;
+import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.local.CrmFilter;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmFragment;
 
 public interface DashBoardActivityNavigator {
 
@@ -54,8 +57,14 @@ public interface DashBoardActivityNavigator {
 
     void showToolBar();
 
+    void hideToolBar();
+
     void setUserProfile(UserProfile userProfile);
 
     UserProfile getUserProfile();
+
+    CrmFilter getCrmFilter();
+
+    void setCrmFilter(CrmFilter crmFilter);
 
 }

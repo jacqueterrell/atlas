@@ -90,7 +90,7 @@ public class ChangeFragments {
     }
 
 
-    public static void replaceFragmentHorizontally(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
+    public static void replaceHorizontallyFromBackStack(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
 
 
         if (isUnitTesting){//Robolectric cannot handle fragment animations (gets stuck in infinite loop)
@@ -98,7 +98,6 @@ public class ChangeFragments {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             fragmentId.setArguments(args);
             transaction.replace(R.id.fragment_container, fragmentId, tag);
-            transaction.addToBackStack(null);
 
             transaction.commit();
 
@@ -109,7 +108,6 @@ public class ChangeFragments {
         fragmentId.setArguments(args);
         transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
         transaction.replace(R.id.fragment_container, fragmentId, tag);
-        transaction.addToBackStack(null);
 
         transaction.commit();
     }
@@ -140,14 +138,15 @@ public class ChangeFragments {
     }
 
 
-    public static void addFragmentRemoveFromBackstack(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
+    public static void replaceFadeInBackstack(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
 
 
         if (isUnitTesting){//Robolectric cannot handle fragment animations (gets stuck in infinite loop)
 
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             fragmentId.setArguments(args);
-            transaction.add(R.id.fragment_container, fragmentId,tag);
+            transaction.replace(R.id.fragment_container, fragmentId, tag);
+
             transaction.commit();
 
             return;
@@ -155,8 +154,9 @@ public class ChangeFragments {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         fragmentId.setArguments(args);
-        transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
-        transaction.add(R.id.fragment_container, fragmentId,tag);
+        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,android.R.anim.fade_in,android.R.anim.fade_out);
+        transaction.replace(R.id.fragment_container, fragmentId, tag);
+
         transaction.commit();
 
     }

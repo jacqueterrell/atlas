@@ -1,7 +1,10 @@
 package com.team.mamba.atlas.userInterface.dashBoard;
 
 
-import com.team.mamba.atlas.userInterface.dashBoard.Crm.CrmViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.edit_add_note.EditAddNotePageSixViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.filter_list.CrmFilterViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.main.CrmViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.Crm.selected_crm.SelectedCrmViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsViewModel;
@@ -125,5 +128,23 @@ public class DashBoardModule {
     EditWorkViewModel providesEditWorkViewModel(){
 
         return new EditWorkViewModel();
+    }
+
+    @Provides
+    SelectedCrmViewModel providesSelectedCrmViewModel(){
+
+        return new SelectedCrmViewModel();
+    }
+
+    @Provides
+    EditAddNotePageSixViewModel providesEditAddNotePageSixViewModel(){
+
+        return new EditAddNotePageSixViewModel();
+    }
+
+    @Provides
+    CrmFilterViewModel providesCrmFilterViewModel(){
+
+        return new CrmFilterViewModel();
     }
 }

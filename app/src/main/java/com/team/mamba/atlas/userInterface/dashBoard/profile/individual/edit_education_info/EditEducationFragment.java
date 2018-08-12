@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.EditEducationLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 

@@ -11,15 +11,13 @@ import android.view.View;
 
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessAccountsRecyclerViewBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
 
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
-import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 

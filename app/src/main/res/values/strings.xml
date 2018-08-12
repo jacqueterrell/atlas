@@ -55,5 +55,45 @@
         designated as Personal Friend or Family Member.
     </string>
 
+    <string name="crm_stage_zero">New opportunity that you\'re still learning about</string>
+    <string name="crm_stage_one">The qualification stage. You\'re evaluating whether to this is a real opportunity and meeting with the client</string>
+    <string name="crm_stage_two">You\'ve submitted a formal proposal to the client</string>
+    <string name="crm_stage_three">Your\'re currently negotiating with the client</string>
+    <string name="crm_stage_four">Congratulations are in order</string>
+
+    <string name="export_generate_csv">The export function generates a CSV file that is sent to your work email address.</string>
+    <string name="export_personal_notes">Personal notes are not exported.</string>
+    <string name="export_select_fields">Please select the fields you would like to export.</string>
+
+    <string name="who_did_you_meet_body">Who did you meet? \n (i.e., Primary Point of Contact)</string>
+    <string name="where_did_you_meet">Where did you meet? \n(City, State)</string>
+    <string name="where_did_you_meet_event">Where did you meet? \n(i.e., Name of the Event)</string>
+    <string name="how_did_you_meet">How did you meet? \n please select one.</string>
+    <string name="what_stage_of_opp">What stage is the opportunity? \n Please select one.</string>
+    <string name="what_type_of_opp">What type of opportunity? \n Please select one.</string>
+    <string name="what_is_the_opp">What is the opportunity? \n Please select one.</string>
+    <string name="describe_the_opp">Please describe the opportunity.</string>
+    <string name="what_is_next_step">What is the next step? \n Please select one.</string>
+
+    <string-array name="status_array">
+        <item>New</item>
+        <item>Qualified</item>
+        <item>Proposal</item>
+        <item>Negotiation</item>
+        <item>Closed</item>
+    </string-array>
+
+    <string-array name="opportunity_array">
+        <item>Solicitation</item>
+        <item>Teaming</item>
+        <item>Direct Sell</item>
+    </string-array>
+
+    <string-array name="next_step_array">
+        <item>Email</item>
+        <item>Phone Call</item>
+        <item>Teleconference</item>
+        <item>Meeting</item>
+    </string-array>
 
 </resources>

@@ -1,8 +1,8 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
-import com.team.mamba.atlas.data.model.BusinessProfile;
-import com.team.mamba.atlas.data.model.UserConnections;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.UserConnections;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 import java.util.ArrayList;
@@ -22,8 +22,8 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     private static List<BusinessProfile>businessProfileList = new ArrayList<>();
     private static List<UserConnections> connectionRecordList = new ArrayList<>();
 
-    private List<String> userStatsList = new ArrayList<>();
-    private List<UserConnections> recentActivityConnections = new ArrayList<>();
+    private static List<String> userStatsList = new ArrayList<>();
+    private static List<UserConnections> recentActivityConnections = new ArrayList<>();
 
     /***************view logic************/
 

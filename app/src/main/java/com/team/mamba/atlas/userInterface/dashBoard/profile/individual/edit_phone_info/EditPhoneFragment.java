@@ -14,7 +14,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.EditPhoneLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
@@ -84,7 +84,7 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
     public void onContinueClicked() {
 
         ChangeFragments.addFragmentFadeIn(new EditEmailFragment(),getBaseActivity()
-                .getSupportFragmentManager(),"AddUserLayout",null);
+                .getSupportFragmentManager(),"EmailFragment",null);
     }
 
     @Override

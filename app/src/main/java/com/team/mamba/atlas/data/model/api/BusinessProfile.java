@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.data.model;
+package com.team.mamba.atlas.data.model.api;
 
 import android.support.annotation.Keep;
 

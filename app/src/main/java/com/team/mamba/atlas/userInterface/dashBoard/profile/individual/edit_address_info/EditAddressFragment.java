@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.UserProfile;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.EditAddressLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
@@ -98,7 +98,7 @@ public class EditAddressFragment extends BaseFragment<EditAddressLayoutBinding,E
     public void onEducationClicked() {
 
         ChangeFragments.addFragmentFadeIn(new EditEducationFragment(),getBaseActivity()
-                .getSupportFragmentManager(),"AddUserLayout",null);
+                .getSupportFragmentManager(),"EducationFragment",null);
     }
 
     @Override

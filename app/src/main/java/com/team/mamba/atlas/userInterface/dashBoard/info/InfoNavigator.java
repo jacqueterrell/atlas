@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
-import com.team.mamba.atlas.data.model.UserConnections;
+import com.team.mamba.atlas.data.model.api.UserConnections;
 
 import java.util.List;
 
