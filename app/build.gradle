@@ -199,6 +199,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
     //all testing dependencies
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
         exclude group: "com.android.support", module: "support-annotations"
     })

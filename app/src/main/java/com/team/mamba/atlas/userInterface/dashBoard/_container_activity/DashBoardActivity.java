@@ -34,6 +34,7 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_use
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
@@ -325,6 +326,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 })
                 .setPositiveButton("yes", (paramDialogInterface, paramInt) -> {
 
+                    InfoViewModel.userStatsList.clear();
                     dataManager.getSharedPrefs().setUserLoggedIn(false);
                     showToastShort("Logging out");
                     finishAffinity();

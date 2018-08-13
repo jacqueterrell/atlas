@@ -87,7 +87,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         viewModel.setBusinessLogin(false);
 
         YoYo.with(Techniques.FadeIn)
-                .duration(DEFAULT_TIME_IN_MILLI_SECS)
+                .duration(500)
                 .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogVerifyAge.layoutVerifyAge);
 
@@ -99,7 +99,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         viewModel.setBusinessLogin(true);
 
         YoYo.with(Techniques.FadeIn)
-                .duration(DEFAULT_TIME_IN_MILLI_SECS)
+                .duration(500)
                 .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogVerifyAge.layoutVerifyAge);
     }

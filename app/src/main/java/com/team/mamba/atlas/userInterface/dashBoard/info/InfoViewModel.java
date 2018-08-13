@@ -22,7 +22,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     private static List<BusinessProfile>businessProfileList = new ArrayList<>();
     private static List<UserConnections> connectionRecordList = new ArrayList<>();
 
-    private static List<String> userStatsList = new ArrayList<>();
+    public static List<String> userStatsList = new ArrayList<>();
     private static List<UserConnections> recentActivityConnections = new ArrayList<>();
 
     /***************view logic************/

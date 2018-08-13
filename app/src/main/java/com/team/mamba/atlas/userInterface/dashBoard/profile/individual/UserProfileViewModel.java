@@ -1,7 +1,10 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual;
 
 import android.net.Uri;
+
+import com.google.firebase.auth.UserInfo;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
@@ -168,9 +171,9 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     }
 
 
-    public void uploadImage(UserProfileViewModel viewModel,boolean isGallery){
+    public void uploadImage(UserProfileViewModel viewModel, boolean isGallery, UserProfile profile){
 
-        dataModel.uploadImage(viewModel,isGallery);
+        dataModel.uploadImage(viewModel,isGallery,profile);
     }
 
 

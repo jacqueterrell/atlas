@@ -619,6 +619,8 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
             mImageUri = Uri.fromFile(imageFile);
         }
 
+        viewModel.setImageUri(mImageUri);
+
         getViewModel().setSelfiePath(imageFile.getAbsolutePath());
 
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
@@ -706,7 +708,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
                 if (resultCode == Activity.RESULT_OK) {
 
-                    getViewModel().uploadImage(getViewModel(),false);
+                    getViewModel().uploadImage(getViewModel(),false,profile);
 
                     Glide.with(getContext())
                             .load(getViewModel().getSelfiePath())
@@ -728,7 +730,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(binding.ivUserProfile);
 
-                    getViewModel().uploadImage(getViewModel(),true);
+                    getViewModel().uploadImage(getViewModel(),true,profile);
 
                 }
                     break;
