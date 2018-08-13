@@ -341,6 +341,7 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
                         android:onClick="@{()-> viewModel.contactOnHomeAddressClicked()}"
                         >
 
@@ -369,6 +370,7 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
                         android:onClick="@{()-> viewModel.contactOnWorkAddressClicked()}"
                         >
 

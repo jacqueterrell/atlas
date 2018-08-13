@@ -52,7 +52,6 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     private static UserProfile profile;
     private List<Education> educationList = new ArrayList<>();
     private EditEducationAdapter editEducationAdapter;
-    private int deletedPosition;
     private Education deletedEducation;
 
 
@@ -226,6 +225,7 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
 
             educationList.add(education);
             editEducationAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -249,7 +249,6 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
 
                 if (direction == ItemTouchHelper.LEFT) {
 
-                    deletedPosition = position;
                     deletedEducation = educationList.get(position);
                     educationList.remove(position);
 

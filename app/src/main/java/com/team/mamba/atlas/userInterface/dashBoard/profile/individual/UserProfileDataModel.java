@@ -50,4 +50,10 @@ public class UserProfileDataModel {
 
     }
 
+
+    public void uploadImage(UserProfileViewModel viewModel,boolean isGallery){
+
+
+    }
+
 }

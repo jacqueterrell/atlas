@@ -49,7 +49,6 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     private static UserProfile profile;
     private List<WorkHistory> workHistoryList = new ArrayList<>();
     private EditWorkAdapter workAdapter;
-    private int deletedPosition;
     private WorkHistory deletedWorkHistory;
 
     public static EditWorkFragment newInstance(UserProfile userProfile){
@@ -76,7 +75,7 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
 
@@ -104,6 +103,7 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     public void onFinishedClicked() {
 
         showProgressSpinner();
+        setWorkHistoryData();
     }
 
     @Override
@@ -111,7 +111,6 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
 
         showProgressSpinner();
         setWorkHistoryData();
-
     }
 
     @Override
@@ -202,7 +201,7 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
 
     private void setCachedData(){
 
-        for (Map<String, String> map : profile.getEducation()){
+        for (Map<String, String> map : profile.getWorkHistory()){
 
             WorkHistory workHistory = new WorkHistory();
 
@@ -235,9 +234,11 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     private void setUpItemTouchHelper() {
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                     RecyclerView.ViewHolder target) {
+
                 return false;
             }
 
@@ -248,18 +249,16 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
 
                 if (direction == ItemTouchHelper.LEFT) {
 
-                    deletedPosition = position;
                     deletedWorkHistory = workHistoryList.get(position);
                     workHistoryList.remove(position);
+                    workAdapter.notifyItemRemoved(position);
 
-                    workAdapter.notifyDataSetChanged();
-
-                    Snackbar snackbar = Snackbar.make(binding.getRoot(), "item deleted", 4000)
+                    Snackbar snackbar = Snackbar.make(binding.getRoot(), "item deleted", 3000)
 
                             .setAction("Undo", v -> {
 
                                 workHistoryList.add(position,deletedWorkHistory);
-                                workAdapter.notifyDataSetChanged();
+                                workAdapter.notifyItemInserted(position);
 
                                 showRestoredSnackbar();
                             });
