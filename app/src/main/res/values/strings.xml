@@ -75,6 +75,8 @@
     <string name="describe_the_opp">Please describe the opportunity.</string>
     <string name="what_is_next_step">What is the next step? \n Please select one.</string>
 
+    <string name="change_image">Would you like to change your image on Atlas?</string>
+
     <string-array name="status_array">
         <item>New</item>
         <item>Qualified</item>

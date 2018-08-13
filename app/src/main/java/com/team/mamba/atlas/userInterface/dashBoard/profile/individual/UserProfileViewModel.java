@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual;
 
+import android.net.Uri;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
@@ -9,7 +10,9 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     private static BusinessProfile businessProfile;
     private UserProfileDataModel dataModel;
     private String selectedPhone;
-
+    private Uri imageUri = null;
+    private String selfiePath = null;
+    private String imageUrl = "";
 
     /*******Getters and Setters********/
     public void setDataModel(UserProfileDataModel dataModel) {
@@ -41,6 +44,26 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
 
     public void setSelectedPhone(String selectedPhone) {
         this.selectedPhone = selectedPhone;
+    }
+
+    public void setSavedImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getSelfiePath() {
+        return selfiePath;
+    }
+
+    public void setSelfiePath(String s) {
+        this.selfiePath = s;
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(Uri galleryImageUri) {
+        imageUri = galleryImageUri;
     }
 
     /*******Onclick Listeners********/
@@ -142,6 +165,12 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     public void editEductionInfo(){
 
         getNavigator().editEductionInfo();
+    }
+
+
+    public void uploadImage(UserProfileViewModel viewModel,boolean isGallery){
+
+        dataModel.uploadImage(viewModel,isGallery);
     }
 
 

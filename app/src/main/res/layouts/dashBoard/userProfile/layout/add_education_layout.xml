@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <data>
+
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailViewModel"/>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="20sp"
+                android:text="Education"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <EditText
+                android:id="@+id/et_school"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="School"
+                android:textAlignment="center"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords"
+                android:layout_marginBottom="5dp"
+                android:textSize="15sp"
+                />
+
+            <EditText
+                android:id="@+id/et_degree"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="Degree"
+                android:textAlignment="center"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords"
+                android:layout_marginBottom="5dp"
+                android:textSize="15sp"
+                />
+
+            <EditText
+                android:id="@+id/et_field_of_study"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="Field of Study"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:textSize="15sp"
+                android:inputType="textCapWords"
+                />
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="#E0A850"
+                app:cardCornerRadius="7dp"
+                card_view:cardElevation="0dp"
+                android:layout_marginTop="20dp"
+                >
+
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/lato"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    />
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+        <net.bohush.geometricprogressview.GeometricProgressView
+            android:id="@+id/progress_spinner"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:gp_color="@color/grey"
+            app:gp_duration="800"
+            app:gp_figure_padding="3dp"
+            app:gp_number_of_angles="12"
+            app:gp_type="triangle"
+            android:layout_marginBottom="100dp"/>
+
+    </FrameLayout>
+
+</layout>

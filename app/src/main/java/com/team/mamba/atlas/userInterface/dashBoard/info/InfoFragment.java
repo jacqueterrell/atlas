@@ -86,8 +86,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         parentNavigator = (DashBoardActivityNavigator) context;
+        parentActivity = (DashBoardActivity) context;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
 
-        parentNavigator.showToolBar();
+        setUpToolBar();
 
         userStatsAdapter = new UserStatsAdapter(userStatsList);
         binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
@@ -127,11 +127,20 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         });
 
+
         if (!viewModel.getUserStatsList().isEmpty()){
 
             setUserStatsAdapter(viewModel.getUserStatsList(),viewModel.getRecentActivityConnections());
             setBarChartData();
-           // viewModel.getAllUsers(getViewModel());
+
+            if (viewModel.isNetworkChartSelected()){
+
+                showSelectedNetworkButton();
+
+            } else {
+
+                showSelectedOpportunitiesButton();
+            }
 
         } else {
 
@@ -145,9 +154,9 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     private void setUpToolBar(){
 
         parentNavigator.showToolBar();
-        parentActivity.showCrmIcon();
+        parentActivity.hideCrmIcon();
         parentActivity.hideContactsIcon();
-        parentActivity.hideInfoIcon();
+        parentActivity.showInfoIcon();
         parentActivity.hideNotificationsIcon();
     }
 
@@ -190,12 +199,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onNetworkButtonClicked() {
 
-        binding.layoutNetworkNotSelected.setVisibility(View.GONE);
-        binding.layoutNetworkSelected.setVisibility(View.VISIBLE);
-
-        binding.layoutOpportunityNotSelected.setVisibility(View.VISIBLE);
-        binding.layoutOpportunitySelected.setVisibility(View.GONE);
-
+        showSelectedNetworkButton();
         viewModel.setNetworkChartSelected(true);
 
         if (viewModel.getNetworksMap().isEmpty()){
@@ -212,12 +216,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onOpportunitiesButtonClicked() {
 
-        binding.layoutNetworkNotSelected.setVisibility(View.VISIBLE);
-        binding.layoutNetworkSelected.setVisibility(View.GONE);
-
-        binding.layoutOpportunityNotSelected.setVisibility(View.GONE);
-        binding.layoutOpportunitySelected.setVisibility(View.VISIBLE);
-
+        showSelectedOpportunitiesButton();
         viewModel.setNetworkChartSelected(false);
 
         if (viewModel.getOpportunitiesMap().isEmpty()){
@@ -570,4 +569,23 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
                 .playOn(binding.layoutSplashScreen);
     }
 
+
+    private void showSelectedNetworkButton(){
+
+        binding.layoutNetworkNotSelected.setVisibility(View.GONE);
+        binding.layoutNetworkSelected.setVisibility(View.VISIBLE);
+
+        binding.layoutOpportunityNotSelected.setVisibility(View.VISIBLE);
+        binding.layoutOpportunitySelected.setVisibility(View.GONE);
+
+    }
+
+    private void showSelectedOpportunitiesButton(){
+
+        binding.layoutNetworkNotSelected.setVisibility(View.VISIBLE);
+        binding.layoutNetworkSelected.setVisibility(View.GONE);
+
+        binding.layoutOpportunityNotSelected.setVisibility(View.GONE);
+        binding.layoutOpportunitySelected.setVisibility(View.VISIBLE);
+    }
 }

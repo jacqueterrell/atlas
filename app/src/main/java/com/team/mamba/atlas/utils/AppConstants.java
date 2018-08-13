@@ -19,5 +19,7 @@ public class AppConstants {
 
     public static final int REQUEST_PHONE_PERMISSIONS = 5;
     public static final int REQUEST_EXTERNAL_STORAGE_PERMISSIONS = 4;
+    public static final int REQUEST_CAMERA_PERMISSIONS = 3;
+    public static final int REQUEST_READ_EXTERNAL_STORAGE = 2;
 
 }

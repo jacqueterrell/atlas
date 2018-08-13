@@ -3,6 +3,7 @@ package com.team.mamba.atlas.data.model.api;
 import android.graphics.Typeface;
 import android.support.annotation.Keep;
 
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -27,11 +28,11 @@ public class UserProfile {
     public String id;
 
     @SerializedName("deviceToken")
-    public String deviceToken = "...";
+    public String deviceToken ;
 
     @SerializedName("code")
     @Expose
-    public String code= "...";
+    public String code;
 
     @SerializedName("score")
     @Expose
@@ -39,43 +40,43 @@ public class UserProfile {
 
     @SerializedName("firstName")
     @Expose
-    public String firstName= "...";
+    public String firstName;
 
     @SerializedName("lastName")
     @Expose
-    public String lastName= "...";
+    public String lastName;
 
     @SerializedName("email")
     @Expose
-    public String email= "...";
+    public String email;
 
     @SerializedName("workEmail")
     @Expose
-    public String workEmail= "...";
+    public String workEmail;
 
     @SerializedName("homePhone")
     @Expose
-    public String homePhone= "...";
+    public String homePhone;
 
     @SerializedName("personalPhone")
     @Expose
-    public String personalPhone= "...";
+    public String personalPhone;
 
     @SerializedName("workPhone")
     @Expose
-    public String workPhone= "...";
+    public String workPhone;
 
     @SerializedName("fax")
     @Expose
-    public String fax= "...";
+    public String fax;
 
     @SerializedName("street")
     @Expose
-    public String street= "...";
+    public String street;
 
     @SerializedName("cityStateZip")
     @Expose
-    public String cityStateZip= "...";
+    public String cityStateZip;
 
     @SerializedName("workHistory")
     @Expose
@@ -95,15 +96,15 @@ public class UserProfile {
 
     @SerializedName("workStreet")
     @Expose
-    public String workStreet= "...";
+    public String workStreet;
 
     @SerializedName("workCityStateZip")
     @Expose
-    public String workCityStateZip= "...";
+    public String workCityStateZip;
 
     @SerializedName("imageUrl")
     @Expose
-    public String imageUrl= "...";
+    public String imageUrl;
 
 
     @SerializedName("connections")
@@ -124,7 +125,7 @@ public class UserProfile {
 
     @SerializedName("phone")
     @Expose
-    public String phone= "...";
+    public String phone;
 
     public UserProfile() {
 
@@ -254,19 +255,27 @@ public class UserProfile {
 
         for (Map<String, String> map : workHistory) {
 
+            String location = "";
+            String title = "";
+
             for (Map.Entry<String,String> entry : map.entrySet()){
 
                 String key = entry.getKey();
                 String value = entry.getValue();
 
-                if (!key.toLowerCase().equals("industry")){
+                if (key.toLowerCase().contains("title")){
 
-                    workHistoryBuilder.append(value + "\n");
+                    title = value + "\n";
 
+                } else if (key.toLowerCase().contains("where")){
+
+                    location = value + "\n";
                 }
             }
-            workHistoryBuilder.append("\n");
 
+            workHistoryBuilder.append(location)
+                    .append(title)
+                    .append("\n");
         }
 
         return workHistoryBuilder.toString();
@@ -289,6 +298,10 @@ public class UserProfile {
 
         for (Map<String, String> map : education) {
 
+            String schoolName = "";
+            String degree = "";
+            String field = "";
+
             for (Map.Entry<String, String> entry : map.entrySet()) {
 
                 String key = entry.getKey();
@@ -296,21 +309,25 @@ public class UserProfile {
 
                 if (key.toLowerCase().equals("school")){
 
-                    SpannableString spannableString = new SpannableString(value);
-                    StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-                    spannableString.setSpan(boldSpan, 0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    String boldSchool = "<b>" + value + "</b>";
 
-                    educationBuilder.append(spannableString + "\n");
+                    schoolName = Html.fromHtml(boldSchool) + "\n";
 
-                } else {
+                } else if (key.toLowerCase().equals("degree")){
 
-                    educationBuilder.append(value)
-                            .append("\n");
+                    degree = value + "\n";
+
+                } else if (key.toLowerCase().contains("study")){
+
+                    field = value + "\n";
                 }
 
             }
 
-            educationBuilder.append("\n");
+            educationBuilder.append(schoolName)
+                    .append(degree)
+                    .append(field)
+                    .append("\n");
         }
 
         return educationBuilder.toString();

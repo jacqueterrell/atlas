@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel"/>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/tv_index"
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Entry 1"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="20sp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+
+
+                <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Where Did You Work?"
+                    android:textSize="17sp"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_company_name"
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Zenlight Technologies"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+
+
+            <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="What Was Your Title?"
+                    android:textSize="17sp"
+                    android:layout_marginTop="20dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Clayton State University"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+
+            <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Industry"
+                    android:textSize="17sp"
+                    android:layout_marginTop="20dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tv_industry"
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Clayton State University"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</layout>

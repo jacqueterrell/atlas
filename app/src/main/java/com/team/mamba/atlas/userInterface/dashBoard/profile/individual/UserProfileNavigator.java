@@ -39,4 +39,10 @@ public interface UserProfileNavigator {
     void editEductionInfo();
 
     void onProfileUpdated();
+
+    void openCamera();
+
+    void openGallery();
+
+    String getImagePath();
 }
