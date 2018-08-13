@@ -63,63 +63,36 @@ public class UserProfileDataModel {
     }
 
 
-    public void uploadImage(UserProfileViewModel viewModel,boolean isGallery,UserProfile profile){
+    /**
+     * Uploads our user's image to our Firebase storage
+     *
+     * @param viewModel
+     * @param profile
+     */
+    public void uploadImage(UserProfileViewModel viewModel,UserProfile profile){
 
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
+        StorageReference galleryRef = storageRef.child("images/"+ dataManager.getSharedPrefs().getUserId());
 
+        galleryRef.putFile(viewModel.getImageUri())
+                .addOnSuccessListener(taskSnapshot -> galleryRef.getDownloadUrl().addOnCompleteListener(task -> {
 
-        if (isGallery){
-
-            StorageReference galleryRef = storageRef.child("images/"+ dataManager.getSharedPrefs().getUserId());
-
-            galleryRef.putFile(viewModel.getImageUri())
-                    .addOnFailureListener(exception -> {
-                        Logger.e("Upload of camera caputer failed");
-                    }).addOnSuccessListener(taskSnapshot -> {
-
-                Logger.i("download  url: " + storageRef.getDownloadUrl());
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-            });
-
-
-        } else {
-
-            StorageReference galleryRef = storageRef.child("images/"+ UUID.randomUUID().toString());
-            UploadTask uploadTask = galleryRef.putFile(viewModel.getImageUri());
-
-
-            galleryRef.putFile(viewModel.getImageUri())
-                    .addOnFailureListener(exception -> {
-                       Logger.e("Upload of camera caputer failed");
-                    }).addOnSuccessListener(taskSnapshot -> {
-
-                        Logger.i("download  url: " + storageRef.getDownloadUrl());
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                        // ...
-                    });
-
-            storageRef.getDownloadUrl().addOnCompleteListener(task -> {
-
-                if (task.isSuccessful()) {
-
-                    Uri downloadUri = task.getResult();
-                    profile.setImageUrl(downloadUri.toString());
-
-                } else {
-                    // Handle failures
-                    // ...
-                    Logger.e("Error getting file");
-                }
-            });
-
-        }
+                    Logger.i("Successful " + task.getResult());
+                    profile.setImageUrl(task.getResult().toString());
+                    updateUser(profile);
+                }))
+                .addOnFailureListener(e -> Logger.e("failed"));
 
     }
 
 
+    /**
+     * Updates the user's image to the new link
+     *
+     * @param profile
+     */
     public void updateUser(UserProfile profile) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();

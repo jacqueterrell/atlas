@@ -92,33 +92,5 @@ public class DashBoardActivityViewModel extends BaseViewModel<DashBoardActivityN
         getNavigator().onSiteLinkClicked();;
     }
 
-    public void onAddUserClicked(){
 
-        getNavigator().onAddUserClicked();
-    }
-
-    public void onAddBusinessClicked(){
-
-        getNavigator().onAddBusinessClicked();
-    }
-
-    public void onInviteToAtlasClicked(){
-
-        getNavigator().onInviteToAtlasClicked();
-    }
-
-    public void onFindUsersClicked(){
-
-        getNavigator().onFindUsersClicked();
-    }
-
-    public void onAddSuggestedContactsClicked(){
-
-        getNavigator().onAddSuggestedContactsClicked();
-    }
-
-    public void onCancelAddDialogClicked(){
-
-        getNavigator().onCancelAddDialogClicked();
-    }
 }

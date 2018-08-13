@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,24 +9,25 @@ import android.view.ViewGroup;
 
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.databinding.AddBusinessLayoutBinding;
+import com.team.mamba.atlas.databinding.SuggestedContactsLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
 import javax.inject.Inject;
 
-public class AddBusinessFragment extends BaseFragment<AddBusinessLayoutBinding, AddBusinessViewModel>
-implements AddBusinessNavigator{
+public class SuggestedContactsFragment extends BaseFragment<SuggestedContactsLayoutBinding,SuggestedContactsViewModel>
+implements SuggestedContactsNavigator {
 
 
     @Inject
-    AddBusinessViewModel viewModel;
+    SuggestedContactsViewModel viewModel;
 
 
-    private AddBusinessLayoutBinding binding;
+    private SuggestedContactsLayoutBinding binding;
 
-    public static AddBusinessFragment newInstance(){
 
-        return new AddBusinessFragment();
+    public static SuggestedContactsFragment newInstance(){
+
+        return new SuggestedContactsFragment();
     }
 
     @Override
@@ -36,11 +37,11 @@ implements AddBusinessNavigator{
 
     @Override
     public int getLayoutId() {
-        return R.layout.add_business_layout;
+        return R.layout.suggested_contacts_layout;
     }
 
     @Override
-    public AddBusinessViewModel getViewModel() {
+    public SuggestedContactsViewModel getViewModel() {
         return viewModel;
     }
 
@@ -63,5 +64,11 @@ implements AddBusinessNavigator{
 
 
          return binding.getRoot();
+    }
+
+    @Override
+    public void onSearchButtonClicked() {
+
+        showSnackbar("searched");
     }
 }

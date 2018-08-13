@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_user;
 
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 

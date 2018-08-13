@@ -1,17 +1,13 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import com.google.firebase.firestore.Exclude;
+
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.AddNewImageLayoutBinding;

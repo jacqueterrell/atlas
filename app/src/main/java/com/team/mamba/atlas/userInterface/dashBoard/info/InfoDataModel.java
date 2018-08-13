@@ -214,7 +214,7 @@ public class InfoDataModel {
             totalOpportunities = 0;
         }
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+             FirebaseFirestore db = FirebaseFirestore.getInstance();
         String savedUserId = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)

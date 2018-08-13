@@ -708,7 +708,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
                 if (resultCode == Activity.RESULT_OK) {
 
-                    getViewModel().uploadImage(getViewModel(),false,profile);
+                    getViewModel().uploadImage(getViewModel(),profile);
 
                     Glide.with(getContext())
                             .load(getViewModel().getSelfiePath())
@@ -730,7 +730,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(binding.ivUserProfile);
 
-                    getViewModel().uploadImage(getViewModel(),true,profile);
+                    getViewModel().uploadImage(getViewModel(),profile);
 
                 }
                     break;

@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections;
 
 public interface DescribeConnectionsNavigator {
 

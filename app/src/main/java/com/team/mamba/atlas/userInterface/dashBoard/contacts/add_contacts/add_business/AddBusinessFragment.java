@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_business;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,38 +9,38 @@ import android.view.ViewGroup;
 
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.databinding.FindUsersLayoutBinding;
+import com.team.mamba.atlas.databinding.AddBusinessLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
 import javax.inject.Inject;
 
-public class FindUsersFragment extends BaseFragment<FindUsersLayoutBinding, FindUsersViewModel>
-implements FindUsersNavigator{
+public class AddBusinessFragment extends BaseFragment<AddBusinessLayoutBinding, AddBusinessViewModel>
+implements AddBusinessNavigator {
+
 
     @Inject
-    FindUsersViewModel viewModel;
+    AddBusinessViewModel viewModel;
 
 
-    private FindUsersLayoutBinding binding;
+    private AddBusinessLayoutBinding binding;
 
-    public static FindUsersFragment newInstance(){
+    public static AddBusinessFragment newInstance(){
 
-        return new FindUsersFragment();
+        return new AddBusinessFragment();
     }
 
     @Override
     public int getBindingVariable() {
-
         return BR.viewModel;
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.find_users_layout;
+        return R.layout.add_business_layout;
     }
 
     @Override
-    public FindUsersViewModel getViewModel() {
+    public AddBusinessViewModel getViewModel() {
         return viewModel;
     }
 
@@ -55,18 +55,13 @@ implements FindUsersNavigator{
         viewModel.setNavigator(this);
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
 
+
          return binding.getRoot();
-    }
-
-    @Override
-    public void onSearchButtonClicked() {
-
     }
 }

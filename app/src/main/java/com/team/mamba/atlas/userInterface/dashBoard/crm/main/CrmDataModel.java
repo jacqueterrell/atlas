@@ -23,11 +23,11 @@ public class CrmDataModel {
     }
 
 
-    public void getAllOpportunities(CrmViewModel viewModel){
+           public void getAllOpportunities(CrmViewModel viewModel){
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        getUserDetails(viewModel);
+            getUserDetails(viewModel);
 
         db.collection(AppConstants.BUS_NOTES_COLLECTION)
                 .whereEqualTo("authorID",dataManager.getSharedPrefs().getUserId())

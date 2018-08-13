@@ -1,6 +1,8 @@
-package com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts;
 
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsDataModel;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsNavigator;
 
 public class SuggestedContactsViewModel extends BaseViewModel<SuggestedContactsNavigator> {
 

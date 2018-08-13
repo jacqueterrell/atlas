@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_user.AddUserViewModel"/>
 
     </data>
 

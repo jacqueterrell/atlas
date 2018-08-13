@@ -4,11 +4,11 @@ import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsF
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageSixFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.filter_list.CrmFilterSettingsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.selected_crm.SelectedCrmFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_business.AddBusinessFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_user.AddUserFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;

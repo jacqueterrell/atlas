@@ -171,9 +171,9 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     }
 
 
-    public void uploadImage(UserProfileViewModel viewModel, boolean isGallery, UserProfile profile){
+    public void uploadImage(UserProfileViewModel viewModel, UserProfile profile){
 
-        dataModel.uploadImage(viewModel,isGallery,profile);
+        dataModel.uploadImage(viewModel,profile);
     }
 
 

@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,39 +9,38 @@ import android.view.ViewGroup;
 
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.databinding.SuggestedContactsLayoutBinding;
+import com.team.mamba.atlas.databinding.FindUsersLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
 import javax.inject.Inject;
 
-public class SuggestedContactsFragment extends BaseFragment<SuggestedContactsLayoutBinding,SuggestedContactsViewModel>
-implements SuggestedContactsNavigator{
-
+public class FindUsersFragment extends BaseFragment<FindUsersLayoutBinding, FindUsersViewModel>
+implements FindUsersNavigator {
 
     @Inject
-    SuggestedContactsViewModel viewModel;
+    FindUsersViewModel viewModel;
 
 
-    private SuggestedContactsLayoutBinding binding;
+    private FindUsersLayoutBinding binding;
 
+    public static FindUsersFragment newInstance(){
 
-    public static SuggestedContactsFragment newInstance(){
-
-        return new SuggestedContactsFragment();
+        return new FindUsersFragment();
     }
 
     @Override
     public int getBindingVariable() {
+
         return BR.viewModel;
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.suggested_contacts_layout;
+        return R.layout.find_users_layout;
     }
 
     @Override
-    public SuggestedContactsViewModel getViewModel() {
+    public FindUsersViewModel getViewModel() {
         return viewModel;
     }
 
@@ -56,11 +55,11 @@ implements SuggestedContactsNavigator{
         viewModel.setNavigator(this);
     }
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
-
 
 
          return binding.getRoot();
@@ -69,6 +68,5 @@ implements SuggestedContactsNavigator{
     @Override
     public void onSearchButtonClicked() {
 
-        showSnackbar("searched");
     }
 }

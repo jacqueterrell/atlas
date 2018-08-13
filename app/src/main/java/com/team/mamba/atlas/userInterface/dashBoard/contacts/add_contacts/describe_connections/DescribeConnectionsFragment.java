@@ -1,6 +1,5 @@
-package com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections;
 
-import android.animation.Animator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +17,7 @@ import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import javax.inject.Inject;
 
 public class DescribeConnectionsFragment extends BaseFragment<DescribeConnectionBinding,DescribeConnectionsViewModel>
-        implements DescribeConnectionsNavigator{
+        implements DescribeConnectionsNavigator {
 
     @Inject
     DescribeConnectionsViewModel viewModel;

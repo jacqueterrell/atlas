@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_user;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +12,7 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.AddUserLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 
 import javax.inject.Inject;
 
