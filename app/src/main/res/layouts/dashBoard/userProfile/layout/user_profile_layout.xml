@@ -497,7 +497,8 @@
                         android:layout_height="wrap_content"
                         android:text="Work History"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:layout_marginTop="15dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

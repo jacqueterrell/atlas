@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidanimations.library.YoYo.AnimatorCallback;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
@@ -198,7 +200,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         hideAddContactDialog();
         ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(profile),getSupportFragmentManager(),"UserProfile",null);
-        binding.layoutToolBar.setVisibility(View.GONE);
+        hideToolBar();
     }
 
     @Override
@@ -206,7 +208,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         hideAddContactDialog();
         ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile),getSupportFragmentManager(),"Business Profile",null);
-        binding.layoutToolBar.setVisibility(View.GONE);
+        hideToolBar();
     }
 
     @Override
@@ -221,7 +223,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         hideAddContactDialog();
         ChangeFragments.addFragmentVertically(AddUserFragment.newInstance(),getSupportFragmentManager(),"AddUser",null);
-        binding.layoutToolBar.setVisibility(View.GONE);
+        hideToolBar();
     }
 
     @Override
@@ -229,7 +231,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         hideAddContactDialog();
         ChangeFragments.addFragmentVertically(AddBusinessFragment.newInstance(),getSupportFragmentManager(),"AddBusiness",null);
-        binding.layoutToolBar.setVisibility(View.GONE);
+        hideToolBar();
     }
 
     @Override
@@ -240,11 +242,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         String msg = "Join me on Atlas Networking! " + AppConstants.BASE_PLAY_STORE_LINK +  appPackageName;
 
         hideAddContactDialog();
-//        Intent It = new Intent(Intent.ACTION_SEND);
-//        It.setType("text/plain");
-//        It.putExtra(android.content.Intent.EXTRA_TEXT,msg);
-//        startActivity(It);
-
 
         ShareCompat.IntentBuilder.from(this)
                 .setType("text/plain")
@@ -257,7 +254,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         hideAddContactDialog();
         ChangeFragments.addFragmentVertically(FindUsersFragment.newInstance(),getSupportFragmentManager(),"FindUsers",null);
-        binding.layoutToolBar.setVisibility(View.GONE);
+       hideToolBar();
 
     }
 
@@ -266,7 +263,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         hideAddContactDialog();
         ChangeFragments.addFragmentVertically(SuggestedContactsFragment.newInstance(),getSupportFragmentManager(),"SuggestedContacts",null);
-        binding.layoutToolBar.setVisibility(View.GONE);
+        hideToolBar();
 
     }
 
@@ -348,7 +345,10 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     public void showToolBar() {
 
         try {
-            binding.layoutToolBar.setVisibility(View.VISIBLE);
+            YoYo.with(Techniques.FadeIn)
+                    .duration(0)
+                    .onStart(animator -> binding.layoutToolBar.setVisibility(View.VISIBLE))
+                    .playOn(binding.layoutToolBar);
         }catch (Exception e){
             Logger.e(e.getMessage());
         }
@@ -368,7 +368,10 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     @Override
     public void hideToolBar() {
 
-        binding.layoutToolBar.setVisibility(View.GONE);
+        YoYo.with(Techniques.FadeOut)
+                .duration(200)
+                .onEnd(animator -> binding.layoutToolBar.setVisibility(View.GONE))
+                .playOn(binding.layoutToolBar);
     }
 
     public void showContactsIcon(){
@@ -506,7 +509,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                     || fragment instanceof AnnouncementsFragment
                     || fragment instanceof ContactsFragment) {
 
-                binding.layoutToolBar.setVisibility(View.VISIBLE);
+                showToolBar();
             }
 
 

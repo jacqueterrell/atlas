@@ -228,6 +228,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
     public void onShareClicked() {
 
         showExportDialog();
+        parentNavigator.hideToolBar();
     }
 
     @Override
@@ -245,7 +246,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         ChangeFragments.replaceFragmentVertically(EditAddNotePageOneFragment.newInstance(crmNotes, true),
                 getBaseActivity().getSupportFragmentManager(), "PageOne", null);
-
+        parentNavigator.hideToolBar();
     }
 
     @Override
@@ -253,7 +254,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         ChangeFragments.replaceFragmentVertically(new CrmFilterSettingsFragment(),
                 getBaseActivity().getSupportFragmentManager(), "FilterCrm", null);
-        //parentNavigator.hideToolBar();
+        parentNavigator.hideToolBar();
     }
 
     @Override

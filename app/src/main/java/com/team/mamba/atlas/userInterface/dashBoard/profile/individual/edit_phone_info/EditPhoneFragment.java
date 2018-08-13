@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,8 @@ import com.team.mamba.atlas.utils.formatData.RegEx;
 
 import javax.inject.Inject;
 
-public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditPhoneViewModel> implements EditPhoneNavigator {
+public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding, EditPhoneViewModel>
+        implements EditPhoneNavigator {
 
     @Inject
     EditPhoneDataModel dataModel;
@@ -35,7 +37,7 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
     private EditPhoneLayoutBinding binding;
     private static UserProfile profile;
 
-    public static EditPhoneFragment newInstance(UserProfile userProfile){
+    public static EditPhoneFragment newInstance(UserProfile userProfile) {
 
         profile = userProfile;
         return new EditPhoneFragment();
@@ -70,39 +72,52 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-         binding = getViewDataBinding();
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = getViewDataBinding();
 
+        setDataValues();
+        setListeners();
 
-         setDataValues();
-         setListeners();
-
-         return binding.getRoot();
+        return binding.getRoot();
     }
 
     @Override
     public void onContinueClicked() {
 
-        ChangeFragments.addFragmentFadeIn(new EditEmailFragment(),getBaseActivity()
-                .getSupportFragmentManager(),"EmailFragment",null);
+        setPhoneData();
+
+        ChangeFragments.addFragmentFadeIn(EditEmailFragment.newInstance(profile), getBaseActivity()
+                .getSupportFragmentManager(), "EmailFragment", null);
     }
 
     @Override
     public void onSaveAndCloseClicked() {
 
-        String homePhone = getParsedNumber(binding.etHomeNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS,""));
+        setPhoneData();
+        showProgressSpinner();
+        viewModel.updateUser(getViewModel(), profile);
+
+    }
+
+    private void setPhoneData() {
+
+        String homePhone = getParsedNumber(
+                binding.etHomeNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS, ""));
         String homeExt = binding.etHomeExt.getText().toString();
 
-        String officePhone = getParsedNumber(binding.etOfficeNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS,""));
+        String officePhone = getParsedNumber(
+                binding.etOfficeNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS, ""));
         String officeExt = binding.etOfficeExt.getText().toString();
 
-        String personalPhone = getParsedNumber(binding.etPersonalNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS,""));
+        String personalPhone = getParsedNumber(
+                binding.etPersonalNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS, ""));
         String personalExt = binding.etPersonalExt.getText().toString();
 
-        String faxPhone = getParsedNumber(binding.etFaxNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS,""));
+        String faxPhone = getParsedNumber(
+                binding.etFaxNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS, ""));
         String faxExt = binding.etFaxExt.getText().toString();
 
-        if (homeExt.isEmpty()){
+        if (homeExt.isEmpty()) {
 
             profile.setHomePhone(homePhone);
 
@@ -111,8 +126,7 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
             profile.setHomePhone(homePhone + " x" + homeExt);
         }
 
-
-        if (officeExt.isEmpty()){
+        if (officeExt.isEmpty()) {
 
             profile.setWorkPhone(officePhone);
 
@@ -121,7 +135,7 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
             profile.setWorkPhone(officePhone + " x" + officeExt);
         }
 
-        if (personalExt.isEmpty()){
+        if (personalExt.isEmpty()) {
 
             profile.setPersonalPhone(personalPhone);
 
@@ -130,7 +144,7 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
             profile.setPersonalPhone(personalPhone + " x" + personalExt);
         }
 
-        if (faxExt.isEmpty()){
+        if (faxExt.isEmpty()) {
 
             profile.setFax(faxPhone);
 
@@ -139,28 +153,18 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
             profile.setFax(faxPhone + " x" + faxExt);
         }
 
-        viewModel.updateUser(getViewModel(),profile);
-
     }
 
     @Override
     public void onProfileUpdated() {
 
+        hideProgressSpinner();
         showToastShort("Profile Updated");
+        getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-
-            if (fragment instanceof InfoFragment){
-                continue;
-
-            } else {
-
-                getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-        }
     }
 
-    private String getParsedNumber(String phone){
+    private String getParsedNumber(String phone) {
 
         String adjustedPhone = "";
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
@@ -172,7 +176,7 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
 
             adjustedPhone = national;
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             Logger.e(e.getMessage());
         }
@@ -180,7 +184,7 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
         return adjustedPhone;
     }
 
-    private void setListeners(){
+    private void setListeners() {
 
         binding.etPersonalNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         binding.etOfficeNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
@@ -189,35 +193,34 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
 
     }
 
-    private void setDataValues(){
+    private void setDataValues() {
 
-
-        try{
+        try {
 
             int length = profile.getWorkPhone().length();
 
             int index = profile.getWorkPhone().indexOf("x");
 
-            String officeNumber = profile.getWorkPhone().substring(0,index - 1);
+            String officeNumber = profile.getWorkPhone().substring(0, index - 1);
             binding.etOfficeNumber.setText(officeNumber);
-            binding.etOfficeExt.setText(profile.getHomePhone().substring(index + 1,length));
+            binding.etOfficeExt.setText(profile.getHomePhone().substring(index + 1, length));
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             binding.etOfficeNumber.setText(profile.getWorkPhone());
         }
 
-        try{
+        try {
 
             int length = profile.getHomePhone().length();
 
             int index = profile.getHomePhone().indexOf("x");
 
-            String homeNumber = profile.getHomePhone().substring(0,index - 1);
+            String homeNumber = profile.getHomePhone().substring(0, index - 1);
             binding.etHomeNumber.setText(homeNumber);
-            binding.etHomeExt.setText(profile.getHomePhone().substring(index + 1,length));
+            binding.etHomeExt.setText(profile.getHomePhone().substring(index + 1, length));
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             binding.etHomeNumber.setText(profile.getHomePhone());
         }
@@ -228,25 +231,25 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding,EditP
 
             int index = profile.getPersonalPhone().indexOf("x");
 
-            String personalNumber = profile.getPersonalPhone().substring(0,index - 1);
+            String personalNumber = profile.getPersonalPhone().substring(0, index - 1);
             binding.etPersonalNumber.setText(personalNumber);
-            binding.etPersonalExt.setText(profile.getPersonalPhone().substring(index + 1,length));
+            binding.etPersonalExt.setText(profile.getPersonalPhone().substring(index + 1, length));
 
-        } catch (Exception e){
+        } catch (Exception e) {
 
             binding.etPersonalNumber.setText(profile.getPersonalPhone());
         }
 
-        try{
+        try {
 
             int length = profile.getFax().length();
             int index = profile.getFax().indexOf("x");
 
-            String faxNumber = profile.getFax().substring(0,index - 1);
+            String faxNumber = profile.getFax().substring(0, index - 1);
             binding.etFaxNumber.setText(faxNumber);
-            binding.etFaxExt.setText(profile.getFax().substring(index + 1,length));
+            binding.etFaxExt.setText(profile.getFax().substring(index + 1, length));
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             binding.etFaxNumber.setText(profile.getFax());
         }

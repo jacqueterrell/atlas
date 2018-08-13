@@ -28,6 +28,7 @@ import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_phone_info.EditPhoneFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history.EditWorkFragment;
@@ -223,7 +224,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     @Override
     public void editEmailInfo() {
 
-        ChangeFragments.addFragmentFadeIn(new EditEmailFragment(),getBaseActivity()
+        ChangeFragments.addFragmentFadeIn(EditEmailFragment.newInstance(profile),getBaseActivity()
                 .getSupportFragmentManager(),"EditEmail",null);
     }
 
@@ -237,13 +238,15 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     @Override
     public void editWorkHistoryInfo() {
 
-        ChangeFragments.addFragmentFadeIn(new EditWorkFragment(),getBaseActivity()
-                .getSupportFragmentManager(),"EditWorkHistory",null);
+//        ChangeFragments.addFragmentFadeIn(new EditWorkFragment(),getBaseActivity()
+//                .getSupportFragmentManager(),"EditWorkHistory",null);
     }
 
     @Override
     public void editEductionInfo() {
 
+        ChangeFragments.addFragmentFadeIn(EditEducationFragment.newInstance(profile),getBaseActivity()
+                .getSupportFragmentManager(),"EditAddress",null);
     }
 
 
