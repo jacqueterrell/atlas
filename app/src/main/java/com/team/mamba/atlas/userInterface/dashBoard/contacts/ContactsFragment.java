@@ -4,9 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
@@ -14,16 +20,18 @@ import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.ContactsLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
-import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.ContactListAdapter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class ContactsFragment extends BaseFragment<ContactsLayoutBinding,ContactsViewModel> implements ContactsNavigator {
+public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, ContactsViewModel>
+        implements ContactsNavigator, SearchView.OnQueryTextListener {
 
 
     @Inject
@@ -36,7 +44,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding,Contact
     private DashBoardActivityNavigator parentNavigator;
     private DashBoardActivity parentActivity;
     private List<UserConnections> userConnectionsList = new ArrayList<>();
-
+    private ContactListAdapter contactListAdapter;
 
 
     @Override
@@ -56,7 +64,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding,Contact
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
 
@@ -76,13 +84,20 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding,Contact
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-         binding = getViewDataBinding();
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = getViewDataBinding();
 
+        contactListAdapter = new ContactListAdapter(userConnectionsList, getViewModel());
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerView.setAdapter(contactListAdapter);
 
+        binding.swipeContainer.setOnRefreshListener(() -> viewModel.requestContactsInfo(getViewModel()));
 
-         setUpToolBar();
-         return binding.getRoot();
+        showProgressSpinner();
+        viewModel.requestContactsInfo(getViewModel());
+        setUpToolBar();
+        return binding.getRoot();
     }
 
     @Override
@@ -123,33 +138,116 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding,Contact
 
         if (userConnections.isOrgBus) {
 
-            for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
-
-                if (profile.getId().equals(userConnections.getConsentingUserID())) {
-
-                    parentNavigator.openBusinessProfile(profile);
-
-                }
-            }
+            parentNavigator.openBusinessProfile(userConnections.getBusinessProfile());
 
         } else {
 
-            for (UserProfile profile : viewModel.getUserProfileList()){
-
-                if (profile.getId().equals(userConnections.getConsentingUserID())){
-
-                    parentNavigator.openUserProfile(profile);
-
-                }
-            }
+            parentNavigator.openUserProfile(userConnections.getUserProfile());
         }
 
+        hideProgressSpinner();
+
+    }
+
+    @Override
+    public void onDataValuesReturned() {
+
+        List<UserConnections> individualConnections = new ArrayList<>();
+        List<UserConnections> businessConnections = new ArrayList<>();
+
+        String userId = dataManager.getSharedPrefs().getUserId();
+        List<UserConnections> adjustedConnections = new ArrayList<>();
+        binding.swipeContainer.setRefreshing(false);
+
+        if (dataManager.getSharedPrefs().isBusinessAccount()) {
+
+        } else {
+
+            UserProfile profile = viewModel.getUserProfile();
+
+            String name = profile.getFirstName() + " " + profile.getLastName();
+            binding.tvUserCode.setText(profile.getCode());
+            binding.tvUserName.setText(name);
+
+            Glide.with(getBaseActivity())
+                    .load(profile.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(binding.ivUserProfileImage);
+
+        }
+
+        for (UserConnections connections : viewModel.getUserConnectionsList()) {
+
+            if (connections.isOrgBus) {
+
+                for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
+
+                    if (connections.requestingUserID.equals(userId)
+                            && connections.consentingUserID.equals(profile.getId())) {
+
+                        connections.setBusinessProfile(profile);
+                        businessConnections.add(connections);
+
+                    } else if (connections.getConsentingUserID().equals(userId)
+                            && connections.getRequestingUserID().equals(profile.getId())) {
+
+                        connections.setBusinessProfile(profile);
+                        businessConnections.add(connections);
+                    }
+                }
+
+            } else {
+
+                for (UserProfile profile : viewModel.getUserProfileList()) {
+
+                    if (connections.requestingUserID.equals(userId)
+                            && connections.consentingUserID.equals(profile.getId())) {
+
+                        connections.setUserProfile(profile);
+                        individualConnections.add(connections);
+
+                    } else if (connections.getConsentingUserID().equals(userId)
+                            && connections.getRequestingUserID().equals(profile.getId())) {
+
+                        connections.setUserProfile(profile);
+                        individualConnections.add(connections);
+                    }
+                }
+
+            }
+
+
+        }
+
+
+        Collections.sort(individualConnections, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
+        Collections.sort(businessConnections, (o1, o2) -> Boolean.compare(o1.isOrgBus(), o2.isOrgBus));
+
+        adjustedConnections.addAll(individualConnections);
+        adjustedConnections.addAll(businessConnections);
+
+        userConnectionsList.clear();
+        userConnectionsList.addAll(adjustedConnections);
+        contactListAdapter.notifyDataSetChanged();
+
+        hideProgressSpinner();
     }
 
     @Override
     public void handleError(String errorMsg) {
 
+        binding.swipeContainer.setRefreshing(false);
         hideProgressSpinner();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 
     private void setUpToolBar() {

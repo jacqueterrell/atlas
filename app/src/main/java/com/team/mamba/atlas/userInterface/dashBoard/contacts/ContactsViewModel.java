@@ -59,7 +59,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     }
 
     public void setUserConnectionsList(List<UserConnections> userConnectionsList) {
-        this.userConnectionsList = userConnectionsList;
+        ContactsViewModel.userConnectionsList = userConnectionsList;
     }
 
     public List<UserConnections> getUserConnectionsList() {

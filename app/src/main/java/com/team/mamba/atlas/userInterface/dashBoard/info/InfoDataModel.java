@@ -434,7 +434,7 @@ public class InfoDataModel {
                 Calendar calendar = Calendar.getInstance();
                 int today = calendar.get(Calendar.DAY_OF_YEAR);
 
-                if (record.isBusiness()) {
+                if (record.isOrgBus()) {
 
                     //the users is the requester
                     if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES

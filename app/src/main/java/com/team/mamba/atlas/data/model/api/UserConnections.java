@@ -2,6 +2,7 @@ package com.team.mamba.atlas.data.model.api;
 
 import android.support.annotation.Keep;
 
+import com.google.firebase.firestore.Exclude;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
@@ -55,8 +56,11 @@ public class UserConnections {
     @Expose
     public double timestamp;
 
-    public boolean needsApproval;
-    public boolean recentActivity;
+    @Exclude private boolean needsApproval;
+    @Exclude private boolean recentActivity;
+    @Exclude private UserProfile  userProfile;
+    @Exclude private BusinessProfile businessProfile;
+
 
 
     public UserConnections(){
@@ -73,7 +77,7 @@ public class UserConnections {
         this.id = id;
     }
 
-    public boolean isBusiness() {
+    public boolean isOrgBus() {
         return isOrgBus;
     }
 
@@ -170,5 +174,22 @@ public class UserConnections {
 
     public void setRecentActivity(boolean recentActivity) {
         this.recentActivity = recentActivity;
+    }
+
+
+   @Exclude public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    @Exclude public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    @Exclude public BusinessProfile getBusinessProfile() {
+        return businessProfile;
+    }
+
+    @Exclude public void setBusinessProfile(BusinessProfile businessProfile) {
+        this.businessProfile = businessProfile;
     }
 }

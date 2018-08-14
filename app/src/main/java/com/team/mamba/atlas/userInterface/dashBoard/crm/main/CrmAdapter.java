@@ -106,6 +106,8 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
         } else {
 
             holder.binding.layoutMonth.setVisibility(View.GONE);
+            holder.binding.tvMonth.setText(monthName);
+
         }
 
         if (position == 0){

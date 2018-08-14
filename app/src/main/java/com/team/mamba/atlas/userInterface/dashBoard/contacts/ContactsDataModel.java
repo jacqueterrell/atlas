@@ -22,22 +22,19 @@ public class ContactsDataModel {
 
 
     @Inject
-    public ContactsDataModel(AppDataManager dataManager){
+    public ContactsDataModel(AppDataManager dataManager) {
 
         this.dataManager = dataManager;
     }
 
 
-
-    public void requestContactsInfo(ContactsViewModel viewModel){
+    public void requestContactsInfo(ContactsViewModel viewModel) {
 
         requestUserProfiles(viewModel);
     }
 
     /**
      * Gets a list of all profiles and saves the user's profile
-     *
-     * @param viewModel
      */
     private void requestUserProfiles(ContactsViewModel viewModel) {
 
@@ -52,11 +49,11 @@ public class ContactsDataModel {
 
                         List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
-                        for (UserProfile profile : userProfiles){
+                        for (UserProfile profile : userProfiles) {
 
-                            if (profile.getId() != null){
+                            if (profile.getId() != null) {
 
-                                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+                                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
 
                                     viewModel.setUserProfile(profile);
                                 }
@@ -64,7 +61,56 @@ public class ContactsDataModel {
                                 adjustedProfileList.add(profile);
                             }
                         }
-                        requestAllConnections(viewModel,adjustedProfileList);
+
+                        viewModel.setUserProfileList(adjustedProfileList);
+                        requestAllConnections(viewModel);
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                        task.getException().printStackTrace();
+                        viewModel.getNavigator().handleError(task.getException().getMessage());
+
+                    }
+
+                });
+
+    }
+
+
+    /**
+     * Gets a list of all of the user's approved connections
+     */
+    private void requestAllConnections(ContactsViewModel viewModel) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<UserConnections> userConnections = new ArrayList<>();
+
+        String userId = dataManager.getSharedPrefs().getUserId();
+
+        db.collection(AppConstants.CONNECTIONS_COLLECTION)
+                .whereEqualTo("requestingUserID", dataManager.getSharedPrefs().getUserId())
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
+
+                        for (UserConnections connections : connectionsList) {
+
+                            if (connections.isConfirmed && connections.getConsentingUserID().equals(userId)) {
+
+                                userConnections.add(connections);
+
+                            } else if (connections.isConfirmed && connections.getRequestingUserID().equals(userId)) {
+
+                                userConnections.add(connections);
+                            }
+
+                        }
+
+                        viewModel.setUserConnectionsList(userConnections);
                         requestAllBusinessProfiles(viewModel);
 
                     } else {
@@ -80,58 +126,10 @@ public class ContactsDataModel {
     }
 
 
-
-    private void requestAllConnections(ContactsViewModel viewModel,List<UserProfile> userProfiles) {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        List<UserProfile> usersContactProfiles = new ArrayList<>();
-        List<UserConnections> userConnections = new ArrayList<>();
-
-        String userId = dataManager.getSharedPrefs().getUserId();
-
-        db.collection(AppConstants.CONNECTIONS_COLLECTION)
-                .whereEqualTo("requestingUserID",dataManager.getSharedPrefs().getUserId())
-                .get()
-                .addOnCompleteListener(task -> {
-
-                    if (task.isSuccessful()) {
-
-                        List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
-
-                        for (UserProfile profile : userProfiles){
-
-                            for (UserConnections connections : connectionsList){
-
-                                if (connections.isConfirmed && profile.getId().equals(connections.getConsentingUserID())){
-
-                                    usersContactProfiles.add(profile);
-                                    userConnections.add(connections);
-
-                                } else if (connections.isConfirmed && connections.getRequestingUserID().equals(userId)){
-
-                                    usersContactProfiles.add(profile);
-                                    userConnections.add(connections);
-                                }
-                            }
-                        }
-
-                        viewModel.setUserConnectionsList(userConnections);
-                        viewModel.setUserProfileList(usersContactProfiles);
-
-                    } else {
-
-                        Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
-                        viewModel.getNavigator().handleError(task   .getException().getMessage());
-
-                    }
-
-                });
-
-    }
-
-
-
+    /**
+     * Save a list of all business profiles and sets the user's business
+     * profile if they are a business.
+     */
     private void requestAllBusinessProfiles(ContactsViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -156,6 +154,12 @@ public class ContactsDataModel {
                             }
                         }
 
+                        viewModel.getNavigator().onDataValuesReturned();
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                        viewModel.getNavigator().handleError("Error requesting business collections");
                     }
                 });
 

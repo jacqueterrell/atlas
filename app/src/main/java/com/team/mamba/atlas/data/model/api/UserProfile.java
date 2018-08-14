@@ -181,7 +181,7 @@ public class UserProfile {
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName.trim();
     }
 
     public void setLastName(String lastName) {

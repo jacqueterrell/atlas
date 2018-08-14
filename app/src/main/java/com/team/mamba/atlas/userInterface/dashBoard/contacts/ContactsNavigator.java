@@ -20,4 +20,6 @@ public interface ContactsNavigator {
     void onRowClicked(UserConnections userConnections);
 
     void handleError(String errorMsg);
+
+    void onDataValuesReturned();
 }

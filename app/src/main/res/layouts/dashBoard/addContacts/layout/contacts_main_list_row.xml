@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/layout_letter_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_icons_light">
+
+            <TextView
+                android:id="@+id/tv_letter_title"
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"
+                tools:text="M" />
+
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layout_business_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_icons_light"
+            >
+
+            <TextView
+                android:id="@+id/tv_business_header"
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Organizations/ Businesses"
+                android:textColor="@color/black"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="17sp"
+                android:layout_gravity="center_vertical"/>
+
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:id="@+id/tv_first_name"
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="17sp"
+                android:layout_marginRight="5dp"
+                tools:text="Jacque\'" />
+
+            <TextView
+                android:id="@+id/tv_last_name"
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                tools:text="Terrell" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/material_icon" />
+
+
+    </LinearLayout>
+
+</layout>
