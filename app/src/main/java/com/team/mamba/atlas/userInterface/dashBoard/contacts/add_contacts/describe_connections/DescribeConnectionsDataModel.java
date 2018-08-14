@@ -31,6 +31,15 @@ public class DescribeConnectionsDataModel {
     }
 
 
+    /**
+     * Based on the account type of business or individual, makes a
+     * request to add a user based on received credentials
+     *
+     * @param viewModel
+     * @param lastName
+     * @param code
+     * @param connectionType
+     */
     public void initiateNewUserRequest(DescribeConnectionsViewModel viewModel, String lastName, String code, int connectionType){
         //query users and search for a match...
 
