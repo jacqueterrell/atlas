@@ -14,10 +14,19 @@ public class CrmViewModel extends BaseViewModel<CrmNavigator> {
     private static UserProfile userProfile;
     private static CrmNotes selectedOpportunity;
     private int selectedRowPosition;
+    private static String savedUserId = "";
 
 
     public void setDataModel(CrmDataModel dataModel) {
         this.dataModel = dataModel;
+    }
+
+    public void setSavedUserId(String savedUserId) {
+        CrmViewModel.savedUserId = savedUserId;
+    }
+
+    public String getSavedUserId() {
+        return savedUserId;
     }
 
     public void setCrmNotesList(List<CrmNotes> crmNotesList) {

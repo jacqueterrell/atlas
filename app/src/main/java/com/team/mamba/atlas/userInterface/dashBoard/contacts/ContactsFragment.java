@@ -1,16 +1,20 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.team.mamba.atlas.BR;
@@ -43,7 +47,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     private ContactsLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
     private DashBoardActivity parentActivity;
-    private List<UserConnections> userConnectionsList = new ArrayList<>();
+    private static List<UserConnections> userConnectionsList = new ArrayList<>();
     private ContactListAdapter contactListAdapter;
 
 
@@ -94,9 +98,27 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         binding.swipeContainer.setOnRefreshListener(() -> viewModel.requestContactsInfo(getViewModel()));
 
-        showProgressSpinner();
-        viewModel.requestContactsInfo(getViewModel());
+        if (viewModel.getUserConnectionsList().isEmpty()){
+
+            showProgressSpinner();
+            viewModel.requestContactsInfo(getViewModel());
+
+        } else {
+
+                if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())){
+
+                    showProgressSpinner();
+                    viewModel.requestContactsInfo(getViewModel());
+
+                } else {
+
+                    viewModel.requestContactsInfo(getViewModel());
+                }
+
+        }
+
         setUpToolBar();
+        setUpSearchView();
         return binding.getRoot();
     }
 
@@ -258,4 +280,27 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         parentActivity.hideInfoIcon();
         parentActivity.hideNotificationsIcon();
     }
+
+    private void setUpSearchView() {
+
+        binding.searchView.setOnQueryTextListener(this);
+        binding.searchView.setIconifiedByDefault(false);
+        binding.searchView.setFocusable(false);
+
+
+        //set the color for our search view edit text and text hint
+        EditText searchEditText = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setHintTextColor(getResources().getColor(R.color.material_icons_light));
+        searchEditText.setHint("Search...");
+
+        //set the color for our search view icon
+        ImageView searchMagIcon = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+        searchMagIcon.setColorFilter(ContextCompat.getColor(getBaseActivity(), R.color.white));
+        searchMagIcon.setVisibility(View.GONE);
+
+        //set the line color
+        View v = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        v.setBackgroundColor(Color.TRANSPARENT);
+    }
+
 }

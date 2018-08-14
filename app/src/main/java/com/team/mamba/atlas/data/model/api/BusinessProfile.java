@@ -2,6 +2,8 @@ package com.team.mamba.atlas.data.model.api;
 
 import android.support.annotation.Keep;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +20,12 @@ public class BusinessProfile {
     public String street = "...";
     public String cityStateZip = "...";
     public String imageUrl = "...";
-    public Map<String,String> announcements;
-    public Map<String,String> children;
-    public Map<String,String> contacts;
-    public List<Integer> shareNeeds;
+    public Map<String,String> announcements = new LinkedHashMap<>();
+    public Map<String,String> children = new LinkedHashMap<>();
+    public Map<String,String> contacts = new LinkedHashMap<>();
+    public List<Integer> shareNeeds = new LinkedList<>();
 
-    public String businessRepId;
+    public String businessRepId = "";
 
 
     public String getId() {

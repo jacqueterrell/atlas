@@ -454,6 +454,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
     private void callPhone(String profilePhone){
 
+
         String adjustedPhone = profilePhone.replaceAll(RegEx.REMOVE_NON_DIGITS,"");
 
         if (adjustedPhone.isEmpty()){

@@ -7,4 +7,10 @@ public interface DescribeConnectionsNavigator {
     void onInfoClicked();
 
     void hideConnectionsInfo();
+
+    void showUserNotFoundAlert();
+
+    void showAlreadyAContactAlert();
+
+    void onRequestSent();
 }

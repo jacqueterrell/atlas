@@ -23,9 +23,15 @@ public class CrmDataModel {
     }
 
 
+    /**
+     * Retrieves a list of business notes authored by the user
+     *
+     * @param viewModel
+     */
            public void getAllOpportunities(CrmViewModel viewModel){
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
+            viewModel.setSavedUserId(dataManager.getSharedPrefs().getUserId());
 
             getUserDetails(viewModel);
 

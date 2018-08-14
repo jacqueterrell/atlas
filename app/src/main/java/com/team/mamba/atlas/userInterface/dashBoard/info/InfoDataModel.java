@@ -62,6 +62,8 @@ public class InfoDataModel {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserProfile> adjustedProfileList = new ArrayList<>();
 
+        viewModel.setSavedUserId(dataManager.getSharedPrefs().getUserId());
+
         db.collection(AppConstants.USERS_COLLECTION)
                 .get()
                 .addOnCompleteListener(task -> {

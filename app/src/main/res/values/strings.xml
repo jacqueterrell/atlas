@@ -77,6 +77,12 @@
 
     <string name="change_image">Would you like to change your image on Atlas?</string>
 
+    <string name="already_connected_title">Already Connected</string>
+    <string name="already_connected_body">Check your contacts. It looks like you\'ve already connected.</string>
+
+    <string name="connection_sent_title">Connection request sent</string>
+    <string name="connection_sent_body">Check your dashboard to view the status of the connection.</string>
+
     <string-array name="status_array">
         <item>New</item>
         <item>Qualified</item>

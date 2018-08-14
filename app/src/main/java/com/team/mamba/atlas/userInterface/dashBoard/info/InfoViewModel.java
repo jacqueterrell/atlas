@@ -22,8 +22,9 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     private static List<BusinessProfile>businessProfileList = new ArrayList<>();
     private static List<UserConnections> connectionRecordList = new ArrayList<>();
 
-    public static List<String> userStatsList = new ArrayList<>();
+    private static List<String> userStatsList = new ArrayList<>();
     private static List<UserConnections> recentActivityConnections = new ArrayList<>();
+    private static String savedUserId = "";
 
     /***************view logic************/
 
@@ -32,6 +33,14 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
 
     public void setDataModel(InfoDataModel dashBoardHomeDataModel) {
         this.dataModel = dashBoardHomeDataModel;
+    }
+
+    public void setSavedUserId(String savedUserId) {
+        InfoViewModel.savedUserId = savedUserId;
+    }
+
+    public String getSavedUserId() {
+        return savedUserId;
     }
 
     public void setNetworksMap(Map<Integer,Integer> connectionsMap) {
@@ -91,7 +100,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     }
 
     public void setUserStatsList(List<String> userStatsList) {
-        this.userStatsList = userStatsList;
+        InfoViewModel.userStatsList = userStatsList;
     }
 
     public List<String> getUserStatsList() {
@@ -99,7 +108,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     }
 
     public void setRecentActivityConnections(List<UserConnections> recentActivityConnections) {
-        this.recentActivityConnections = recentActivityConnections;
+        InfoViewModel.recentActivityConnections = recentActivityConnections;
     }
 
     public List<UserConnections> getRecentActivityConnections() {
@@ -107,7 +116,7 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
     }
 
     public void setAllUsersList(List<UserProfile> allUsersList) {
-        this.allUsersList = allUsersList;
+        InfoViewModel.allUsersList = allUsersList;
     }
 
     public List<UserProfile> getAllUsersList() {

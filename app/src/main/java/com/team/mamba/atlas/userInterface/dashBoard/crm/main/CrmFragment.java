@@ -63,12 +63,12 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
     CrmDataModel dataModel;
 
     private CrmLayoutBinding binding;
-    private List<CrmNotes> crmNotesList = new ArrayList<>();
+    private static List<CrmNotes> crmNotesList = new ArrayList<>();
     private CrmAdapter crmAdapter;
     private DashBoardActivityNavigator parentNavigator;
     private DashBoardActivity parentActivity;
     private static final int SEND_CSV = 0;
-    private List<CrmNotes> permCrmNotesList = new ArrayList<>();
+    private static List<CrmNotes> permCrmNotesList = new ArrayList<>();
 
 
     @Override
@@ -134,9 +134,15 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         } else {
 
-            onCrmDataReturned();
+            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {
 
-            viewModel.requestAllOpportunities(getViewModel());
+                viewModel.requestAllOpportunities(getViewModel());
+
+            } else {
+
+                binding.recyclerView.setAdapter(crmAdapter);
+                viewModel.requestAllOpportunities(getViewModel());
+            }
 
         }
 
@@ -148,7 +154,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         binding.searchView.setOnQueryTextListener(this);
         binding.searchView.setIconifiedByDefault(false);
         binding.searchView.setFocusable(false);
-
 
         //set the color for our search view edit text and text hint
         EditText searchEditText = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -200,7 +205,10 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
     @Override
     public List<CrmNotes> getPerCrmNotesList() {
-        return permCrmNotesList;
+
+        List<CrmNotes> notesList = new ArrayList<>(permCrmNotesList);
+
+        return notesList;
     }
 
     @Override

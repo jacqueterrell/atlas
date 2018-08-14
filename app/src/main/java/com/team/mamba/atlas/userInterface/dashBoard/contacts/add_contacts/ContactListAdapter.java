@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListViewHolder> {
 
-    private List<UserConnections> userConnectionsList;
+    private List<UserConnections> userConnectionsList = new ArrayList<>();
     private ContactsViewModel viewModel;
     private List<String> letterTitleList = new ArrayList<>();
     private List<Integer> letterPositions = new ArrayList<>();

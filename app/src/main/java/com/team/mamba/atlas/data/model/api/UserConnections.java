@@ -13,47 +13,20 @@ public class UserConnections {
 
     @SerializedName("id")
     @Expose
-    public String id;
+    public String id= "";
 
 
-    @SerializedName("isOrgBus")
-    @Expose
     public boolean isOrgBus;
-
-    @SerializedName("requestingUserID")
-    @Expose
-    public String requestingUserID;
-
-    @SerializedName("requestingUserName")
-    @Expose
-    public String requestingUserName;
-
-    @SerializedName("consentingUserID")
-    @Expose
-    public String consentingUserID;
-
-    @SerializedName("consentingUserName")
-    @Expose
-    public String consentingUserName;
-
-    @SerializedName("connectionType")
-    @Expose
+    public String requestingUserID= "";
+    public String requestingUserName= "";
+    public String consentingUserID= "";
+    public String consentingUserName= "";
+    public String conDeviceToken = "";
+    public String reqDeviceToken = "";
     public int connectionType;
-
-    @SerializedName("isConfirmed")
-    @Expose
     public boolean isConfirmed;
-
-    @SerializedName("isViewed")
-    @Expose
     public boolean viewed;
-
-    @SerializedName("isDirectory")
-    @Expose
     public boolean directory;
-
-    @SerializedName("timestamp")
-    @Expose
     public double timestamp;
 
     @Exclude private boolean needsApproval;
@@ -109,6 +82,14 @@ public class UserConnections {
         this.consentingUserID = consentingUserID;
     }
 
+    public void setReqDeviceToken(String reqDeviceToken) {
+        this.reqDeviceToken = reqDeviceToken;
+    }
+
+    public String getReqDeviceToken() {
+        return reqDeviceToken;
+    }
+
     public String getConsentingUserName() {
         return consentingUserName;
     }
@@ -147,6 +128,14 @@ public class UserConnections {
 
     public void setDirectory(boolean directory) {
         this.directory = directory;
+    }
+
+    public void setConDeviceToken(String conDeviceToken) {
+        this.conDeviceToken = conDeviceToken;
+    }
+
+    public String getConDeviceToken() {
+        return conDeviceToken;
     }
 
     public long getTimestamp() {

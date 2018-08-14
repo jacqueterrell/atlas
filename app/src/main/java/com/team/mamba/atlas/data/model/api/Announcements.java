@@ -9,11 +9,11 @@ import java.util.List;
 
 public class Announcements {
 
-    public String id;
+    public String id = "";
     public boolean isEvent;
-    public String orgBusID;
-    public String orgBusName;
-    public String text;
+    public String orgBusID = "";
+    public String orgBusName = "";
+    public String text = "";
     public double timestamp;
 
 

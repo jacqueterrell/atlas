@@ -25,14 +25,14 @@ public class UserProfile {
 
 
     @SerializedName("id")
-    public String id;
+    public String id = "";
 
     @SerializedName("deviceToken")
-    public String deviceToken ;
+    public String deviceToken = "";
 
     @SerializedName("code")
     @Expose
-    public String code;
+    public String code = "";
 
     @SerializedName("score")
     @Expose
@@ -40,43 +40,43 @@ public class UserProfile {
 
     @SerializedName("firstName")
     @Expose
-    public String firstName;
+    public String firstName= "";
 
     @SerializedName("lastName")
     @Expose
-    public String lastName;
+    public String lastName= "";
 
     @SerializedName("email")
     @Expose
-    public String email;
+    public String email= "";
 
     @SerializedName("workEmail")
     @Expose
-    public String workEmail;
+    public String workEmail= "";
 
     @SerializedName("homePhone")
     @Expose
-    public String homePhone;
+    public String homePhone= "";
 
     @SerializedName("personalPhone")
     @Expose
-    public String personalPhone;
+    public String personalPhone= "";
 
     @SerializedName("workPhone")
     @Expose
-    public String workPhone;
+    public String workPhone= "";
 
     @SerializedName("fax")
     @Expose
-    public String fax;
+    public String fax= "";
 
     @SerializedName("street")
     @Expose
-    public String street;
+    public String street= "";
 
     @SerializedName("cityStateZip")
     @Expose
-    public String cityStateZip;
+    public String cityStateZip= "";
 
     @SerializedName("workHistory")
     @Expose
@@ -96,15 +96,15 @@ public class UserProfile {
 
     @SerializedName("workStreet")
     @Expose
-    public String workStreet;
+    public String workStreet= "";
 
     @SerializedName("workCityStateZip")
     @Expose
-    public String workCityStateZip;
+    public String workCityStateZip= "";
 
     @SerializedName("imageUrl")
     @Expose
-    public String imageUrl;
+    public String imageUrl= "";
 
 
     @SerializedName("connections")
@@ -125,7 +125,7 @@ public class UserProfile {
 
     @SerializedName("phone")
     @Expose
-    public String phone;
+    public String phone= "";
 
     public UserProfile() {
 
@@ -145,6 +145,7 @@ public class UserProfile {
     }
 
     public String getPhone() {
+
         return phone;
     }
 
@@ -399,12 +400,6 @@ public class UserProfile {
 
         return Long.parseLong(adjustedTime);    }
 
-    public long getAdjustedTimeStamp(){
-
-        String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
-
-        return Long.parseLong(adjustedTime);
-    }
 
     public void setTimestamp(double timestamp) {
         this.timestamp = timestamp;
@@ -427,5 +422,12 @@ public class UserProfile {
 
     public void setWorkPhone(String workPhone) {
         this.workPhone = workPhone;
+    }
+
+   @Exclude public long getAdjustedTimeStamp(){
+
+        String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
+
+        return Long.parseLong(adjustedTime);
     }
 }

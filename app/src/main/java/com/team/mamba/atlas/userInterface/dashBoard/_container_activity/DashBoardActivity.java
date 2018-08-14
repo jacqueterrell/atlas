@@ -279,7 +279,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 })
                 .setPositiveButton("yes", (paramDialogInterface, paramInt) -> {
 
-                    InfoViewModel.userStatsList.clear();
+                    //InfoViewModel.userStatsList.clear();
                     dataManager.getSharedPrefs().setUserLoggedIn(false);
                     showToastShort("Logging out");
                     finishAffinity();
@@ -398,15 +398,15 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         if (keyCode == 4){
 
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            Fragment previousFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
             if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
 
                 hideSettings();
 
-            } else  if (fragment instanceof CrmFragment){
+            } else  if (previousFragment instanceof CrmFragment){
 
-                CrmNavigator navigator = (CrmNavigator) fragment;
+                CrmNavigator navigator = (CrmNavigator) previousFragment;
 
                 if (navigator.isInfoDialogShown()){
 
@@ -420,9 +420,9 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                     onBackPressed();
                 }
 
-            } else if (fragment instanceof EditAddNotePageOneFragment){
+            } else if (previousFragment instanceof EditAddNotePageOneFragment){
 
-                EditPageOneNavigator navigator = (EditPageOneNavigator) fragment;
+                EditPageOneNavigator navigator = (EditPageOneNavigator) previousFragment;
 
                 if (navigator.isContactsScreenShown()){
 
@@ -438,11 +438,11 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 onBackPressed();
             }
 
-            Fragment newFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (newFragment instanceof InfoFragment
-                    || fragment instanceof CrmFragment
-                    || fragment instanceof AnnouncementsFragment
-                    || fragment instanceof ContactsFragment) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if (currentFragment instanceof InfoFragment
+                    || currentFragment instanceof CrmFragment
+                    || currentFragment instanceof AnnouncementsFragment
+                    || currentFragment instanceof ContactsFragment) {
 
                 showToolBar();
             }

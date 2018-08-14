@@ -3,6 +3,8 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_u
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,28 +75,14 @@ implements AddUserNavigator {
 
         if (!viewModel.isLastNameValid(lastName) || !viewModel.isUserCodeValid(userCode)){
 
-            if (!viewModel.isLastNameValid(lastName) && !viewModel.isUserCodeValid(userCode)){
-
-                showSnackbar("Please enter a valid user code and last name");
-
-            } else if (!viewModel.isLastNameValid(lastName)){
-
-                showSnackbar("Please enter a valid last name");
-
-            } else {
-
-                showSnackbar("Please enter a valid user code");
-
-            }
+                String title = "Check Fields";
+                String msg = "Please make sure that the name and code fields are complete";
+                showAlert(title,msg);
 
         } else {
 
-            Bundle args = new Bundle();
-            args.putString("lastName",lastName);
-            args.putString("userCode",userCode);
-
             ChangeFragments.addFragmentFadeIn(DescribeConnectionsFragment.newInstance(lastName,userCode),getBaseActivity()
-                    .getSupportFragmentManager(),"AddUserLayout",args);
+                    .getSupportFragmentManager(),"AddUserLayout",null);
 
             //open next screen
         }

@@ -30,6 +30,7 @@ public class ContactsDataModel {
 
     public void requestContactsInfo(ContactsViewModel viewModel) {
 
+        viewModel.setSavedUserId(dataManager.getSharedPrefs().getUserId());
         requestUserProfiles(viewModel);
     }
 

@@ -18,6 +18,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     private static UserProfile userProfile;
     private static BusinessProfile businessProfile;
     private static List<UserConnections> userConnectionsList = new ArrayList<>();
+    private static String savedUserId = "";
 
 
     public void setDataModel(ContactsDataModel dataModel) {
@@ -64,6 +65,14 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
     public List<UserConnections> getUserConnectionsList() {
         return userConnectionsList;
+    }
+
+    public void setSavedUserId(String savedUserId) {
+        ContactsViewModel.savedUserId = savedUserId;
+    }
+
+    public String getSavedUserId() {
+        return savedUserId;
     }
 
     /********Onclick Listeners********/

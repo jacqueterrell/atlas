@@ -6,6 +6,7 @@ import com.google.firebase.auth.UserInfo;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
+import com.team.mamba.atlas.utils.formatData.RegEx;
 
 public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
 
@@ -168,6 +169,18 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     public void editEductionInfo(){
 
         getNavigator().editEductionInfo();
+    }
+
+    public boolean isStringValid(String phone){
+
+        try {
+            String adjustedPhone = phone.replaceAll(RegEx.REMOVE_NON_DIGITS, "");
+        } catch (Exception e){
+
+            return false;
+        }
+
+        return true;
     }
 
 

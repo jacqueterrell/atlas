@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections;
 
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnectionsNavigator> {
@@ -7,12 +8,7 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
 
     private DescribeConnectionsDataModel dataModel;
 
-    private boolean familyMember;
-    private boolean personalFriend;
-    private boolean newAcquaintance;
-    private boolean businessContact;
-    private boolean colleague;
-    private boolean client;
+    private UserProfile loggedInProfile;
 
 
 
@@ -22,54 +18,14 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
         this.dataModel = dataModel;
     }
 
-    public boolean isFamilyMember() {
-        return familyMember;
+
+    public void setLoggedInProfile(UserProfile loggedInProfile) {
+        this.loggedInProfile = loggedInProfile;
     }
 
-    public void setFamilyMember(boolean familyMember) {
-        this.familyMember = familyMember;
+    public UserProfile getLoggedInProfile() {
+        return loggedInProfile;
     }
-
-    public boolean isPersonalFriend() {
-        return personalFriend;
-    }
-
-    public void setPersonalFriend(boolean personalFriend) {
-        this.personalFriend = personalFriend;
-    }
-
-    public boolean isNewAcquaintance() {
-        return newAcquaintance;
-    }
-
-    public void setNewAcquaintance(boolean newAcquaintance) {
-        this.newAcquaintance = newAcquaintance;
-    }
-
-    public boolean isBusinessContact() {
-        return businessContact;
-    }
-
-    public void setBusinessContact(boolean businessContact) {
-        this.businessContact = businessContact;
-    }
-
-    public boolean isColleague() {
-        return colleague;
-    }
-
-    public void setColleague(boolean colleague) {
-        this.colleague = colleague;
-    }
-
-    public boolean isClient() {
-        return client;
-    }
-
-    public void setClient(boolean client) {
-        this.client = client;
-    }
-
 
     /*****Onclick Listeners*********/
 
@@ -90,8 +46,8 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
 
     /*****DataModel calls******/
 
-    public void addUser(DescribeConnectionsViewModel viewModel,String lastName, String userCode){
+    public void addUserRequest(DescribeConnectionsViewModel viewModel,String lastName, String userCode,int connectionType){
 
-        dataModel.addUser(viewModel,lastName,userCode);
+        dataModel.addNewRequest(viewModel,lastName,userCode,connectionType);
     }
 }
