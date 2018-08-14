@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.DescribeConnectionBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 
 import javax.inject.Inject;
 
@@ -30,6 +32,7 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     private DescribeConnectionBinding binding;
     private static String lastName;
     private static String userCode;
+    private DashBoardActivityNavigator parentNavigator;
 
     public static DescribeConnectionsFragment newInstance(String name,String code){
 
@@ -56,6 +59,12 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     @Override
     public View getProgressSpinner() {
         return null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
     }
 
     @Override
@@ -111,20 +120,19 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
 
         String title = getBaseActivity().getResources().getString(R.string.connection_sent_title);
         String msg = getBaseActivity().getResources().getString(R.string.connection_sent_body);
-        showAlert(title,msg);
 
-//        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
-//
-//        dialog.setTitle(title)
-//                .setCancelable(false)
-//                .setMessage(msg)
-//                .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
-//
-//                    getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//
-//                });
-//
-//        dialog.show();
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle(title)
+                .setCancelable(false)
+                .setMessage(msg)
+                .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
+
+                    getBaseActivity().onBackPressed();
+
+                });
+
+        dialog.show();
 
     }
 
@@ -140,6 +148,21 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     @Override
     public void showAlreadyAContactAlert() {
 
+        String title = getBaseActivity().getResources().getString(R.string.already_connected_title);
+        String body = getBaseActivity().getResources().getString(R.string.already_connected_body);
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle(title)
+                .setCancelable(false)
+                .setMessage(body)
+                .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
+
+                    getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                });
+
+        dialog.show();
     }
 
     private void setUpListeners(){

@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections;
 
+import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
@@ -8,7 +9,8 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
 
     private DescribeConnectionsDataModel dataModel;
 
-    private UserProfile loggedInProfile;
+    private UserProfile loggedInProfileIndividual;
+    private BusinessProfile loggedInProfileBusiness;
 
 
 
@@ -19,12 +21,20 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
     }
 
 
-    public void setLoggedInProfile(UserProfile loggedInProfile) {
-        this.loggedInProfile = loggedInProfile;
+    public void setLoggedInProfileIndividual(UserProfile loggedInProfileIndividual) {
+        this.loggedInProfileIndividual = loggedInProfileIndividual;
     }
 
-    public UserProfile getLoggedInProfile() {
-        return loggedInProfile;
+    public UserProfile getLoggedInProfileIndividual() {
+        return loggedInProfileIndividual;
+    }
+
+    public void setLoggedInProfileBusiness(BusinessProfile loggedInProfileBusiness) {
+        this.loggedInProfileBusiness = loggedInProfileBusiness;
+    }
+
+    public BusinessProfile getLoggedInProfileBusiness() {
+        return loggedInProfileBusiness;
     }
 
     /*****Onclick Listeners*********/
@@ -48,6 +58,6 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
 
     public void addUserRequest(DescribeConnectionsViewModel viewModel,String lastName, String userCode,int connectionType){
 
-        dataModel.addNewRequest(viewModel,lastName,userCode,connectionType);
+        dataModel.initiateNewUserRequest(viewModel,lastName,userCode,connectionType);
     }
 }

@@ -124,7 +124,7 @@ public class InfoDataModel {
 
                         for (UserConnections connection : viewModel.getUserConnections()) {
 
-                            if (connection.isConfirmed() && connection.getRequestingUserID().equals(userId)) {
+                            if (connection.isIsConfirmed() && connection.getRequestingUserID().equals(userId)) {
 
                                 confirmedConnectionsList.add(connection.getConsentingUserID());
 
@@ -431,12 +431,12 @@ public class InfoDataModel {
         for (UserConnections record : viewModel.getUserConnections()) {
 
             //get all completed connections
-            if (record.isConfirmed() && record.getRequestingUserID().equals(userId)) { //The connection has been confirmed
+            if (record.isIsConfirmed() && record.getRequestingUserID().equals(userId)) { //The connection has been confirmed
 
                 Calendar calendar = Calendar.getInstance();
                 int today = calendar.get(Calendar.DAY_OF_YEAR);
 
-                if (record.isOrgBus()) {
+                if (record.isIsOrgBus()) {
 
                     //the users is the requester
                     if (completedConnections.size() < ALLOWED_TOTAL_RECENT_ACTIVITIES
@@ -487,7 +487,7 @@ public class InfoDataModel {
 
                 }
 
-            } else if (!record.isConfirmed()
+            } else if (!record.isIsConfirmed()
                     && record.getConsentingUserID().equals(userId)) { //The connection is new and needs to be approved
 
                 record.setNeedsApproval(true);

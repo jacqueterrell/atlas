@@ -1,22 +1,15 @@
 package com.team.mamba.atlas.data.model.api;
 
-import android.support.annotation.Keep;
-
 import com.google.firebase.firestore.Exclude;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
 
 
-@Keep
 public class UserConnections {
 
-    @SerializedName("id")
-    @Expose
+
     public String id= "";
-
-
-    public boolean isOrgBus;
     public String requestingUserID= "";
     public String requestingUserName= "";
     public String consentingUserID= "";
@@ -24,9 +17,15 @@ public class UserConnections {
     public String conDeviceToken = "";
     public String reqDeviceToken = "";
     public int connectionType;
+
+
+    public boolean isOrgBus;
+
+
+
     public boolean isConfirmed;
-    public boolean viewed;
-    public boolean directory;
+    public boolean isViewed;
+    public boolean isDirectory;
     public double timestamp;
 
     @Exclude private boolean needsApproval;
@@ -34,12 +33,6 @@ public class UserConnections {
     @Exclude private UserProfile  userProfile;
     @Exclude private BusinessProfile businessProfile;
 
-
-
-    public UserConnections(){
-
-
-    }
 
 
     public String getId() {
@@ -50,13 +43,39 @@ public class UserConnections {
         this.id = id;
     }
 
-    public boolean isOrgBus() {
+    public boolean isIsOrgBus() {
         return isOrgBus;
     }
 
-    public void setOrgBus(boolean orgBus) {
-        this.isOrgBus = orgBus;
+    public void setOrgBus(boolean isOrgBus) {
+        this.isOrgBus = isOrgBus;
     }
+
+    public boolean isIsConfirmed() {
+        return isConfirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.isConfirmed = confirmed;
+    }
+
+    public boolean isIsViewed() {
+        return isViewed;
+    }
+
+    public void setViewed(boolean viewed) {
+        isViewed = viewed;
+    }
+
+    public boolean isIsDirectory() {
+        return isDirectory;
+    }
+
+    public void setDirectory(boolean directory) {
+        this.isDirectory = directory;
+    }
+
+
 
     public String getRequestingUserID() {
         return requestingUserID;
@@ -106,29 +125,6 @@ public class UserConnections {
         this.connectionType = connectionType;
     }
 
-    public boolean isConfirmed() {
-        return isConfirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.isConfirmed = confirmed;
-    }
-
-    public boolean isViewed() {
-        return viewed;
-    }
-
-    public void setViewed(boolean viewed) {
-        this.viewed = viewed;
-    }
-
-    public boolean isDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(boolean directory) {
-        this.directory = directory;
-    }
 
     public void setConDeviceToken(String conDeviceToken) {
         this.conDeviceToken = conDeviceToken;
@@ -149,7 +145,12 @@ public class UserConnections {
         this.timestamp = timestamp;
     }
 
-    public boolean isNeedsApproval() {
+
+
+
+
+
+   @Exclude public boolean isNeedsApproval() {
         return needsApproval;
     }
 
@@ -157,7 +158,7 @@ public class UserConnections {
         this.needsApproval = needsApproval;
     }
 
-    public boolean isRecentActivity() {
+   @Exclude public boolean isRecentActivity() {
         return recentActivity;
     }
 

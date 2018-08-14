@@ -44,15 +44,15 @@
                 >
 
                 <Button
-                    android:id="@+id/btn_next"
+                    android:id="@+id/btn_finish"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackground"
                     android:fontFamily="@font/lato"
-                    android:text="Next"
+                    android:text="Finish"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:onClick="@{()-> viewModel.onNextButtonClicked()}"
+                    android:onClick="@{()-> viewModel.onFinishButtonClicked()}"
                     />
 
             </android.support.v7.widget.CardView>

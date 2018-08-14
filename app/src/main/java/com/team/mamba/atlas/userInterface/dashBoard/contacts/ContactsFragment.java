@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
@@ -243,7 +242,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
 
         Collections.sort(individualConnections, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
-        Collections.sort(businessConnections, (o1, o2) -> Boolean.compare(o1.isOrgBus(), o2.isOrgBus));
+        Collections.sort(businessConnections, (o1, o2) -> Boolean.compare(o1.isIsOrgBus(), o2.isOrgBus));
 
         adjustedConnections.addAll(individualConnections);
         adjustedConnections.addAll(businessConnections);

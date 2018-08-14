@@ -3,6 +3,8 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_b
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,9 @@ implements AddBusinessNavigator {
 
     @Inject
     AddBusinessViewModel viewModel;
+
+    @Inject
+    AddBusinessDataModel dataModel;
 
 
     private AddBusinessLayoutBinding binding;
@@ -53,6 +58,7 @@ implements AddBusinessNavigator {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
+        viewModel.setDataModel(dataModel);
     }
 
     @Override
@@ -63,5 +69,75 @@ implements AddBusinessNavigator {
 
 
          return binding.getRoot();
+    }
+
+    @Override
+    public void onFinishButtonClicked() {
+
+        String businessName = binding.etBusinessName.getText().toString();
+        String code = binding.etIdCode.getText().toString();
+
+        if (businessName.isEmpty() || code.isEmpty()){
+
+            String title = "Check Fields";
+            String msg = "Please make sure that the name and code fields are complete";
+            showAlert(title,msg);
+
+        } else {
+
+            viewModel.addBusinessRequest(getViewModel(),businessName,code);
+
+        }
+    }
+
+    @Override
+    public void showUserNotFoundAlert() {
+
+        String businessName = binding.etBusinessName.getText().toString();
+        String code = binding.etIdCode.getText().toString();
+
+        String title = "User Not Found";
+        String msg = "No Business found with a name of " + businessName + " and a code of " + code;
+        showAlert(title,msg);
+    }
+
+    @Override
+    public void showAlreadyAContactAlert() {
+
+        String title = getBaseActivity().getResources().getString(R.string.already_connected_title);
+        String body = getBaseActivity().getResources().getString(R.string.already_connected_body);
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle(title)
+                .setCancelable(false)
+                .setMessage(body)
+                .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
+
+                    getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                });
+
+        dialog.show();
+    }
+
+    @Override
+    public void onRequestSent() {
+
+        String title = getBaseActivity().getResources().getString(R.string.connection_sent_title);
+        String msg = getBaseActivity().getResources().getString(R.string.connection_sent_body);
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle(title)
+                .setCancelable(false)
+                .setMessage(msg)
+                .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
+
+                    getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                });
+
+        dialog.show();
     }
 }
