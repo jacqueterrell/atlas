@@ -8,11 +8,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
+import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_phone_info.EditPhoneViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
@@ -112,6 +114,33 @@ public class UserProfileDataModel {
                     }
 
                 });
+    }
+
+
+    public void getConnectionType(UserProfileViewModel viewModel,UserProfile profile){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection(AppConstants.CONNECTIONS_COLLECTION)
+                .whereEqualTo("requestingUserID",profile.getId())
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
+
+                    for (UserConnections connection : connectionsList){
+
+                        if (connection.getConsentingUserID().equals(dataManager.getSharedPrefs().getUserId())){
+
+                            profile.setConnectionType(connection.getConnectionType());
+                            viewModel.setConsentingProfile(profile);
+
+                        }
+                    }
+
+                    viewModel.getNavigator().onConnectionTypeSaved();
+                });
+
     }
 
 }

@@ -26,10 +26,10 @@ import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.ContactListAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -47,6 +47,9 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     private DashBoardActivityNavigator parentNavigator;
     private DashBoardActivity parentActivity;
     private static List<UserConnections> userConnectionsList = new ArrayList<>();
+    private static List<UserConnections> permUserConnectionsList = new ArrayList<>();
+    private static List<UserConnections> filteredUserConnectionsList = new ArrayList<>();
+
     private ContactListAdapter contactListAdapter;
 
 
@@ -141,17 +144,48 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onProfileImageClicked() {
 
-        parentActivity.openUserProfile(viewModel.getUserProfile());
+        if (binding.layoutIndividualProfile.getVisibility() == View.VISIBLE){//showing all contacts
+
+            parentActivity.openUserProfile(viewModel.getUserProfile());
+
+        } else { //showing business directory
+
+            if (viewModel.getSelectedBusinessProfile() != null){
+
+                parentActivity.openBusinessProfile(viewModel.getSelectedBusinessProfile());
+
+            }
+        }
     }
 
     @Override
-    public void onGroupFilterClicked() {
+    public void onBusinessFilterClicked() {
 
+        binding.ivGroupFilter.setVisibility(View.GONE);
+        binding.ivIndividualFilter.setVisibility(View.VISIBLE);
+
+        binding.layoutIndividualProfile.setVisibility(View.GONE);
+        binding.ivBusinessProfile.setVisibility(View.VISIBLE);
+
+        setBusinessContactProfiles();
+        createCharList();
     }
 
     @Override
     public void onIndividualFilterClicked() {
 
+        binding.ivGroupFilter.setVisibility(View.VISIBLE);
+        binding.ivIndividualFilter.setVisibility(View.GONE);
+
+        binding.ivBusinessProfile.setVisibility(View.GONE);
+        binding.layoutIndividualProfile.setVisibility(View.VISIBLE);
+
+        userConnectionsList.clear();
+        filteredUserConnectionsList.clear();
+        filteredUserConnectionsList.addAll(permUserConnectionsList);
+        userConnectionsList.addAll(permUserConnectionsList);
+        contactListAdapter.notifyDataSetChanged();
+        createCharList();
     }
 
     @Override
@@ -238,10 +272,113 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         adjustedConnections.addAll(businessConnections);
 
         userConnectionsList.clear();
+        permUserConnectionsList.clear();
+        filteredUserConnectionsList.clear();
+
+        permUserConnectionsList.addAll(adjustedConnections);
         userConnectionsList.addAll(adjustedConnections);
+        filteredUserConnectionsList.addAll(adjustedConnections);
+
+
+        contactListAdapter.notifyDataSetChanged();
+
+        createCharList();
+        hideProgressSpinner();
+    }
+
+
+
+    private void setBusinessContactProfiles(){
+
+        List<String> businessContactList = new ArrayList<>();
+        List<UserConnections> userProfileConnections = new ArrayList<>();
+        List<UserConnections> businessAssociatesList = new ArrayList<>();
+
+        //gets a list of all business contacts
+        for (UserConnections connections : userConnectionsList){
+
+            if (connections.isOrgBus){
+
+                viewModel.setSelectedBusinessProfile(connections.getBusinessProfile());
+
+                for (Map.Entry<String,String> entry : connections.getBusinessProfile().contacts.entrySet()){
+
+                    String userId = entry.getKey();
+
+                    if (!businessContactList.contains(userId)){
+
+                        businessContactList.add(userId);
+                    }
+                }
+            } else {
+
+                userProfileConnections.add(connections);
+            }
+        }
+
+        //Gets all contacts connected to the user's business account
+        for (UserConnections connections : viewModel.getUserConnectionsList()){
+
+            if (!connections.isOrgBus) {
+
+                if (businessContactList.contains(connections.getUserProfile().getId())) {
+
+                    businessAssociatesList.add(connections);
+                }
+            }
+        }
+
+        //add the user's profile to the company directory?
+        UserConnections userConnections = new UserConnections();
+        userConnections.setUserProfile(viewModel.getUserProfile());
+        businessAssociatesList.add(userConnections);
+
+        Collections.sort(businessAssociatesList, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
+
+        userConnectionsList.clear();
+        filteredUserConnectionsList.clear();
+
+        userConnectionsList.addAll(businessAssociatesList);
+        filteredUserConnectionsList.addAll(businessAssociatesList);
+
         contactListAdapter.notifyDataSetChanged();
 
         hideProgressSpinner();
+    }
+
+    /**
+     * Populates our floating textView
+     */
+    private void createCharList(){
+
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> charList = new ArrayList<>();
+        List<UserConnections> businessConnections = new ArrayList<>();
+
+        for (UserConnections connections : userConnectionsList){
+
+            if (connections.isOrgBus){
+
+                businessConnections.add(connections);
+
+            } else {
+
+                String firstChar = connections.getUserProfile().getLastName().substring(0,1);
+
+                if (!charList.contains(firstChar)){
+
+                    stringBuilder.append(firstChar + "\n");
+                    charList.add(firstChar);
+                }
+            }
+        }
+
+        if (!businessConnections.isEmpty()){
+
+            stringBuilder.append("+");
+        }
+
+        binding.tvCharList.setText(stringBuilder.toString());
     }
 
     @Override
@@ -252,13 +389,19 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
     @Override
+    public List<UserConnections> getPermConnectionList() {
+        return filteredUserConnectionsList;
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        return false;
+        contactListAdapter.filter(newText);
+        return true;
     }
 
     private void setUpToolBar() {

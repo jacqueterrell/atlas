@@ -3,6 +3,8 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts;
 import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 
+import java.util.List;
+
 public interface ContactsNavigator {
 
     void onAddNewContactClicked();
@@ -13,7 +15,7 @@ public interface ContactsNavigator {
 
     void onProfileImageClicked();
 
-    void onGroupFilterClicked();
+    void onBusinessFilterClicked();
 
     void onIndividualFilterClicked();
 
@@ -22,4 +24,6 @@ public interface ContactsNavigator {
     void handleError(String errorMsg);
 
     void onDataValuesReturned();
+
+    List<UserConnections> getPermConnectionList();
 }

@@ -20,6 +20,8 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     private static List<UserConnections> userConnectionsList = new ArrayList<>();
     private static String savedUserId = "";
 
+    private static BusinessProfile selectedBusinessProfile;
+
 
     public void setDataModel(ContactsDataModel dataModel) {
         this.dataModel = dataModel;
@@ -75,6 +77,14 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         return savedUserId;
     }
 
+    public void setSelectedBusinessProfile(BusinessProfile selectedBusinessProfile) {
+        ContactsViewModel.selectedBusinessProfile = selectedBusinessProfile;
+    }
+
+    public BusinessProfile getSelectedBusinessProfile() {
+        return selectedBusinessProfile;
+    }
+
     /********Onclick Listeners********/
 
     public void onAddNewContactClicked(){
@@ -99,7 +109,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
     public void onGroupFilterClicked(){
 
-        getNavigator().onGroupFilterClicked();
+        getNavigator().onBusinessFilterClicked();
     }
 
     public void onIndividualFilterClicked(){

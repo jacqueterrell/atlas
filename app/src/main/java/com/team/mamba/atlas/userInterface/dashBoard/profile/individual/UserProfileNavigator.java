@@ -45,4 +45,6 @@ public interface UserProfileNavigator {
     void openGallery();
 
     String getImagePath();
+
+    void onConnectionTypeSaved();
 }

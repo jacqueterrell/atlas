@@ -127,6 +127,8 @@ public class UserProfile {
     @Expose
     public String phone= "";
 
+    @Exclude private int connectionType;
+
     public UserProfile() {
 
 
@@ -429,5 +431,13 @@ public class UserProfile {
         String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
 
         return Long.parseLong(adjustedTime);
+    }
+
+    @Exclude public int getConnectionType() {
+        return connectionType;
+    }
+
+    @Exclude public void setConnectionType(int connectionType) {
+        this.connectionType = connectionType;
     }
 }

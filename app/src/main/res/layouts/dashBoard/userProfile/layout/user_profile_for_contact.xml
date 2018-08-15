@@ -105,6 +105,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_contact_title_and_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -135,6 +136,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_cell_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -165,6 +167,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_office_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -194,6 +197,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_home_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -223,6 +227,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_personal_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -252,6 +257,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_fax"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -280,6 +286,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_personal_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
@@ -307,6 +314,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_work_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -335,6 +343,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_home_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
@@ -363,6 +372,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_contact_work_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -390,6 +400,12 @@
                             tools:text="..." />
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_contact_work_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                     <TextView
                         style="@style/App_Text_view"
@@ -422,6 +438,14 @@
 
                     </LinearLayout>
 
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/layout_contact_education"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                     <TextView
                         style="@style/App_Text_view"
@@ -450,6 +474,8 @@
                             android:layout_height="wrap_content"
                             android:text = "@{profile.getEducationString()}"
                             tools:text="..." />
+
+                    </LinearLayout>
 
                     </LinearLayout>
 

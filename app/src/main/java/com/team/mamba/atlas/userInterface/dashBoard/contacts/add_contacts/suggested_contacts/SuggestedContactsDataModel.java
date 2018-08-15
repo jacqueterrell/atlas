@@ -73,7 +73,11 @@ public class SuggestedContactsDataModel {
                                         .entrySet()) {//get a list of all current connections
 
                                     String userId = entry.getKey();
-                                    connectionIdList.add(userId);
+
+                                    if (!connectionIdList.contains(userId)){
+
+                                        connectionIdList.add(userId);
+                                    }
                                 }
                             }
                         }

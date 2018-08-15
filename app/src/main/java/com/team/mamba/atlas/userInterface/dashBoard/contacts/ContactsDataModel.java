@@ -13,6 +13,7 @@ import com.team.mamba.atlas.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -160,8 +161,8 @@ public class ContactsDataModel {
                     }
                 });
 
-
     }
+
 
 
 }

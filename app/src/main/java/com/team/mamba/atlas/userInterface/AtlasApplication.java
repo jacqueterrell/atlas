@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -15,6 +16,7 @@ import com.team.mamba.atlas.utils.AppConstants;
 
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 
 public class AtlasApplication extends Application implements HasActivityInjector{
@@ -26,6 +28,7 @@ public class AtlasApplication extends Application implements HasActivityInjector
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         initializeLogger();
         setFirebaseSettings();

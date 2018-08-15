@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts;
+package com.team.mamba.atlas.userInterface.dashBoard.contacts;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -11,10 +11,8 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.data.model.api.UserProfile;
-import com.team.mamba.atlas.databinding.ContactListRowBinding;
 import com.team.mamba.atlas.databinding.ContactsMainListRowBinding;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.ContactListAdapter.ContactListViewHolder;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactListAdapter.ContactListViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,5 +130,33 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListViewHold
     @Override
     public int getItemCount() {
         return userConnectionsList.size();
+    }
+
+    public void filter(String text){
+
+        userConnectionsList.clear();
+
+        if (text.equals("")){
+
+            userConnectionsList.addAll(viewModel.getNavigator().getPermConnectionList());
+
+        } else {
+
+            text = text.toLowerCase();
+            for (UserConnections connections : viewModel.getNavigator().getPermConnectionList()){
+
+                if (!connections.isOrgBus){
+
+                    if (connections.getUserProfile().getFirstName().toLowerCase().contains(text)
+                            || connections.getUserProfile().getLastName().toLowerCase().contains(text)){
+
+                        userConnectionsList.add(connections);
+                    }
+
+                }
+            }
+        }
+
+        notifyDataSetChanged();
     }
 }
