@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard;
 
 
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.recycler_view.FindUsersRecyclerViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageSixViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.filter_list.CrmFilterViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel;
@@ -146,5 +147,11 @@ public class DashBoardModule {
     CrmFilterViewModel providesCrmFilterViewModel(){
 
         return new CrmFilterViewModel();
+    }
+
+    @Provides
+    FindUsersRecyclerViewModel providesRecyclerViewModel(){
+
+        return new FindUsersRecyclerViewModel();
     }
 }

@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.dependencyInjection.builder;
 
 import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.recycler_view.FindUsersRecycler;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageSixFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.filter_list.CrmFilterSettingsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.selected_crm.SelectedCrmFragment;
@@ -88,6 +89,11 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract CrmFilterSettingsFragment bindCrmFilterSettingsFragment();
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract FindUsersRecycler bindFindUsersRecycler();
+
+
 
 
 

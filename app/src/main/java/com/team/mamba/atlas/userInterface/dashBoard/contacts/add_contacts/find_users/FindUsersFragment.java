@@ -12,6 +12,8 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.FindUsersLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.recycler_view.FindUsersRecycler;
+import com.team.mamba.atlas.utils.ChangeFragments;
 import javax.inject.Inject;
 
 public class FindUsersFragment extends BaseFragment<FindUsersLayoutBinding, FindUsersViewModel>
@@ -19,6 +21,9 @@ implements FindUsersNavigator {
 
     @Inject
     FindUsersViewModel viewModel;
+
+    @Inject
+    FindUsersDataModel dataModel;
 
 
     private FindUsersLayoutBinding binding;
@@ -46,13 +51,14 @@ implements FindUsersNavigator {
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
+        viewModel.setDataModel(dataModel);
     }
 
 
@@ -68,5 +74,43 @@ implements FindUsersNavigator {
     @Override
     public void onSearchButtonClicked() {
 
+        String first = binding.etFirstName.getText().toString();
+        String last = binding.etLastName.getText().toString();
+
+        if (first.isEmpty() || last.isEmpty()){
+
+            String title = "Check Fields";
+            String msg = "Please make sure that the first name and last name fields are complete";
+            showAlert(title,msg);
+
+        } else {
+
+            showProgressSpinner();
+            viewModel.queryUsers(getViewModel(),first,last);
+        }
     }
+
+    @Override
+    public void onUsersFound() {
+
+        //set recyclerview
+        hideProgressSpinner();
+        ChangeFragments.addFragmentFadeIn(FindUsersRecycler.newInstance(viewModel.getQueriedProfiles()),getBaseActivity()
+                .getSupportFragmentManager(),"FindUserRecycler",null);
+    }
+
+
+
+    @Override
+    public void showUsersNotFoundAlert() {
+
+        hideProgressSpinner();
+        String first = binding.etFirstName.getText().toString();
+        String last = binding.etLastName.getText().toString();
+
+        String title = "User Not Found";
+        String msg = "No user found with a first and last name of " + first + " " + last;
+        showAlert(title,msg);
+    }
+
 }

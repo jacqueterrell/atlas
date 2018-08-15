@@ -209,11 +209,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
                         connections.setBusinessProfile(profile);
                         businessConnections.add(connections);
 
-                    } else if (connections.getConsentingUserID().equals(userId)
-                            && connections.getRequestingUserID().equals(profile.getId())) {
-
-                        connections.setBusinessProfile(profile);
-                        businessConnections.add(connections);
                     }
                 }
 
@@ -227,11 +222,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
                         connections.setUserProfile(profile);
                         individualConnections.add(connections);
 
-                    } else if (connections.getConsentingUserID().equals(userId)
-                            && connections.getRequestingUserID().equals(profile.getId())) {
-
-                        connections.setUserProfile(profile);
-                        individualConnections.add(connections);
                     }
                 }
 

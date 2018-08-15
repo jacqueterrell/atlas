@@ -54,6 +54,15 @@ public class DescribeConnectionsDataModel {
     }
 
 
+    /**
+     *
+     * Looks through all Users and finds the profile for the logged in user, and gets a
+     * list of all of their current connections.
+     *
+     * @param lastName the selected last name
+     * @param code the selected code
+     * @param connectionType the passed in connection type
+     */
     private void requestNewUserIndividual(DescribeConnectionsViewModel viewModel, String lastName, String code, int connectionType){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -64,45 +73,51 @@ public class DescribeConnectionsDataModel {
                 .get()
                 .addOnCompleteListener(task -> {
 
-                    List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
+                    if (task.isSuccessful()) {
 
+                        List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
-                    for (UserProfile profile : userProfiles){
+                        for (UserProfile profile : userProfiles) {
 
-                        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+                            if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
 
-                            viewModel.setLoggedInProfileIndividual(profile);
+                                viewModel.setLoggedInProfileIndividual(profile);
 
-                            for (Map.Entry<String,String> entry : profile.getConnections().entrySet()){//get a list of all current connections
+                                for (Map.Entry<String, String> entry : profile.getConnections()
+                                        .entrySet()) {//get a list of all current connections
 
-                                String userId = entry.getKey();
-                                connectionIdList.add(userId);
+                                    String userId = entry.getKey();
+                                    connectionIdList.add(userId);
+                                }
+
+                            } else if (profile.getLastName().toLowerCase().equals(lastName.toLowerCase().trim())
+                                    && profile.getCode().equals(code)) {
+
+                                selectedProfileList.add(profile);
                             }
-
-                        } else if (profile.getLastName().toLowerCase().equals(lastName.toLowerCase().trim())
-                                && profile.getCode().equals(code)){
-
-                            selectedProfileList.add(profile);
                         }
-                    }
 
+                        if (selectedProfileList.isEmpty()) {//no user found
 
-                    if (selectedProfileList.isEmpty()){//no user found
-
-                        viewModel.getNavigator().showUserNotFoundAlert();
-
-                    } else {
-
-                        UserProfile selectedProfile = selectedProfileList.get(0);
-
-                        if (connectionIdList.contains(selectedProfile.getId())){//already a contact
-
-                            viewModel.getNavigator().showAlreadyAContactAlert();
+                            viewModel.getNavigator().showUserNotFoundAlert();
 
                         } else {
 
-                            addNewConnectionIndividual(viewModel,selectedProfile,connectionType);
+                            UserProfile selectedProfile = selectedProfileList.get(0);
+
+                            if (connectionIdList.contains(selectedProfile.getId())) {//already a contact
+
+                                viewModel.getNavigator().showAlreadyAContactAlert();
+
+                            } else {
+
+                                addNewConnectionIndividual(viewModel, selectedProfile, connectionType);
+                            }
                         }
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
                     }
                 });
     }

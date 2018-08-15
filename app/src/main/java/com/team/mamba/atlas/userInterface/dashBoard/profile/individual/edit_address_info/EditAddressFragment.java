@@ -84,12 +84,14 @@ public class EditAddressFragment extends BaseFragment<EditAddressLayoutBinding,E
         String cityStateZip = binding.etCityStateZip.getText().toString();
         String workStreet = binding.etWorkStreetAddress.getText().toString();
         String workCityStateZip = binding.etWorkCityStateZip.getText().toString();
+        Long timeStamp = System.currentTimeMillis() / 1000;
 
 
         profile.setStreet(street);
         profile.setCityStateZip(cityStateZip);
         profile.setWorkStreet(workStreet);
         profile.setWorkCityStateZip(workCityStateZip);
+        profile.setTimestamp(timeStamp);
 
         viewModel.updateUser(getViewModel(),profile);
     }

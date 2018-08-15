@@ -16,6 +16,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+/**
+ * This class uses different queries based on the type account the
+ * user is logged in as (individual or business) to add a business
+ * profile
+ *
+ */
 public class AddBusinessDataModel {
 
 
@@ -96,78 +102,6 @@ public class AddBusinessDataModel {
 
 
     /**
-     * Gets the user profile and their contacts
-     *
-     * @param viewModel
-     * @param name
-     * @param code
-     */
-    public void getBusinessProfiles(AddBusinessViewModel viewModel, String name, String code) {
-
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        List<String> connectionIdList = new ArrayList<>();
-        List<BusinessProfile> selectedProfileList = new ArrayList<>();
-
-        db.collection(AppConstants.BUSINESSES_COLLECTION)
-                .get()
-                .addOnCompleteListener(task -> {
-
-                    if (task.isSuccessful()) {
-
-                        List<BusinessProfile> businessProfiles = task.getResult().toObjects((BusinessProfile.class));
-
-                        for (BusinessProfile profile : businessProfiles) {
-
-                            if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
-
-                                viewModel.setRequestingBusinessProfile(profile);
-
-                                for (Map.Entry<String, String> entry : profile.getContacts().entrySet()) {//get a list of all current connections
-
-                                    String userId = entry.getKey();
-                                    connectionIdList.add(userId);
-                                }
-
-                            } else if (profile.getName().equals(name)
-                                    && profile.getCode().equals(code)){
-
-                                selectedProfileList.add(profile);
-                            }
-                        }
-
-                        if (selectedProfileList.isEmpty()){
-
-                            viewModel.getNavigator().showUserNotFoundAlert();
-
-                        } else {
-
-                            BusinessProfile profile = selectedProfileList.get(0);
-
-                            if (connectionIdList.contains(profile.getId())){//already a contact
-
-                                viewModel.getNavigator().showAlreadyAContactAlert();
-
-                            } else {
-
-                                addNewConnectionForBusiness(viewModel,profile);
-
-                            }
-                        }
-
-
-                    } else {
-
-                        Logger.e(task.getException().getMessage());
-                    }
-
-                });
-
-
-    }
-
-
-    /**
      * Query all business accounts as a user.
      *
      * @param viewModel
@@ -178,7 +112,6 @@ public class AddBusinessDataModel {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<BusinessProfile> selectedProfileList = new ArrayList<>();
-
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)
                 .get()
@@ -228,6 +161,9 @@ public class AddBusinessDataModel {
     }
 
 
+
+
+
     /**
      * Creates a new Connection for the User Request
      *
@@ -270,6 +206,78 @@ public class AddBusinessDataModel {
                 });
     }
 
+
+    /*         Logged in as a Business Account                */
+
+    /**
+     * Gets the user profile and their contacts : user is logged
+     * in as a Business Account
+     *
+     * @param viewModel
+     * @param name the business name
+     * @param code the business code
+     */
+    public void getBusinessProfiles(AddBusinessViewModel viewModel, String name, String code) {
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<String> connectionIdList = new ArrayList<>();
+        List<BusinessProfile> selectedProfileList = new ArrayList<>();
+
+        db.collection(AppConstants.BUSINESSES_COLLECTION)
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        List<BusinessProfile> businessProfiles = task.getResult().toObjects((BusinessProfile.class));
+
+                        for (BusinessProfile profile : businessProfiles) {
+
+                            if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
+
+                                viewModel.setRequestingBusinessProfile(profile);
+
+                                for (Map.Entry<String, String> entry : profile.getContacts().entrySet()) {//get a list of all current connections
+
+                                    String userId = entry.getKey();
+                                    connectionIdList.add(userId);
+                                }
+
+                            } else if (profile.getName().equals(name)
+                                    && profile.getCode().equals(code)){ //get a list of businesses that match the user's query
+
+                                selectedProfileList.add(profile);
+                            }
+                        }
+
+                        if (selectedProfileList.isEmpty()){
+
+                            viewModel.getNavigator().showUserNotFoundAlert();
+
+                        } else {
+
+                            BusinessProfile profile = selectedProfileList.get(0);
+
+                            if (connectionIdList.contains(profile.getId())){//already a contact
+
+                                viewModel.getNavigator().showAlreadyAContactAlert();
+
+                            } else {
+
+                                addNewConnectionForBusiness(viewModel,profile);
+                            }
+                        }
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                    }
+
+                });
+
+
+    }
 
 
     /**

@@ -3,6 +3,7 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_b
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.AddBusinessLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import javax.inject.Inject;
 
 public class AddBusinessFragment extends BaseFragment<AddBusinessLayoutBinding, AddBusinessViewModel>
@@ -114,8 +116,13 @@ implements AddBusinessNavigator {
                 .setMessage(body)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
+                    for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
+                        if (fragment instanceof InfoFragment){
+                            continue;
+                        } else {
+                            getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                        }
+                    }
                 });
 
         dialog.show();
@@ -134,8 +141,13 @@ implements AddBusinessNavigator {
                 .setMessage(msg)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
+                    for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
+                        if (fragment instanceof InfoFragment){
+                            continue;
+                        } else {
+                            getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                        }
+                    }
                 });
 
         dialog.show();

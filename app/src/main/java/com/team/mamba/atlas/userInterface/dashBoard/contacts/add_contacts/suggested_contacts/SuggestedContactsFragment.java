@@ -3,15 +3,24 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.sugge
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.SuggestedContactsLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.inject.Inject;
 
 public class SuggestedContactsFragment extends BaseFragment<SuggestedContactsLayoutBinding,SuggestedContactsViewModel>
@@ -21,8 +30,13 @@ implements SuggestedContactsNavigator {
     @Inject
     SuggestedContactsViewModel viewModel;
 
+    @Inject
+    SuggestedContactsDataModel dataModel;
+
 
     private SuggestedContactsLayoutBinding binding;
+    private List<UserProfile> suggestedProfileList = new ArrayList<>();
+    private SuggestedContactsAdapter suggestedContactsAdapter;
 
 
     public static SuggestedContactsFragment newInstance(){
@@ -54,6 +68,7 @@ implements SuggestedContactsNavigator {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
+        viewModel.setDataModel(dataModel);
     }
 
     @Override
@@ -61,7 +76,12 @@ implements SuggestedContactsNavigator {
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
+         suggestedContactsAdapter = new SuggestedContactsAdapter(viewModel,suggestedProfileList);
+         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerView.setAdapter(suggestedContactsAdapter);
 
+        viewModel.requestSuggestedContacts(viewModel);
 
          return binding.getRoot();
     }
@@ -69,6 +89,71 @@ implements SuggestedContactsNavigator {
     @Override
     public void onSearchButtonClicked() {
 
-        showSnackbar("searched");
+        viewModel.requestSuggestedContacts(viewModel);
+    }
+
+    @Override
+    public void onSuggestedContactsFound() {
+
+        suggestedProfileList.clear();
+        suggestedProfileList.addAll(viewModel.getSuggestedProfileList());
+        Collections.sort(suggestedProfileList, (o1, o2) -> o1.getLastName().compareTo(o2.getLastName()));
+
+        suggestedContactsAdapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void onUsersRowClicked(UserProfile profile) {
+
+        String last = profile.getLastName();
+        String first = profile.getFirstName();
+
+        String title = "Invite " + first + " " + last + " to connect?";
+        String msg = "Please confirm that you know " + first + " " + last + " to send the invitation";
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+
+        dialog.setTitle(title)
+                .setMessage(msg)
+                .setNegativeButton("No",(paramDialogInterface, paramInt) ->{
+
+                })
+                .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
+
+                    // showInvitationSentAlert(first,last);
+                    viewModel.initiateNewUserRequest(viewModel,profile);
+                });
+
+        dialog.show();
+    }
+
+    @Override
+    public void showInvitationSentAlert(String first, String last) {
+
+
+        String title = "Invite sent to " + first + " " + last;
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+
+        dialog.setTitle(title)
+                .setPositiveButton("OK", (paramDialogInterface, paramInt) -> {
+
+                    for (Fragment fragment: getActivity().getSupportFragmentManager().getFragments()){
+                        if (fragment instanceof InfoFragment){
+                            continue;
+                        } else {
+                            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                        }
+                    }
+
+                });
+
+        dialog.show();
+    }
+
+    @Override
+    public void handleError(String msg) {
+
     }
 }

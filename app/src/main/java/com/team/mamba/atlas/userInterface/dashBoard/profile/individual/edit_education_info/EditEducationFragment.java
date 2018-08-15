@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -28,6 +29,7 @@ import com.team.mamba.atlas.data.model.local.Education;
 import com.team.mamba.atlas.databinding.EditEducationLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history.EditWorkFragment;
@@ -118,8 +120,13 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     public void onProfileUpdated() {
 
         hideProgressSpinner();
-        getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
+        for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
+            if (fragment instanceof InfoFragment){
+                continue;
+            } else {
+                getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+        }
     }
 
     @Override
@@ -197,6 +204,9 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
             educationMaps.add(map);
         }
 
+        Long timeStamp = System.currentTimeMillis() / 1000;
+
+        profile.setTimestamp(timeStamp);
         profile.setEducation(educationMaps);
         viewModel.updateUser(getViewModel(),profile);
     }
