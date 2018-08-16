@@ -130,8 +130,13 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 .setMessage(msg)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    getBaseActivity().onBackPressed();
-
+                    for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
+                        if (fragment instanceof InfoFragment){
+                            continue;
+                        } else {
+                            getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                        }
+                    }
                 });
 
         dialog.show();

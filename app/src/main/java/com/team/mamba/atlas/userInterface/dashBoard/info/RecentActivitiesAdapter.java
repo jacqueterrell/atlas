@@ -43,7 +43,15 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
 
         UserConnections record = connectionRecords.get(position);
 
-        holder.binding.tvUserStat.setText(record.getConsentingUserName());
+        if (record.isNeedsApproval()){
+
+            holder.binding.tvUserStat.setText(record.getRequestingUserName());
+
+        } else {
+
+            holder.binding.tvUserStat.setText(record.getConsentingUserName());
+
+        }
 
         if (record.isIsOrgBus()){ //confirmed business record
 

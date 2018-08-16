@@ -309,10 +309,21 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
             for (UserProfile profile : viewModel.getAllUsersList()){
 
-                if (profile.getId().equals(userConnections.getConsentingUserID())){
+                if (userConnections.isNeedsApproval()){
 
-                    parentNavigator.openUserProfile(profile);
+                    if (profile.getId().equals(userConnections.getRequestingUserID())){//an unknown user is requesting to connect
 
+                        parentNavigator.openUserProfile(profile);
+
+                    }
+
+                } else {
+
+                    if (profile.getId().equals(userConnections.getConsentingUserID())){ //the logged in user is the requester
+
+                        parentNavigator.openUserProfile(profile);
+
+                    }
                 }
             }
         }

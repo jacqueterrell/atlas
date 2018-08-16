@@ -358,6 +358,8 @@ public class InfoDataModel {
     private void setUserStatsTotal() {
 
         String connectionsTotal = confirmedConnectionsList.size() + " Connections";
+
+        userStatsList.clear();
         userStatsList.add(connectionsTotal);
 
         if (companyTotal == 1) {
