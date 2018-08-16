@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
@@ -30,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
@@ -148,8 +150,22 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onSyncContactsClicked() {
 
-        //todo find out which values Matt wants me to sync ... code example below
-        //syncAllContactRequest();
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+        String title = getBaseActivity().getResources().getString(R.string.sync_contacts_title);
+        String body = getBaseActivity().getResources().getString(R.string.sync_contacts_body);
+
+        dialog.setTitle(title)
+                .setMessage(body)
+                .setNegativeButton("Not Now",(paramDialogInterface, paremInt) ->{
+
+                })
+                .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
+
+                    syncAllContactRequest();
+
+                });
+
+        dialog.show();
     }
 
     @Override
@@ -184,7 +200,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         binding.layoutIndividualProfile.setVisibility(View.GONE);
         binding.ivBusinessProfile.setVisibility(View.VISIBLE);
 
-        setBusinessContactProfiles();
+        viewModel.setBusinessContactProfiles();
         createCharList();
     }
 
@@ -279,8 +295,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         }
 
-        Collections.sort(individualConnections,
-                (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
+        Collections.sort(individualConnections, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
         Collections.sort(businessConnections, (o1, o2) -> Boolean.compare(o1.isIsOrgBus(), o2.isOrgBus));
 
         adjustedConnections.addAll(individualConnections);
@@ -300,54 +315,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         hideProgressSpinner();
     }
 
-
-    private void setBusinessContactProfiles() {
-
-        List<String> businessContactList = new ArrayList<>();
-        List<UserConnections> userProfileConnections = new ArrayList<>();
-        List<UserConnections> businessAssociatesList = new ArrayList<>();
-
-        //gets a list of all business contacts
-        for (UserConnections connections : userConnectionsList) {
-
-            if (connections.isOrgBus) {
-
-                viewModel.setSelectedBusinessProfile(connections.getBusinessProfile());
-
-                for (Map.Entry<String, String> entry : connections.getBusinessProfile().contacts.entrySet()) {
-
-                    String userId = entry.getKey();
-
-                    if (!businessContactList.contains(userId)) {
-
-                        businessContactList.add(userId);
-                    }
-                }
-            } else {
-
-                userProfileConnections.add(connections);
-            }
-        }
-
-        //Gets all contacts connected to the user's business account
-        for (UserConnections connections : viewModel.getUserConnectionsList()) {
-
-            if (!connections.isOrgBus) {
-
-                if (businessContactList.contains(connections.getUserProfile().getId())) {
-
-                    businessAssociatesList.add(connections);
-                }
-            }
-        }
-
-        //add the user's profile to the company directory?
-        UserConnections userConnections = new UserConnections();
-        userConnections.setUserProfile(viewModel.getUserProfile());
-        businessAssociatesList.add(userConnections);
-
-        Collections.sort(businessAssociatesList,
-                (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
+    @Override
+    public void onBusinessContactsSet(List<UserConnections> businessAssociatesList) {
 
         userConnectionsList.clear();
         filteredUserConnectionsList.clear();
@@ -450,107 +419,130 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
     private void syncAllContactRequest(){
 
-        String DisplayName = "XYZ";
-        String MobileNumber = "123456";
-        String HomeNumber = "1111";
-        String WorkNumber = "2222";
-        String emailID = "email@nomail.com";
-        String company = "bad";
-        String jobTitle = "abcd";
+        for (UserConnections connection : filteredUserConnectionsList){
 
-        ArrayList < ContentProviderOperation > ops = new ArrayList < > ();
+            String displayName = "";
+//            String MobileNumber = "123456";
+//            String HomeNumber = "1111";
+            String workNumber = "";
+            String emailID = "email@nomail.com";
+      //      String company = "";
+//            String jobTitle = "abcd";
 
-        ops.add(ContentProviderOperation.newInsert(
-                ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-                .build());
+            if (connection.isOrgBus){
 
-        //------------------------------------------------------ Names
-        if (DisplayName != null) {
-            ops.add(ContentProviderOperation.newInsert(
-                    ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                    .withValue(
-                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-                            DisplayName).build());
-        }
+                BusinessProfile businessProfile = connection.getBusinessProfile();
 
-        //------------------------------------------------------ Mobile Number
-        if (MobileNumber != null) {
-            ops.add(ContentProviderOperation.
-                    newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                    .build());
-        }
+                displayName = businessProfile.getName();
+                workNumber = businessProfile.getPhone();
+                emailID = businessProfile.email;
 
-        //------------------------------------------------------ Home Numbers
-        if (HomeNumber != null) {
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, HomeNumber)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                            ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
-                    .build());
-        }
+            } else {
 
-        //------------------------------------------------------ Work Numbers
-        if (WorkNumber != null) {
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, WorkNumber)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                            ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
-                    .build());
-        }
+                UserProfile userProfile = connection.getUserProfile();
+                String name = userProfile.getFirstName() + " " + userProfile.getLastName();
 
-        //------------------------------------------------------ Email
-        if (emailID != null) {
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Email.DATA, emailID)
-                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
-                    .build());
-        }
+                displayName = name;
+                workNumber = userProfile.getWorkPhone();
+                emailID = userProfile.getEmail();
 
-        //------------------------------------------------------ Organization
-        if (!company.equals("") && !jobTitle.equals("")) {
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company)
-                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
-                    .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, jobTitle)
-                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
-                    .build());
-        }
-
-        // Asking the Contact provider to create a new contact
-
-        if (isWriteContactsPermissionsGranted()){
-
-            try {
-                getBaseActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-            } catch (Exception e) {
-                e.printStackTrace();
-                showToastLong("Error sending contacts " + e.getLocalizedMessage());
             }
+
+            ArrayList < ContentProviderOperation > ops = new ArrayList < > ();
+
+            ops.add(ContentProviderOperation.newInsert(
+                    ContactsContract.RawContacts.CONTENT_URI)
+                    .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                    .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                    .build());
+
+            //------------------------------------------------------ Names
+            if (displayName != null) {
+                ops.add(ContentProviderOperation.newInsert(
+                        ContactsContract.Data.CONTENT_URI)
+                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                        .withValue(ContactsContract.Data.MIMETYPE,
+                                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                        .withValue(
+                                ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                                displayName).build());
+            }
+
+            //------------------------------------------------------ Mobile Number
+//            if (MobileNumber != null) {
+//                ops.add(ContentProviderOperation.
+//                        newInsert(ContactsContract.Data.CONTENT_URI)
+//                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+//                        .withValue(ContactsContract.Data.MIMETYPE,
+//                                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+//                        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
+//                        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+//                                ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+//                        .build());
+//            }
+
+            //------------------------------------------------------ Home Numbers
+//            if (HomeNumber != null) {
+//                ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+//                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+//                        .withValue(ContactsContract.Data.MIMETYPE,
+//                                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+//                        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, HomeNumber)
+//                        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+//                                ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
+//                        .build());
+//            }
+
+            //------------------------------------------------------ Work Numbers
+            if (workNumber != null) {
+                ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                        .withValue(ContactsContract.Data.MIMETYPE,
+                                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, workNumber)
+                        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                                ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+                        .build());
+            }
+
+            //------------------------------------------------------ Email
+            if (emailID != null) {
+                ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                        .withValue(ContactsContract.Data.MIMETYPE,
+                                ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                        .withValue(ContactsContract.CommonDataKinds.Email.DATA, emailID)
+                        .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                        .build());
+            }
+
+            //------------------------------------------------------ Organization
+//            if (!company.equals("") && !jobTitle.equals("")) {
+//                ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+//                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+//                        .withValue(ContactsContract.Data.MIMETYPE,
+//                                ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
+//                        .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company)
+//                        .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+//                        .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, jobTitle)
+//                        .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+//                        .build());
+//            }
+
+            // Asking the Contact provider to create a new contact
+
+            if (isWriteContactsPermissionsGranted()){
+
+                try {
+                    getBaseActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+                } catch (Exception e) {
+                    Logger.e(e.getMessage());
+                }
+            }
+
         }
 
+        showToastShort("Syncing contacts...");
     }
 
 

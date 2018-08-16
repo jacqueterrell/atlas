@@ -6,7 +6,9 @@ import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
@@ -116,6 +118,63 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
         getNavigator().onIndividualFilterClicked();
     }
+
+
+    /**************App Logic**************/
+
+
+    public void setBusinessContactProfiles() {
+
+        List<String> businessContactList = new ArrayList<>();
+        List<UserConnections> businessAssociatesList = new ArrayList<>();
+
+        //gets a list of all business contacts
+        for (UserConnections connections : userConnectionsList) {
+
+            if (connections.isOrgBus) {
+
+                setSelectedBusinessProfile(connections.getBusinessProfile());
+
+                for (Map.Entry<String, String> entry : connections.getBusinessProfile().contacts.entrySet()) {
+
+                    String userId = entry.getKey();
+
+                    if (!businessContactList.contains(userId)) {
+
+                        businessContactList.add(userId);
+                    }
+                }
+            }
+        }
+
+        //Gets all contacts connected to the user's business account
+        for (UserConnections connections : getUserConnectionsList()) {
+
+            if (!connections.isOrgBus) {
+
+                if (businessContactList.contains(connections.getUserProfile().getId())) {
+
+                    businessAssociatesList.add(connections);
+                }
+            }
+        }
+
+        //add the user's profile to the company directory?
+        UserConnections userConnections = new UserConnections();
+        userConnections.setUserProfile(getUserProfile());
+        businessAssociatesList.add(userConnections);
+
+        Collections.sort(businessAssociatesList,
+                (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
+
+        getNavigator().onBusinessContactsSet(businessAssociatesList);
+    }
+
+
+
+
+
+
 
     /*********DataModel Requests*******/
 

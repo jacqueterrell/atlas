@@ -25,5 +25,7 @@ public interface ContactsNavigator {
 
     void onDataValuesReturned();
 
+    void onBusinessContactsSet(List<UserConnections> businessAssociatesList);
+
     List<UserConnections> getPermConnectionList();
 }
