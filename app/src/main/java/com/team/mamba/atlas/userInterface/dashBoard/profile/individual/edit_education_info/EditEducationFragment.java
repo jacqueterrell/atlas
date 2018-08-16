@@ -105,6 +105,24 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     @Override
     public void onContinueClicked() {
 
+        List<Map<String, String>> educationMaps = new ArrayList<>();
+
+        for (Education education : educationList) {
+
+            Map<String, String> map = new LinkedHashMap<>();
+
+            map.put("School", education.getSchool());
+            map.put("Field of Study", education.getFieldOfStudy());
+            map.put("Degree", education.getDegree());
+
+            educationMaps.add(map);
+        }
+
+        Long timeStamp = System.currentTimeMillis() / 1000;
+
+        profile.setTimestamp(timeStamp);
+        profile.setEducation(educationMaps);
+
         ChangeFragments.addFragmentFadeIn(EditWorkFragment.newInstance(profile),getBaseActivity()
                 .getSupportFragmentManager(),"EditWork",null);
     }

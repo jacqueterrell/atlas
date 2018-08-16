@@ -1,10 +1,24 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts;
 
+import android.Manifest;
+import android.Manifest.permission;
+import android.content.ContentProviderOperation;
 import android.content.Context;
+import android.content.Intent;
+import android.content.OperationApplicationException;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Data;
+import android.provider.ContactsContract.Intents;
+import android.provider.ContactsContract.Intents.Insert;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +40,7 @@ import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 
+import com.team.mamba.atlas.utils.AppConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -100,22 +115,22 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         binding.swipeContainer.setOnRefreshListener(() -> viewModel.requestContactsInfo(getViewModel()));
 
-        if (viewModel.getUserConnectionsList().isEmpty()){
+        if (viewModel.getUserConnectionsList().isEmpty()) {
 
             showProgressSpinner();
             viewModel.requestContactsInfo(getViewModel());
 
         } else {
 
-                if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())){
+            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {
 
-                    showProgressSpinner();
-                    viewModel.requestContactsInfo(getViewModel());
+                showProgressSpinner();
+                viewModel.requestContactsInfo(getViewModel());
 
-                } else {
+            } else {
 
-                    viewModel.requestContactsInfo(getViewModel());
-                }
+                viewModel.requestContactsInfo(getViewModel());
+            }
 
         }
 
@@ -133,6 +148,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onSyncContactsClicked() {
 
+        //todo find out which values Matt wants me to sync ... code example below
+        //syncAllContactRequest();
     }
 
     @Override
@@ -144,13 +161,13 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onProfileImageClicked() {
 
-        if (binding.layoutIndividualProfile.getVisibility() == View.VISIBLE){//showing all contacts
+        if (binding.layoutIndividualProfile.getVisibility() == View.VISIBLE) {//showing all contacts
 
             parentActivity.openUserProfile(viewModel.getUserProfile());
 
         } else { //showing business directory
 
-            if (viewModel.getSelectedBusinessProfile() != null){
+            if (viewModel.getSelectedBusinessProfile() != null) {
 
                 parentActivity.openBusinessProfile(viewModel.getSelectedBusinessProfile());
 
@@ -242,7 +259,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
                         connections.setBusinessProfile(profile);
                         businessConnections.add(connections);
-
                     }
                 }
 
@@ -261,11 +277,10 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             }
 
-
         }
 
-
-        Collections.sort(individualConnections, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
+        Collections.sort(individualConnections,
+                (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
         Collections.sort(businessConnections, (o1, o2) -> Boolean.compare(o1.isIsOrgBus(), o2.isOrgBus));
 
         adjustedConnections.addAll(individualConnections);
@@ -279,7 +294,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         userConnectionsList.addAll(adjustedConnections);
         filteredUserConnectionsList.addAll(adjustedConnections);
 
-
         contactListAdapter.notifyDataSetChanged();
 
         createCharList();
@@ -287,25 +301,24 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
 
-
-    private void setBusinessContactProfiles(){
+    private void setBusinessContactProfiles() {
 
         List<String> businessContactList = new ArrayList<>();
         List<UserConnections> userProfileConnections = new ArrayList<>();
         List<UserConnections> businessAssociatesList = new ArrayList<>();
 
         //gets a list of all business contacts
-        for (UserConnections connections : userConnectionsList){
+        for (UserConnections connections : userConnectionsList) {
 
-            if (connections.isOrgBus){
+            if (connections.isOrgBus) {
 
                 viewModel.setSelectedBusinessProfile(connections.getBusinessProfile());
 
-                for (Map.Entry<String,String> entry : connections.getBusinessProfile().contacts.entrySet()){
+                for (Map.Entry<String, String> entry : connections.getBusinessProfile().contacts.entrySet()) {
 
                     String userId = entry.getKey();
 
-                    if (!businessContactList.contains(userId)){
+                    if (!businessContactList.contains(userId)) {
 
                         businessContactList.add(userId);
                     }
@@ -317,7 +330,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         }
 
         //Gets all contacts connected to the user's business account
-        for (UserConnections connections : viewModel.getUserConnectionsList()){
+        for (UserConnections connections : viewModel.getUserConnectionsList()) {
 
             if (!connections.isOrgBus) {
 
@@ -333,7 +346,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         userConnections.setUserProfile(viewModel.getUserProfile());
         businessAssociatesList.add(userConnections);
 
-        Collections.sort(businessAssociatesList, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
+        Collections.sort(businessAssociatesList,
+                (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
 
         userConnectionsList.clear();
         filteredUserConnectionsList.clear();
@@ -349,23 +363,23 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     /**
      * Populates our floating textView
      */
-    private void createCharList(){
+    private void createCharList() {
 
         StringBuilder stringBuilder = new StringBuilder();
         List<String> charList = new ArrayList<>();
         List<UserConnections> businessConnections = new ArrayList<>();
 
-        for (UserConnections connections : userConnectionsList){
+        for (UserConnections connections : userConnectionsList) {
 
-            if (connections.isOrgBus){
+            if (connections.isOrgBus) {
 
                 businessConnections.add(connections);
 
             } else {
 
-                String firstChar = connections.getUserProfile().getLastName().substring(0,1);
+                String firstChar = connections.getUserProfile().getLastName().substring(0, 1);
 
-                if (!charList.contains(firstChar)){
+                if (!charList.contains(firstChar)) {
 
                     stringBuilder.append(firstChar + "\n");
                     charList.add(firstChar);
@@ -373,7 +387,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             }
         }
 
-        if (!businessConnections.isEmpty()){
+        if (!businessConnections.isEmpty()) {
 
             stringBuilder.append("+");
         }
@@ -419,7 +433,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         binding.searchView.setIconifiedByDefault(false);
         binding.searchView.setFocusable(false);
 
-
         //set the color for our search view edit text and text hint
         EditText searchEditText = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchEditText.setHintTextColor(getResources().getColor(R.color.material_icons_light));
@@ -434,5 +447,147 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         View v = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
     }
+
+    private void syncAllContactRequest(){
+
+        String DisplayName = "XYZ";
+        String MobileNumber = "123456";
+        String HomeNumber = "1111";
+        String WorkNumber = "2222";
+        String emailID = "email@nomail.com";
+        String company = "bad";
+        String jobTitle = "abcd";
+
+        ArrayList < ContentProviderOperation > ops = new ArrayList < > ();
+
+        ops.add(ContentProviderOperation.newInsert(
+                ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .build());
+
+        //------------------------------------------------------ Names
+        if (DisplayName != null) {
+            ops.add(ContentProviderOperation.newInsert(
+                    ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(
+                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                            DisplayName).build());
+        }
+
+        //------------------------------------------------------ Mobile Number
+        if (MobileNumber != null) {
+            ops.add(ContentProviderOperation.
+                    newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .build());
+        }
+
+        //------------------------------------------------------ Home Numbers
+        if (HomeNumber != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, HomeNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
+                    .build());
+        }
+
+        //------------------------------------------------------ Work Numbers
+        if (WorkNumber != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, WorkNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+                    .build());
+        }
+
+        //------------------------------------------------------ Email
+        if (emailID != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Email.DATA, emailID)
+                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                    .build());
+        }
+
+        //------------------------------------------------------ Organization
+        if (!company.equals("") && !jobTitle.equals("")) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, jobTitle)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+                    .build());
+        }
+
+        // Asking the Contact provider to create a new contact
+
+        if (isWriteContactsPermissionsGranted()){
+
+            try {
+                getBaseActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            } catch (Exception e) {
+                e.printStackTrace();
+                showToastLong("Error sending contacts " + e.getLocalizedMessage());
+            }
+        }
+
+    }
+
+
+    public boolean isWriteContactsPermissionsGranted() {
+
+        if (sdk >= marshMallow) {
+
+            if (ActivityCompat.checkSelfPermission(getBaseActivity(), permission.WRITE_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(getBaseActivity(),
+                        new String[]{Manifest.permission.WRITE_CONTACTS},   //request specific permission from user
+                        AppConstants.REQUEST_WRITE_CONTACTS_PERMISSIONS);
+
+                return false;
+
+            } else {
+
+                return true;
+            }
+
+        } else {
+
+            return true;
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == AppConstants.REQUEST_WRITE_CONTACTS_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            onSyncContactsClicked();
+        }
+    }
+
 
 }
