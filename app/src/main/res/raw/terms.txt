@@ -1,0 +1,112 @@
+TERMS OF SERVICE
+
+
+These Terms of Service (“Terms”) govern your access to and use of our services, including our affiliated
+websites, email notifications, ads, and commerce services that link to these Terms (collectively, the
+“Services”), and any information, text, links, graphics, photos, videos, or other materials or arrangements
+of materials uploaded, downloaded or appearing on the Services (collectively referred to as “Content”).
+By using the Services you agree to be bound by these Terms.
+
+1. Who May Use the Services
+You may use the Services only if you agree to form a binding contract with APT Enterprise Solutions,
+Inc. and are not a person barred from receiving services under the laws of the applicable jurisdiction. In
+any case, you must be at least 13 years old to use the Services. If you are accepting these Terms and using
+the Services on behalf of a company, organization, government, or other legal entity, you represent and
+warrant that you are authorized to do so.
+
+2. Privacy
+Our Privacy Policy (https://www.meetapt.com/privacy) describes how we handle the information you
+provide to us when you use our Services. You understand that through your use of the Services you
+consent to the collection and use (as set forth in the Privacy Policy) of this information.
+
+3. Content on the Services
+You are responsible for your use of the Services and for any Content you provide, including compliance
+with applicable laws, rules, and regulations. You should only provide Content that you are comfortable
+sharing with others.
+Any use or reliance on any Content or materials posted via the Services or obtained by you through the
+Services is at your own risk. We do not endorse, support, represent or guarantee the completeness,
+truthfulness, accuracy, or reliability of any Content or communications posted via the Services or endorse
+any opinions expressed via the Services. You understand that by using the Services, you may be exposed
+to Content that might be offensive, harmful, inaccurate or otherwise inappropriate, or in some cases,
+postings that have been mislabeled or are otherwise deceptive. All Content is the sole responsibility of the
+person who originated such Content. We may not monitor or control the Content posted via the Services
+and, we cannot take responsibility for such Content.
+By submitting, posting or displaying Content on or through the Services, you grant us a worldwide, nonexclusive,
+royalty-free license (with the right to sublicense) to use, copy, reproduce, process, adapt,
+modify, publish, transmit, display and distribute such Content in any and all media or distribution
+methods (now known or later developed). This license authorizes us to make your Content available to
+the rest of the world and to let others do the same. You agree that this license includes the right for Apt
+Enterprise Solutions, Inc. to provide, promote, and improve the Services and to make Content submitted
+to or through the Services available to other companies, organizations or individuals for the syndication,
+broadcast, distribution, promotion or publication of such Content on other media and services, subject to
+our terms and conditions for such Content use. Such additional uses by Apt Enterprise Solutions, Inc., or
+other companies, organizations or individuals, may be made with no compensation paid to you with
+respect to the Content that you submit, post, transmit or otherwise make available through the Services.
+
+
+4. Using the Services
+Our Services evolve constantly. As such, the Services may change from time to time, at our discretion.
+We may stop (permanently or temporarily) providing the Services or any features within the Services to
+you or to users generally. We also retain the right to create limits on use and storage at our sole discretion
+at any time. We may also remove or refuse to distribute any Content on the Services without liability to
+you.
+5. Disclaimers and Limitations of Liability
+The Services are Available “AS-IS”
+Your access to and use of the Services or any Content are at your own risk. You understand and agree that
+the Services are provided to you on an “AS IS” and “AS AVAILABLE” basis. The “Apt Entities” refers
+to Apt Enterprise Solutions, Inc., its parents, affiliates, related companies, officers, directors, employees,
+agents, representatives, partners, and licensors. Without limiting the foregoing, to the maximum extent
+permitted under applicable law, THE APT ENTITIES DISCLAIM ALL WARRANTIES AND
+CONDITIONS, WHETHER EXPRESS OR IMPLIED, OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE, OR NON-INFRINGEMENT. The Apt Entities make no warranty or
+representation and disclaim all responsibility and liability for: (i) the completeness, accuracy, availability,
+timeliness, security or reliability of the Services or any Content; (ii) any harm to your computer system,
+loss of data, or other harm that results from your access to or use of the Services or any Content; (iii) the
+deletion of, or the failure to store or to transmit, any Content and other communications maintained by the
+Services; and (iv) whether the Services will meet your requirements or be available on an uninterrupted,
+secure, or error-free basis. No advice or information, whether oral or written, obtained from the Apt
+Entities or through the Services, will create any warranty or representation not expressly made herein.
+
+Limitation of Liability
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE APT ENTITIES SHALL
+NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR
+PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED
+DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOOD-WILL, OR OTHER
+INTANGIBLE LOSSES, RESULTING FROM (i) YOUR ACCESS TO OR USE OF OR INABILITY
+TO ACCESS OR USE THE SERVICES; (ii) ANY CONDUCT OR CONTENT OF ANY THIRD
+PARTY ON THE SERVICES, INCLUDING WITHOUT LIMITATION, ANY DEFAMATORY,
+OFFENSIVE OR ILLEGAL CONDUCT OF OTHER USERS OR THIRD PARTIES; (iii) ANY
+CONTENT OBTAINED FROM THE SERVICES; OR (iv) UNAUTHORIZED ACCESS, USE OR
+ALTERATION OF YOUR TRANSMISSIONS OR CONTENT. IN NO EVENT SHALL THE
+AGGREGATE LIABILITY OF THE APT ENTITIES EXCEED THE GREATER OF ONE HUNDRED
+U.S. DOLLARS (U.S. $100.00) OR THE AMOUNT YOU PAID APT, IF ANY, IN THE PAST SIX
+MONTHS FOR THE SERVICES GIVING RISE TO THE CLAIM. THE LIMITATIONS OF THIS
+SUBSECTION SHALL APPLY TO ANY THEORY OF LIABILITY, WHETHER BASED ON
+WARRANTY, CONTRACT, STATUTE, TORT (INCLUDING NEGLIGENCE) OR OTHERWISE,
+AND WHETHER OR NOT THE APT ENTITIES HAVE BEEN INFORMED OF THE POSSIBILITY
+OF ANY SUCH DAMAGE, AND EVEN IF A REMEDY SET FORTH HEREIN IS FOUND TO HAVE
+FAILED OF ITS ESSENTIAL PURPOSE.
+
+6. General
+We may revise these Terms from time to time. The changes will not be retroactive, and the most current
+version of the Terms, which will always be at meetapt.com/tos, will govern our relationship with you. We
+will try to notify you of material revisions, for example via a service notification or an email to the email
+associated with your account. By continuing to access or use the Services after those revisions become
+effective, you agree to be bound by the revised Terms.
+The laws of the State of Georgia, excluding its choice of law provisions, will govern these Terms and any
+dispute that arises between you and Apt Enterprise Solutions, Inc. All disputes related to these Terms or
+the Services will be brought solely in the federal or state courts located in Rockdale County, Georgia,
+United States, and you consent to personal jurisdiction and waive any objection as to inconvenient forum.
+If you are a federal, state, or local government entity in the United States using the Services in your
+official capacity and legally unable to accept the controlling law, jurisdiction or venue clauses above, then
+those clauses do not apply to you. For such U.S. federal government entities, these Terms and any action
+related thereto will be governed by the laws of the United States of America (without reference to conflict
+of laws) and, in the absence of federal law and to the extent permitted under federal law, the laws of the
+State of California (excluding choice of law).
+In the event that any provision of these Terms is held to be invalid or unenforceable, then that provision
+will be limited or eliminated to the minimum extent necessary, and the remaining provisions of these
+Terms will remain in full force and effect. Apt's failure to enforce any right or provision of these Terms
+will not be deemed a waiver of such right or provision.
+These Terms are an agreement between you and Apt Enterprise Solutions, Inc., 2631 Wellington Way,
+Conyers, GA 30013 U.S.A. If you have any questions about these Terms, please contact us.
+Effective: May 1, 2018
