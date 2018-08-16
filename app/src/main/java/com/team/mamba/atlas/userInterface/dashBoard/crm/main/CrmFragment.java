@@ -134,12 +134,13 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         } else {
 
-            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {
+            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {//the user logged in as business but was previous a user
 
                 viewModel.requestAllOpportunities(getViewModel());
 
             } else {
 
+                crmAdapter.clearMonths();
                 binding.recyclerView.setAdapter(crmAdapter);
                 viewModel.requestAllOpportunities(getViewModel());
             }
@@ -190,12 +191,10 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         crmNotesList.clear();
         permCrmNotesList.clear();
+        crmAdapter.clearMonths();
 
         crmNotesList.addAll(getFilteredNotes());
         permCrmNotesList.addAll(getFilteredNotes());
-
-        Collections
-                .sort(crmNotesList, (o1, o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
 
         binding.recyclerView.setAdapter(crmAdapter);
 
@@ -309,7 +308,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
                 .onStart(animator -> binding.dialogExport.layoutExport.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogExport.layoutExport);
 
-        //todo wait one second and show the recyclerview
     }
 
 

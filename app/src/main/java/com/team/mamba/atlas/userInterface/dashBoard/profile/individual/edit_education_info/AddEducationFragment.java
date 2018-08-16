@@ -65,8 +65,6 @@ public class AddEducationFragment extends Fragment {
     }
 
 
-
-
     private void onSavedClicked() {
 
         String degree = binding.etDegree.getText().toString();

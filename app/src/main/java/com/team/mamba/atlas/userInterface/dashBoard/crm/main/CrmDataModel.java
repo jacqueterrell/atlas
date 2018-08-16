@@ -44,7 +44,7 @@ public class CrmDataModel {
 
                         List<CrmNotes> crmNotes = task.getResult().toObjects(CrmNotes.class);
 
-                        Collections.sort(crmNotes,(o1,o2) -> Long.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
+                        Collections.sort(crmNotes, (o1, o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
 
                         viewModel.setCrmNotesList(crmNotes);
                         viewModel.getNavigator().onCrmDataReturned();
