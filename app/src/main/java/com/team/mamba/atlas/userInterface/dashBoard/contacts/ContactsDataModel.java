@@ -11,6 +11,9 @@ import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,8 @@ import javax.inject.Inject;
 public class ContactsDataModel {
 
     private AppDataManager dataManager;
+    private boolean isSuccesful = true;
+    private Exception exception;
 
 
     @Inject
@@ -42,6 +47,7 @@ public class ContactsDataModel {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserProfile> adjustedProfileList = new ArrayList<>();
+
 
         db.collection(AppConstants.USERS_COLLECTION)
                 .get()
@@ -69,14 +75,12 @@ public class ContactsDataModel {
 
                     } else {
 
+                        exception = task.getException();
                         Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
                         viewModel.getNavigator().handleError(task.getException().getMessage());
-
                     }
 
                 });
-
     }
 
 
@@ -87,7 +91,6 @@ public class ContactsDataModel {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserConnections> userConnections = new ArrayList<>();
-
         String userId = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.CONNECTIONS_COLLECTION)
@@ -101,11 +104,10 @@ public class ContactsDataModel {
 
                         for (UserConnections connections : connectionsList) {
 
-                         if (connections.isConfirmed && connections.getRequestingUserID().equals(userId)) {
+                            if (connections.isConfirmed && connections.getRequestingUserID().equals(userId)) {
 
                                 userConnections.add(connections);
                             }
-
                         }
 
                         viewModel.setUserConnectionsList(userConnections);
@@ -116,11 +118,9 @@ public class ContactsDataModel {
                         Logger.e(task.getException().getMessage());
                         task.getException().printStackTrace();
                         viewModel.getNavigator().handleError(task.getException().getMessage());
-
                     }
 
                 });
-
     }
 
 
@@ -133,12 +133,19 @@ public class ContactsDataModel {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String savedUserId = dataManager.getSharedPrefs().getUserId();
 
+
         db.collection(AppConstants.BUSINESSES_COLLECTION)
                 .get()
                 .addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
 
+                        if (!viewModel.getNavigator().isActivityVisible()){
+
+                            return;
+                        }
+
+                        isSuccesful = true;
                         List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
 
                         viewModel.setBusinessProfileList(businessProfiles);
@@ -157,7 +164,9 @@ public class ContactsDataModel {
                     } else {
 
                         Logger.e(task.getException().getMessage());
-                        viewModel.getNavigator().handleError("Error requesting business collections");
+
+                            viewModel.getNavigator().handleError("Error requesting business collections");
+
                     }
                 });
 

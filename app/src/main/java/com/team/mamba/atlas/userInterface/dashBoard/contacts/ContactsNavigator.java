@@ -27,5 +27,7 @@ public interface ContactsNavigator {
 
     void onBusinessContactsSet(List<UserConnections> businessAssociatesList);
 
+    boolean isActivityVisible();
+
     List<UserConnections> getPermConnectionList();
 }

@@ -372,6 +372,11 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
     @Override
+    public boolean isActivityVisible() {
+        return getBaseActivity() != null;
+    }
+
+    @Override
     public List<UserConnections> getPermConnectionList() {
         return filteredUserConnectionsList;
     }
