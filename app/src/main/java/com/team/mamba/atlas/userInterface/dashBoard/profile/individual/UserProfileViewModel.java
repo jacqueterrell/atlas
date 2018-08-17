@@ -1,8 +1,12 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual;
 
 import android.net.Uri;
+
+import com.google.firebase.auth.UserInfo;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
+import com.team.mamba.atlas.utils.formatData.RegEx;
 
 public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
 
@@ -12,7 +16,8 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     private String selectedPhone;
     private Uri imageUri = null;
     private String selfiePath = null;
-    private String imageUrl = "";
+    private UserProfile consentingProfile;
+
 
     /*******Getters and Setters********/
     public void setDataModel(UserProfileDataModel dataModel) {
@@ -28,14 +33,22 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     }
 
 
-    public void onProfileImageClicked(){
+    public void onProfileImageClicked() {
 
         getNavigator().onUserProfileClicked();
     }
 
-    public void getUserDetails(UserProfileViewModel viewModel,String userId){
+    public void getUserDetails(UserProfileViewModel viewModel, String userId) {
 
-        dataModel.getUserDetails(viewModel,userId);
+        dataModel.getUserDetails(viewModel, userId);
+    }
+
+    public void setConsentingProfile(UserProfile consentingProfile) {
+        this.consentingProfile = consentingProfile;
+    }
+
+    public UserProfile getConsentingProfile() {
+        return consentingProfile;
     }
 
     public String getSelectedPhone() {
@@ -44,10 +57,6 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
 
     public void setSelectedPhone(String selectedPhone) {
         this.selectedPhone = selectedPhone;
-    }
-
-    public void setSavedImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getSelfiePath() {
@@ -67,111 +76,127 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     }
 
     /*******Onclick Listeners********/
-    public void onSettingsClicked(){
+    public void onSettingsClicked() {
 
         getNavigator().onSettingsClicked();
     }
 
-    public void contactCellPhoneClicked(){
+    public void contactCellPhoneClicked() {
 
         getNavigator().contactCellPhoneClicked();
     }
 
 
-    public void contactOnOfficePhoneClicked(){
+    public void contactOnOfficePhoneClicked() {
 
         getNavigator().contactOnOfficePhoneClicked();
     }
 
 
-    public void contactOnHomePhoneClicked(){
+    public void contactOnHomePhoneClicked() {
 
         getNavigator().contactOnHomePhoneClicked();
     }
 
 
-    public void contactOnPersonalPhoneClicked(){
+    public void contactOnPersonalPhoneClicked() {
 
         getNavigator().contactOnPersonalPhoneClicked();
     }
 
 
-    public void contactOnFaxClicked(){
+    public void contactOnFaxClicked() {
 
         getNavigator().contactOnFaxClicked();
     }
 
 
-    public void contactOnPersonalEmailClicked(){
+    public void contactOnPersonalEmailClicked() {
 
         getNavigator().contactOnPersonalEmailClicked();
     }
 
 
-    public void contactOnWorkEmailClicked(){
+    public void contactOnWorkEmailClicked() {
 
         getNavigator().contactOnWorkEmailClicked();
     }
 
 
-    public void contactOnHomeAddressClicked(){
+    public void contactOnHomeAddressClicked() {
 
         getNavigator().contactOnHomeAddressClicked();
     }
 
 
-    public void contactOnWorkAddressClicked(){
+    public void contactOnWorkAddressClicked() {
 
         getNavigator().contactOnWorkAddressClicked();
     }
 
 
-    public void contactOnWorkHistoryClicked(){
+    public void contactOnWorkHistoryClicked() {
 
         getNavigator().contactOnWorkHistoryClicked();
     }
 
 
-    public void contactOnEducationClicked(){
+    public void contactOnEducationClicked() {
 
         getNavigator().contactOnEducationClicked();
     }
 
 
-    public void editPhoneInfo(){
+    public void editPhoneInfo() {
 
         getNavigator().editPhoneInfo();
     }
 
 
-    public void editEmailInfo(){
+    public void editEmailInfo() {
 
         getNavigator().editEmailInfo();
     }
 
 
-    public void editAddressInfo(){
+    public void editAddressInfo() {
 
         getNavigator().editAddressInfo();
     }
 
 
-    public void editWorkHistoryInfo(){
+    public void editWorkHistoryInfo() {
 
         getNavigator().editWorkHistoryInfo();
     }
 
 
-    public void editEductionInfo(){
+    public void editEductionInfo() {
 
         getNavigator().editEductionInfo();
     }
 
+    public boolean isStringValid(String phone) {
 
-    public void uploadImage(UserProfileViewModel viewModel,boolean isGallery){
+        try {
+            String adjustedPhone = phone.replaceAll(RegEx.REMOVE_NON_DIGITS, "");
+        } catch (Exception e) {
 
-        dataModel.uploadImage(viewModel,isGallery);
+            return false;
+        }
+
+        return true;
     }
 
+
+    public void uploadImage(UserProfileViewModel viewModel, UserProfile profile) {
+
+        dataModel.uploadImage(viewModel, profile);
+    }
+
+    public void getConnectionType(UserProfileViewModel viewModel, UserProfile profile) {
+
+        dataModel.getConnectionType(viewModel, profile);
+    }
 
 }

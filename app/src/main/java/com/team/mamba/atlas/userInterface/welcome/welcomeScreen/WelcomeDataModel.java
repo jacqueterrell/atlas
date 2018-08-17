@@ -230,6 +230,7 @@ public class WelcomeDataModel {
 
                     } else {
 
+                        Logger.e(task.getException().getMessage());
                         task.getException().printStackTrace();
                     }
                 });

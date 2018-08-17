@@ -15,7 +15,7 @@ public class AppSharedPrefs {
     private static final String PHONE_NUMBER = "phoneNumber";
     private static final String USER_LOGGED_IN = "userLoggedIn";
     private static final String USER_CODE = "userCode";
-    private static final String BUSINESS_ACCOUNT = "isOrgBus";
+    private static final String BUSINESS_ACCOUNT = "isIsOrgBus";
     private static final String BUSINESS_REP_ID = "businessRepId";
 
 

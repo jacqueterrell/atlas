@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersViewModel"/>
 
     </data>
 
@@ -103,7 +103,7 @@
 
 
                 <EditText
-                    android:id="@+id/et_user_code"
+                    android:id="@+id/et_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@null"
@@ -112,7 +112,7 @@
                     android:hint="Last"
                     android:textAlignment="center"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     />
 
 

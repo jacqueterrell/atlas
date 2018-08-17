@@ -87,7 +87,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         viewModel.setBusinessLogin(false);
 
         YoYo.with(Techniques.FadeIn)
-                .duration(DEFAULT_TIME_IN_MILLI_SECS)
+                .duration(500)
                 .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogVerifyAge.layoutVerifyAge);
 
@@ -99,7 +99,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         viewModel.setBusinessLogin(true);
 
         YoYo.with(Techniques.FadeIn)
-                .duration(DEFAULT_TIME_IN_MILLI_SECS)
+                .duration(500)
                 .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogVerifyAge.layoutVerifyAge);
     }
@@ -291,7 +291,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         } else if (email.isEmpty() && password.equals("test")){
 
-            dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2");
+         //   dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2");
+            dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC");
             viewModel.setBusinessLogin(false);
 
             openDashBoard();

@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -27,6 +28,8 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
@@ -127,11 +130,11 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(binding.ivUserProfile);
             }
+            hideCoverPage();
 
         } else {
 
-            binding.contactProfile.layoutContactProfile.setVisibility(View.VISIBLE);
-            binding.contactProfile.setProfile(profile);
+            setContactTypes();
 
             if (profile.getImageUrl() != null){
 
@@ -454,6 +457,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
     private void callPhone(String profilePhone){
 
+
         String adjustedPhone = profilePhone.replaceAll(RegEx.REMOVE_NON_DIGITS,"");
 
         if (adjustedPhone.isEmpty()){
@@ -619,6 +623,8 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
             mImageUri = Uri.fromFile(imageFile);
         }
 
+        viewModel.setImageUri(mImageUri);
+
         getViewModel().setSelfiePath(imageFile.getAbsolutePath());
 
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
@@ -706,7 +712,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
                 if (resultCode == Activity.RESULT_OK) {
 
-                    getViewModel().uploadImage(getViewModel(),false);
+                    getViewModel().uploadImage(getViewModel(),profile);
 
                     Glide.with(getContext())
                             .load(getViewModel().getSelfiePath())
@@ -728,11 +734,78 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(binding.ivUserProfile);
 
-                    getViewModel().uploadImage(getViewModel(),true);
+                    getViewModel().uploadImage(getViewModel(),profile);
 
                 }
                     break;
             }
         }
+    }
+
+    private void setContactTypes(){
+
+        viewModel.getConnectionType(viewModel,profile);
+
+    }
+
+    @Override
+    public void onConnectionTypeSaved() {
+
+        int type = profile.getConnectionType();
+
+        if (type == 0 || type == 1){//family can see everything
+
+            binding.contactProfile.layoutContactCellPhone.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactOfficePhone.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactHomePhone.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactPersonalPhone.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactFax.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactPersonalEmail.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactWorkEmail.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactWorkHistory.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactEducation.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactHomeAddress.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+
+        } if (type == 2){ //connection type is 2(New Acquaintance)
+
+            binding.contactProfile.layoutContactCellPhone.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactOfficePhone.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactFax.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactWorkEmail.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+
+            binding.contactProfile.layoutContactWorkHistory.setVisibility(View.GONE);
+            binding.contactProfile.layoutContactEducation.setVisibility(View.GONE);
+            binding.contactProfile.layoutContactHomePhone.setVisibility(View.GONE);
+            binding.contactProfile.layoutContactHomeAddress.setVisibility(View.GONE);
+            binding.contactProfile.layoutContactPersonalPhone.setVisibility(View.GONE);
+
+        } else { //connectionType = Business
+
+            binding.contactProfile.layoutContactCellPhone.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactOfficePhone.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactFax.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactWorkEmail.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactWorkHistory.setVisibility(View.VISIBLE);
+            binding.contactProfile.layoutContactEducation.setVisibility(View.GONE);
+
+            binding.contactProfile.layoutContactHomePhone.setVisibility(View.GONE);
+            binding.contactProfile.layoutContactHomeAddress.setVisibility(View.GONE);
+            binding.contactProfile.layoutContactPersonalPhone.setVisibility(View.GONE);
+        }
+
+        binding.contactProfile.layoutContactProfile.setVisibility(View.VISIBLE);
+        binding.contactProfile.setProfile(profile);
+        hideCoverPage();
+    }
+
+    private void hideCoverPage(){
+
+        YoYo.with(Techniques.FadeOut)
+                .duration(1500)
+                .onEnd(animator -> binding.layoutCoverSheet.setVisibility(View.GONE))
+                .playOn(binding.layoutCoverSheet);
     }
 }

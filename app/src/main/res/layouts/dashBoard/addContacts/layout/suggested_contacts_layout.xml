@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsViewModel"/>
 
     </data>
 
@@ -24,7 +24,7 @@
         android:background="@color/white"
         android:focusable="true"
         android:clickable="true"
-        android:padding="15dp">
+        >
 
         <TextView
             style="@style/App_Text_view"
@@ -33,6 +33,7 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             android:textSize="17sp"
             android:text="Find Users"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center_horizontal"/>
 
         <LinearLayout
@@ -44,7 +45,9 @@
                 android:layout_width="95dp"
                 android:layout_height="45dp"
                 android:layout_gravity="end"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
                 android:innerRadius="0dp"
                 android:shape="ring"
                 app:cardBackgroundColor="#E0A850"

@@ -1,8 +1,8 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +12,10 @@ import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebSettings;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.androidanimations.library.YoYo.AnimatorCallback;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
@@ -24,23 +25,28 @@ import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.AddContactDialogFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageOneFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditPageOneNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_business.AddBusinessFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.add_user.AddUserFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.find_users.FindUsersFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.suggested_contacts.SuggestedContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_business.AddBusinessFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_user.AddUserFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.AddNewImageDialogFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileFragment;
 import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeFragments;
+
+import java.io.InputStream;
 
 import javax.inject.Inject;
 
@@ -48,8 +54,8 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,DashBoardActivityViewModel>
-        implements DashBoardActivityNavigator,HasSupportFragmentInjector {
+public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, DashBoardActivityViewModel>
+        implements DashBoardActivityNavigator, HasSupportFragmentInjector {
 
 
     @Inject
@@ -62,9 +68,9 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     private FragmentContainerBinding binding;
 
 
-    public static Intent newIntent(Context context){
+    public static Intent newIntent(Context context) {
 
-        return new Intent(context,DashBoardActivity.class);
+        return new Intent(context, DashBoardActivity.class);
     }
 
     @Override
@@ -103,7 +109,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         binding.dialogSettings.tvVersionName.setText(version);
 
         if (fragment == null) {
-            fragment =  InfoFragment.newInstance();
+            fragment = InfoFragment.newInstance();
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
@@ -116,12 +122,26 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     }
 
     @Override
+    public void resetToFirstFragment() {
+
+        getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        showToolBar();
+    }
+
+    @Override
     public void onContactsClicked() {
 
         showContactsIcon();
         hideInfoIcon();
         hideCrmIcon();
         hideNotificationsIcon();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (!(fragment instanceof ContactsFragment)) {
+
+            ChangeFragments.replaceHorizontallyFromBackStack(new ContactsFragment(), getSupportFragmentManager(), "ContactsFragment", null);
+        }
     }
 
     @Override
@@ -134,9 +154,9 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-        if (!(fragment instanceof CrmFragment)){
+        if (!(fragment instanceof CrmFragment)) {
 
-            ChangeFragments.replaceHorizontallyFromBackStack(new CrmFragment(),getSupportFragmentManager(),"CrmFragment",null);
+            ChangeFragments.replaceHorizontallyFromBackStack(new CrmFragment(), getSupportFragmentManager(), "CrmFragment", null);
         }
     }
 
@@ -150,9 +170,9 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-        if (!(fragment instanceof AnnouncementsFragment)){
+        if (!(fragment instanceof AnnouncementsFragment)) {
 
-            ChangeFragments.replaceHorizontallyFromBackStack(AnnouncementsFragment.newInstance(),getSupportFragmentManager(),"Announcements",null);
+            ChangeFragments.replaceHorizontallyFromBackStack(AnnouncementsFragment.newInstance(), getSupportFragmentManager(), "Announcements", null);
         }
     }
 
@@ -166,9 +186,9 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-        if (!(fragment instanceof InfoFragment)){
+        if (!(fragment instanceof InfoFragment)) {
 
-            ChangeFragments.replaceHorizontallyFromBackStack(InfoFragment.newInstance(),getSupportFragmentManager(),"UserProfile",null);
+            ChangeFragments.replaceHorizontallyFromBackStack(InfoFragment.newInstance(), getSupportFragmentManager(), "UserProfile", null);
         }
     }
 
@@ -181,7 +201,9 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     @Override
     public void openAddContactDialog() {
 
-        showAddContactDialog();
+//        showAddContactDialog();
+        AddContactDialogFragment dialog = new AddContactDialogFragment();
+        dialog.show(getSupportFragmentManager(), "ContactDialog");
     }
 
     @Override
@@ -198,16 +220,14 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     @Override
     public void openUserProfile(UserProfile profile) {
 
-        hideAddContactDialog();
-        ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(profile),getSupportFragmentManager(),"UserProfile",null);
+        ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(profile), getSupportFragmentManager(), "UserProfile", null);
         hideToolBar();
     }
 
     @Override
     public void openBusinessProfile(BusinessProfile businessProfile) {
 
-        hideAddContactDialog();
-        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile),getSupportFragmentManager(),"Business Profile",null);
+        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile), getSupportFragmentManager(), "Business Profile", null);
         hideToolBar();
     }
 
@@ -218,60 +238,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
         startActivity(i);
     }
 
-    @Override
-    public void onAddUserClicked() {
-
-        hideAddContactDialog();
-        ChangeFragments.addFragmentVertically(AddUserFragment.newInstance(),getSupportFragmentManager(),"AddUser",null);
-        hideToolBar();
-    }
-
-    @Override
-    public void onAddBusinessClicked() {
-
-        hideAddContactDialog();
-        ChangeFragments.addFragmentVertically(AddBusinessFragment.newInstance(),getSupportFragmentManager(),"AddBusiness",null);
-        hideToolBar();
-    }
-
-    @Override
-    public void onInviteToAtlasClicked() {
-
-        final String appPackageName = BuildConfig.APPLICATION_ID; // package name of the app
-
-        String msg = "Join me on Atlas Networking! " + AppConstants.BASE_PLAY_STORE_LINK +  appPackageName;
-
-        hideAddContactDialog();
-
-        ShareCompat.IntentBuilder.from(this)
-                .setType("text/plain")
-                .setText(msg)
-                .startChooser();
-    }
-
-    @Override
-    public void onFindUsersClicked() {
-
-        hideAddContactDialog();
-        ChangeFragments.addFragmentVertically(FindUsersFragment.newInstance(),getSupportFragmentManager(),"FindUsers",null);
-       hideToolBar();
-
-    }
-
-    @Override
-    public void onAddSuggestedContactsClicked() {
-
-        hideAddContactDialog();
-        ChangeFragments.addFragmentVertically(SuggestedContactsFragment.newInstance(),getSupportFragmentManager(),"SuggestedContacts",null);
-        hideToolBar();
-
-    }
-
-    @Override
-    public void onCancelAddDialogClicked() {
-
-        hideAddContactDialog();
-    }
 
     @Override
     public void onCorporateDirectoryClicked() {
@@ -295,17 +261,40 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
     }
 
 
-
     @Override
     public void onPrivacyPolicyClicked() {
 
+        showTermsOfService();
 
+        try {
+
+            Resources res = getResources();
+            InputStream in_s = res.openRawResource(R.raw.privacy);
+            byte[] b = new byte[in_s.available()];
+            in_s.read(b);
+            binding.tvTerms.setText(new String(b));
+
+        } catch (Exception e) {
+            binding.tvTerms.setText("Error: can't show terms.");
+        }
     }
 
     @Override
     public void onTermsOfServiceClicked() {
 
+        showTermsOfService();
 
+        try {
+
+            Resources res = getResources();
+            InputStream in_s = res.openRawResource(R.raw.terms);
+            byte[] b = new byte[in_s.available()];
+            in_s.read(b);
+            binding.tvTerms.setText(new String(b));
+
+        } catch (Exception e) {
+            binding.tvTerms.setText("Error: can't show terms.");
+        }
     }
 
     @Override
@@ -325,6 +314,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 })
                 .setPositiveButton("yes", (paramDialogInterface, paramInt) -> {
 
+                    //InfoViewModel.userStatsList.clear();
                     dataManager.getSharedPrefs().setUserLoggedIn(false);
                     showToastShort("Logging out");
                     finishAffinity();
@@ -349,7 +339,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                     .duration(0)
                     .onStart(animator -> binding.layoutToolBar.setVisibility(View.VISIBLE))
                     .playOn(binding.layoutToolBar);
-        }catch (Exception e){
+        } catch (Exception e) {
             Logger.e(e.getMessage());
         }
     }
@@ -374,55 +364,55 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 .playOn(binding.layoutToolBar);
     }
 
-    public void showContactsIcon(){
+    public void showContactsIcon() {
 
         binding.ivContactsSelected.setVisibility(View.VISIBLE);
         binding.ivContactsNotSelected.setVisibility(View.GONE);
     }
 
-    public void hideContactsIcon(){
+    public void hideContactsIcon() {
 
         binding.ivContactsSelected.setVisibility(View.GONE);
         binding.ivContactsNotSelected.setVisibility(View.VISIBLE);
     }
 
-    public void showCrmIcon(){
+    public void showCrmIcon() {
 
         binding.ivCrmSelected.setVisibility(View.VISIBLE);
         binding.ivCrmNotSelected.setVisibility(View.GONE);
     }
 
-    public void hideCrmIcon(){
+    public void hideCrmIcon() {
 
         binding.ivCrmSelected.setVisibility(View.GONE);
         binding.ivCrmNotSelected.setVisibility(View.VISIBLE);
     }
 
-    public void showInfoIcon(){
+    public void showInfoIcon() {
 
         binding.ivInfoSelected.setVisibility(View.VISIBLE);
         binding.ivInfoNotSelected.setVisibility(View.GONE);
     }
 
-    public void hideInfoIcon(){
+    public void hideInfoIcon() {
 
         binding.ivInfoSelected.setVisibility(View.GONE);
         binding.ivInfoNotSelected.setVisibility(View.VISIBLE);
     }
 
-    public void showNotificationsIcon(){
+    public void showNotificationsIcon() {
 
         binding.ivNotificationsSelected.setVisibility(View.VISIBLE);
         binding.ivNotificationsNotSelected.setVisibility(View.GONE);
     }
 
-    public void hideNotificationsIcon(){
+    public void hideNotificationsIcon() {
 
         binding.ivNotificationsSelected.setVisibility(View.GONE);
         binding.ivNotificationsNotSelected.setVisibility(View.VISIBLE);
     }
 
-    private void showSettings(){
+    private void showSettings() {
 
         YoYo.with(Techniques.SlideInUp)
                 .duration(500)
@@ -430,7 +420,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 .playOn(binding.dialogSettings.layoutDashboardSettings);
     }
 
-    private void hideSettings(){
+    private void hideSettings() {
 
         YoYo.with(Techniques.SlideOutDown)
                 .duration(500)
@@ -438,46 +428,47 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 .playOn(binding.dialogSettings.layoutDashboardSettings);
     }
 
-    private void showAddContactDialog(){
+    private void showTermsOfService() {
 
-        YoYo.with(Techniques.FadeIn)
+        YoYo.with(Techniques.SlideInUp)
                 .duration(500)
-                .onStart(animator -> binding.dialogAddContact.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogAddContact);
+                .onStart(animator -> binding.layoutTermsOfService.setVisibility(View.VISIBLE))
+                .playOn(binding.layoutTermsOfService);
+
     }
 
-    private void hideAddContactDialog(){
+    private void hideTermsOfService() {
 
-        YoYo.with(Techniques.FadeOut)
+        YoYo.with(Techniques.SlideOutDown)
                 .duration(500)
-                .onEnd(animator -> binding.dialogAddContact.setVisibility(View.GONE))
-                .playOn(binding.dialogAddContact);
+                .onEnd(animator -> binding.layoutTermsOfService.setVisibility(View.GONE))
+                .playOn(binding.layoutTermsOfService);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (keyCode == 4){
+        if (keyCode == 4) {
 
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            Fragment previousFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-            if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
+            if (binding.layoutTermsOfService.getVisibility() == View.VISIBLE) {
+
+                hideTermsOfService();
+
+            } else if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
 
                 hideSettings();
 
-            } else if (binding.dialogAddContact.getVisibility() == View.VISIBLE){
+            } else if (previousFragment instanceof CrmFragment) {
 
-                hideAddContactDialog();
+                CrmNavigator navigator = (CrmNavigator) previousFragment;
 
-            } else  if (fragment instanceof CrmFragment){
-
-                CrmNavigator navigator = (CrmNavigator) fragment;
-
-                if (navigator.isInfoDialogShown()){
+                if (navigator.isInfoDialogShown()) {
 
                     navigator.hideCrmInfoDialog();
 
-                } else if (navigator.isExportScreenShown()){
+                } else if (navigator.isExportScreenShown()) {
 
                     navigator.hideExportScreen();
 
@@ -485,11 +476,11 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                     onBackPressed();
                 }
 
-            } else if (fragment instanceof EditAddNotePageOneFragment){
+            } else if (previousFragment instanceof EditAddNotePageOneFragment) {
 
-                EditPageOneNavigator navigator = (EditPageOneNavigator) fragment;
+                EditPageOneNavigator navigator = (EditPageOneNavigator) previousFragment;
 
-                if (navigator.isContactsScreenShown()){
+                if (navigator.isContactsScreenShown()) {
 
                     navigator.closeContactsScreen();
 
@@ -503,11 +494,11 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding,Das
                 onBackPressed();
             }
 
-            Fragment newFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (newFragment instanceof InfoFragment
-                    || fragment instanceof CrmFragment
-                    || fragment instanceof AnnouncementsFragment
-                    || fragment instanceof ContactsFragment) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if (currentFragment instanceof InfoFragment
+                    || currentFragment instanceof CrmFragment
+                    || currentFragment instanceof AnnouncementsFragment
+                    || currentFragment instanceof ContactsFragment) {
 
                 showToolBar();
             }

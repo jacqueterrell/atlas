@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -28,6 +30,8 @@ import com.team.mamba.atlas.data.model.local.Education;
 import com.team.mamba.atlas.databinding.EditEducationLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history.EditWorkFragment;
@@ -53,6 +57,7 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     private List<Education> educationList = new ArrayList<>();
     private EditEducationAdapter editEducationAdapter;
     private Education deletedEducation;
+    private DashBoardActivityNavigator parentNavigator;
 
 
     public static EditEducationFragment newInstance(UserProfile userProfile){
@@ -82,6 +87,12 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
@@ -103,6 +114,24 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     @Override
     public void onContinueClicked() {
 
+        List<Map<String, String>> educationMaps = new ArrayList<>();
+
+        for (Education education : educationList) {
+
+            Map<String, String> map = new LinkedHashMap<>();
+
+            map.put("School", education.getSchool());
+            map.put("Field of Study", education.getFieldOfStudy());
+            map.put("Degree", education.getDegree());
+
+            educationMaps.add(map);
+        }
+
+        Long timeStamp = System.currentTimeMillis() / 1000;
+
+        profile.setTimestamp(timeStamp);
+        profile.setEducation(educationMaps);
+
         ChangeFragments.addFragmentFadeIn(EditWorkFragment.newInstance(profile),getBaseActivity()
                 .getSupportFragmentManager(),"EditWork",null);
     }
@@ -118,8 +147,7 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     public void onProfileUpdated() {
 
         hideProgressSpinner();
-        getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
+        parentNavigator.resetToFirstFragment();
     }
 
     @Override
@@ -197,6 +225,9 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
             educationMaps.add(map);
         }
 
+        Long timeStamp = System.currentTimeMillis() / 1000;
+
+        profile.setTimestamp(timeStamp);
         profile.setEducation(educationMaps);
         viewModel.updateUser(getViewModel(),profile);
     }

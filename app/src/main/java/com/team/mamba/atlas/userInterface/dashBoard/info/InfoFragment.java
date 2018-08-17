@@ -128,19 +128,30 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         });
 
 
+        //retrieves the cached list, also checks to see if the user logged out
+        //and back in under a different account type
         if (!viewModel.getUserStatsList().isEmpty()){
 
-            setUserStatsAdapter(viewModel.getUserStatsList(),viewModel.getRecentActivityConnections());
-            setBarChartData();
+            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())){//the user logged out as a user and back in as a business
 
-            if (viewModel.isNetworkChartSelected()){
-
-                showSelectedNetworkButton();
+                binding.layoutSplashScreen.setVisibility(View.VISIBLE);
+                viewModel.getAllUsers(getViewModel());
 
             } else {
 
-                showSelectedOpportunitiesButton();
+                setUserStatsAdapter(viewModel.getUserStatsList(),viewModel.getRecentActivityConnections());
+                setBarChartData();
+
+                if (viewModel.isNetworkChartSelected()){
+
+                    showSelectedNetworkButton();
+
+                } else {
+
+                    showSelectedOpportunitiesButton();
+                }
             }
+
 
         } else {
 
@@ -298,10 +309,21 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
             for (UserProfile profile : viewModel.getAllUsersList()){
 
-                if (profile.getId().equals(userConnections.getConsentingUserID())){
+                if (userConnections.isNeedsApproval()){
 
-                    parentNavigator.openUserProfile(profile);
+                    if (profile.getId().equals(userConnections.getRequestingUserID())){//an unknown user is requesting to connect
 
+                        parentNavigator.openUserProfile(profile);
+
+                    }
+
+                } else {
+
+                    if (profile.getId().equals(userConnections.getConsentingUserID())){ //the logged in user is the requester
+
+                        parentNavigator.openUserProfile(profile);
+
+                    }
                 }
             }
         }

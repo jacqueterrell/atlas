@@ -607,6 +607,14 @@
 
         </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/layout_cover_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+        </FrameLayout>
+
         <include
             android:id="@+id/contact_profile"
             layout="@layout/user_profile_for_contact"

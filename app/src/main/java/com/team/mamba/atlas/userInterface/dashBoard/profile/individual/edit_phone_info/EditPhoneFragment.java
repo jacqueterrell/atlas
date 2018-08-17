@@ -153,6 +153,10 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding, Edit
             profile.setFax(faxPhone + " x" + faxExt);
         }
 
+        Long timeStamp = System.currentTimeMillis() / 1000;
+
+        profile.setTimestamp(timeStamp);
+
     }
 
     @Override

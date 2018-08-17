@@ -43,18 +43,6 @@ public interface DashBoardActivityNavigator {
 
     void onSiteLinkClicked();
 
-    void onAddUserClicked();
-
-    void onAddBusinessClicked();
-
-    void onInviteToAtlasClicked();
-
-    void onFindUsersClicked();
-
-    void onAddSuggestedContactsClicked();
-
-    void onCancelAddDialogClicked();
-
     void showToolBar();
 
     void hideToolBar();
@@ -67,4 +55,5 @@ public interface DashBoardActivityNavigator {
 
     void setCrmFilter(CrmFilter crmFilter);
 
+    void resetToFirstFragment();
 }

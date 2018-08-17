@@ -10,6 +10,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -172,7 +173,7 @@ android {
             res.srcDirs =
                     ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/welcome',
                      'src/main/res/layouts/dashBoard', 'src/main/res/layouts/main', 'src/main/res/layouts/dashboard/info',
-                     'src/main/res/layouts/dashBoard/addContacts', 'src/main/res/layouts/dashBoard/userProfile', 'src/main/res/layouts/dashBoard/crm', 'src/main/res/layouts/dashBoard/announcements']
+                     'src/main/res/layouts/dashBoard/addContacts', 'src/main/res/layouts/dashBoard/userProfile', 'src/main/res/layouts/dashBoard/crm', 'src/main/res/layouts/dashBoard/announcements', 'src/main/res/assets']
         }
     }
 }
@@ -199,6 +200,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
     //all testing dependencies
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
         exclude group: "com.android.support", module: "support-annotations"
     })
@@ -242,7 +244,8 @@ dependencies {
     implementation "com.google.code.findbugs:jsr305:$rootProject.findBugs"
     implementation "com.orhanobut:logger:$rootProject.orhanobutLogger"
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
+    implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
+    implementation "com.google.android.gms:play-services-places:15.0.1"
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
@@ -274,7 +277,7 @@ dependencies {
     androidTestImplementation "com.android.support.test:rules:$rootProject.testRunner"
 
     // Databinding
-    kapt "com.android.databinding:compiler:$gradle_plugin_version"
+   // kapt "com.android.databinding:compiler:$gradle_plugin_version"
 
     // all ViewModel and LiveData dependencies
     implementation "android.arch.lifecycle:extensions:$rootProject.archictectureComponents"
@@ -284,6 +287,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     //our jar files
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
+        transitive = true;
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

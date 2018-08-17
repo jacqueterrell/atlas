@@ -13,18 +13,18 @@ import java.util.List;
 @IgnoreExtraProperties
 public class CrmNotes {
 
-    public String id;
-    public String subjectID;
-    public String authorID;
-    public String noteName;
-    public String poc;
-    public String whereMetCitySt;
-    public String whereMetEventName;
+    public String id= "";
+    public String subjectID= "";
+    public String authorID= "";
+    public String noteName= "";
+    public String poc= "";
+    public String whereMetCitySt= "";
+    public String whereMetEventName= "";
     public int howMet;
     public int stage;
     public int type;
     public int oppGoal;
-    public String desc;
+    public String desc= "";
     public int nextStep;
     public double timestamp; //creation time
     public double closeTimestamp; //close time

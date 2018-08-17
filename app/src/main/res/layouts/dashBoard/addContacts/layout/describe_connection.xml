@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.describe_connections.DescribeConnectionsViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsViewModel"/>
 
     </data>
     <FrameLayout
@@ -204,6 +204,7 @@
                        android:layout_width = "wrap_content"
                        android:layout_height = "wrap_content"
                        app:buttonTint = "@color/black"
+                       android:checked="true"
                        />
 
                    <TextView

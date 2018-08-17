@@ -555,7 +555,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:text="Appears when you have a new connection to approve"/>
+                            android:text="Your connection has recently updated his/her profile"/>
 
 
                     </LinearLayout>
@@ -584,7 +584,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:text="Appears when you have a new connection to approve"/>
+                            android:text="You are now connected and can see his/her profile"/>
 
 
                     </LinearLayout>

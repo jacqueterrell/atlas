@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,10 +11,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.local.WorkHistory;
 import com.team.mamba.atlas.databinding.AddWorkHistoryLayoutBinding;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class AddWorkFragment extends Fragment {
 
@@ -21,6 +35,7 @@ public class AddWorkFragment extends Fragment {
     private AddWorkHistoryLayoutBinding binding;
     private static EditWorkNavigator navigator;
     private DashBoardActivity parentActivity;
+    private GeoDataClient geoDataClient;
 
     public static AddWorkFragment newInstance(EditWorkNavigator editWorkNavigator){
 
@@ -41,6 +56,9 @@ public class AddWorkFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.add_work_history_layout,container,false);
 
+        geoDataClient = Places.getGeoDataClient(getActivity());
+
+
         binding.btnSave.setOnClickListener(v -> {
 
             onSavedClicked();
@@ -58,6 +76,8 @@ public class AddWorkFragment extends Fragment {
             binding.etIndustry.setText(industry);
             binding.etCompanyName.setText(companyName);
         }
+
+        setUpListeners();
 
         return binding.getRoot();
     }
@@ -105,4 +125,33 @@ public class AddWorkFragment extends Fragment {
 
         return true;
     }
+
+    private void setUpListeners(){
+//
+//        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+//                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//
+//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+//
+//                Logger.e("Place " + place.getName());
+//            }
+//
+//            @Override
+//            public void onError(Status status) {
+//
+//                Logger.e("An error occurred " + status);
+//            }
+//        });
+//
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+//                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+//                .build();
+//
+//        autocompleteFragment.setFilter(typeFilter);
+
+    }
+
+
 }

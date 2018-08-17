@@ -26,8 +26,7 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
 
     public CrmAdapter(CrmViewModel viewModel,List<CrmNotes> crmNotes){
 
-        monthsList.clear();
-        monthPositions.clear();
+
         this.crmNotesList = crmNotes;
         this.viewModel = viewModel;
 
@@ -40,6 +39,9 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
         public CrmViewHolder(CrmListRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            Collections.sort(crmNotesList, (o1, o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
+
         }
 
 
@@ -106,6 +108,8 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
         } else {
 
             holder.binding.layoutMonth.setVisibility(View.GONE);
+            holder.binding.tvMonth.setText(monthName);
+
         }
 
         if (position == 0){
@@ -197,5 +201,11 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
         }
 
         notifyDataSetChanged();
+    }
+
+    public void clearMonths(){
+
+        monthsList.clear();
+        monthPositions.clear();
     }
 }

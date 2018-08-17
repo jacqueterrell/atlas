@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,7 @@ public class CrmFilterSettingsFragment extends BaseFragment<FilterCrmBinding, Cr
         filter.setStatus(-1);
 
         parentActivity.setCrmFilter(filter);
-        parentActivity.onBackPressed();
+        getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class CrmFilterSettingsFragment extends BaseFragment<FilterCrmBinding, Cr
             parentActivity.setCrmFilter(filter);
         }
 
-        parentActivity.onBackPressed();
+        getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override

@@ -30,6 +30,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 
     <application
         android:name=".userInterface.AtlasApplication"
@@ -57,7 +58,7 @@
         <activity android:name=".userInterface.dashBoard._container_activity.DashBoardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".userInterface.welcome.select_business_account.BusinessAccountsActivity"
             android:screenOrientation="portrait"
@@ -80,6 +81,14 @@
                 android:resource="@xml/provider_paths"
                 tools:replace="android:resource" />
         </provider>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="349228ba735e98ba000b4bd685fc2438059b7a6b" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyChplMH3NIv0mEn7DL6aLnz_OJ5safyObU"/>
 
     </application>
 

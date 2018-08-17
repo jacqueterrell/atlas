@@ -63,12 +63,12 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
     CrmDataModel dataModel;
 
     private CrmLayoutBinding binding;
-    private List<CrmNotes> crmNotesList = new ArrayList<>();
+    private static List<CrmNotes> crmNotesList = new ArrayList<>();
     private CrmAdapter crmAdapter;
     private DashBoardActivityNavigator parentNavigator;
     private DashBoardActivity parentActivity;
     private static final int SEND_CSV = 0;
-    private List<CrmNotes> permCrmNotesList = new ArrayList<>();
+    private static List<CrmNotes> permCrmNotesList = new ArrayList<>();
 
 
     @Override
@@ -134,9 +134,16 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         } else {
 
-            onCrmDataReturned();
+            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {//the user logged in as business but was previous a user
 
-            viewModel.requestAllOpportunities(getViewModel());
+                viewModel.requestAllOpportunities(getViewModel());
+
+            } else {
+
+                crmAdapter.clearMonths();
+                binding.recyclerView.setAdapter(crmAdapter);
+                viewModel.requestAllOpportunities(getViewModel());
+            }
 
         }
 
@@ -148,7 +155,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         binding.searchView.setOnQueryTextListener(this);
         binding.searchView.setIconifiedByDefault(false);
         binding.searchView.setFocusable(false);
-
 
         //set the color for our search view edit text and text hint
         EditText searchEditText = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -185,12 +191,10 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         crmNotesList.clear();
         permCrmNotesList.clear();
+        crmAdapter.clearMonths();
 
         crmNotesList.addAll(getFilteredNotes());
         permCrmNotesList.addAll(getFilteredNotes());
-
-        Collections
-                .sort(crmNotesList, (o1, o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
 
         binding.recyclerView.setAdapter(crmAdapter);
 
@@ -200,7 +204,10 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
     @Override
     public List<CrmNotes> getPerCrmNotesList() {
-        return permCrmNotesList;
+
+        List<CrmNotes> notesList = new ArrayList<>(permCrmNotesList);
+
+        return notesList;
     }
 
     @Override
@@ -301,7 +308,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
                 .onStart(animator -> binding.dialogExport.layoutExport.setVisibility(View.VISIBLE))
                 .playOn(binding.dialogExport.layoutExport);
 
-        //todo wait one second and show the recyclerview
     }
 
 

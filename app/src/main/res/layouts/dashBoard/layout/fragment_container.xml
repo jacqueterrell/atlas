@@ -134,171 +134,58 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/dialog_add_contact"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent_black"
-            android:visibility="gone">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="55dp"
-                android:innerRadius="0dp"
-                android:shape="ring"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="15dp"
-                card_view:cardElevation="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/App_Text_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Add Contact"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                        android:textSize="17sp"
-                        android:layout_margin="15dp"
-
-                        />
-
-                    <TextView
-                        style="@style/App_Text_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginBottom="15dp"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                        android:text="@string/add_contact_body"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_icons_light"/>
-
-                    <Button
-                        android:id="@+id/btn_add_user"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:text="User"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/lato"
-                        android:onClick="@{()-> viewModel.onAddUserClicked()}"
-                        />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_icons_light"/>
-
-                    <Button
-                        android:id="@+id/btn_add_business"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:text="Org/Business"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/lato"
-                        android:onClick="@{()-> viewModel.onAddBusinessClicked()}"
-                        />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_icons_light"/>
-
-                    <Button
-                        android:id="@+id/btn_invite_to_atlas"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:text="Invite to Atlas"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/lato"
-                        android:onClick="@{()-> viewModel.onInviteToAtlasClicked()}"
-                        />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_icons_light"/>
-
-                    <Button
-                        android:id="@+id/btn_find_users"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:text="Find Users on Atlas"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/lato"
-                        android:onClick="@{()-> viewModel.onFindUsersClicked()}"
-                        />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_icons_light"/>
-
-                    <Button
-                        android:id="@+id/btn_suggested_contacts"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:text="Suggested Contacts"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/lato"
-                        android:onClick="@{()-> viewModel.onAddSuggestedContactsClicked()}"
-                        />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/material_icons_light"/>
-
-                    <Button
-                        android:id="@+id/btn_cancel_add_contact"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:text="Cancel"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/lato"
-                        android:textStyle="bold"
-                        android:onClick="@{()-> viewModel.onCancelAddDialogClicked()}"
-                        />
-
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-        </FrameLayout>
 
         <include
             android:id="@+id/dialog_settings"
             layout="@layout/settings_layout"
             bind:viewModel="@{viewModel}" />
+
+
+        <FrameLayout
+            android:id="@+id/layout_terms_of_service"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_terms_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Terms of Service"
+                        style="@style/App_Text_view"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textSize="17sp"
+                        android:visibility="gone"
+                        android:layout_marginBottom="15dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_terms"
+                        style="@style/App_Text_view"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"
+                        />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </FrameLayout>
 
 
     </FrameLayout>

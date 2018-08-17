@@ -1,68 +1,38 @@
 package com.team.mamba.atlas.data.model.api;
 
-import android.support.annotation.Keep;
-
+import com.google.firebase.firestore.Exclude;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
 
 
-@Keep
 public class UserConnections {
 
-    @SerializedName("id")
-    @Expose
-    public String id;
 
-
-    @SerializedName("isOrgBus")
-    @Expose
-    public boolean isOrgBus;
-
-    @SerializedName("requestingUserID")
-    @Expose
-    public String requestingUserID;
-
-    @SerializedName("requestingUserName")
-    @Expose
-    public String requestingUserName;
-
-    @SerializedName("consentingUserID")
-    @Expose
-    public String consentingUserID;
-
-    @SerializedName("consentingUserName")
-    @Expose
-    public String consentingUserName;
-
-    @SerializedName("connectionType")
-    @Expose
+    public String id= "";
+    public String requestingUserID= "";
+    public String requestingUserName= "";
+    public String consentingUserID= "";
+    public String consentingUserName= "";
+    public String conDeviceToken = "";
+    public String reqDeviceToken = "";
     public int connectionType;
 
-    @SerializedName("isConfirmed")
-    @Expose
+
+    public boolean isOrgBus;
+
+
+
     public boolean isConfirmed;
-
-    @SerializedName("isViewed")
-    @Expose
-    public boolean viewed;
-
-    @SerializedName("isDirectory")
-    @Expose
-    public boolean directory;
-
-    @SerializedName("timestamp")
-    @Expose
+    public boolean isViewed;
+    public boolean isDirectory;
     public double timestamp;
 
-    public boolean needsApproval;
-    public boolean recentActivity;
+    @Exclude private boolean needsApproval;
+    @Exclude private boolean recentActivity;
+    @Exclude private UserProfile  userProfile;
+    @Exclude private BusinessProfile businessProfile;
 
-
-    public UserConnections(){
-
-
-    }
 
 
     public String getId() {
@@ -73,13 +43,39 @@ public class UserConnections {
         this.id = id;
     }
 
-    public boolean isBusiness() {
+    public boolean isIsOrgBus() {
         return isOrgBus;
     }
 
-    public void setOrgBus(boolean orgBus) {
-        this.isOrgBus = orgBus;
+    public void setOrgBus(boolean isOrgBus) {
+        this.isOrgBus = isOrgBus;
     }
+
+    public boolean isIsConfirmed() {
+        return isConfirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.isConfirmed = confirmed;
+    }
+
+    public boolean isIsViewed() {
+        return isViewed;
+    }
+
+    public void setViewed(boolean viewed) {
+        isViewed = viewed;
+    }
+
+    public boolean isIsDirectory() {
+        return isDirectory;
+    }
+
+    public void setDirectory(boolean directory) {
+        this.isDirectory = directory;
+    }
+
+
 
     public String getRequestingUserID() {
         return requestingUserID;
@@ -105,6 +101,14 @@ public class UserConnections {
         this.consentingUserID = consentingUserID;
     }
 
+    public void setReqDeviceToken(String reqDeviceToken) {
+        this.reqDeviceToken = reqDeviceToken;
+    }
+
+    public String getReqDeviceToken() {
+        return reqDeviceToken;
+    }
+
     public String getConsentingUserName() {
         return consentingUserName;
     }
@@ -121,28 +125,13 @@ public class UserConnections {
         this.connectionType = connectionType;
     }
 
-    public boolean isConfirmed() {
-        return isConfirmed;
+
+    public void setConDeviceToken(String conDeviceToken) {
+        this.conDeviceToken = conDeviceToken;
     }
 
-    public void setConfirmed(boolean confirmed) {
-        this.isConfirmed = confirmed;
-    }
-
-    public boolean isViewed() {
-        return viewed;
-    }
-
-    public void setViewed(boolean viewed) {
-        this.viewed = viewed;
-    }
-
-    public boolean isDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(boolean directory) {
-        this.directory = directory;
+    public String getConDeviceToken() {
+        return conDeviceToken;
     }
 
     public long getTimestamp() {
@@ -156,7 +145,12 @@ public class UserConnections {
         this.timestamp = timestamp;
     }
 
-    public boolean isNeedsApproval() {
+
+
+
+
+
+   @Exclude public boolean isNeedsApproval() {
         return needsApproval;
     }
 
@@ -164,11 +158,28 @@ public class UserConnections {
         this.needsApproval = needsApproval;
     }
 
-    public boolean isRecentActivity() {
+   @Exclude public boolean isRecentActivity() {
         return recentActivity;
     }
 
     public void setRecentActivity(boolean recentActivity) {
         this.recentActivity = recentActivity;
+    }
+
+
+   @Exclude public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    @Exclude public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    @Exclude public BusinessProfile getBusinessProfile() {
+        return businessProfile;
+    }
+
+    @Exclude public void setBusinessProfile(BusinessProfile businessProfile) {
+        this.businessProfile = businessProfile;
     }
 }

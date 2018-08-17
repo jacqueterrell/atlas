@@ -23,11 +23,17 @@ public class CrmDataModel {
     }
 
 
-    public void getAllOpportunities(CrmViewModel viewModel){
+    /**
+     * Retrieves a list of business notes authored by the user
+     *
+     * @param viewModel
+     */
+           public void getAllOpportunities(CrmViewModel viewModel){
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            viewModel.setSavedUserId(dataManager.getSharedPrefs().getUserId());
 
-        getUserDetails(viewModel);
+            getUserDetails(viewModel);
 
         db.collection(AppConstants.BUS_NOTES_COLLECTION)
                 .whereEqualTo("authorID",dataManager.getSharedPrefs().getUserId())
@@ -38,7 +44,7 @@ public class CrmDataModel {
 
                         List<CrmNotes> crmNotes = task.getResult().toObjects(CrmNotes.class);
 
-                        Collections.sort(crmNotes,(o1,o2) -> Long.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
+                        Collections.sort(crmNotes, (o1, o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
 
                         viewModel.setCrmNotesList(crmNotes);
                         viewModel.getNavigator().onCrmDataReturned();

@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -28,6 +30,8 @@ import com.team.mamba.atlas.data.model.local.WorkHistory;
 import com.team.mamba.atlas.databinding.EditWorkHistoryLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.AddEducationFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationAdapter;
 import com.team.mamba.atlas.utils.ChangeFragments;
@@ -50,6 +54,7 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     private List<WorkHistory> workHistoryList = new ArrayList<>();
     private EditWorkAdapter workAdapter;
     private WorkHistory deletedWorkHistory;
+    private DashBoardActivityNavigator parentNavigator;
 
     public static EditWorkFragment newInstance(UserProfile userProfile){
 
@@ -78,6 +83,12 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
         return binding.progressSpinner;
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,7 +138,7 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     public void onProfileUpdated() {
 
         hideProgressSpinner();
-        getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        parentNavigator.resetToFirstFragment();
     }
 
     @Override
@@ -195,6 +206,9 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
             workMaps.add(map);
         }
 
+        Long timeStamp = System.currentTimeMillis() / 1000;
+
+        profile.setTimestamp(timeStamp);
         profile.setWorkHistory(workMaps);
         viewModel.updateUser(getViewModel(),profile);
     }
