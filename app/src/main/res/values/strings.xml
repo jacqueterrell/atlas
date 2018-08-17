@@ -4,14 +4,41 @@
 
     <string name="add_contact_body">Would you like to add a person or an organization/business?</string>
 
+    <string name="already_connected_body">Check your contacts. It looks like you\'ve already connected.</string>
+    <string name="already_connected_title">Already Connected</string>
+
     <string name="business_login_title">Business Organizational Login</string>
     <string name="business_not_found_body">We couldn\'t find your business or organization with the provided credentials.
     Please check the email and password or contact us to get started with network engagement.</string>
 
     <string name="cancel">Cancel</string>
 
+    <string name="change_image">Would you like to change your image on Atlas?</string>
+
+    <string name="connection_sent_body">Check your dashboard to view the status of the connection.</string>
+    <string name="connection_sent_title">Connection request sent</string>
+
+    <string name="crm_stage_four">Congratulations are in order</string>
+    <string name="crm_stage_one">The qualification stage. You\'re evaluating whether to this is a real opportunity and meeting with the client</string>
+    <string name="crm_stage_three">Your\'re currently negotiating with the client</string>
+    <string name="crm_stage_two">You\'ve submitted a formal proposal to the client</string>
+    <string name="crm_stage_zero">New opportunity that you\'re still learning about</string>
+
+    <string name="describe_connections_info">Atlas uses the following designations to determine how much information
+        you share with your connection. Atlas will only share your work information with the Business Contact, Colleague,
+        New Acquaintance, and Client designations (similar to if you shared your business card). Should you have personal
+        contact information (e.g., home address, personal email, etc.), Atlas will share personal information with connections
+        designated as Personal Friend or Family Member.
+    </string>
+    <string name="describe_the_opp">Please describe the opportunity.</string>
+
+    <string name="export_generate_csv">The export function generates a CSV file that is sent to your work email address.</string>
+    <string name="export_personal_notes">Personal notes are not exported.</string>
+    <string name="export_select_fields">Please select the fields you would like to export.</string>
+
     <string name="first_name">What\'s your first name?</string>
 
+    <string name="how_did_you_meet">How did you meet? \n please select one.</string>
     <string name="how_you_met_body">Write personal notes on your contacts and always rememberthe how and why of your meetings. Your personal notes are for your eyes only.</string>
     <string name="how_you_met_title">Remember How You Met</string>
 
@@ -27,12 +54,36 @@
 
     <string name="network">Network</string>
 
+    <string-array name="next_step_array">
+        <item>Email</item>
+        <item>Phone Call</item>
+        <item>Teleconference</item>
+        <item>Meeting</item>
+    </string-array>
+
     <string name="opportunities">Opportunities</string>
+
+    <string-array name="opportunity_array">
+        <item>Solicitation</item>
+        <item>Teaming</item>
+        <item>Direct Sell</item>
+    </string-array>
 
     <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. <br/> Standard message rates apply.</string>
     <string name="phone_number_warning_title">Login to Atlas with Your Phone Number</string>
 
     <string name="recent_activity">Recent Activity</string>
+
+    <string-array name="status_array">
+        <item>New</item>
+        <item>Qualified</item>
+        <item>Proposal</item>
+        <item>Negotiation</item>
+        <item>Closed</item>
+    </string-array>
+
+    <string name="sync_contacts_body">Would you like to sync your Atlas contacts to your dedicated contacts app?</string>
+    <string name="sync_contacts_title">Sync Contacts</string>
 
     <string name="up_to_date_body">As your network moves over time, your access to them never does. When they updater their profiles, you\'re always ready. Every time</string>
     <string name="up_to_date_title">Up-to-Date Always</string>
@@ -46,65 +97,47 @@
     <string name="verify_age_body">To create an account on Atlas, you must be a minimum of 13 years old.</string>
     <string name="verify_age_title">Verify Your Age</string>
 
+    <string name="what_is_next_step">What is the next step? \n Please select one.</string>
+    <string name="what_is_the_opp">What is the opportunity? \n Please select one.</string>
     <string name="what_is_your_cell">What\'s your cell phone number?</string>
-
-    <string name="describe_connections_info">Atlas uses the following designations to determine how much information
-        you share with your connection. Atlas will only share your work information with the Business Contact, Colleague,
-        New Acquaintance, and Client designations (similar to if you shared your business card). Should you have personal
-        contact information (e.g., home address, personal email, etc.), Atlas will share personal information with connections
-        designated as Personal Friend or Family Member.
-    </string>
-
-    <string name="crm_stage_zero">New opportunity that you\'re still learning about</string>
-    <string name="crm_stage_one">The qualification stage. You\'re evaluating whether to this is a real opportunity and meeting with the client</string>
-    <string name="crm_stage_two">You\'ve submitted a formal proposal to the client</string>
-    <string name="crm_stage_three">Your\'re currently negotiating with the client</string>
-    <string name="crm_stage_four">Congratulations are in order</string>
-
-    <string name="export_generate_csv">The export function generates a CSV file that is sent to your work email address.</string>
-    <string name="export_personal_notes">Personal notes are not exported.</string>
-    <string name="export_select_fields">Please select the fields you would like to export.</string>
-
-    <string name="who_did_you_meet_body">Who did you meet? \n (i.e., Primary Point of Contact)</string>
-    <string name="where_did_you_meet">Where did you meet? \n(City, State)</string>
-    <string name="where_did_you_meet_event">Where did you meet? \n(i.e., Name of the Event)</string>
-    <string name="how_did_you_meet">How did you meet? \n please select one.</string>
     <string name="what_stage_of_opp">What stage is the opportunity? \n Please select one.</string>
     <string name="what_type_of_opp">What type of opportunity? \n Please select one.</string>
-    <string name="what_is_the_opp">What is the opportunity? \n Please select one.</string>
-    <string name="describe_the_opp">Please describe the opportunity.</string>
-    <string name="what_is_next_step">What is the next step? \n Please select one.</string>
 
-    <string name="change_image">Would you like to change your image on Atlas?</string>
+    <string name="where_did_you_meet">Where did you meet? \n(City, State)</string>
+    <string name="where_did_you_meet_event">Where did you meet? \n(i.e., Name of the Event)</string>
 
-    <string name="already_connected_title">Already Connected</string>
-    <string name="already_connected_body">Check your contacts. It looks like you\'ve already connected.</string>
+    <string name="who_did_you_meet_body">Who did you meet? \n (i.e., Primary Point of Contact)</string>
 
-    <string name="connection_sent_title">Connection request sent</string>
-    <string name="connection_sent_body">Check your dashboard to view the status of the connection.</string>
 
-    <string name="sync_contacts_title">Sync Contacts</string>
-    <string name="sync_contacts_body">Would you like to sync your Atlas contacts to your dedicated contacts app?</string>
+    <string-array name="degree_array">
+        <item>Bachelor of Science (B.S.)</item>
+        <item>Bachelor of Fine Arts (BFA)</item>
+        <item>Bachelor of Applied Sciences (BAS)</item>
+        <item>Master of Arts (M.A.)</item>
+        <item>Master of Science (M.S.)</item>
+        <item>Master of Business Administration (MBA)</item>
+        <item>Master of Fine Arts (MFA)</item>
+        <item>Doctor of Philosophy (Ph.D)</item>
+        <item>Juris Doctor (J.D.)</item>
+        <item>Doctor of Medicine (M.D.)</item>
+        <item>Doctor of Dental Surgery (DDS)</item>
 
-    <string-array name="status_array">
-        <item>New</item>
-        <item>Qualified</item>
-        <item>Proposal</item>
-        <item>Negotiation</item>
-        <item>Closed</item>
     </string-array>
 
-    <string-array name="opportunity_array">
-        <item>Solicitation</item>
-        <item>Teaming</item>
-        <item>Direct Sell</item>
-    </string-array>
 
-    <string-array name="next_step_array">
-        <item>Email</item>
-        <item>Phone Call</item>
-        <item>Teleconference</item>
-        <item>Meeting</item>
+    <string-array name="field_of_study_array">
+        <item>Bachelor of Science (B.S.)</item>
+        <item>Bachelor of Fine Arts (BFA)</item>
+        <item>Bachelor of Applied Sciences (BAS)</item>
+        <item>Master of Arts (M.A.)</item>
+        <item>Master of Science (M.S.)</item>
+        <item>Master of Business Administration (MBA)</item>
+        <item>Master of Fine Arts (MFA)</item>
+        <item>Doctor of Philosophy (Ph.D)</item>
+        <item>Juris Doctor (J.D.)</item>
+        <item>Doctor of Medicine (M.D.)</item>
+        <item>Doctor of Dental Surgery (DDS)</item>
+
     </string-array>
 
 </resources>

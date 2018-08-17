@@ -5,7 +5,16 @@ import java.util.List;
 public interface AddEducationNavigator {
 
 
-    void onRowClicked(String university);
+    void onSchoolRowClicked(String university);
+
+    void onDegreeRowClicked(String degree);
+
+    void onFieldOfStudyRowClicked(String fieldOfStudy);
 
     List<String> getPermUniversityList();
+
+    List<String> getPermDegreeList();
+
+    List<String> getPermFieldOfStudyList();
+
 }

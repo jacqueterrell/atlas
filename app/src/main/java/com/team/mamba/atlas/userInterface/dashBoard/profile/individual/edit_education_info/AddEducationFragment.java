@@ -15,23 +15,18 @@ import android.support.v7.widget.SearchView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 import android.widget.ImageView;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.data.model.local.Education;
 import com.team.mamba.atlas.databinding.AddEducationLayoutBinding;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
-import com.team.mamba.atlas.utils.CollegesArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AddEducationFragment extends Fragment implements AddEducationNavigator,SearchView.OnQueryTextListener {
 
@@ -39,8 +34,17 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
     private static EditEducationNavigator navigator;
     private DashBoardActivity parentActivity;
     private SelectSchoolAdapter selectSchoolAdapter;
+    private SelectDegreeAdapter selectDegreeAdapter;
+    private SelectFieldOfStudyAdapter fieldOfStudyAdapter;
+
     private List<String> universityList = new ArrayList<>();
     private List<String> permUniversityList = new ArrayList<>();
+
+    private List<String> degreeList = new ArrayList<>();
+    private List<String> permDegreeList = new ArrayList<>();
+
+    private List<String> fieldOfStudyList = new ArrayList<>();
+    private List<String> permFieldOfStudyList = new ArrayList<>();
 
     public static AddEducationFragment newInstance(EditEducationNavigator editEducationNavigator){
 
@@ -62,11 +66,15 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
         getActivity().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         permUniversityList.addAll(Arrays.asList(CollegesArray.colleges));
-        universityList.addAll(Arrays.asList(CollegesArray.colleges));
+        permDegreeList.addAll(Arrays.asList(getActivity().getResources().getStringArray(R.array.degree_array)));
+        permFieldOfStudyList.addAll(Arrays.asList(FieldsOfStudyArray.collegeMajors));
+
         selectSchoolAdapter = new SelectSchoolAdapter(universityList,this);
+        selectDegreeAdapter = new SelectDegreeAdapter(degreeList,this);
+        fieldOfStudyAdapter = new SelectFieldOfStudyAdapter(fieldOfStudyList,this);
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        binding.recyclerView.setAdapter(selectSchoolAdapter);
 
         binding.btnSave.setOnClickListener(v -> onSavedClicked());
 
@@ -77,13 +85,15 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
             String school = education.getSchool();
             String fieldOfStudy = education.getFieldOfStudy();
 
-            binding.etDegree.setText(degree);
-            binding.etSchool.setText(school);
-            binding.etFieldOfStudy.setText(fieldOfStudy);
+            binding.searchViewDegree.setQuery(degree,true);
+            binding.searchViewSchool.setQuery(school,true);
+            binding.searchViewFieldOfStudy.setQuery(fieldOfStudy,true);
         }
 
         setUpListeners();
         setUpUniversitySearchView();
+        setUpDegreeSearchView();
+        setUpFieldOfStudySearchView();
 
         return binding.getRoot();
     }
@@ -91,6 +101,16 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
     @Override
     public List<String> getPermUniversityList() {
         return permUniversityList;
+    }
+
+    @Override
+    public List<String> getPermDegreeList() {
+        return permDegreeList;
+    }
+
+    @Override
+    public List<String> getPermFieldOfStudyList() {
+        return permFieldOfStudyList;
     }
 
     @Override
@@ -104,6 +124,14 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
         if (binding.searchViewSchool.hasFocus()){
 
             selectSchoolAdapter.filter(newText);
+
+        } else if (binding.searchViewDegree.hasFocus()){
+
+            selectDegreeAdapter.filter(newText);
+
+        } else if (binding.searchViewFieldOfStudy.hasFocus()){
+
+            fieldOfStudyAdapter.filter(newText);
         }
 
         return true;
@@ -122,41 +150,74 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
             }
         });
 
-        binding.etDegree.setOnFocusChangeListener((v, hasFocus) -> {
+        binding.searchViewDegree.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
 
             if (hasFocus){
 
-                universityList.clear();
-                binding.recyclerView.setAdapter(selectSchoolAdapter);
+                degreeList.clear();
+                degreeList.addAll(permDegreeList);
+                binding.recyclerView.setAdapter(selectDegreeAdapter);
 
             }
         });
 
-        binding.etFieldOfStudy.setOnFocusChangeListener((v, hasFocus) -> {
+        binding.searchViewFieldOfStudy.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
 
             if (hasFocus){
 
-                universityList.clear();
-                binding.recyclerView.setAdapter(selectSchoolAdapter);
+                fieldOfStudyList.clear();
+                fieldOfStudyList.addAll(permFieldOfStudyList);
+                binding.recyclerView.setAdapter(fieldOfStudyAdapter);
 
             }
         });
     }
 
     @Override
-    public void onRowClicked(String university) {
+    public void onSchoolRowClicked(String university) {
 
-      //  binding.searchViewSchool.set;
-        binding.searchViewSchool.setQuery(university,false);
+        binding.searchViewSchool.setQuery(university,true);
         binding.searchViewSchool.clearFocus();
+        EditText searchEditText = binding.searchViewSchool.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setSelection(0);
+
+        universityList.clear();
+        universityList.addAll(permUniversityList);
+        selectSchoolAdapter.notifyDataSetChanged();
+
     }
 
+    @Override
+    public void onDegreeRowClicked(String degree) {
+
+        binding.searchViewDegree.setQuery(degree,true);
+        binding.searchViewDegree.clearFocus();
+        EditText searchEditText = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setSelection(0);
+
+        degreeList.clear();
+        degreeList.addAll(permDegreeList);
+        selectDegreeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFieldOfStudyRowClicked(String fieldOfStudy) {
+
+        binding.searchViewFieldOfStudy.setQuery(fieldOfStudy,true);
+        binding.searchViewFieldOfStudy.clearFocus();
+        EditText searchEditText = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setSelection(0);
+
+        fieldOfStudyList.clear();
+        fieldOfStudyList.addAll(permFieldOfStudyList);
+        fieldOfStudyAdapter.notifyDataSetChanged();
+    }
 
     private void onSavedClicked() {
 
-        String degree = binding.etDegree.getText().toString();
-        String field = binding.etFieldOfStudy.getText().toString();
-        String school = binding.etSchool.getText().toString();
+        String degree = binding.searchViewDegree.getQuery().toString();
+        String field = binding.searchViewFieldOfStudy.getQuery().toString();
+        String school = binding.searchViewSchool.getQuery().toString();
 
         if (isAllValuesValid()) {
 
@@ -185,11 +246,16 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
         }
     }
 
+    /**
+     * Check that the values are not empty
+     *
+     * * @return
+     */
     private boolean isAllValuesValid(){
 
-        String degree = binding.etDegree.getText().toString();
-        String field = binding.etFieldOfStudy.getText().toString();
-        String school = binding.etSchool.getText().toString();
+        String degree = binding.searchViewDegree.getQuery().toString();
+        String field = binding.searchViewFieldOfStudy.getQuery().toString();
+        String school = binding.searchViewSchool.getQuery().toString();
 
         if (degree.isEmpty() || field.isEmpty() || school.isEmpty()){
 
@@ -200,6 +266,9 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
     }
 
 
+    /**
+     * Sets default values for the Select School search view
+     */
     private void setUpUniversitySearchView(){
 
         binding.searchViewSchool.setOnQueryTextListener(this);
@@ -219,6 +288,57 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
 
         //set the line color
         View v = binding.searchViewSchool.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        v.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    /**
+     * Sets default values for the Select Degree search view
+     */
+    private void setUpDegreeSearchView(){
+
+        binding.searchViewDegree.setOnQueryTextListener(this);
+        binding.searchViewDegree.setIconifiedByDefault(false);
+        binding.searchViewDegree.setFocusable(false);
+
+        //set the color for our search view edit text and text hint
+        EditText searchEditText = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setHintTextColor(getResources().getColor(R.color.material_icons_light));
+        searchEditText.setHint("Degree");
+        searchEditText.setGravity(Gravity.CENTER);
+
+        //set the color for our search view icon
+        ImageView searchMagIcon = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+        searchMagIcon.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white));
+        searchMagIcon.setVisibility(View.GONE);
+
+        //set the line color
+        View v = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        v.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+
+    /**
+     * Sets default values for the Select Field of Study search view
+     */
+    private void setUpFieldOfStudySearchView(){
+
+        binding.searchViewFieldOfStudy.setOnQueryTextListener(this);
+        binding.searchViewFieldOfStudy.setIconifiedByDefault(false);
+        binding.searchViewFieldOfStudy.setFocusable(false);
+
+        //set the color for our search view edit text and text hint
+        EditText searchEditText = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setHintTextColor(getResources().getColor(R.color.material_icons_light));
+        searchEditText.setHint("Field of Study");
+        searchEditText.setGravity(Gravity.CENTER);
+
+        //set the color for our search view icon
+        ImageView searchMagIcon = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+        searchMagIcon.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white));
+        searchMagIcon.setVisibility(View.GONE);
+
+        //set the line color
+        View v = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 }

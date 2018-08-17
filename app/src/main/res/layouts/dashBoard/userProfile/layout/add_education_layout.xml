@@ -43,65 +43,50 @@
                 android:layout_marginBottom="5dp"
                 android:layout_gravity="center_horizontal"/>
 
-            <EditText
-                android:id="@+id/et_school"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@null"
-                android:cursorVisible="true"
-                android:fontFamily="@font/lato"
-                android:hint="School"
-                android:textAlignment="center"
-                android:imeOptions="actionNext"
-                android:inputType="textCapWords"
-                android:layout_marginBottom="5dp"
-                android:textSize="15sp"
-                android:visibility="gone"
-                />
 
             <android.support.v7.widget.SearchView
                 android:id="@+id/search_view_school"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:fontFamily="@font/lato"
-                android:queryHint="Search..."
                 app:iconifiedByDefault="false"
-                android:textAlignment="center"
                 android:imeOptions="actionNext"
                 android:inputType="textCapWords"
                 android:layout_marginBottom="5dp"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
                 android:textSize="15sp"
                 android:background="@null"/>
 
-            <EditText
-                android:id="@+id/et_degree"
+
+            <android.support.v7.widget.SearchView
+                android:id="@+id/search_view_degree"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@null"
-                android:cursorVisible="true"
                 android:fontFamily="@font/lato"
-                android:hint="Degree"
-                android:textAlignment="center"
+                app:iconifiedByDefault="false"
                 android:imeOptions="actionNext"
                 android:inputType="textCapWords"
                 android:layout_marginBottom="5dp"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
                 android:textSize="15sp"
-                />
+                android:background="@null"/>
 
-            <EditText
-                android:id="@+id/et_field_of_study"
+
+            <android.support.v7.widget.SearchView
+                android:id="@+id/search_view_field_of_study"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@null"
-                android:cursorVisible="true"
                 android:fontFamily="@font/lato"
-                android:hint="Field of Study"
-                android:textAlignment="center"
-                android:imeOptions="actionDone"
-                android:textSize="15sp"
+                app:iconifiedByDefault="false"
+                android:imeOptions="actionNext"
                 android:inputType="textCapWords"
-                />
-
+                android:layout_marginBottom="5dp"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:textSize="15sp"
+                android:background="@null"/>
 
             <android.support.v7.widget.CardView
                 android:layout_width="105dp"

@@ -38,7 +38,7 @@ public class SelectSchoolAdapter extends RecyclerView.Adapter<SelectSchoolViewHo
         public void onClick(View v) {
 
             String university = universityList.get(getAdapterPosition());
-            navigator.onRowClicked(university);
+            navigator.onSchoolRowClicked(university);
         }
     }
 

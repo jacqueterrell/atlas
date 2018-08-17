@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.utils;
+package com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info;
 
 import java.util.Arrays;
 import java.util.List;

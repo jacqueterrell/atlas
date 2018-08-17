@@ -244,7 +244,8 @@ dependencies {
     implementation "com.google.code.findbugs:jsr305:$rootProject.findBugs"
     implementation "com.orhanobut:logger:$rootProject.orhanobutLogger"
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
+    implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
+    implementation "com.google.android.gms:play-services-places:15.0.1"
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
