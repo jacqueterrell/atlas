@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,6 +30,7 @@ import com.team.mamba.atlas.data.model.local.WorkHistory;
 import com.team.mamba.atlas.databinding.EditWorkHistoryLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.AddEducationFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationAdapter;
@@ -52,6 +54,7 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     private List<WorkHistory> workHistoryList = new ArrayList<>();
     private EditWorkAdapter workAdapter;
     private WorkHistory deletedWorkHistory;
+    private DashBoardActivityNavigator parentNavigator;
 
     public static EditWorkFragment newInstance(UserProfile userProfile){
 
@@ -80,6 +83,12 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
         return binding.progressSpinner;
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,14 +138,8 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     public void onProfileUpdated() {
 
         hideProgressSpinner();
-
-        for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-            if (fragment instanceof InfoFragment){
-                continue;
-            } else {
-                getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-        }        }
+        parentNavigator.resetToFirstFragment();
+    }
 
     @Override
     public void onSaveNewWorkHistory(WorkHistory workHistory) {

@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.SuggestedContactsLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +39,7 @@ implements SuggestedContactsNavigator {
     private SuggestedContactsLayoutBinding binding;
     private List<UserProfile> suggestedProfileList = new ArrayList<>();
     private SuggestedContactsAdapter suggestedContactsAdapter;
+    private DashBoardActivityNavigator parentNavigator;
 
 
     public static SuggestedContactsFragment newInstance(){
@@ -62,6 +65,12 @@ implements SuggestedContactsNavigator {
     @Override
     public View getProgressSpinner() {
         return null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
     }
 
     @Override
@@ -139,13 +148,7 @@ implements SuggestedContactsNavigator {
         dialog.setTitle(title)
                 .setPositiveButton("OK", (paramDialogInterface, paramInt) -> {
 
-                    for (Fragment fragment: getActivity().getSupportFragmentManager().getFragments()){
-                        if (fragment instanceof InfoFragment){
-                            continue;
-                        } else {
-                            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        }
-                    }
+                    parentNavigator.resetToFirstFragment();
 
                 });
 

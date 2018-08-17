@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_business;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.AddBusinessLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import javax.inject.Inject;
 
@@ -30,6 +33,7 @@ implements AddBusinessNavigator {
 
 
     private AddBusinessLayoutBinding binding;
+    private DashBoardActivityNavigator parentNavigator;
 
     public static AddBusinessFragment newInstance(){
 
@@ -54,6 +58,12 @@ implements AddBusinessNavigator {
     @Override
     public View getProgressSpinner() {
         return null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) parentNavigator;
     }
 
     @Override
@@ -116,13 +126,7 @@ implements AddBusinessNavigator {
                 .setMessage(body)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-                        if (fragment instanceof InfoFragment){
-                            continue;
-                        } else {
-                            getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        }
-                    }
+                    parentNavigator.resetToFirstFragment();
                 });
 
         dialog.show();
@@ -141,15 +145,9 @@ implements AddBusinessNavigator {
                 .setMessage(msg)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-                        if (fragment instanceof InfoFragment){
-                            continue;
-                        } else {
-                            getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        }
-                    }
-                });
+                    parentNavigator.resetToFirstFragment();
 
-        dialog.show();
+                    dialog.show();
+                });
     }
 }

@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,6 +30,7 @@ import com.team.mamba.atlas.data.model.local.Education;
 import com.team.mamba.atlas.databinding.EditEducationLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailFragment;
@@ -55,6 +57,7 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     private List<Education> educationList = new ArrayList<>();
     private EditEducationAdapter editEducationAdapter;
     private Education deletedEducation;
+    private DashBoardActivityNavigator parentNavigator;
 
 
     public static EditEducationFragment newInstance(UserProfile userProfile){
@@ -81,6 +84,12 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     @Override
     public View getProgressSpinner() {
         return binding.progressSpinner;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
     }
 
     @Override
@@ -138,13 +147,7 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     public void onProfileUpdated() {
 
         hideProgressSpinner();
-        for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-            if (fragment instanceof InfoFragment){
-                continue;
-            } else {
-                getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-        }
+        parentNavigator.resetToFirstFragment();
     }
 
     @Override

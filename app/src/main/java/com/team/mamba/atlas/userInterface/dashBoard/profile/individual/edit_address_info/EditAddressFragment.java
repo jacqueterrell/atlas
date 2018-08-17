@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.EditAddressLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
@@ -28,6 +30,7 @@ public class EditAddressFragment extends BaseFragment<EditAddressLayoutBinding,E
 
     private EditAddressLayoutBinding binding;
     private static UserProfile profile;
+    private DashBoardActivityNavigator parentNavigator;
 
     public static EditAddressFragment newInstance(UserProfile userProfile){
 
@@ -54,6 +57,12 @@ public class EditAddressFragment extends BaseFragment<EditAddressLayoutBinding,E
     @Override
     public View getProgressSpinner() {
         return null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
     }
 
     @Override
@@ -107,16 +116,6 @@ public class EditAddressFragment extends BaseFragment<EditAddressLayoutBinding,E
     public void onProfileUpdated() {
 
         showToastShort("Profile Updated");
-
-        for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-
-            if (fragment instanceof InfoFragment){
-                continue;
-
-            } else {
-
-                getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-        }
+        parentNavigator.resetToFirstFragment();
     }
 }

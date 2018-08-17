@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.recycler_view;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,8 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.FindUsersRecyclerLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersAdapter;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
     private FindUsersRecyclerLayoutBinding binding;
     private static List<UserProfile> queriedProfiles = new ArrayList<>();
     private FindUsersAdapter findUsersAdapter;
+    private DashBoardActivityNavigator parentNavigator;
 
     public static FindUsersRecycler newInstance(List<UserProfile> profiles){
 
@@ -62,6 +66,12 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
     @Override
     public View getProgressSpinner() {
         return null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
     }
 
     @Override
@@ -131,13 +141,7 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
         dialog.setTitle(title)
                 .setPositiveButton("OK", (paramDialogInterface, paramInt) -> {
 
-                    for (Fragment fragment: getActivity().getSupportFragmentManager().getFragments()){
-                        if (fragment instanceof InfoFragment){
-                            continue;
-                        } else {
-                            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        }
-                    }
+                    parentNavigator.resetToFirstFragment();
 
                 });
 
@@ -158,13 +162,7 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
                 .setMessage(body)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-                        if (fragment instanceof InfoFragment){
-                            continue;
-                        } else {
-                            getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        }
-                    }
+                    parentNavigator.resetToFirstFragment();
                 });
 
         dialog.show();

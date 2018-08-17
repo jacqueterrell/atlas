@@ -130,13 +130,7 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 .setMessage(msg)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-                        if (fragment instanceof InfoFragment){
-                            continue;
-                        } else {
-                            getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        }
-                    }
+                    parentNavigator.resetToFirstFragment();
                 });
 
         dialog.show();
@@ -165,13 +159,8 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 .setMessage(body)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    for (Fragment fragment: getBaseActivity().getSupportFragmentManager().getFragments()){
-                        if (fragment instanceof InfoFragment){
-                            continue;
-                        } else {
-                            getBaseActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        }
-                    }
+                   parentNavigator.resetToFirstFragment();
+
                 });
 
         dialog.show();

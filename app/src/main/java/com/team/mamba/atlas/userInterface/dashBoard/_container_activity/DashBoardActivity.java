@@ -122,6 +122,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     }
 
     @Override
+    public void resetToFirstFragment() {
+
+        getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        showToolBar();
+    }
+
+    @Override
     public void onContactsClicked() {
 
         showContactsIcon();

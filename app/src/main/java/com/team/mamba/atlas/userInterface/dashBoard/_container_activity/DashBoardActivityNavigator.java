@@ -55,4 +55,5 @@ public interface DashBoardActivityNavigator {
 
     void setCrmFilter(CrmFilter crmFilter);
 
+    void resetToFirstFragment();
 }
