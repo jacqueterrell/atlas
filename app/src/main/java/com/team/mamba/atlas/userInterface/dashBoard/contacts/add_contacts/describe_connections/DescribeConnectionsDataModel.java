@@ -148,7 +148,7 @@ public class DescribeConnectionsDataModel {
         userConnections.setConsentingUserID(consentingProfile.getId());
         userConnections.setConsentingUserName(consentingName);
         userConnections.setId(id);
-        userConnections.setConfirmed(false);
+        userConnections.setConfirmed(viewModel.isApprovingConnection());
         userConnections.setOrgBus(false);
         userConnections.setReqDeviceToken(requestingToken);
         userConnections.setRequestingUserName(requestingName);
@@ -160,11 +160,41 @@ public class DescribeConnectionsDataModel {
 
                     viewModel.getNavigator().onRequestSent();
 
+                    if (viewModel.isApprovingConnection()){
+
+                      updateInitialConnection(viewModel);
+                    }
+
                 })
                 .addOnFailureListener(e -> {
 
                     Logger.e(e.getMessage());
                 });
+    }
+
+    private void updateInitialConnection(DescribeConnectionsViewModel viewModel){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        UserConnections connections = viewModel.getRequestingConnection();
+        connections.setConfirmed(true);
+
+        db.collection(AppConstants.CONNECTIONS_COLLECTION)
+                .document(connections.getId())
+                .set(connections)
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()){
+
+                        Logger.i("Connection updated successfully");
+
+                    } else {
+
+                        Logger.e("Failed to update connection " + task.getException().getLocalizedMessage());
+                    }
+                });
+
+
     }
 
     /**********For Business Accounts******************/

@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections;
 
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
@@ -8,9 +9,10 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
 
 
     private DescribeConnectionsDataModel dataModel;
-
     private UserProfile loggedInProfileIndividual;
     private BusinessProfile loggedInProfileBusiness;
+    private boolean approvingConnection = false;
+    private UserConnections requestingConnection;
 
 
 
@@ -35,6 +37,22 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
 
     public BusinessProfile getLoggedInProfileBusiness() {
         return loggedInProfileBusiness;
+    }
+
+    public void setApprovingConnection(boolean approvingConnection) {
+        this.approvingConnection = approvingConnection;
+    }
+
+    public boolean isApprovingConnection() {
+        return approvingConnection;
+    }
+
+    public void setRequestingConnection(UserConnections requestingConnection) {
+        this.requestingConnection = requestingConnection;
+    }
+
+    public UserConnections getRequestingConnection() {
+        return requestingConnection;
     }
 
     /*****Onclick Listeners*********/

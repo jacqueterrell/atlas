@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
+import com.team.mamba.atlas.utils.ChangeFragments;
 import java.util.Collections;
 import java.util.Map;
 import javax.inject.Inject;
@@ -311,9 +314,32 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
                 if (userConnections.isNeedsApproval()){
 
-                    if (profile.getId().equals(userConnections.getRequestingUserID())){//an unknown user is requesting to connect
+                    if (profile.getId().equals(userConnections.getRequestingUserID())){//another user is requesting to connect
 
-                        parentNavigator.openUserProfile(profile);
+                        userConnections.setUserProfile(profile);
+                        String first = profile.getFirstName();
+                        String last = profile.getLastName();
+                        String code = profile.getCode();
+
+                        String title = "Approve Connection?";
+                        String msg = first + " " + last + " " + "is requesting to connect with you as a " + userConnections.getConnectionTypeToString()
+                                + "\n\n" + "Tap approve to share connect with " + first + " " + last + " and proceed to define your connection type";
+
+                        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+                        dialog.setTitle(title)
+                                .setMessage(msg)
+                                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
+
+                                })
+                                .setPositiveButton("Approve", (paramDialogInterface, paramInt) -> {
+
+                                    viewModel.getUserStatsList().clear();
+                                    ChangeFragments.replaceFragmentVertically(DescribeConnectionsFragment.newInstance(userConnections),getBaseActivity()
+                                            .getSupportFragmentManager(),"AddUserLayout",null);
+                                });
+
+                        dialog.show();
 
                     }
 
