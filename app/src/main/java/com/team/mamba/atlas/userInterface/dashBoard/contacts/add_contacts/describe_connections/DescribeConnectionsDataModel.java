@@ -175,9 +175,11 @@ public class DescribeConnectionsDataModel {
     private void updateInitialConnection(DescribeConnectionsViewModel viewModel){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Long timeStamp = System.currentTimeMillis() / 1000;
 
         UserConnections connections = viewModel.getRequestingConnection();
         connections.setConfirmed(true);
+        connections.setTimestamp(timeStamp);
 
         db.collection(AppConstants.CONNECTIONS_COLLECTION)
                 .document(connections.getId())

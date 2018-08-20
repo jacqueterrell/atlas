@@ -195,12 +195,15 @@ dependencies {
 
     //firebase libraries
     implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation 'com.google.firebase:firebase-firestore:17.0.4'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
+    implementation 'com.google.firebase:firebase-firestore:17.1.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.0'
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
+    implementation 'com.google.firebase:firebase-crash:16.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.3.0'
 
     //all testing dependencies
-    implementation 'com.google.firebase:firebase-storage:16.0.1'
+
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
         exclude group: "com.android.support", module: "support-annotations"
     })
@@ -277,7 +280,7 @@ dependencies {
     androidTestImplementation "com.android.support.test:rules:$rootProject.testRunner"
 
     // Databinding
-   // kapt "com.android.databinding:compiler:$gradle_plugin_version"
+    // kapt "com.android.databinding:compiler:$gradle_plugin_version"
 
     // all ViewModel and LiveData dependencies
     implementation "android.arch.lifecycle:extensions:$rootProject.archictectureComponents"

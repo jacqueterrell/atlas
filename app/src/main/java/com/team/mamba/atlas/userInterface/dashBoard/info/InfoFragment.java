@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.google.firebase.firestore.Exclude;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.UserConnections;
@@ -30,12 +31,13 @@ import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
+import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlas.utils.ChangeFragments;
 import java.util.Collections;
 import java.util.Map;
 import javax.inject.Inject;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
+import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -283,15 +285,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         parentNavigator.openSettingsScreen();
     }
 
-    @Override
-    public void onAddressBookClicked() {
-
-    }
-
-    @Override
-    public void onCrmClicked() {
-
-    }
 
     @Override
     public void onRecentActivitiesRowClicked(UserConnections userConnections) {
@@ -306,7 +299,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
                 }
             }
-
 
         } else {
 
@@ -356,21 +348,23 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
     @Override
-    public void onNotificationsClicked() {
-
-    }
-
-    @Override
     public void setUserStatsAdapter(List<String> userStats, List<UserConnections> connectionRecords) {
 
-
-        if (dataManager.getSharedPrefs().isBusinessAccount()){
+        if (dataManager.getSharedPrefs().isBusinessAccount()){//logged in as a business profile
 
             binding.tvUserId.setText(viewModel.getBusinessProfile().getCode());
 
         } else {
 
-            binding.tvUserId.setText(viewModel.getUserProfile().getCode());
+            try {
+
+                binding.tvUserId.setText(viewModel.getUserProfile().getCode());
+
+            } catch (Exception e){
+
+                dataManager.getSharedPrefs().setUserLoggedIn(false);
+                getBaseActivity().finishAffinity();
+            }
         }
 
         Collections.sort(connectionRecords,(o1,o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
@@ -388,12 +382,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         UserProfile profile = viewModel.getUserProfile();
         parentNavigator.setUserProfile(profile);
-
     }
 
 
     @Override
-    public void handlerError(String msg) {
+    public void handleError(String msg) {
 
         showSnackbar(msg);
         hideSplashScreen();
@@ -406,7 +399,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         dataManager.getSharedPrefs().setUserLoggedIn(false);
         getBaseActivity().finishAffinity();
-        startActivity(ViewPagerActivity.newIntent(getBaseActivity()));
+        startActivity(WelcomeActivity.newIntent(getBaseActivity()));
     }
 
     @Override
@@ -424,6 +417,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
 
+    /**
+     * Sets the labels for our network chart
+     *
+     * @return list of label names
+     */
     private List<String> setNetworkLabels() {
 
         List<String> labels = new ArrayList<>();
@@ -433,16 +431,18 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         for (int i = 0; i < 6; i++) {
 
             calendar.set(Calendar.MONTH, currentMonth - i);
-
             labels.add(getMonthsList().get(currentMonth));
-
             currentMonth -= 1;
-
         }
 
         return labels;
     }
 
+    /**
+     * Sets the data values for our Network Chart
+     *
+     * @return network chart data
+     */
     private List<BarEntry> setNetworkBarValues() {
 
         List<BarEntry> entries = new ArrayList<>();
@@ -458,6 +458,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         return entries;
     }
 
+    /**
+     * Sets the labels for the Opportunity Bar Chart
+     *
+     * @return String of label names
+     */
     private List<String> setOpportunitiesLabels(){
 
         List<String> labels = new ArrayList<>();
@@ -471,6 +476,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         return labels;
     }
 
+    /**
+     * Sets the data values for our Opportunities Bar Chart
+     *
+     * @return data values
+     */
     private List<BarEntry> setOpportunitiesBarValues() {
 
         List<BarEntry> entries = new ArrayList<>();
@@ -487,6 +497,9 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
 
+    /**
+     * Sets all data and labels for the Network Bar Chart
+     */
     private void setNetworksBarChart() {
 
         BarDataSet dataSet = new BarDataSet(setNetworkBarValues(), "New Connections");
@@ -539,6 +552,9 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
     }
 
+    /**
+     * Sets all data and labels for the Opportunities Bar Chart
+     */
     private void setOpportunitiesBarChart() {
 
         BarDataSet dataSet = new BarDataSet(setOpportunitiesBarValues(), "Opportunities");
@@ -588,6 +604,10 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
     }
 
+    /**
+     *
+     * @return String names for months
+     */
     private List<String> getMonthsList() {
 
         List<String> monthsList = new ArrayList<>();

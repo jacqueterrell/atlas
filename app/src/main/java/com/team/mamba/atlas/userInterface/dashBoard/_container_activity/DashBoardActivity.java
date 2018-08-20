@@ -2,57 +2,43 @@ package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ShareCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebSettings;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
-import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
+import com.team.mamba.atlas.service.MyFirebaseMessagingService;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.AddContactDialogFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageOneFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditPageOneNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_business.AddBusinessFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_user.AddUserFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
-
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.AddNewImageDialogFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileFragment;
-import com.team.mamba.atlas.userInterface.welcome._viewPagerActivity.ViewPagerActivity;
-import com.team.mamba.atlas.utils.AppConstants;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_business.BusinessProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfilePager;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.UserProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
-
-import java.io.InputStream;
-
-import javax.inject.Inject;
-
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import javax.inject.Inject;
 
 public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, DashBoardActivityViewModel>
         implements DashBoardActivityNavigator, HasSupportFragmentInjector {
@@ -99,14 +85,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
 
+        showToolBar();
+        setNotificationObservable();
         dataManager.getSharedPrefs().setUserLoggedIn(true);
 
         //Load the fragment into our container
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
-        String version = "Version " + BuildConfig.VERSION_NAME;
-        binding.dialogSettings.tvVersionName.setText(version);
 
         if (fragment == null) {
             fragment = InfoFragment.newInstance();
@@ -195,7 +180,8 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     @Override
     public void openSettingsScreen() {
 
-        showSettings();
+        ChangeFragments.addFragmentVertically(SettingsFragment.newInstance(), getSupportFragmentManager(), "SettingsFragment", null);
+        hideToolBar();
     }
 
     @Override
@@ -220,8 +206,18 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     @Override
     public void openUserProfile(UserProfile profile) {
 
-        ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(profile), getSupportFragmentManager(), "UserProfile", null);
-        hideToolBar();
+        //check if the profile is a contacts or the signed in use
+        if (profile.id.equals(dataManager.getSharedPrefs().getUserId())){
+
+            ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(profile), getSupportFragmentManager(), "UserProfile", null);
+            hideToolBar();
+
+        } else {
+
+            ChangeFragments.addFragmentVertically(ContactProfilePager.newInstance(profile), getSupportFragmentManager(), "ContactPager", null);
+            hideToolBar();
+        }
+
     }
 
     @Override
@@ -231,105 +227,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         hideToolBar();
     }
 
-    @Override
-    public void onSiteLinkClicked() {
 
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_SITE_URL));
-        startActivity(i);
-    }
-
-
-    @Override
-    public void onCorporateDirectoryClicked() {
-
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
-        startActivity(i);
-    }
-
-    @Override
-    public void onOrganizationalOutreachClicked() {
-
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
-        startActivity(i);
-    }
-
-    @Override
-    public void onAlumniNetworkingClicked() {
-
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
-        startActivity(i);
-    }
-
-
-    @Override
-    public void onPrivacyPolicyClicked() {
-
-        showTermsOfService();
-
-        try {
-
-            Resources res = getResources();
-            InputStream in_s = res.openRawResource(R.raw.privacy);
-            byte[] b = new byte[in_s.available()];
-            in_s.read(b);
-            binding.tvTerms.setText(new String(b));
-
-        } catch (Exception e) {
-            binding.tvTerms.setText("Error: can't show terms.");
-        }
-    }
-
-    @Override
-    public void onTermsOfServiceClicked() {
-
-        showTermsOfService();
-
-        try {
-
-            Resources res = getResources();
-            InputStream in_s = res.openRawResource(R.raw.terms);
-            byte[] b = new byte[in_s.available()];
-            in_s.read(b);
-            binding.tvTerms.setText(new String(b));
-
-        } catch (Exception e) {
-            binding.tvTerms.setText("Error: can't show terms.");
-        }
-    }
-
-    @Override
-    public void onNetworkManagementClicked() {
-
-    }
-
-    @Override
-    public void onLogOutClicked() {
-
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-
-        dialog.setTitle("Log Out")
-                .setMessage("Do you want to log out of this account?")
-                .setNegativeButton("no", (paramDialogInterface, paramInt) -> {
-
-                })
-                .setPositiveButton("yes", (paramDialogInterface, paramInt) -> {
-
-                    //InfoViewModel.userStatsList.clear();
-                    dataManager.getSharedPrefs().setUserLoggedIn(false);
-                    showToastShort("Logging out");
-                    finishAffinity();
-                    startActivity(ViewPagerActivity.newIntent(DashBoardActivity.this));
-                });
-
-        dialog.show();
-
-    }
-
-
-    @Override
-    public void onDeleteMyAccountClicked() {
-
-    }
 
     @Override
     public void showToolBar() {
@@ -412,38 +310,8 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         binding.ivNotificationsNotSelected.setVisibility(View.VISIBLE);
     }
 
-    private void showSettings() {
 
-        YoYo.with(Techniques.SlideInUp)
-                .duration(500)
-                .onStart(animator -> binding.dialogSettings.layoutDashboardSettings.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogSettings.layoutDashboardSettings);
-    }
 
-    private void hideSettings() {
-
-        YoYo.with(Techniques.SlideOutDown)
-                .duration(500)
-                .onEnd(animator -> binding.dialogSettings.layoutDashboardSettings.setVisibility(View.GONE))
-                .playOn(binding.dialogSettings.layoutDashboardSettings);
-    }
-
-    private void showTermsOfService() {
-
-        YoYo.with(Techniques.SlideInUp)
-                .duration(500)
-                .onStart(animator -> binding.layoutTermsOfService.setVisibility(View.VISIBLE))
-                .playOn(binding.layoutTermsOfService);
-
-    }
-
-    private void hideTermsOfService() {
-
-        YoYo.with(Techniques.SlideOutDown)
-                .duration(500)
-                .onEnd(animator -> binding.layoutTermsOfService.setVisibility(View.GONE))
-                .playOn(binding.layoutTermsOfService);
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -452,15 +320,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
             Fragment previousFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-            if (binding.layoutTermsOfService.getVisibility() == View.VISIBLE) {
-
-                hideTermsOfService();
-
-            } else if (binding.dialogSettings.layoutDashboardSettings.getVisibility() == View.VISIBLE){
-
-                hideSettings();
-
-            } else if (previousFragment instanceof CrmFragment) {
+            if (previousFragment instanceof CrmFragment) {
 
                 CrmNavigator navigator = (CrmNavigator) previousFragment;
 
@@ -507,5 +367,39 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         }
 
         return false;
+    }
+
+
+    /**
+     * Subscribes to the Observable in {@link MyFirebaseMessagingService}
+     *
+     */
+    private void setNotificationObservable(){
+
+        Observable<String> observable = MyFirebaseMessagingService.getObservable();
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+                //show notification badges
+            }
+        };
+
+        observable.subscribe(observer);
     }
 }

@@ -43,7 +43,7 @@
         >
 
 
-        <activity android:name=".userInterface.welcome._viewPagerActivity.ViewPagerActivity"
+        <activity android:name=".userInterface.welcome._container_activity.WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
@@ -64,6 +64,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
 
         <meta-data
             android:name="preloaded_fonts"
@@ -89,6 +90,20 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyChplMH3NIv0mEn7DL6aLnz_OJ5safyObU"/>
+
+        <service
+            android:name=".service.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 

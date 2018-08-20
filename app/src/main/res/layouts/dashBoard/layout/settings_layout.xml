@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,7 +10,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsViewModel"/>
 
     </data>
 
@@ -19,9 +20,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:focusable="true">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -214,6 +213,67 @@
 
         </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/layout_terms_of_service"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_terms_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Terms of Service"
+                        style="@style/App_Text_view"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textSize="17sp"
+                        android:visibility="gone"
+                        android:layout_marginBottom="15dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_terms"
+                        style="@style/App_Text_view"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"
+                        />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </FrameLayout>
+
+
+
+        <net.bohush.geometricprogressview.GeometricProgressView
+            android:id="@+id/progress_spinner"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:gp_color="@color/grey"
+            app:gp_duration="800"
+            app:gp_figure_padding="3dp"
+            app:gp_number_of_angles="12"
+            app:gp_type="triangle"
+            android:layout_marginBottom="100dp"/>
 
     </FrameLayout>
 

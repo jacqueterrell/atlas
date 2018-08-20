@@ -155,14 +155,12 @@ public class CrmNotes {
    @Exclude public long getAdjustedTimeStamp(){
 
         String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
-
         return Long.parseLong(adjustedTime);
     }
 
     @Exclude public long getAdjustedCloseTimeStamp(){
 
         String adjustedTime = AppFormatter.timeStampFormatter.format(closeTimestamp);
-
         return Long.parseLong(adjustedTime);
     }
 

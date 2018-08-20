@@ -10,19 +10,24 @@ import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_us
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.ContactNotesFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_phone_info.EditPhoneFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history.EditWorkFragment;
-import com.team.mamba.atlas.userInterface.welcome.ViewPagerActivityModule;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.UserProfileFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
+import com.team.mamba.atlas.userInterface.welcome.WelcomeScreenModule;
+import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
+import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.enter_phone_number.EnterPhoneNumberFragment;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -30,7 +35,13 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class FragmentBuilder {
 
-    @ContributesAndroidInjector(modules = ViewPagerActivityModule.class)
+    @ContributesAndroidInjector(modules = WelcomeScreenModule.class)
+    abstract ViewPagerFragment bindViewPagerFragment();
+
+    @ContributesAndroidInjector(modules = WelcomeScreenModule.class)
+    abstract EnterPhoneNumberFragment bindEnterPhoneNumberFragment();
+
+    @ContributesAndroidInjector(modules = WelcomeScreenModule.class)
     abstract WelcomeFragment bindWelcomeFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
@@ -93,8 +104,15 @@ public abstract class FragmentBuilder {
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract FindUsersRecycler bindFindUsersRecycler();
 
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract SettingsFragment bindSettingsFragment();
 
 
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract ContactProfileFragment bindContactProfileFragment();
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract ContactNotesFragment bindContactNotesFragment();
 
 
 }
