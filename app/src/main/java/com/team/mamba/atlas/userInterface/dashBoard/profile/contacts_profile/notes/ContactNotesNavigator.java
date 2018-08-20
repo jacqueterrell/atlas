@@ -12,7 +12,4 @@ public interface ContactNotesNavigator {
 
     void onNotesInfoClicked();
 
-    void hideConnectionInfoDialog();
-
-    void hidePersonalNotesInfoDialog();
 }

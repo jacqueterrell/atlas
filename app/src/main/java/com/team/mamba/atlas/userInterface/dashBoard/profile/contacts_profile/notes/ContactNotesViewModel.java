@@ -8,6 +8,8 @@ public class ContactNotesViewModel extends BaseViewModel<ContactNotesNavigator> 
 
     private ContactNotesDataModel dataModel;
     PersonalNotes personalNotes;
+    private int yourConnectionType = 3;
+    private long timestamp;
 
     /*********************Getters and Setters********************/
 
@@ -21,6 +23,22 @@ public class ContactNotesViewModel extends BaseViewModel<ContactNotesNavigator> 
 
     public void setPersonalNotes(PersonalNotes personalNotes) {
         this.personalNotes = personalNotes;
+    }
+
+    public void setYourConnectionType(int yourConnectionType) {
+        this.yourConnectionType = yourConnectionType;
+    }
+
+    public int getYourConnectionType() {
+        return yourConnectionType;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     /*******************Onclick Listeners***********************/
@@ -41,20 +59,11 @@ public class ContactNotesViewModel extends BaseViewModel<ContactNotesNavigator> 
         getNavigator().onNotesInfoClicked();
     }
 
-    public void hideConnectionInfoDialog(){
-
-        getNavigator().hideConnectionInfoDialog();
-    }
-
-    public void hidePersonalNotesInfoDialog(){
-
-        getNavigator().hidePersonalNotesInfoDialog();
-    }
 
     /*********************DataModel Requests**********************/
 
-    public void requestUserNotes(ContactNotesViewModel viewModel,UserProfile profile) {
+    public void getConnectionType(ContactNotesViewModel viewModel,UserProfile profile){
 
-        dataModel.requestUserNotes(viewModel,profile);
+        dataModel.getConnectionType(viewModel,profile);
     }
 }

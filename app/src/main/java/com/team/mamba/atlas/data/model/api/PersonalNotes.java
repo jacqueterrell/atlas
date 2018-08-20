@@ -12,7 +12,7 @@ public class PersonalNotes {
     public String howMet = "";
     public String id = "";
     public String subjectID = "";
-    public long timestamp;
+    public double timestamp;
     public String whereMet = "";
 
 
@@ -56,14 +56,14 @@ public class PersonalNotes {
         this.subjectID = subjectID;
     }
 
-    public long getTimeStamp() {
+    public double getTimestamp() {
 
         String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
         return Long.parseLong(adjustedTime);
     }
 
-    public void setTimeStamp(long timeStamp) {
-        this.timestamp = timeStamp;
+    public void setTimestamp(double timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getWhereMet() {

@@ -284,9 +284,9 @@ public class CrmNotes {
         int year = calendar.get(Calendar.YEAR);
 
 
-        String stamp = String.valueOf(timestamp);
+        String stamp = String.valueOf(getAdjustedTimeStamp());
 
-        if (!stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
+        if (stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
 
             return monthName + " " + day + " " + year;
 
@@ -306,9 +306,9 @@ public class CrmNotes {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int year = calendar.get(Calendar.YEAR);
 
-        String stamp = String.valueOf(closeTimestamp);
+        String stamp = String.valueOf(getAdjustedCloseTimeStamp());
 
-        if (!stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
+        if (stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
 
             return monthName + " " + day + " " + year;
 

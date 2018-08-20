@@ -13,14 +13,12 @@ import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
@@ -30,9 +28,7 @@ import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.formatData.RegEx;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+
 import javax.inject.Inject;
 
 public class ContactProfileFragment extends BaseFragment<UserProfileForContactBinding,ContactProfileViewModel>
@@ -233,11 +229,6 @@ implements ContactProfileNavigator{
 
     }
 
-    public static int getConnectionType(){
-
-        return connectionType;
-    }
-
 
     @Override
     public void onConnectionTypeSaved() {
@@ -296,17 +287,7 @@ implements ContactProfileNavigator{
         }
 
         binding.layoutContactProfile.setVisibility(View.VISIBLE);
-        hideCoverPage();
         setContactsDefaultValues();
-    }
-
-
-    private void hideCoverPage(){
-
-        YoYo.with(Techniques.FadeOut)
-                .duration(1200)
-                .onEnd(animator -> binding.layoutCoverSheet.setVisibility(View.GONE))
-                .playOn(binding.layoutCoverSheet);
     }
 
 
@@ -472,46 +453,5 @@ implements ContactProfileNavigator{
     }
 
 
-    public static String getConnectionDate(){
 
-        long timeStamp = profile.getAdjustedTimeStamp();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timeStamp * 1000);
-
-        int month = calendar.get(Calendar.MONTH);
-        String monthName = getMonth(month);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int year = calendar.get(Calendar.YEAR);
-
-
-        if (!String.valueOf(timeStamp).matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
-
-            return monthName + " " + day + " " + year;
-
-        } else {
-
-            return "";
-        }
-
-    }
-
-    private static String getMonth(int index) {
-
-        List<String> monthsList = new ArrayList<>();
-
-        monthsList.add("Jan");
-        monthsList.add("Feb");
-        monthsList.add("Mar");
-        monthsList.add("Apr");
-        monthsList.add("May");
-        monthsList.add("Jun");
-        monthsList.add("Jul");
-        monthsList.add("Aug");
-        monthsList.add("Sep");
-        monthsList.add("Oct");
-        monthsList.add("Nov");
-        monthsList.add("Dec");
-
-        return monthsList.get(index);
-    }
 }

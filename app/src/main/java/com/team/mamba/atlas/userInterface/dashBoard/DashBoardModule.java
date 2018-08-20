@@ -12,6 +12,8 @@ import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.descri
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.ContactNotesViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.HowDidYouMeetViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.PersonalNotesViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_business.BusinessProfileViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityViewModel;
@@ -174,6 +176,18 @@ public class DashBoardModule {
     ContactNotesViewModel providesContactNotesViewModel(){
 
         return new ContactNotesViewModel();
+    }
+
+    @Provides
+    HowDidYouMeetViewModel providesHowDidYouMeetViewModel(){
+
+        return new HowDidYouMeetViewModel();
+    }
+
+    @Provides
+    PersonalNotesViewModel providesPersonalNotesViewModel(){
+
+        return new PersonalNotesViewModel();
     }
 
 }

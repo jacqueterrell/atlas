@@ -11,6 +11,8 @@ import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.descri
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.ContactNotesFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.HowDidYouMeetFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.PersonalNoteRecyclerView;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_business.BusinessProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
@@ -107,12 +109,16 @@ public abstract class FragmentBuilder {
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract SettingsFragment bindSettingsFragment();
 
-
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract ContactProfileFragment bindContactProfileFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract ContactNotesFragment bindContactNotesFragment();
 
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract HowDidYouMeetFragment bindHowDidYouMeetFragment();
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract PersonalNoteRecyclerView bindPersonalNoteRecyclerView();
 
 }

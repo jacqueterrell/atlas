@@ -11,14 +11,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +28,6 @@ import com.team.mamba.atlas.databinding.EditEducationLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 import java.util.ArrayList;
@@ -322,7 +316,7 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
                                 (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, paint);
-                        icon = BitmapFactory.decodeResource(getBaseActivity().getResources(), R.drawable.ic_action_delete);
+                        icon = BitmapFactory.decodeResource(getBaseActivity().getResources(), R.drawable.ic_delete_image);
                         RectF destination = new RectF((float) itemView.getRight() - 2 * width,
                                 (float) itemView.getTop() + width, (float) itemView.getRight() - width,
                                 (float) itemView.getBottom() - width);

@@ -126,7 +126,6 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(binding.ivUserProfile);
             }
-            hideCoverPage();
 
          return binding.getRoot();
     }
@@ -474,14 +473,5 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     @Override
     public void onConnectionTypeSaved() {
 
-
-    }
-
-    private void hideCoverPage(){
-
-        YoYo.with(Techniques.FadeOut)
-                .duration(1500)
-                .onEnd(animator -> binding.layoutCoverSheet.setVisibility(View.GONE))
-                .playOn(binding.layoutCoverSheet);
     }
 }
