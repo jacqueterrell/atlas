@@ -1,7 +1,5 @@
-package com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note;
+package com.team.mamba.atlas.userInterface.dashBoard.settings.network_management;
 
-import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,52 +18,42 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.AppDataManager;
-
-import com.team.mamba.atlas.data.model.api.PersonalNotes;
-import com.team.mamba.atlas.databinding.PersonalNoteRecyclerViewBinding;
+import com.team.mamba.atlas.data.model.api.UserConnections;
+import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.databinding.NetworkManagementLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
+import com.team.mamba.atlas.utils.ChangeFragments;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerViewBinding,PersonalNotesViewModel> implements PersonalNoteNavigator {
+public class NetworkManagementFragment extends BaseFragment<NetworkManagementLayoutBinding,NetworkManagementViewModel>
+implements NetworkManagementNavigator{
 
 
     @Inject
-    PersonalNotesViewModel viewModel;
+    NetworkManagementViewModel viewModel;
 
     @Inject
-    PersonalNoteDataModel dataModel;
-
-    private static AppDataManager dataManager;
-
-    private PersonalNoteRecyclerViewBinding binding;
-    private static PersonalNotes personalNotes;
-    private PersonalNoteAdapter personalNoteAdapter;
-    private List<String> detailsList = new ArrayList<>();
-    private String deletedDetail = "";
-    private DashBoardActivityNavigator parentNavigator;
+    NetworkManagementDataModel dataModel;
 
 
+    public static NetworkManagementFragment newInstance(){
 
-
-    public static PersonalNoteRecyclerView newInstance(PersonalNotes notes,AppDataManager appDataManager){
-
-        personalNotes = notes;
-        dataManager = appDataManager;
-        return new PersonalNoteRecyclerView();
+        return new NetworkManagementFragment();
     }
+
+    private NetworkManagementLayoutBinding binding;
+    private List<UserConnections> userConnections = new ArrayList<>();
+    private NetworkManagementAdapter networkManagementAdapter;
+    private UserConnections deletedUserConnection;
 
 
     @Override
@@ -76,23 +63,17 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
 
     @Override
     public int getLayoutId() {
-        return R.layout.personal_note_recycler_view;
+        return R.layout.network_management_layout;
     }
 
     @Override
-    public PersonalNotesViewModel getViewModel() {
+    public NetworkManagementViewModel getViewModel() {
         return viewModel;
     }
 
     @Override
     public View getProgressSpinner() {
-        return null;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        parentNavigator = (DashBoardActivity) context;
+        return binding.progressSpinner;
     }
 
     @Override
@@ -102,58 +83,54 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
         viewModel.setDataModel(dataModel);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.personal_note_recycler_view,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+         super.onCreateView(inflater, container, savedInstanceState);
+         binding = getViewDataBinding();
 
-        detailsList.addAll(personalNotes.getDetails());
-        personalNoteAdapter = new PersonalNoteAdapter(detailsList,this);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        binding.recyclerView.setAdapter(personalNoteAdapter);
+         networkManagementAdapter = new NetworkManagementAdapter(userConnections,getViewModel());
+         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+         binding.recyclerView.setAdapter(networkManagementAdapter);
 
-//
-//        binding.btnFinish.setOnClickListener(view -> {
-//
-//
-//        });
+         showProgressSpinner();
+         viewModel.getUsersContacts(getViewModel());
+         setUpItemTouchHelper();
 
-        setUpItemTouchHelper();
-        return binding.getRoot();
+         return binding.getRoot();
     }
 
     @Override
-    public void onAddButtonClicked() {
+    public void onContactListReceived() {
 
-        detailsList.add("");
-        personalNoteAdapter.notifyDataSetChanged();
+        userConnections.clear();
+        userConnections.addAll(viewModel.getUserConnectionsList());
+        networkManagementAdapter.notifyDataSetChanged();
 
+        hideProgressSpinner();
     }
 
     @Override
-    public void onFinishButtonClicked() {
+    public void handleError(String msg) {
 
-        List<String> descriptionList = new ArrayList<>();
+        hideProgressSpinner();
+    }
 
-        for (Map.Entry<Integer,String> entry : personalNoteAdapter.getDetailsMap().entrySet()){
+    @Override
+    public void onRowClicked(UserConnections connection) {
 
-            String description = entry.getValue();
-            descriptionList.add(description);
+        if (connection.isOrgBus){
+
+
+        } else {
+
+            ChangeFragments.addFragmentFadeIn(DescribeConnectionsFragment.newInstance(connection,false,true),getBaseActivity()
+                    .getSupportFragmentManager(),"DescribeConnections",null);
         }
 
-        personalNotes.setDetails(descriptionList);
-        Toast.makeText(getActivity(),"Saving your info",Toast.LENGTH_SHORT).show();
-
-        viewModel.sendUserNote(getViewModel(),personalNotes);
-
     }
 
 
-    /**
-     * Sets the swipe to delete on our adapter
-     */
     private void setUpItemTouchHelper(){
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -165,31 +142,31 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
 
+
                 final int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT) {
 
-                    deletedDetail = detailsList.get(position);
-                    detailsList.remove(position);
-                    personalNoteAdapter.deleteMap(position);
+                    deletedUserConnection = userConnections.get(position);
+                    userConnections.remove(position);
+                    networkManagementAdapter.notifyDataSetChanged();
+                    viewModel.deleteUserConnection(getViewModel(),deletedUserConnection);
 
-                    personalNoteAdapter.notifyDataSetChanged();
-
-                    Snackbar snackbar = Snackbar.make(binding.getRoot(), "item deleted", 4000)
-
-                            .setAction("Undo", v -> {
-
-                                detailsList.add(position,deletedDetail);
-                                personalNoteAdapter.notifyDataSetChanged();
-
-                                showRestoredSnackbar();
-                            });
-
-                    View view = snackbar.getView();
-                    view.setBackgroundResource(R.drawable.snackbar_background);
-                    snackbar.setActionTextColor(getResources().getColor(R.color.white));
-
-                    snackbar.show();
+//                    Snackbar snackbar = Snackbar.make(binding.getRoot(), "connection removed", 4000)
+//
+//                            .setAction("Undo", v -> {
+//
+//                                userConnections.add(position,deletedUserConnection);
+//                                networkManagementAdapter.notifyDataSetChanged();
+//                                showRestoredSnackbar();
+//                            });
+//
+//                    View view = snackbar.getView();
+//                    view.setBackgroundResource(R.drawable.snackbar_background);
+//                    snackbar.setActionTextColor(getResources().getColor(R.color.white));
+//
+//
+//                    snackbar.show();
                 }
             }
 
@@ -201,6 +178,7 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
                 try {
 
                     Bitmap icon;
+
                     if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
                         View itemView = viewHolder.itemView;
@@ -226,13 +204,13 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
                 } catch (Exception e) {
                     Logger.e(e.getMessage());
                 }
-
             }
-        };
 
+        };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(binding.recyclerView);
     }
+
 
     /**
      * Used to show an 'items restored' snackbar
@@ -244,12 +222,5 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
         v.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.dessert_green));
 
         snackbar.show();
-    }
-
-    @Override
-    public void onNoteSentSuccessfully() {
-
-        hideProgressSpinner();
-        parentNavigator.resetToFirstFragment();
     }
 }

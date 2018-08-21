@@ -2,6 +2,9 @@ package com.team.mamba.atlas.data.model.api;
 
 import android.support.annotation.Keep;
 
+import com.google.firebase.firestore.Exclude;
+import com.team.mamba.atlas.utils.formatData.AppFormatter;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -147,4 +150,5 @@ public class BusinessProfile {
     public void setBusinessRepId(String businessRepId) {
         this.businessRepId = businessRepId;
     }
+
 }

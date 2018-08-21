@@ -17,12 +17,30 @@
 
     <string name="connection_sent_body">Check your dashboard to view the status of the connection.</string>
     <string name="connection_sent_title">Connection request sent</string>
+    <string name="connection_type_info">The connection type determines the amount of information that you share with your connection. Friends
+     &amp; family members can see your home and personal contact information, while all others see only work-related information. The new
+    acquaintance type sees the least. To change the Connection Type please go under Settings -&gt; Network Management and select the individual
+    you'd like to edit.</string>
 
     <string name="crm_stage_four">Congratulations are in order</string>
     <string name="crm_stage_one">The qualification stage. You\'re evaluating whether to this is a real opportunity and meeting with the client</string>
     <string name="crm_stage_three">Your\'re currently negotiating with the client</string>
     <string name="crm_stage_two">You\'ve submitted a formal proposal to the client</string>
     <string name="crm_stage_zero">New opportunity that you\'re still learning about</string>
+
+    <string-array name="degree_array">
+        <item>Bachelor of Science (B.S.)</item>
+        <item>Bachelor of Fine Arts (BFA)</item>
+        <item>Bachelor of Applied Sciences (BAS)</item>
+        <item>Master of Arts (M.A.)</item>
+        <item>Master of Science (M.S.)</item>
+        <item>Master of Business Administration (MBA)</item>
+        <item>Master of Fine Arts (MFA)</item>
+        <item>Doctor of Philosophy (Ph.D)</item>
+        <item>Juris Doctor (J.D.)</item>
+        <item>Doctor of Medicine (M.D.)</item>
+        <item>Doctor of Dental Surgery (DDS)</item>
+    </string-array>
 
     <string name="describe_connections_info">Atlas uses the following designations to determine how much information
         you share with your connection. Atlas will only share your work information with the Business Contact, Colleague,
@@ -35,6 +53,20 @@
     <string name="export_generate_csv">The export function generates a CSV file that is sent to your work email address.</string>
     <string name="export_personal_notes">Personal notes are not exported.</string>
     <string name="export_select_fields">Please select the fields you would like to export.</string>
+
+    <string-array name="field_of_study_array">
+        <item>Bachelor of Science (B.S.)</item>
+        <item>Bachelor of Fine Arts (BFA)</item>
+        <item>Bachelor of Applied Sciences (BAS)</item>
+        <item>Master of Arts (M.A.)</item>
+        <item>Master of Science (M.S.)</item>
+        <item>Master of Business Administration (MBA)</item>
+        <item>Master of Fine Arts (MFA)</item>
+        <item>Doctor of Philosophy (Ph.D)</item>
+        <item>Juris Doctor (J.D.)</item>
+        <item>Doctor of Medicine (M.D.)</item>
+        <item>Doctor of Dental Surgery (DDS)</item>
+    </string-array>
 
     <string name="first_name">What\'s your first name?</string>
 
@@ -68,6 +100,8 @@
         <item>Teaming</item>
         <item>Direct Sell</item>
     </string-array>
+
+    <string name="personal_notes_info">Personal notes are only viewable by you and are never exported outside of Atlas.</string>
 
     <string name="phone_number_warning_body">You may receive an SMS message during the confirmation process. <br/> Standard message rates apply.</string>
     <string name="phone_number_warning_title">Login to Atlas with Your Phone Number</string>
@@ -108,43 +142,7 @@
 
     <string name="who_did_you_meet_body">Who did you meet? \n (i.e., Primary Point of Contact)</string>
 
-    <string name="connection_type_info">The connection type determines the amount of information that you share with your connection. Friends
-     &amp; family members can see your home and personal contact information, while all others see only work-related information. The new
-    acquaintance type sees the least. To change the Connection Type please go under Settings -> Network Management and select the individual
-    you'd like to edit.</string>
-
-    <string name="personal_notes_info">Personal notes are only viewable by you and are never exported outside of Atlas.</string>
-
-
-    <string-array name="degree_array">
-        <item>Bachelor of Science (B.S.)</item>
-        <item>Bachelor of Fine Arts (BFA)</item>
-        <item>Bachelor of Applied Sciences (BAS)</item>
-        <item>Master of Arts (M.A.)</item>
-        <item>Master of Science (M.S.)</item>
-        <item>Master of Business Administration (MBA)</item>
-        <item>Master of Fine Arts (MFA)</item>
-        <item>Doctor of Philosophy (Ph.D)</item>
-        <item>Juris Doctor (J.D.)</item>
-        <item>Doctor of Medicine (M.D.)</item>
-        <item>Doctor of Dental Surgery (DDS)</item>
-
-    </string-array>
-
-
-    <string-array name="field_of_study_array">
-        <item>Bachelor of Science (B.S.)</item>
-        <item>Bachelor of Fine Arts (BFA)</item>
-        <item>Bachelor of Applied Sciences (BAS)</item>
-        <item>Master of Arts (M.A.)</item>
-        <item>Master of Science (M.S.)</item>
-        <item>Master of Business Administration (MBA)</item>
-        <item>Master of Fine Arts (MFA)</item>
-        <item>Doctor of Philosophy (Ph.D)</item>
-        <item>Juris Doctor (J.D.)</item>
-        <item>Doctor of Medicine (M.D.)</item>
-        <item>Doctor of Dental Surgery (DDS)</item>
-
-    </string-array>
+    <string name="network_management_title">View and edit all users with whom you are sharing your profile data. Just
+    swipe to delete, or tap to edit the connection type.</string>
 
 </resources>

@@ -37,21 +37,23 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     private static String userCode;
     private DashBoardActivityNavigator parentNavigator;
     private static boolean isApprovingConnection = false;
+    private static boolean isUpdatingConnection = false;
     private static UserConnections userConnections;
 
-    public static DescribeConnectionsFragment newInstance(String name,String code){
+    public static DescribeConnectionsFragment newInstance(String lastname,String code){
 
-        lastName = name;
+        lastName = lastname;
         userCode = code;
         return new DescribeConnectionsFragment();
     }
 
-    public static DescribeConnectionsFragment newInstance(UserConnections connections){
+    public static DescribeConnectionsFragment newInstance(UserConnections connections,boolean isApproving,boolean isUpdating){
 
         lastName = connections.getUserProfile().getLastName();
         userCode = connections.getUserProfile().getCode();
         userConnections = connections;
-        isApprovingConnection = true;
+        isApprovingConnection = isApproving;
+        isUpdatingConnection = isUpdating;
         return new DescribeConnectionsFragment();
     }
 
@@ -95,15 +97,28 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
+         if (isApprovingConnection || isUpdatingConnection){
+
+             binding.tvTitle.setText("Edit Connection");
+         }
 
          setUpListeners();
-         return binding.getRoot();
+        setCachedConnectionType();
+
+        return binding.getRoot();
     }
 
     @Override
     public void onFinishButtonClicked() {
 
+        if (isUpdatingConnection){
+
+            showUpdateConnectionAlert();
+
+        } else {
+
             viewModel.addUserRequest(getViewModel(),lastName,userCode,getConnectionType());
+        }
     }
 
     @Override
@@ -112,6 +127,64 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         showConnectionsInfo();
     }
 
+    private void showUpdateConnectionAlert(){
+
+        String name = "";
+
+        if (userConnections.isOrgBus){
+
+            name = userConnections.getBusinessProfile().getName();
+
+        } else {
+
+            String first = userConnections.getUserProfile().getFirstName();
+            String last = userConnections.getUserProfile().getLastName();
+            name =  first + " " + last;
+        }
+
+        userConnections.setConnectionType(getConnectionType());
+        String title = "Edit Connection Type?";
+        String body = "Do you want to change your connection with " + name + " to " + userConnections.getConnectionTypeToString();
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle(title)
+                .setCancelable(false)
+                .setMessage(body)
+                .setNegativeButton("Cancel",(paramDialogInterface, paramInt) -> {
+
+                })
+                .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
+
+                    userConnections.setConnectionType(getConnectionType());
+                    viewModel.updateConnection(getViewModel(),userConnections);
+                    showToastShort("Contact details updated");
+
+                });
+
+        dialog.show();
+    }
+
+    @Override
+    public void onConnectionUpdated() {
+
+        String title = "Connection Type Edited";
+        String body = "The connection type has been successfully changed.";
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle(title)
+                .setCancelable(false)
+                .setMessage(body)
+                .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
+
+                    parentNavigator.resetToFirstFragment();
+
+                });
+
+        dialog.show();
+
+    }
 
     @Override
     public void hideConnectionsInfo() {
@@ -311,6 +384,36 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         } else {
 
             return 5;
+        }
+    }
+
+    private void setCachedConnectionType(){
+
+        int type = userConnections.getConnectionType();
+
+        if (type == 0){
+
+            binding.chkBoxFamilyMember.performClick();
+
+        } else if (type == 1){
+
+            binding.chkBoxPersonalFriend.performClick();
+
+        } else if (type == 2){
+
+            binding.chkBoxNewAcquaintance.performClick();
+
+        } else if (type == 3){
+
+            binding.chkBoxBusinessContact.performClick();
+
+        } else if (type == 4){
+
+            binding.chkBoxColleague.performClick();
+
+        } else {
+
+            binding.chkBoxClient.performClick();
         }
     }
 }

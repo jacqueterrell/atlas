@@ -78,4 +78,9 @@ public class DescribeConnectionsViewModel extends BaseViewModel<DescribeConnecti
 
         dataModel.initiateNewUserRequest(viewModel,lastName,userCode,connectionType);
     }
+
+    public void updateConnection(DescribeConnectionsViewModel viewModel,UserConnections connections){
+
+        dataModel.updateContactsConnection(viewModel,connections);
+    }
 }

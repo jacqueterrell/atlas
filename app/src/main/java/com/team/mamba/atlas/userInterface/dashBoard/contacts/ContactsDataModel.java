@@ -104,7 +104,7 @@ public class ContactsDataModel {
 
                         for (UserConnections connections : connectionsList) {
 
-                            if (connections.isConfirmed && connections.getRequestingUserID().equals(userId)) {
+                            if (connections.isConfirmed ) {
 
                                 userConnections.add(connections);
                             }
