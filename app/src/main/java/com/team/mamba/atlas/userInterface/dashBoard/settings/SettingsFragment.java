@@ -18,8 +18,13 @@ import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.SettingsLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfilePager;
+import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementAdapter;
+import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementFragment;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
+import com.team.mamba.atlas.utils.ChangeFragments;
+
 import java.io.InputStream;
 import javax.inject.Inject;
 
@@ -148,6 +153,8 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding,Setting
 
     @Override
     public void onNetworkManagementClicked() {
+
+        ChangeFragments.addFragmentVertically(NetworkManagementFragment.newInstance(), getBaseActivity().getSupportFragmentManager(), "NetworkManagement", null);
 
     }
 

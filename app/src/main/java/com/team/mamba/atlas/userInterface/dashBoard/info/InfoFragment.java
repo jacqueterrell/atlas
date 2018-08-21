@@ -327,7 +327,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
                                 .setPositiveButton("Approve", (paramDialogInterface, paramInt) -> {
 
                                     viewModel.getUserStatsList().clear();
-                                    ChangeFragments.replaceFragmentVertically(DescribeConnectionsFragment.newInstance(userConnections),getBaseActivity()
+                                    ChangeFragments.replaceFragmentVertically(DescribeConnectionsFragment.newInstance(userConnections,true,false),getBaseActivity()
                                             .getSupportFragmentManager(),"AddUserLayout",null);
                                 });
 

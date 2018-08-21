@@ -4,6 +4,11 @@ import com.google.firebase.firestore.Exclude;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
+import com.team.mamba.atlas.utils.formatData.RegEx;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 
 public class UserConnections {
@@ -210,5 +215,49 @@ public class UserConnections {
             return "Client";
         }
 
+    }
+
+
+    @Exclude public String getDateToString(){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTimestamp() * 1000);
+
+        int month = calendar.get(Calendar.MONTH);
+        String monthName = getMonth(month);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        String stamp = String.valueOf(getTimestamp());
+
+        if (stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
+
+            return monthName + " " + day + " " + year;
+
+        } else {
+
+            return "";
+        }
+
+    }
+
+    @Exclude private String getMonth(int index) {
+
+        List<String> monthsList = new ArrayList<>();
+
+        monthsList.add("Jan");
+        monthsList.add("Feb");
+        monthsList.add("Mar");
+        monthsList.add("Apr");
+        monthsList.add("May");
+        monthsList.add("Jun");
+        monthsList.add("Jul");
+        monthsList.add("Aug");
+        monthsList.add("Sep");
+        monthsList.add("Oct");
+        monthsList.add("Nov");
+        monthsList.add("Dec");
+
+        return monthsList.get(index);
     }
 }

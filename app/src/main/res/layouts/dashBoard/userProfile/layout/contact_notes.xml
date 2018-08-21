@@ -119,11 +119,13 @@
 
                 <TextView
                     android:id="@+id/tv_position"
-                    android:fontFamily="@font/lato_light"
+                    style="@style/App_Text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="17sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:text="Details"/>
+
 
                 <View
                     android:layout_width="0dp"
@@ -175,6 +177,8 @@
                             android:layout_height="wrap_content"
                             android:text="Connection"
                             android:layout_gravity="center_vertical"
+                            android:textSize="17sp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                             />
 
                         <ImageView
@@ -214,7 +218,10 @@
                             style="@style/App_Text_view"
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:text="Connected" />
+                            android:text="Connected"
+                            android:textSize="17sp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            />
 
 
                         <TextView
@@ -241,7 +248,10 @@
                             style="@style/App_Text_view"
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:text="Location" />
+                            android:text="Location"
+                            android:textSize="17sp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            />
 
 
                         <TextView
@@ -269,7 +279,10 @@
                             style="@style/App_Text_view"
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:text="How" />
+                            android:text="How"
+                            android:textSize="17sp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            />
 
 
                         <TextView
@@ -296,6 +309,8 @@
                             android:text="Personal Notes"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="15dp"
+                            android:textSize="17sp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                             />
 
                         <ImageView

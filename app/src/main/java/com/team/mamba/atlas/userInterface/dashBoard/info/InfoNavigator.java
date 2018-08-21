@@ -34,5 +34,4 @@ public interface InfoNavigator {
 
     void restartApplication();
 
-
 }

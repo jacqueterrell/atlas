@@ -26,6 +26,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementFragment;
 import com.team.mamba.atlas.userInterface.welcome.WelcomeScreenModule;
 import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
@@ -120,5 +121,8 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract PersonalNoteRecyclerView bindPersonalNoteRecyclerView();
+
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract NetworkManagementFragment bindNetworkManagementFragment();
 
 }

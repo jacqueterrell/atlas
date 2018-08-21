@@ -13,4 +13,6 @@ public interface DescribeConnectionsNavigator {
     void showAlreadyAContactAlert();
 
     void onRequestSent();
+
+    void onConnectionUpdated();
 }

@@ -28,6 +28,8 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementViewModel;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -188,6 +190,12 @@ public class DashBoardModule {
     PersonalNotesViewModel providesPersonalNotesViewModel(){
 
         return new PersonalNotesViewModel();
+    }
+
+    @Provides
+    NetworkManagementViewModel providesNetworkManagementViewModel(){
+
+        return new NetworkManagementViewModel();
     }
 
 }

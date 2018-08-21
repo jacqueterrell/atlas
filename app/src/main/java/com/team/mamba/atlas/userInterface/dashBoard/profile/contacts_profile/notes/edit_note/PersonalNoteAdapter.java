@@ -91,4 +91,9 @@ public class PersonalNoteAdapter extends RecyclerView.Adapter<PersonalNoteAdapte
 
         return detailsMap;
     }
+
+    public void deleteMap(int position){
+
+        detailsMap.remove(position);
+    }
 }
