@@ -16,12 +16,6 @@ public interface InfoNavigator {
 
     void onSettingsClicked();
 
-    void onAddressBookClicked();
-
-    void onCrmClicked();
-
-    void onNotificationsClicked();
-
     void onUserStatsInfoClicked();
 
     void onRecentActivityInfoClicked();
@@ -34,7 +28,7 @@ public interface InfoNavigator {
 
     void setUserStatsAdapter(List<String> userStats,List<UserConnections> connectionRecords);
 
-    void handlerError(String msg);
+    void handleError(String msg);
 
     void onRecentActivitiesRowClicked(UserConnections userConnections);
 

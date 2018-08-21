@@ -85,9 +85,9 @@ public class Announcements {
         int year = calendar.get(Calendar.YEAR);
 
 
-        String stamp = String.valueOf(timestamp);
+        String stamp = String.valueOf(getAdjustedTimeStamp());
 
-        if (!stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
+        if (stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
 
             return monthName + " " + day + ", " + year;
 

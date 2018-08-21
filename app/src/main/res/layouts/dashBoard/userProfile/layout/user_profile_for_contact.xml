@@ -12,7 +12,7 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileViewModel" />
+            type="com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfileViewModel" />
 
         <variable
             name = "profile"
@@ -28,8 +28,8 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="15dp"
-        android:visibility="gone"
-        tools:visibility="gone">
+        android:visibility="visible"
+        >
 
 
         <LinearLayout
@@ -484,8 +484,6 @@
             </ScrollView>
 
         </LinearLayout>
-
-
 
     </FrameLayout>
 

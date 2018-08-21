@@ -14,27 +14,9 @@ public interface WelcomeNavigator {
 
     void onDateCancelClicked();
 
-    void onFirstNameNextClicked();
-
-    void onFirstNamePreviousClicked();
-
-    void onLastNameNextClicked();
-
-    void onLastNamePreviousClicked();
-
-    void onPhoneSubmitClicked();
-
-    void onPhoneSubmitPreviousClicked();
-
-    void onEnterSmsCancelClicked();
-
-    void onEnterSmsContinueClicked();
-
     void onBackPressed();
 
     void handleError(String errorMsg);
-
-    void openDashBoard();
 
     void showBusinessNotFoundAlert();
 
@@ -44,8 +26,8 @@ public interface WelcomeNavigator {
 
     void onBusinessScreenLearnMoreClicked();
 
-    Activity getParentActivity();
+    void openDashBoard();
 
-    PhoneAuthProvider.OnVerificationStateChangedCallbacks getPhoneCallBacks();
+    Activity getParentActivity();
 
 }

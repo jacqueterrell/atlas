@@ -14,6 +14,11 @@ import com.team.mamba.atlas.userInterface.dashBoard.info.RecentActivitiesAdapter
 
 import java.util.List;
 
+
+/**
+ * This class acts as the adapter for our recycler view defined in
+ * {@link InfoFragment}
+ */
 public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActivitiesHolder> {
 
     private List<UserConnections> connectionRecords;
@@ -23,7 +28,7 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
 
         this.viewModel = viewModel;
         this.connectionRecords = connectionRecords;
-    }
+}
 
     @NonNull
     @Override

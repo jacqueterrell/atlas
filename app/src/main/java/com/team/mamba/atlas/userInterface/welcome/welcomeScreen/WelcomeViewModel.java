@@ -16,16 +16,10 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     private static final int MINUTES_IN_HOUR = 60;
     private static final int HOURS_IN_A_DAY = 24;
     private WelcomeDataModel dataModel;
-    private PhoneAuthCredential phoneAuthCredential;
-    private PhoneAuthProvider.ForceResendingToken forceResendingToken;
-    private String verificationId;
-    private String firstName;
-    private String lastName;
+
     private String userCode;
-    private long dateOfBirth;
-    private String phoneNumber;
-    private boolean businessLogin = false;
     private List<BusinessProfile> businessProfileList = new ArrayList<>();
+    private long dateOfBirth;
 
 
     /***************view logic************/
@@ -80,41 +74,6 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         this.dataModel = dataModel;
     }
 
-    public void setVerificationId(String verificationId) {
-        this.verificationId = verificationId;
-    }
-
-    public String getVerificationId() {
-        return verificationId;
-    }
-
-    public void setPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) {
-        this.phoneAuthCredential = phoneAuthCredential;
-    }
-
-    public PhoneAuthCredential getPhoneAuthCredential() {
-        return phoneAuthCredential;
-    }
-
-    public void setForceResendingToken(PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-        this.forceResendingToken = forceResendingToken;
-    }
-
-    public PhoneAuthProvider.ForceResendingToken getForceResendingToken() {
-        return forceResendingToken;
-    }
-
-    public boolean isNameValid(String name){
-
-        if (name.isEmpty()){
-
-            return false;
-
-        } else {
-
-            return true;
-        }
-    }
 
     public boolean isEmailValid(String email){
 
@@ -128,54 +87,54 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         return !password.isEmpty();
     }
 
-
-    public void setBusinessLogin(boolean businessLogin) {
-        this.businessLogin = businessLogin;
-    }
-
-    public boolean isBusinessLogin() {
-        return businessLogin;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
+//
+//    public void setBusinessLogin(boolean businessLogin) {
+//        this.businessLogin = businessLogin;
+//    }
+//
+//    public boolean isBusinessLogin() {
+//        return businessLogin;
+//    }
+//
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
     public long getDateOfBirth() {
         return dateOfBirth;
     }
-
+//
     public void setDateOfBirth(long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
-
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+//
+//    public void setUserCode(String userCode) {
+//        this.userCode = userCode;
+//    }
+//
+//    public String getUserCode() {
+//        return userCode;
+//    }
+//
+//    public String getPhoneNumber() {
+//        return phoneNumber;
+//    }
+//
+//    public void setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
 
     public void setBusinessProfileList(List<BusinessProfile> businessProfileList) {
         this.businessProfileList = businessProfileList;
@@ -207,67 +166,7 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
         getNavigator().onDateCancelClicked();
     }
 
-    public void onFirstNameNextClicked(){
-
-        getNavigator().onFirstNameNextClicked();
-    }
-
-    public void onFirstNamePreviousClicked(){
-
-        getNavigator().onFirstNamePreviousClicked();
-    }
-
-    public void onLastNameNextClicked(){
-
-        getNavigator().onLastNameNextClicked();
-    }
-
-    public void onLastNamePreviousClicked(){
-
-        getNavigator().onLastNamePreviousClicked();
-    }
-
-    public void onPhoneSubmitClicked(){
-
-        getNavigator().onPhoneSubmitClicked();
-    }
-
-    public void onPhoneSubmitPreviousClicked(){
-
-        getNavigator().onPhoneSubmitPreviousClicked();
-    }
-
-    public void onEnterSmsCancelClicked(){
-
-        getNavigator().onEnterSmsCancelClicked();
-    }
-
-    public void onEnterSmsContinueClicked(){
-
-        getNavigator().onEnterSmsContinueClicked();
-    }
-
     //data model requests
-
-    public void fireBaseVerifyPhoneNumber(WelcomeViewModel viewModel,String phoneNumber){
-
-        dataModel.fireBaseVerifyPhoneNumber(viewModel,phoneNumber);
-    }
-
-    public void signInWithPhoneAuthCredential(WelcomeViewModel viewModel){
-
-        dataModel.signInWithPhoneAuthCredential(viewModel);
-    }
-
-    public void addUserToFirebaseDatabase(WelcomeViewModel viewModel){
-
-        dataModel.addUserToFirebaseDatabase(viewModel);
-    }
-
-    public void checkAllBusinesses(WelcomeViewModel viewModel,String email){
-
-        dataModel.checkAllBusinesses(viewModel,email);
-    }
 
     public void onBusinessScreenLoginClicked(){
 

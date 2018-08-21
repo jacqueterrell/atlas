@@ -1,7 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.BusinessProfile;
@@ -149,7 +148,7 @@ public class InfoDataModel {
 
                     } else {
 
-                        viewModel.getNavigator().handlerError("");
+                        viewModel.getNavigator().handleError("");
                         Logger.e(task.getException().getMessage());
                         task.getException().printStackTrace();
                     }
@@ -303,7 +302,7 @@ public class InfoDataModel {
 
                     } else {
 
-                        viewModel.getNavigator().handlerError("Error setUserStatusOpportunities");
+                        viewModel.getNavigator().handleError("Error setUserStatusOpportunities");
                         Logger.e(task.getException().getMessage());
                     }
                 });

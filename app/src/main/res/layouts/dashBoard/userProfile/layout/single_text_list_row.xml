@@ -9,7 +9,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationViewModel"/>
 
     </data>
 

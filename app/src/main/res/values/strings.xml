@@ -108,6 +108,13 @@
 
     <string name="who_did_you_meet_body">Who did you meet? \n (i.e., Primary Point of Contact)</string>
 
+    <string name="connection_type_info">The connection type determines the amount of information that you share with your connection. Friends
+     &amp; family members can see your home and personal contact information, while all others see only work-related information. The new
+    acquaintance type sees the least. To change the Connection Type please go under Settings -> Network Management and select the individual
+    you'd like to edit.</string>
+
+    <string name="personal_notes_info">Personal notes are only viewable by you and are never exported outside of Atlas.</string>
+
 
     <string-array name="degree_array">
         <item>Bachelor of Science (B.S.)</item>

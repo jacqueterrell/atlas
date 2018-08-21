@@ -11,18 +11,23 @@ import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_us
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.business.BusinessProfileViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.ContactNotesViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.HowDidYouMeetViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.PersonalNotesViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_business.BusinessProfileViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.UserProfileViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfileViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.UserProfileViewModel;
 
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_address_info.EditAddressViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_education_info.EditEducationViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_phone_info.EditPhoneViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_work_history.EditWorkViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsViewModel;
 import dagger.Module;
 import dagger.Provides;
 
@@ -154,4 +159,35 @@ public class DashBoardModule {
 
         return new FindUsersRecyclerViewModel();
     }
+
+    @Provides
+    SettingsViewModel providesSettingsViewModel(){
+
+        return new SettingsViewModel();
+    }
+
+    @Provides
+    ContactProfileViewModel providesContactProfileViewModel(){
+
+        return new ContactProfileViewModel();
+    }
+
+    @Provides
+    ContactNotesViewModel providesContactNotesViewModel(){
+
+        return new ContactNotesViewModel();
+    }
+
+    @Provides
+    HowDidYouMeetViewModel providesHowDidYouMeetViewModel(){
+
+        return new HowDidYouMeetViewModel();
+    }
+
+    @Provides
+    PersonalNotesViewModel providesPersonalNotesViewModel(){
+
+        return new PersonalNotesViewModel();
+    }
+
 }

@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.dependencyInjection.component.DaggerApplicationComponent;
@@ -29,6 +31,7 @@ public class AtlasApplication extends Application implements HasActivityInjector
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+        FirebaseApp.initializeApp(this);
 
         initializeLogger();
         setFirebaseSettings();
@@ -37,6 +40,10 @@ public class AtlasApplication extends Application implements HasActivityInjector
                 .application(this)
                 .build()
                 .inject(this);
+
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Logger.d("Refreshed token: " + refreshedToken);
+
     }
 
     @Override

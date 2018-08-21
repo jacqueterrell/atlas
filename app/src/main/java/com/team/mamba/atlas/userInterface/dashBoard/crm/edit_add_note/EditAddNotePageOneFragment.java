@@ -25,7 +25,7 @@ import com.team.mamba.atlas.data.model.api.UserProfile;
 import com.team.mamba.atlas.databinding.EditAddPageOneBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.individual.edit_email_info.EditEmailFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
 public class EditAddNotePageOneFragment extends Fragment implements EditPageOneNavigator {

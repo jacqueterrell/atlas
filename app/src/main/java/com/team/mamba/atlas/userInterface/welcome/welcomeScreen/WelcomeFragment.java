@@ -7,9 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,27 +16,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
-import com.google.i18n.phonenumbers.Phonenumber;
-import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeScreenLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivityNavigator;
 import com.team.mamba.atlas.userInterface.welcome.select_business_account.BusinessAccountsActivity;
-import com.team.mamba.atlas.utils.CommonUtils;
-import com.team.mamba.atlas.utils.formatData.RegEx;
-
+import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.enter_first_name.EnterFirstNameFragment;
+import com.team.mamba.atlas.utils.ChangeWelcomeFragments;
 import javax.inject.Inject;
 
 
@@ -52,9 +38,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     WelcomeDataModel dataModel;
 
     private WelcomeScreenLayoutBinding binding;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    private FirebaseAuth mAuth;
     private static final int DEFAULT_TIME_IN_MILLI_SECS = 500;
+    private WelcomeActivityNavigator parentNavigator;
 
     public static WelcomeFragment newInstance() {
 
@@ -84,7 +69,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onStartButtonClicked() {
 
-        viewModel.setBusinessLogin(false);
+        parentNavigator.setBusinessLogin(false);
 
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
@@ -96,7 +81,7 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     @Override
     public void onBusinessLoginClicked() {
 
-        viewModel.setBusinessLogin(true);
+        parentNavigator.setBusinessLogin(true);
 
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
@@ -119,142 +104,18 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
                 .playOn(binding.dialogVerifyAge.layoutVerifyAge);
     }
 
-    @Override
-    public void onFirstNameNextClicked() {
 
-        String name = binding.dialogEnterFirstName.etFirstName.getText().toString().trim();
-
-        if (viewModel.isNameValid(name)) {
-
-            viewModel.setFirstName(name);
-            showEnterLastName();
-
-        } else {
-
-            showSnackbar("Please enter a valid first name");
-        }
-    }
-
-    @Override
-    public void onFirstNamePreviousClicked() {
-
-        hideEnterFirstName();
-
-    }
-
-    @Override
-    public void onLastNameNextClicked() {
-
-        String name = binding.dialogEnterLastName.etLastName.getText().toString().trim();
-
-        if (viewModel.isNameValid(name)) {
-
-            viewModel.setLastName(name);
-            showEnterPhoneNumber();
-
-        } else {
-
-            showSnackbar("Please enter a valid last name");
-        }
-    }
-
-    @Override
-    public void onLastNamePreviousClicked() {
-
-        hideEnterLastName();
-        showEnterFirstName();
-    }
-
-    @Override
-    public void onPhoneSubmitClicked() {
-
-        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
-        String phoneNumber = binding.dialogEnterPhoneNumber.etPhoneNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS, "");
-
-        if (CommonUtils.isPhoneValid(phoneNumber)) {
-
-            try {
-
-                Phonenumber.PhoneNumber pn = phoneNumberUtil.parse(phoneNumber, "US");
-                String pnE164 = phoneNumberUtil.format(pn,PhoneNumberUtil.PhoneNumberFormat.E164);
-                String international = phoneNumberUtil.format(pn, PhoneNumberFormat.INTERNATIONAL);
-                String national = phoneNumberUtil.format(pn, PhoneNumberFormat.NATIONAL);
-
-                viewModel.setPhoneNumber(national);
-                showPhoneNumberAlert(pnE164);
-
-            } catch (NumberParseException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-
-            showSnackbar("Phone Number is not valid");
-        }
-
-    }
-
-    @Override
-    public void onPhoneSubmitPreviousClicked() {
-
-        hideProgressSpinner();
-        showEnterLastName();
-    }
-
-    @Override
-    public void onEnterSmsCancelClicked() {
-
-        hideEnterSMSCode();
-        hideProgressSpinner();
-    }
-
-    @Override
-    public void onEnterSmsContinueClicked() {
-
-        String code = binding.etSmsCode.getText().toString();
-
-        if (code.isEmpty()){
-
-            showSnackbar("Your sms code is empty");
-
-        } else {
-
-            String verificationId = viewModel.getVerificationId();
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-            viewModel.setPhoneAuthCredential(credential);
-            viewModel.signInWithPhoneAuthCredential(getViewModel());
-
-            showProgressSpinner();
-        }
-
-    }
 
     @Override
     public Activity getParentActivity() {
         return getBaseActivity();
     }
 
-    @Override
-    public PhoneAuthProvider.OnVerificationStateChangedCallbacks getPhoneCallBacks() {
-        return mCallbacks;
-    }
 
     @Override
     public void onBackPressed() {
 
-        if (binding.dialogEnterPhoneNumber.layoutPhoneNumber.getVisibility() == View.VISIBLE) {
-
-            hideEnterPhoneNumber();
-
-        } else if (binding.dialogEnterLastName.layoutLastName.getVisibility() == View.VISIBLE) {
-
-            hideEnterLastName();
-
-        } else if (binding.dialogEnterFirstName.layoutFirstName.getVisibility() == View.VISIBLE) {
-
-            hideEnterFirstName();
-
-        } else if (binding.dialogVerifyAge.layoutVerifyAge.getVisibility() == View.VISIBLE) {
+         if (binding.dialogVerifyAge.layoutVerifyAge.getVisibility() == View.VISIBLE) {
 
             onDateCancelClicked();
 
@@ -285,15 +146,15 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
         if (email.isEmpty() && password.equals("admin")){
 
-            dataManager.getSharedPrefs().setUserId("S0URPfcKiVanC5NhHd4n9ejcEWZ2");
-            viewModel.setBusinessLogin(false);
+            dataManager.getSharedPrefs().setUserId("S0URPfcKiVanC5NhHd4n9ejcEWZ2");//Matt Maher
+            parentNavigator.setBusinessLogin(false);
             openDashBoard();
 
         } else if (email.isEmpty() && password.equals("test")){
 
-         //   dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2");
-            dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC");
-            viewModel.setBusinessLogin(false);
+         //   dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2"); //Mike R
+            dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC"); // Jacque Terrell
+            parentNavigator.setBusinessLogin(false);
 
             openDashBoard();
 
@@ -323,8 +184,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     }
 
 
-
-
     @Override
     public void showMultipleBusinessLogin() {
 
@@ -343,28 +202,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     }
 
 
-    @Override
-    public void openDashBoard() {
-
-
-        hideEnterSMSCode();
-        hideProgressSpinner();
-
-        if (viewModel.isBusinessLogin()){
-
-            dataManager.getSharedPrefs().setBusinessAccount(true);
-            getBaseActivity().finishAffinity();
-            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
-
-        } else {
-
-            dataManager.getSharedPrefs().setBusinessAccount(false);
-            getBaseActivity().finishAffinity();
-            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
-
-        }
-
-    }
 
     @Override
     public void handleError(String errorMsg) {
@@ -373,10 +210,11 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         showSnackbar(errorMsg);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (WelcomeActivityNavigator) context;
     }
 
     @Override
@@ -384,11 +222,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
-        mAuth = FirebaseAuth.getInstance();
-
-        Logger.d("testing logger");
-        Log.d("test","testing logger");
-
     }
 
     @Override
@@ -403,28 +236,8 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(binding.imgViewBackground);
 
-        Glide.with(getBaseActivity())
-                .load(R.drawable.welcome_background)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(binding.dialogEnterFirstName.imgViewBackground);
 
-        Glide.with(getBaseActivity())
-                .load(R.drawable.welcome_background)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(binding.dialogEnterLastName.imgViewBackground);
-
-        Glide.with(getBaseActivity())
-                .load(R.drawable.welcome_background)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(binding.dialogEnterPhoneNumber.imgViewBackground);
-
-        binding.dialogEnterPhoneNumber.etPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-
-        setUpCallBacks();
-
+        //Todo reserved for when the adding a business feature is enabled
 //        String email = "jacqueterrell@yahoo.com";
 //        String password = "123456";
 //
@@ -458,14 +271,13 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
             onDateCancelClicked();
 
-            if (viewModel.isBusinessLogin()){
+            if (parentNavigator.isBusinessLogin()){
 
                 showBusinessLoginScreen();
 
             } else {
 
-                showEnterFirstName();
-
+                ChangeWelcomeFragments.addFragmentFadeIn(EnterFirstNameFragment.newInstance(viewModel.getDateOfBirth()), getBaseActivity().getSupportFragmentManager(), "ContactsFragment", null);
             }
 
         } else {
@@ -486,91 +298,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     }
 
 
-    private void showEnterFirstName() {
-
-        YoYo.with(Techniques.FadeIn)
-                .duration(500)
-                .repeat(0)
-                .onStart(animator -> binding.dialogEnterFirstName.layoutFirstName.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogEnterFirstName.layoutFirstName);
-
-        binding.dialogEnterFirstName.etFirstName.requestFocus();
-        showSoftKeyboard(binding.dialogEnterFirstName.etFirstName);
-
-    }
-
-    private void hideEnterFirstName() {
-
-        YoYo.with(Techniques.FadeOut)
-                .duration(500)
-                .repeat(0)
-                .onEnd(animator -> binding.dialogEnterFirstName.layoutFirstName.setVisibility(View.GONE))
-                .playOn(binding.dialogEnterFirstName.layoutFirstName);
-
-    }
-
-    private void showEnterLastName() {
-
-        YoYo.with(Techniques.FadeIn)
-                .duration(500)
-                .repeat(0)
-                .onStart(animator -> binding.dialogEnterLastName.layoutLastName.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogEnterLastName.layoutLastName);
-
-        binding.dialogEnterLastName.etLastName.requestFocus();
-        showSoftKeyboard(binding.dialogEnterLastName.etLastName);
-    }
-
-    private void hideEnterLastName() {
-
-        YoYo.with(Techniques.FadeOut)
-                .duration(500)
-                .repeat(0)
-                .onEnd(animator -> binding.dialogEnterLastName.layoutLastName.setVisibility(View.GONE))
-                .playOn(binding.dialogEnterLastName.layoutLastName);
-    }
-
-    private void showEnterPhoneNumber() {
-
-        YoYo.with(Techniques.FadeIn)
-                .duration(500)
-                .repeat(0)
-                .onStart(animator -> binding.dialogEnterPhoneNumber.layoutPhoneNumber.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogEnterPhoneNumber.layoutPhoneNumber);
-
-        binding.dialogEnterPhoneNumber.etPhoneNumber.requestFocus();
-        showSoftKeyboard(binding.dialogEnterPhoneNumber.etPhoneNumber);
-    }
-
-    private void hideEnterPhoneNumber() {
-
-        YoYo.with(Techniques.FadeOut)
-                .duration(500)
-                .repeat(0)
-                .onEnd(animator -> binding.dialogEnterPhoneNumber.layoutPhoneNumber.setVisibility(View.GONE))
-                .playOn(binding.dialogEnterPhoneNumber.layoutPhoneNumber);
-    }
-
-    private void showEnterSMSCode(){
-
-        YoYo.with(Techniques.FadeIn)
-                .duration(500)
-                .repeat(0)
-                .onStart(animator -> binding.layoutEnterSmsCode.setVisibility(View.VISIBLE))
-                .playOn(binding.layoutEnterSmsCode);
-
-        binding.etSmsCode.setText("");
-
-    }
-
-    private void hideEnterSMSCode(){
-
-        YoYo.with(Techniques.FadeOut)
-                .duration(500)
-                .repeat(0)
-                .onEnd(animator -> binding.layoutEnterSmsCode.setVisibility(View.GONE))
-                .playOn(binding.layoutEnterSmsCode);
-    }
 
     private void showBusinessLoginScreen(){
 
@@ -595,82 +322,25 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
                 .playOn(binding.dialogBusinessLogin.layoutMain);
     }
 
-    /**
-     * Shows an alert to validate the phone number
-     *
-     * @param phoneNumber the entered phone number
-     */
-    private void showPhoneNumberAlert(String phoneNumber) {
 
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+    @Override
+    public void openDashBoard() {
+        hideProgressSpinner();
 
-        dialog.setTitle(R.string.phone_number_warning_title)
-                .setMessage(R.string.phone_number_warning_body)
-                .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
+        if (parentNavigator.isBusinessLogin()){
 
-                })
-                .setPositiveButton("Continue", (paramDialogInterface, paramInt) -> {
+            dataManager.getSharedPrefs().setBusinessAccount(true);
+            getBaseActivity().finishAffinity();
+            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
 
-                   viewModel.fireBaseVerifyPhoneNumber(getViewModel(),phoneNumber);
-                   showProgressSpinner();
+        } else {
 
-                });
+            dataManager.getSharedPrefs().setBusinessAccount(false);
+            getBaseActivity().finishAffinity();
+            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
 
-        dialog.show();
-    }
+        }
 
-    private void setUpCallBacks() {
-
-
-
-        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-
-                Logger.d("onVerificationCompleted: " + phoneAuthCredential);
-                viewModel.setPhoneAuthCredential(phoneAuthCredential);
-                viewModel.signInWithPhoneAuthCredential(getViewModel());
-                showToastShort("Auto-verified");
-
-            }
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-
-                Logger.e(e.getLocalizedMessage());
-                hideProgressSpinner();
-
-                if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    // the phone number format is not valid
-                    // ...
-                    showSnackbar("invalid credentials");
-                } else if (e instanceof FirebaseTooManyRequestsException) {
-                    // The SMS quota for the project has been exceeded
-                    // ...
-                    showSnackbar("sms quota filled");
-
-                }
-            }
-
-            @Override
-            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
-                viewModel.setVerificationId(verificationId);
-                viewModel.setForceResendingToken(token);
-
-                hideEnterPhoneNumber();
-                hideEnterLastName();
-                hideEnterFirstName();
-
-                showEnterSMSCode();
-                hideProgressSpinner();
-
-                Logger.i("onCodeSent: " + verificationId);
-            }
-        };
     }
 
 }

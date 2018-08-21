@@ -400,7 +400,8 @@ public class UserProfile {
 
         String adjustedTime = AppFormatter.timeStampFormatter.format(timestamp);
 
-        return Long.parseLong(adjustedTime);    }
+        return Long.parseLong(adjustedTime);
+    }
 
 
     public void setTimestamp(double timestamp) {

@@ -182,4 +182,33 @@ public class UserConnections {
     @Exclude public void setBusinessProfile(BusinessProfile businessProfile) {
         this.businessProfile = businessProfile;
     }
+
+    @Exclude public String getConnectionTypeToString(){
+
+        if (connectionType == 0){
+
+            return "Family Member";
+
+        } else if (connectionType == 1){
+
+            return "Personal Friend";
+
+        } else if (connectionType == 2){
+
+            return "New Acquaintance";
+
+        } else if (connectionType == 3){
+
+            return "Business Contact";
+
+        } else if (connectionType == 4){
+
+            return "Colleague";
+
+        } else {
+
+            return "Client";
+        }
+
+    }
 }

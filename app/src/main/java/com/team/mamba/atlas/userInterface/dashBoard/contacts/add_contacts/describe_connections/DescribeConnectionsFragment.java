@@ -15,6 +15,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.data.model.api.UserConnections;
 import com.team.mamba.atlas.databinding.DescribeConnectionBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
@@ -35,11 +36,22 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     private static String lastName;
     private static String userCode;
     private DashBoardActivityNavigator parentNavigator;
+    private static boolean isApprovingConnection = false;
+    private static UserConnections userConnections;
 
     public static DescribeConnectionsFragment newInstance(String name,String code){
 
         lastName = name;
         userCode = code;
+        return new DescribeConnectionsFragment();
+    }
+
+    public static DescribeConnectionsFragment newInstance(UserConnections connections){
+
+        lastName = connections.getUserProfile().getLastName();
+        userCode = connections.getUserProfile().getCode();
+        userConnections = connections;
+        isApprovingConnection = true;
         return new DescribeConnectionsFragment();
     }
 
@@ -74,6 +86,8 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
+        viewModel.setApprovingConnection(isApprovingConnection);
+        viewModel.setRequestingConnection(userConnections);
     }
 
     @Override
@@ -89,7 +103,7 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     @Override
     public void onFinishButtonClicked() {
 
-       viewModel.addUserRequest(getViewModel(),lastName,userCode,getConnectionType());
+            viewModel.addUserRequest(getViewModel(),lastName,userCode,getConnectionType());
     }
 
     @Override
