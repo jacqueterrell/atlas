@@ -1,22 +1,15 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
-import com.team.mamba.atlas.data.model.api.BusinessProfile;
-import com.team.mamba.atlas.data.model.api.UserConnections;
-import com.team.mamba.atlas.data.model.api.UserProfile;
-import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 

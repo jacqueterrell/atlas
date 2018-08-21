@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkViewModel"/>
 
     </data>
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import com.team.mamba.atlas.databinding.CrmListRowBinding;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmAdapter.CrmViewHolder;
 import java.util.ArrayList;

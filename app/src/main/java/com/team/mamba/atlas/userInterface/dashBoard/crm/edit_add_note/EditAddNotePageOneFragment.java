@@ -1,6 +1,5 @@
 package com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -18,14 +17,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.androidanimations.library.YoYo.AnimatorCallback;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.CrmNotes;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.databinding.EditAddPageOneBinding;
-import com.team.mamba.atlas.userInterface.base.BaseFragment;
-import com.team.mamba.atlas.userInterface.base.BaseViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
 public class EditAddNotePageOneFragment extends Fragment implements EditPageOneNavigator {

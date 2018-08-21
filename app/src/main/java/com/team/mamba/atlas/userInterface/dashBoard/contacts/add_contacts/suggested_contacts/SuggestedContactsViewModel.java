@@ -1,10 +1,9 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts;
 
-import com.team.mamba.atlas.data.model.api.BusinessProfile;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsDataModel;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsNavigator;
+
 import java.util.ArrayList;
 import java.util.List;
 

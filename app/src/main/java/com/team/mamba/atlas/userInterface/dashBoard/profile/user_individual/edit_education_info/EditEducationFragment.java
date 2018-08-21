@@ -22,13 +22,13 @@ import android.view.ViewGroup;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.data.model.local.Education;
 import com.team.mamba.atlas.databinding.EditEducationLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

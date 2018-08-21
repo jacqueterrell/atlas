@@ -1,10 +1,8 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
-import com.team.mamba.atlas.data.model.api.BusinessProfile;
-import com.team.mamba.atlas.data.model.api.CrmNotes;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.data.model.local.CrmFilter;
-import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 
 public interface DashBoardActivityNavigator {
 

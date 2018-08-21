@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.crm.selected_crm;
 
-import com.team.mamba.atlas.data.model.api.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class SelectedCrmViewModel extends BaseViewModel<SelectedCrmNavigator> {

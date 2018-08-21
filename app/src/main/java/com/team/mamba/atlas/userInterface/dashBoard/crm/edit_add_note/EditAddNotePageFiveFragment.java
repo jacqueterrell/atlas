@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import com.team.mamba.atlas.databinding.EditAddPageFiveBinding;
 import com.team.mamba.atlas.utils.ChangeFragments;
 

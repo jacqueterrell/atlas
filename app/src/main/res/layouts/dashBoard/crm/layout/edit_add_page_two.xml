@@ -11,7 +11,7 @@
 
         <variable
             name = "crmNote"
-            type = "com.team.mamba.atlas.data.model.api.CrmNotes"/>
+            type = "com.team.mamba.atlas.data.model.api.fireStore.CrmNotes"/>
 
     </data>
 

@@ -1,8 +1,6 @@
 package com.team.mamba.atlas.userInterface.welcome.welcomeScreen;
 
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
-import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 import com.team.mamba.atlas.utils.CommonUtils;

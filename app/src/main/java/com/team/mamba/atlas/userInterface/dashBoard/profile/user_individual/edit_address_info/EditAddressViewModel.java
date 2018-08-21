@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info;
 
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class EditAddressViewModel extends BaseViewModel<EditAddressNavigator> {

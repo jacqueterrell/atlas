@@ -2,9 +2,8 @@ package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual;
 
 import android.net.Uri;
 
-import com.google.firebase.auth.UserInfo;
-import com.team.mamba.atlas.data.model.api.BusinessProfile;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import com.team.mamba.atlas.utils.formatData.RegEx;
 

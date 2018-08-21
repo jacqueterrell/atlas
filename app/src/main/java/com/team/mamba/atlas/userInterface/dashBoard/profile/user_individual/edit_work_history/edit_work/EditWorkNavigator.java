@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history;
+package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work;
 
 import com.team.mamba.atlas.data.model.local.Education;
 import com.team.mamba.atlas.data.model.local.WorkHistory;

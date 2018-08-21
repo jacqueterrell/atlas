@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +13,11 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.UserConnections;
+import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlas.databinding.DescribeConnectionBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import javax.inject.Inject;
 
 public class DescribeConnectionsFragment extends BaseFragment<DescribeConnectionBinding,DescribeConnectionsViewModel>

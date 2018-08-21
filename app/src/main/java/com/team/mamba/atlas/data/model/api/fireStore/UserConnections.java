@@ -1,8 +1,6 @@
-package com.team.mamba.atlas.data.model.api;
+package com.team.mamba.atlas.data.model.api.fireStore;
 
 import com.google.firebase.firestore.Exclude;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
 import com.team.mamba.atlas.utils.formatData.RegEx;
 
@@ -35,7 +33,7 @@ public class UserConnections {
 
     @Exclude private boolean needsApproval;
     @Exclude private boolean recentActivity;
-    @Exclude private UserProfile  userProfile;
+    @Exclude private UserProfile userProfile;
     @Exclude private BusinessProfile businessProfile;
 
 

@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.settings.network_management;
 
-import com.team.mamba.atlas.data.model.api.UserConnections;
+import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 
 public interface NetworkManagementNavigator {
 

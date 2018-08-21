@@ -26,7 +26,8 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.add_new.AddWorkViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementViewModel;
 
@@ -196,6 +197,12 @@ public class DashBoardModule {
     NetworkManagementViewModel providesNetworkManagementViewModel(){
 
         return new NetworkManagementViewModel();
+    }
+
+    @Provides
+    AddWorkViewModel providesAddWorkViewModel(){
+
+        return new AddWorkViewModel();
     }
 
 }

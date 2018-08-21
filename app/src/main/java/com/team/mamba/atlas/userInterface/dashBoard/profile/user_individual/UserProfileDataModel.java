@@ -1,26 +1,14 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual;
 
-import android.net.Uri;
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
-import com.team.mamba.atlas.data.model.api.UserConnections;
-import com.team.mamba.atlas.data.model.api.UserProfile;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneViewModel;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
 

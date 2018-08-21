@@ -3,10 +3,10 @@ package com.team.mamba.atlas.userInterface.dashBoard.info;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
-import com.team.mamba.atlas.data.model.api.BusinessProfile;
-import com.team.mamba.atlas.data.model.api.CrmNotes;
-import com.team.mamba.atlas.data.model.api.UserConnections;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
 import java.text.DecimalFormat;

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import com.team.mamba.atlas.databinding.EditAddPageTwoBinding;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
