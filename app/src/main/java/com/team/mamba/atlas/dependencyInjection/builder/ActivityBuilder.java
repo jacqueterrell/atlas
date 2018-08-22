@@ -3,9 +3,8 @@ package com.team.mamba.atlas.dependencyInjection.builder;
 import com.team.mamba.atlas.userInterface.dashBoard.DashBoardModule;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
-import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlas.userInterface.welcome.WelcomeScreenModule;
-import com.team.mamba.atlas.userInterface.welcome.select_business_account.BusinessAccountsActivity;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.business_accounts_recycler.BusinessAccountsActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

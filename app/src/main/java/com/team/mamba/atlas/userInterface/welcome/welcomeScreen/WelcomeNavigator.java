@@ -15,19 +15,4 @@ public interface WelcomeNavigator {
     void onDateCancelClicked();
 
     void onBackPressed();
-
-    void handleError(String errorMsg);
-
-    void showBusinessNotFoundAlert();
-
-    void showMultipleBusinessLogin();
-
-    void onBusinessScreenLoginClicked();
-
-    void onBusinessScreenLearnMoreClicked();
-
-    void openDashBoard();
-
-    Activity getParentActivity();
-
 }
