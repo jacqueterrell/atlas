@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.welcome.select_business_account;
+package com.team.mamba.atlas.userInterface.welcome.select_business_account.business_accounts_recycler;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;

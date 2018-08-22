@@ -60,7 +60,7 @@
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
-        <activity android:name=".userInterface.welcome.select_business_account.BusinessAccountsActivity"
+        <activity android:name=".userInterface.welcome.select_business_account.business_accounts_recycler.BusinessAccountsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustPan"/>

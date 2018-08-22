@@ -214,12 +214,7 @@
             layout="@layout/verify_age_dialog"
             bind:viewModel="@{viewModel}" />
 
-        <include
-            android:id="@+id/dialog_business_login"
-            layout="@layout/business_login_layout"
-            bind:viewModel="@{viewModel}" />
-
-        <net.bohush.geometricprogressview.GeometricProgressView
+            <net.bohush.geometricprogressview.GeometricProgressView
             android:id="@+id/progress_spinner"
             android:layout_width="50dp"
             android:layout_height="50dp"

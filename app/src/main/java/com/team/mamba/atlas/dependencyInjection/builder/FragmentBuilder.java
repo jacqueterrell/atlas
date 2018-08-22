@@ -30,6 +30,8 @@ import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementFragment;
 import com.team.mamba.atlas.userInterface.welcome.WelcomeScreenModule;
 import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.admin_accounts.AdminAccountsFragment;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.business_login.BusinessLoginFragment;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeFragment;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.enter_phone_number.EnterPhoneNumberFragment;
 import dagger.Module;
@@ -47,6 +49,12 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector(modules = WelcomeScreenModule.class)
     abstract WelcomeFragment bindWelcomeFragment();
+
+    @ContributesAndroidInjector(modules = WelcomeScreenModule.class)
+    abstract BusinessLoginFragment bindBusinessLoginFragment();
+
+    @ContributesAndroidInjector(modules = WelcomeScreenModule.class)
+    abstract AdminAccountsFragment bindAdminAccountsFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract CrmFragment bindBusinessOpportunitiesFragment();
@@ -128,6 +136,5 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract AddWorkFragment bindAddWorkFragment();
-
 
 }

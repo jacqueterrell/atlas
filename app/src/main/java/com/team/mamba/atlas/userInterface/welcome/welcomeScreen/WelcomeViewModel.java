@@ -16,7 +16,6 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     private WelcomeDataModel dataModel;
 
     private String userCode;
-    private List<BusinessProfile> businessProfileList = new ArrayList<>();
     private long dateOfBirth;
 
 
@@ -73,74 +72,15 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     }
 
 
-    public boolean isEmailValid(String email){
 
-
-        return  CommonUtils.isEmailValid(email);
-
-    }
-
-    public boolean isPasswordValid(String password){
-
-        return !password.isEmpty();
-    }
-
-//
-//    public void setBusinessLogin(boolean businessLogin) {
-//        this.businessLogin = businessLogin;
-//    }
-//
-//    public boolean isBusinessLogin() {
-//        return businessLogin;
-//    }
-//
-//    public String getFirstName() {
-//        return firstName;
-//    }
-//
-//    public void setFirstName(String firstName) {
-//        this.firstName = firstName;
-//    }
-//
-//    public String getLastName() {
-//        return lastName;
-//    }
-//
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
-//
     public long getDateOfBirth() {
         return dateOfBirth;
     }
-//
+
     public void setDateOfBirth(long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-//
-//    public void setUserCode(String userCode) {
-//        this.userCode = userCode;
-//    }
-//
-//    public String getUserCode() {
-//        return userCode;
-//    }
-//
-//    public String getPhoneNumber() {
-//        return phoneNumber;
-//    }
-//
-//    public void setPhoneNumber(String phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//    }
 
-    public void setBusinessProfileList(List<BusinessProfile> businessProfileList) {
-        this.businessProfileList = businessProfileList;
-    }
-
-    public List<BusinessProfile> getBusinessProfileList() {
-        return businessProfileList;
-    }
 
     /***************onclick listeners************/
 
@@ -166,18 +106,4 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
 
     //data model requests
 
-    public void onBusinessScreenLoginClicked(){
-
-        getNavigator().onBusinessScreenLoginClicked();
-    }
-
-    public void onBusinessScreenLearnMoreClicked(){
-
-        getNavigator().onBusinessScreenLearnMoreClicked();
-    }
-
-    public void firebaseAuthenticateByEmail(WelcomeViewModel viewModel,String email,String password){
-
-        dataModel.firebaseAuthenticateByEmail(viewModel,email,password);
-    }
 }
