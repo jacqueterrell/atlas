@@ -22,7 +22,6 @@ public class NetworkManagementDataModel {
 
     private AppDataManager dataManager;
 
-
     @Inject
     public NetworkManagementDataModel(AppDataManager dataManager) {
 
@@ -216,7 +215,7 @@ public class NetworkManagementDataModel {
         if (dataManager.getSharedPrefs().isBusinessAccount()){
 
             BusinessProfile profile = viewModel.getLoggedInBusinessProfile();
-            String deletedPath = "contacts." + profile.getId();
+            String deletedPath = "contacts." + connections.getConsentingUserID();
 
             DocumentReference docRef = db.collection("businesses").document(profile.getId());
             Map<String,Object> deletedConnection = new HashMap<>();
@@ -239,7 +238,7 @@ public class NetworkManagementDataModel {
         } else {
 
             UserProfile profile = viewModel.getLoggedInUserProfile();
-            String deletedPath = "connections." + profile.getId();
+            String deletedPath = "connections." + connections.getConsentingUserID();
 
             DocumentReference docRef = db.collection("users").document(profile.getId());
             Map<String,Object> deletedConnection = new HashMap<>();
@@ -251,6 +250,7 @@ public class NetworkManagementDataModel {
                         if (task.isSuccessful()){
 
                             Logger.i("Deleted user contact");
+                            viewModel.getNavigator().onContactDeleted();
 
                         } else {
 

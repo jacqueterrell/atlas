@@ -98,7 +98,11 @@ implements ContactNotesNavigator{
 
         binding.tvConnectionDate.setText(getConnectionDate());
         binding.tvConnectionType.setText(getConnectionTypeToString());
-        binding.setPersonalNotes(viewModel.getPersonalNotes());
+
+        if (viewModel.getPersonalNotes() != null){
+
+            binding.setPersonalNotes(viewModel.getPersonalNotes());
+        }
 
         String name = profile.getFirstName() + " " + profile.getLastName();
         binding.tvName.setText(name);

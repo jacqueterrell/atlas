@@ -7,7 +7,6 @@ public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigat
 
 
     private ContactProfileDataModel dataModel;
-    private UserProfile consentingProfile;
     private String selectedPhone;
 
 
@@ -15,14 +14,6 @@ public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigat
 
     public void setDataModel(ContactProfileDataModel dataModel) {
         this.dataModel = dataModel;
-    }
-
-    public void setConsentingProfile(UserProfile consentingProfile) {
-        this.consentingProfile = consentingProfile;
-    }
-
-    public UserProfile getConsentingProfile() {
-        return consentingProfile;
     }
 
     public String getSelectedPhone() {
@@ -102,10 +93,5 @@ public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigat
 
 
     /****************DataModel Requests***************/
-
-    public void getConnectionType(ContactProfileViewModel viewModel,UserProfile userProfile){
-
-        dataModel.getConnectionType(viewModel,userProfile);
-    }
 
 }

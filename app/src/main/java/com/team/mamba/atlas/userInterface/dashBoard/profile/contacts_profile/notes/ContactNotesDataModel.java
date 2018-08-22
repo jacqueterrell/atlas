@@ -93,7 +93,11 @@ public class ContactNotesDataModel {
 
                         Collections.sort(receivedNotes,(o1,o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
 
-                        viewModel.setPersonalNotes(receivedNotes.get(0));
+                        if (!receivedNotes.isEmpty()){
+
+                            viewModel.setPersonalNotes(receivedNotes.get(0));
+
+                        }
                         viewModel.getNavigator().onUserNotesReturned();
 
                     } else {

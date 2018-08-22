@@ -32,9 +32,12 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoar
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlas.utils.ChangeFragments;
+
 import java.util.Collections;
 import java.util.Map;
+
 import javax.inject.Inject;
+
 import com.team.mamba.atlas.R;
 
 import java.util.ArrayList;
@@ -58,6 +61,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     private static List<UserConnections> recentActivityConnections = new ArrayList<>();
     private DashBoardActivityNavigator parentNavigator;
     private DashBoardActivity parentActivity;
+    private UserProfile selectedContactProfile;
 
 
     public static InfoFragment newInstance() {
@@ -133,19 +137,24 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         //retrieves the cached list, also checks to see if the user logged out
         //and back in under a different account type
-        if (!viewModel.getUserStatsList().isEmpty()){
+        if (!viewModel.getUserStatsList().isEmpty()) {
 
-            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())){//the user logged out as a user and back in as a business
+            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {//the user logged out as a user and back in as a business
 
                 binding.layoutSplashScreen.setVisibility(View.VISIBLE);
                 viewModel.getAllUsers(getViewModel());
 
+            } else if (parentNavigator.wasContactRecentlyDeleted()) {
+
+                viewModel.getAllUsers(getViewModel());
+                parentNavigator.setContactRecentlyDeleted(false);
+
             } else {
 
-                setUserStatsAdapter(viewModel.getUserStatsList(),viewModel.getRecentActivityConnections());
+                setUserStatsAdapter(viewModel.getUserStatsList(), viewModel.getRecentActivityConnections());
                 setBarChartData();
 
-                if (viewModel.isNetworkChartSelected()){
+                if (viewModel.isNetworkChartSelected()) {
 
                     showSelectedNetworkButton();
 
@@ -165,7 +174,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         return binding.getRoot();
     }
 
-    private void setUpToolBar(){
+    private void setUpToolBar() {
 
         parentNavigator.showToolBar();
         parentActivity.hideCrmIcon();
@@ -216,7 +225,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         showSelectedNetworkButton();
         viewModel.setNetworkChartSelected(true);
 
-        if (viewModel.getNetworksMap().isEmpty()){
+        if (viewModel.getNetworksMap().isEmpty()) {
 
             viewModel.getAllUsers(getViewModel());
 
@@ -233,7 +242,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         showSelectedOpportunitiesButton();
         viewModel.setNetworkChartSelected(false);
 
-        if (viewModel.getOpportunitiesMap().isEmpty()){
+        if (viewModel.getOpportunitiesMap().isEmpty()) {
 
             viewModel.getAllUsers(getViewModel());
 
@@ -253,11 +262,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onUserProfileClicked() {
 
-        if (dataManager.getSharedPrefs().isBusinessAccount()){
+        if (dataManager.getSharedPrefs().isBusinessAccount()) {
 
-            for (BusinessProfile profile : viewModel.getBusinessProfileList()){
+            for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
 
-                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
 
                     parentNavigator.openBusinessProfile(profile);
 
@@ -267,14 +276,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         } else {
 
-            for (UserProfile profile : viewModel.getAllUsersList()){
+            for (UserProfile profile : viewModel.getAllUsersList()) {
 
-                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
 
                     parentNavigator.openUserProfile(profile);
 
                 }
-            }        }
+            }
+        }
     }
 
     @Override
@@ -287,11 +297,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onRecentActivitiesRowClicked(UserConnections userConnections) {
 
-        if (userConnections.isOrgBus){
+        if (userConnections.isOrgBus) {
 
-            for (BusinessProfile profile : viewModel.getBusinessProfileList()){
+            for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
 
-                if (profile.getId().equals(userConnections.getConsentingUserID())){
+                if (profile.getId().equals(userConnections.getConsentingUserID())) {
 
                     parentNavigator.openBusinessProfile(profile);
 
@@ -300,11 +310,12 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         } else {
 
-            for (UserProfile profile : viewModel.getAllUsersList()){
 
-                if (userConnections.isNeedsApproval()){
+            if (userConnections.isNeedsApproval()) {
 
-                    if (profile.getId().equals(userConnections.getRequestingUserID())){//another user is requesting to connect
+                for (UserProfile profile : viewModel.getAllUsersList()) {
+
+                    if (profile.getId().equals(userConnections.getRequestingUserID())) {//another user is requesting to connect
 
                         userConnections.setUserProfile(profile);
                         String first = profile.getFirstName();
@@ -325,22 +336,40 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
                                 .setPositiveButton("Approve", (paramDialogInterface, paramInt) -> {
 
                                     viewModel.getUserStatsList().clear();
-                                    ChangeFragments.replaceFragmentVertically(DescribeConnectionsFragment.newInstance(userConnections,true,false),getBaseActivity()
-                                            .getSupportFragmentManager(),"AddUserLayout",null);
+                                    ChangeFragments.replaceFragmentVertically(DescribeConnectionsFragment.newInstance(userConnections, true, false), getBaseActivity()
+                                            .getSupportFragmentManager(), "AddUserLayout", null);
                                 });
 
                         dialog.show();
 
                     }
 
-                } else {
+                }
 
-                    if (profile.getId().equals(userConnections.getConsentingUserID())){ //the logged in user is the requester
+            } else {
 
-                        parentNavigator.openUserProfile(profile);
+                for (UserProfile profile : viewModel.getAllUsersList()) {//find the contact's profile
+
+                    if (profile.getId().equals(userConnections.getConsentingUserID())) {
+
+                        selectedContactProfile = profile;
+                    }
+                }
+
+                for (UserConnections con : viewModel.getUserConnections()) {// get the contact's connection type
+
+                    String userId = dataManager.getSharedPrefs().getUserId();
+
+                    if (con.getConsentingUserID().equals(userId) && con.getRequestingUserID().equals(userConnections.getConsentingUserID())) {
+
+
+                        selectedContactProfile.setConnectionType(con.getConnectionType());
 
                     }
                 }
+
+                parentNavigator.openUserProfile(selectedContactProfile);
+
             }
         }
     }
@@ -348,7 +377,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void setUserStatsAdapter(List<String> userStats, List<UserConnections> connectionRecords) {
 
-        if (dataManager.getSharedPrefs().isBusinessAccount()){//logged in as a business profile
+        if (dataManager.getSharedPrefs().isBusinessAccount()) {//logged in as a business profile
 
             binding.tvUserId.setText(viewModel.getBusinessProfile().getCode());
 
@@ -358,14 +387,14 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
                 binding.tvUserId.setText(viewModel.getUserProfile().getCode());
 
-            } catch (Exception e){
+            } catch (Exception e) {
 
                 dataManager.getSharedPrefs().setUserLoggedIn(false);
                 getBaseActivity().finishAffinity();
             }
         }
 
-        Collections.sort(connectionRecords,(o1,o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
+        Collections.sort(connectionRecords, (o1, o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
 
         userStatsList.clear();
         userStatsList.addAll(userStats);
@@ -403,7 +432,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void setBarChartData() {
 
-        if (viewModel.isNetworkChartSelected()){
+        if (viewModel.isNetworkChartSelected()) {
 
             setNetworksBarChart();
 
@@ -461,7 +490,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
      *
      * @return String of label names
      */
-    private List<String> setOpportunitiesLabels(){
+    private List<String> setOpportunitiesLabels() {
 
         List<String> labels = new ArrayList<>();
 
@@ -546,7 +575,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.barChartNetwork.setVisibility(View.INVISIBLE);
         Handler handler = new Handler();
         binding.barChartNetwork.animateXY(1000, 1000);
-        handler.postDelayed(() -> binding.barChartNetwork.setVisibility(View.VISIBLE),400);
+        handler.postDelayed(() -> binding.barChartNetwork.setVisibility(View.VISIBLE), 400);
 
     }
 
@@ -598,12 +627,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.barChartNetwork.setVisibility(View.INVISIBLE);
         Handler handler = new Handler();
         binding.barChartNetwork.animateXY(1000, 1000);
-        handler.postDelayed(() -> binding.barChartNetwork.setVisibility(View.VISIBLE),400);
+        handler.postDelayed(() -> binding.barChartNetwork.setVisibility(View.VISIBLE), 400);
 
     }
 
     /**
-     *
      * @return String names for months
      */
     private List<String> getMonthsList() {
@@ -636,7 +664,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
 
-    private void showSelectedNetworkButton(){
+    private void showSelectedNetworkButton() {
 
         binding.layoutNetworkNotSelected.setVisibility(View.GONE);
         binding.layoutNetworkSelected.setVisibility(View.VISIBLE);
@@ -646,7 +674,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
     }
 
-    private void showSelectedOpportunitiesButton(){
+    private void showSelectedOpportunitiesButton() {
 
         binding.layoutNetworkNotSelected.setVisibility(View.VISIBLE);
         binding.layoutNetworkSelected.setVisibility(View.GONE);

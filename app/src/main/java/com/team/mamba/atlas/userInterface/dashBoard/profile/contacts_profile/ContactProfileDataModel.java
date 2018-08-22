@@ -36,12 +36,10 @@ public class ContactProfileDataModel {
                         if (connection.getConsentingUserID().equals(dataManager.getSharedPrefs().getUserId())){
 
                             profile.setConnectionType(connection.getConnectionType());
-                            viewModel.setConsentingProfile(profile);
 
                         }
                     }
 
-                    viewModel.getNavigator().onConnectionTypeSaved();
                 });
     }
 }

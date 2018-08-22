@@ -9,4 +9,6 @@ public interface NetworkManagementNavigator {
     void handleError(String msg);
 
     void onRowClicked(UserConnections connection);
+
+    void onContactDeleted();
 }

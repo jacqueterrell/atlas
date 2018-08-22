@@ -52,6 +52,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
 
     private FragmentContainerBinding binding;
+    private static boolean contactRecentlyDeleted = false;
 
 
     public static Intent newIntent(Context context) {
@@ -108,6 +109,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
     @Override
     public void resetToFirstFragment() {
+
+        getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        showToolBar();
+    }
+
+    @Override
+    public void refreshInfoFragment() {
 
         getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         showToolBar();
@@ -228,6 +236,16 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     }
 
 
+    @Override
+    public boolean wasContactRecentlyDeleted() {
+        return contactRecentlyDeleted;
+    }
+
+    @Override
+    public void setContactRecentlyDeleted(boolean wasDeleted) {
+
+        contactRecentlyDeleted = wasDeleted;
+    }
 
     @Override
     public void showToolBar() {

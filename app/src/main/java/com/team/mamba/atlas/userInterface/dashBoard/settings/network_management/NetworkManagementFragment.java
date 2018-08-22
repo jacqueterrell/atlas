@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.settings.network_management;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -25,6 +26,8 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlas.databinding.NetworkManagementLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
@@ -53,6 +56,7 @@ implements NetworkManagementNavigator{
     private List<UserConnections> userConnections = new ArrayList<>();
     private NetworkManagementAdapter networkManagementAdapter;
     private UserConnections deletedUserConnection;
+    private DashBoardActivityNavigator parentNavigator;
 
 
     @Override
@@ -73,6 +77,13 @@ implements NetworkManagementNavigator{
     @Override
     public View getProgressSpinner() {
         return binding.progressSpinner;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        parentNavigator = (DashBoardActivityNavigator) context;
     }
 
     @Override
@@ -107,6 +118,13 @@ implements NetworkManagementNavigator{
         networkManagementAdapter.notifyDataSetChanged();
 
         hideProgressSpinner();
+    }
+
+    @Override
+    public void onContactDeleted() {
+
+        parentNavigator.setContactRecentlyDeleted(true);
+        parentNavigator.refreshInfoFragment();
     }
 
     @Override
