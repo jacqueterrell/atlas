@@ -1,11 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual;
 
 import android.Manifest;
-import android.animation.Animator;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,27 +10,23 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.databinding.UserProfileLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
@@ -43,10 +35,9 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkFragment;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeFragments;
-import com.team.mamba.atlas.utils.formatData.RegEx;
 
 import java.io.File;
 import javax.inject.Inject;

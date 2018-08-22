@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.Announcements;
+import com.team.mamba.atlas.data.model.api.fireStore.Announcements;
 import com.team.mamba.atlas.databinding.AnnouncementsLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;

@@ -16,7 +16,7 @@
 
         <variable
             name = "personalNotes"
-            type = "com.team.mamba.atlas.data.model.api.PersonalNotes"/>
+            type = "com.team.mamba.atlas.data.model.api.fireStore.PersonalNotes"/>
 
     </data>
 

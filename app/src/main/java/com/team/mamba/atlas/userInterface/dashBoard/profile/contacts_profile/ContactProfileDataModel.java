@@ -2,8 +2,8 @@ package com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.team.mamba.atlas.data.AppDataManager;
-import com.team.mamba.atlas.data.model.api.UserConnections;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 import java.util.List;
 import javax.inject.Inject;

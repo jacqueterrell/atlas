@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.data.model.api;
+package com.team.mamba.atlas.data.model.api.fireStore;
 
 import android.graphics.Typeface;
 import android.support.annotation.Keep;

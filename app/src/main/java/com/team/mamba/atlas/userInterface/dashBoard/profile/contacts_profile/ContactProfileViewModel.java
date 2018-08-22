@@ -1,7 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile;
 
-import android.net.Uri;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigator> {

@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessProfileLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.utils.AppConstants;

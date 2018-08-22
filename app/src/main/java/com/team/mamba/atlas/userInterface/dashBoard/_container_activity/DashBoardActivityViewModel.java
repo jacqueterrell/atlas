@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 

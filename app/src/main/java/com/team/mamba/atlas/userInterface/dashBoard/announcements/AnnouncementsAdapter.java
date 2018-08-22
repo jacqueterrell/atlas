@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.Announcements;
+import com.team.mamba.atlas.data.model.api.fireStore.Announcements;
 import com.team.mamba.atlas.databinding.AnnouncementsListRowBinding;
 import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsAdapter.NotificationsViewHolder;
-import java.util.Collections;
+
 import java.util.List;
 
 public class AnnouncementsAdapter extends RecyclerView.Adapter<NotificationsViewHolder>{

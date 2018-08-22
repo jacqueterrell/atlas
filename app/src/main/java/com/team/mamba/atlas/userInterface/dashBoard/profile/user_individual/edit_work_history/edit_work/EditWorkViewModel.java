@@ -1,12 +1,8 @@
-package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history;
+package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work;
 
-import com.team.mamba.atlas.data.model.api.UserProfile;
-import com.team.mamba.atlas.data.model.local.Education;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.data.model.local.WorkHistory;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkDataModel;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkNavigator;
 
 public class EditWorkViewModel extends BaseViewModel<EditWorkNavigator> {
 

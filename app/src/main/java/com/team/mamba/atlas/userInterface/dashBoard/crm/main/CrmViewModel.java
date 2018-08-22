@@ -1,7 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.crm.main;
 
-import com.team.mamba.atlas.data.model.api.CrmNotes;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import java.util.ArrayList;
 import java.util.List;

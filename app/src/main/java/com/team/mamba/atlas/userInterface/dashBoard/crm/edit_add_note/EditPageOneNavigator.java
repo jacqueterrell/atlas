@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note;
 
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 
 public interface EditPageOneNavigator {
 

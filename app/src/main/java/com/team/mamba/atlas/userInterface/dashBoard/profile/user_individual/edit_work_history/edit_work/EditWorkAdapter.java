@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history;
+package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -9,9 +9,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.local.WorkHistory;
-import com.team.mamba.atlas.databinding.EditEducationListRowBinding;
 import com.team.mamba.atlas.databinding.EditWorkHistoryListRowBinding;
-import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.EditWorkAdapter.EditWorkViewHolder;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkAdapter.EditWorkViewHolder;
 import java.util.List;
 
 public class EditWorkAdapter extends RecyclerView.Adapter<EditWorkViewHolder> {

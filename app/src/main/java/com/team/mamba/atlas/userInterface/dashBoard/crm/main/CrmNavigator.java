@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.crm.main;
 
-import com.team.mamba.atlas.data.model.api.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import java.util.List;
 
 public interface CrmNavigator {

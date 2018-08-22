@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.databinding.HowDidYouMeetBinding;
-import com.team.mamba.atlas.data.model.api.PersonalNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.PersonalNotes;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 

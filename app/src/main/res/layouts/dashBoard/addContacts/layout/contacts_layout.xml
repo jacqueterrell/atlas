@@ -13,7 +13,7 @@
 
         <variable
             name = "profile"
-            type = "com.team.mamba.atlas.data.model.api.UserProfile"/>
+            type = "com.team.mamba.atlas.data.model.api.fireStore.UserProfile"/>
 
 
         <variable

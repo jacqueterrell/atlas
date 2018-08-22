@@ -4,17 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.databinding.EditAddressLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 

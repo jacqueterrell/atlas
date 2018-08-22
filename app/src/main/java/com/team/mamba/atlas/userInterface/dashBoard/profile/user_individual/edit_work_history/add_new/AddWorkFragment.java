@@ -1,41 +1,53 @@
-package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history;
+package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.add_new;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.orhanobut.logger.Logger;
+import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.local.WorkHistory;
 import com.team.mamba.atlas.databinding.AddWorkHistoryLayoutBinding;
+import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkNavigator;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AddWorkFragment extends Fragment {
+import javax.inject.Inject;
+
+public class AddWorkFragment extends BaseFragment<AddWorkHistoryLayoutBinding,AddWorkViewModel>
+implements AddWorkNavigator{
+
+
+    @Inject
+    AddWorkViewModel viewModel;
+
+    @Inject
+    AddWorkDataModel dataModel;
 
 
     private AddWorkHistoryLayoutBinding binding;
     private static EditWorkNavigator navigator;
     private DashBoardActivity parentActivity;
-    private GeoDataClient geoDataClient;
+    private AddWorkAdapter addWorkAdapter;
+    private List<String> descriptionList = new ArrayList<>();
+
+
 
     public static AddWorkFragment newInstance(EditWorkNavigator editWorkNavigator){
 
@@ -45,19 +57,50 @@ public class AddWorkFragment extends Fragment {
 
 
     @Override
+    public int getBindingVariable() {
+        return BR.viewModel;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.add_work_history_layout;
+    }
+
+    @Override
+    public AddWorkViewModel getViewModel() {
+        return viewModel;
+    }
+
+    @Override
+    public View getProgressSpinner() {
+        return binding.progressSpinner;
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         parentActivity = (DashBoardActivity) context;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel.setNavigator(this);
+        viewModel.setDataModel(dataModel);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater,R.layout.add_work_history_layout,container,false);
+       super.onCreateView(inflater,container,savedInstanceState);
+        binding = getViewDataBinding();
 
-        geoDataClient = Places.getGeoDataClient(getActivity());
+        addWorkAdapter = new AddWorkAdapter(descriptionList,getViewModel());
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerView.setAdapter(addWorkAdapter);
 
+        setUpListeners();
 
         binding.btnSave.setOnClickListener(v -> {
 
@@ -77,9 +120,46 @@ public class AddWorkFragment extends Fragment {
             binding.etCompanyName.setText(companyName);
         }
 
-        setUpListeners();
 
         return binding.getRoot();
+    }
+
+
+    private void setUpListeners(){
+
+        binding.etCompanyName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                viewModel.getGooglePlaceHints(getViewModel(),editable.toString());
+            }
+        });
+    }
+
+    @Override
+    public void onRowClicked(String text) {
+
+        binding.etCompanyName.setText(text);
+    }
+
+    @Override
+    public void onAutoCompleteReturned(List<String> descriptionArrayList) {
+
+        descriptionList.clear();
+        descriptionList.addAll(descriptionArrayList);
+        addWorkAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void handleError(String msg) {
+
+        showAlert(msg,"");
     }
 
 
@@ -119,39 +199,10 @@ public class AddWorkFragment extends Fragment {
 
         if (title.isEmpty() || industry.isEmpty() || companyName.isEmpty()){
 
-          return false;
+            return false;
 
         }
 
         return true;
     }
-
-    private void setUpListeners(){
-//
-//        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-//                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-//
-//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//            @Override
-//            public void onPlaceSelected(Place place) {
-//
-//                Logger.e("Place " + place.getName());
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//
-//                Logger.e("An error occurred " + status);
-//            }
-//        });
-//
-//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-//                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-//                .build();
-//
-//        autocompleteFragment.setFilter(typeFilter);
-
-    }
-
-
 }

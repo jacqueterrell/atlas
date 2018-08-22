@@ -3,7 +3,6 @@ package com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +10,11 @@ import android.view.ViewGroup;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.BR;
 
-import com.team.mamba.atlas.data.model.api.CrmNotes;
+import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import com.team.mamba.atlas.databinding.EditAddPageSixBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
-import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel;
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
+
 import javax.inject.Inject;
 
 public class EditAddNotePageSixFragment extends BaseFragment<EditAddPageSixBinding, EditAddNotePageSixViewModel>

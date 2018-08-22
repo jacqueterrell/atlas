@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.BusinessProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessAccountsRecyclerViewBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
 

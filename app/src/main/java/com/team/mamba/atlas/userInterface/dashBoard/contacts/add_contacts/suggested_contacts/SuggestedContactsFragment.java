@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +13,12 @@ import android.view.ViewGroup;
 
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.model.api.UserProfile;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.databinding.SuggestedContactsLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
