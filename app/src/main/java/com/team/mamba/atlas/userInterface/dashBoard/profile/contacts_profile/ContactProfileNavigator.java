@@ -23,6 +23,4 @@ public interface ContactProfileNavigator {
     void contactOnWorkHistoryClicked();
 
     void contactOnEducationClicked();
-
-    void onConnectionTypeSaved();
 }

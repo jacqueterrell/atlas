@@ -36,4 +36,10 @@ public interface DashBoardActivityNavigator {
     void setCrmFilter(CrmFilter crmFilter);
 
     void resetToFirstFragment();
+
+    void refreshInfoFragment();
+
+    boolean wasContactRecentlyDeleted();
+
+    void setContactRecentlyDeleted(boolean wasDeleted);
 }

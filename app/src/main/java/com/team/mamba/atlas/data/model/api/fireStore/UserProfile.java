@@ -129,7 +129,7 @@ public class UserProfile {
     @Expose
     public String phone= "";
 
-    @Exclude private int connectionType;
+    @Exclude private int connectionType = 3;
 
     public UserProfile() {
 

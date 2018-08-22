@@ -31,8 +31,8 @@ import com.team.mamba.atlas.utils.formatData.RegEx;
 
 import javax.inject.Inject;
 
-public class ContactProfileFragment extends BaseFragment<UserProfileForContactBinding,ContactProfileViewModel>
-implements ContactProfileNavigator{
+public class ContactProfileFragment extends BaseFragment<UserProfileForContactBinding, ContactProfileViewModel>
+        implements ContactProfileNavigator {
 
 
     @Inject
@@ -49,8 +49,11 @@ implements ContactProfileNavigator{
     private static final String HOME_PHONE = "homePhone";
     private static final String PERSONAL_PHONE = "personalPhone";
     private static int connectionType;
+    private String adjustedPhone;
+    private String displayPhoneName;
 
-    public static ContactProfileFragment newInstance(UserProfile userProfile){
+
+    public static ContactProfileFragment newInstance(UserProfile userProfile) {
 
         profile = userProfile;
         return new ContactProfileFragment();
@@ -93,11 +96,13 @@ implements ContactProfileNavigator{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-         binding = getViewDataBinding();
-         binding.setProfile(profile);
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = getViewDataBinding();
+        binding.setProfile(profile);
 
-        if (profile.getImageUrl() != null){
+        onConnectionTypeSaved();
+
+        if (profile.getImageUrl() != null) {
 
             Glide.with(getBaseActivity())
                     .load(profile.getImageUrl())
@@ -105,9 +110,8 @@ implements ContactProfileNavigator{
                     .into(binding.ivUserProfile);
         }
 
-        viewModel.getConnectionType(getViewModel(),profile);
 
-         return binding.getRoot();
+        return binding.getRoot();
     }
 
     @Override
@@ -187,19 +191,29 @@ implements ContactProfileNavigator{
         sendToClipBoard(profile.getEducationString());
     }
 
-    private void callPhone(String profilePhone){
+    private void callPhone(String profilePhone) {
 
 
-        String adjustedPhone = profilePhone.replaceAll(RegEx.REMOVE_NON_DIGITS,"");
+        if (profilePhone.contains("x")) {
 
-        if (adjustedPhone.isEmpty()){
+            int index = profilePhone.indexOf("x");
+            displayPhoneName = profilePhone.substring(0, index - 1);
+            adjustedPhone = profilePhone.substring(0, index - 1).replaceAll(RegEx.REMOVE_NON_DIGITS, "");
+
+        } else {
+
+            adjustedPhone = profilePhone.replaceAll(RegEx.REMOVE_NON_DIGITS, "");
+            displayPhoneName = profilePhone;
+        }
+
+        if (adjustedPhone.isEmpty()) {
 
             return;
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getBaseActivity());
 
-        builder.setMessage(profile.getPhone())
+        builder.setMessage(displayPhoneName)
                 .setPositiveButton("Call", (dialog, id) -> {
 
                     Long phone2 = Long.valueOf(adjustedPhone);
@@ -213,7 +227,7 @@ implements ContactProfileNavigator{
                         try {
 
                             startActivity(callIntent);
-                            showToastLong("dialing " + profile.getPhone());
+                            showToastLong("dialing " + displayPhoneName);
 
                         } catch (Exception e) {
                             Logger.e(e.getMessage());
@@ -230,20 +244,12 @@ implements ContactProfileNavigator{
     }
 
 
-    @Override
     public void onConnectionTypeSaved() {
 
-        if (viewModel.getConsentingProfile() == null){
 
-            connectionType = 3;
+        connectionType = profile.getConnectionType();
 
-        } else {
-
-            viewModel.getConsentingProfile().setConnectionType(0);
-            connectionType = viewModel.getConsentingProfile().getConnectionType();
-        }
-
-        if (connectionType == 0 || connectionType == 1){//family can see everything
+        if (connectionType == 0 || connectionType == 1) {//family can see everything
 
             binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
             binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
@@ -257,7 +263,7 @@ implements ContactProfileNavigator{
             binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
             binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
 
-        } if (connectionType == 2){ //connection type is 2(New Acquaintance)
+        } else if (connectionType == 2) { //connection type is 2(New Acquaintance)
 
             binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
             binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
@@ -317,76 +323,75 @@ implements ContactProfileNavigator{
     }
 
 
-    private void setContactsDefaultValues(){
+    private void setContactsDefaultValues() {
 
-        if (binding.tvPosition.getText().toString().trim().equals(",")){
+        if (binding.tvPosition.getText().toString().trim().equals(",")) {
 
             binding.tvPosition.setText("");
         }
 
         //phone info
-        if (binding.tvCellPhone.getText().toString().isEmpty()){
+        if (binding.tvCellPhone.getText().toString().isEmpty()) {
 
             binding.tvCellPhone.setText("...");
         }
 
-        if (binding.tvOfficePhone.getText().toString().isEmpty()){
+        if (binding.tvOfficePhone.getText().toString().isEmpty()) {
 
             binding.tvOfficePhone.setText("...");
         }
 
-        if (binding.tvHomePhone.getText().toString().isEmpty()){
+        if (binding.tvHomePhone.getText().toString().isEmpty()) {
 
             binding.tvHomePhone.setText("...");
         }
 
-        if (binding.tvFaxPhone.getText().toString().isEmpty()){
+        if (binding.tvFaxPhone.getText().toString().isEmpty()) {
 
             binding.tvFaxPhone.setText("...");
         }
 
-        if (binding.tvPersonalPhone.getText().toString().isEmpty()){
+        if (binding.tvPersonalPhone.getText().toString().isEmpty()) {
 
             binding.tvPersonalPhone.setText("...");
         }
 
         //email info
-        if (binding.tvWorkEmail.getText().toString().isEmpty()){
+        if (binding.tvWorkEmail.getText().toString().isEmpty()) {
 
             binding.tvWorkEmail.setText("...");
         }
 
-        if (binding.tvPersonalEmail.getText().toString().isEmpty()){
+        if (binding.tvPersonalEmail.getText().toString().isEmpty()) {
 
             binding.tvPersonalEmail.setText("...");
         }
 
         //address info
-        if (binding.tvHomeAddress.getText().toString().isEmpty()){
+        if (binding.tvHomeAddress.getText().toString().isEmpty()) {
 
             binding.tvHomeAddress.setText("...");
         }
 
-        if (binding.tvWorkAddress.getText().toString().isEmpty()){
+        if (binding.tvWorkAddress.getText().toString().isEmpty()) {
 
             binding.tvWorkAddress.setText("...");
         }
 
         //work history info
-        if (binding.tvWorkHistory.getText().toString().isEmpty()){
+        if (binding.tvWorkHistory.getText().toString().isEmpty()) {
 
             binding.tvWorkHistory.setText("...");
         }
 
         //education info
-        if (binding.tvEducation.getText().toString().isEmpty()){
+        if (binding.tvEducation.getText().toString().isEmpty()) {
 
             binding.tvEducation.setText("...");
         }
 
 
     }
-
 
 
     @Override
@@ -396,19 +401,19 @@ implements ContactProfileNavigator{
 
         if (requestCode == AppConstants.REQUEST_PHONE_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-            if (viewModel.getSelectedPhone().equals(CELL_PHONE)){
+            if (viewModel.getSelectedPhone().equals(CELL_PHONE)) {
 
                 contactCellPhoneClicked();
 
-            } else if (viewModel.getSelectedPhone().equals(OFFICE_PHONE)){
+            } else if (viewModel.getSelectedPhone().equals(OFFICE_PHONE)) {
 
                 contactOnOfficePhoneClicked();
 
-            } else if (viewModel.getSelectedPhone().equals(HOME_PHONE)){
+            } else if (viewModel.getSelectedPhone().equals(HOME_PHONE)) {
 
                 contactOnHomePhoneClicked();
 
-            } else if (viewModel.getSelectedPhone().equals(PERSONAL_PHONE)){
+            } else if (viewModel.getSelectedPhone().equals(PERSONAL_PHONE)) {
 
                 contactOnPersonalPhoneClicked();
             }
@@ -419,13 +424,14 @@ implements ContactProfileNavigator{
 
     /**
      * Copys the text to the clip board
+     *
      * @param text
      */
-    private void sendToClipBoard(String text){
+    private void sendToClipBoard(String text) {
 
         String label = text + " is copied to your clipboard";
 
-        if (!text.isEmpty() && !text.equals("...")){
+        if (!text.isEmpty() && !text.equals("...")) {
 
             try {
 
@@ -434,24 +440,23 @@ implements ContactProfileNavigator{
                 clipboard.setPrimaryClip(clip);
                 showToastShort(label);
 
-            } catch (Exception e){
+            } catch (Exception e) {
 
                 Logger.e(e.getMessage());
             }
 
-            try{
+            try {
 
                 Vibrator v = (Vibrator) getBaseActivity().getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(400);
 
-            } catch (Exception e){
+            } catch (Exception e) {
 
                 Logger.e(e.getMessage());
             }
         }
 
     }
-
 
 
 }

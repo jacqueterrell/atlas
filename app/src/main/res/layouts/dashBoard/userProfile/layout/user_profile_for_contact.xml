@@ -145,6 +145,8 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactCellPhoneClicked()}"
                         >
 
@@ -175,6 +177,8 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactOnOfficePhoneClicked()}"
                         >
 
@@ -205,6 +209,8 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactOnHomePhoneClicked()}"
                         >
 
@@ -235,6 +241,8 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactOnPersonalPhoneClicked()}"
                         >
 
@@ -265,6 +273,8 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactOnFaxClicked()}"
                         >
 
@@ -293,6 +303,8 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactOnPersonalEmailClicked()}"
                         >
 
@@ -322,6 +334,8 @@
                         android:orientation="horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactOnWorkEmailClicked()}"
                         >
 
@@ -351,6 +365,7 @@
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactOnHomeAddressClicked()}"
                         >
 
@@ -405,7 +420,9 @@
                         android:id="@+id/layout_contact_work_history"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                     <TextView
                         style="@style/App_Text_view"
@@ -445,7 +462,9 @@
                         android:id="@+id/layout_contact_education"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                     <TextView
                         style="@style/App_Text_view"

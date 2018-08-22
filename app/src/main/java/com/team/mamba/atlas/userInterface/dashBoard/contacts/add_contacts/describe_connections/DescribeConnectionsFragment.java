@@ -96,11 +96,11 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
 
          if (isApprovingConnection || isUpdatingConnection){
 
+             setCachedConnectionType();
              binding.tvTitle.setText("Edit Connection");
          }
 
          setUpListeners();
-        setCachedConnectionType();
 
         return binding.getRoot();
     }
