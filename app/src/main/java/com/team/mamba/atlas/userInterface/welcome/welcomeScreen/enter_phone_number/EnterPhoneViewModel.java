@@ -35,10 +35,6 @@ public class EnterPhoneViewModel extends BaseViewModel<EnterPhoneNavigator> {
         this.dataModel = dataModel;
     }
 
-    public EnterPhoneDataModel getDataModel() {
-        return dataModel;
-    }
-
     public void setVerificationId(String verificationId) {
         this.verificationId = verificationId;
     }

@@ -14,10 +14,6 @@ public class AdminAccountsViewModel extends BaseViewModel<AdminAccountsNavigator
 
     /************Getters and Setters**************/
 
-    public AdminAccountsDataModel getDataModel() {
-        return dataModel;
-    }
-
     public void setDataModel(AdminAccountsDataModel dataModel) {
         this.dataModel = dataModel;
     }

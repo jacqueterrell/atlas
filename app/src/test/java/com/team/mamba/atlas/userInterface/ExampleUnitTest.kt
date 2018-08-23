@@ -1,4 +1,4 @@
-package com.team.mamba.atlas
+package com.team.mamba.atlas.userInterface
 
 import org.junit.Test
 

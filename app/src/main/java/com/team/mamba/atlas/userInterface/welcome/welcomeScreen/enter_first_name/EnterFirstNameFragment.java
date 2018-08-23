@@ -24,6 +24,8 @@ public class EnterFirstNameFragment extends Fragment {
 
     private EnterFirstNameDialogBinding binding;
     private static long dateOfBirth;
+    private LayoutInflater layoutInflater;
+    private ViewGroup viewGroupContainer;
 
     public static EnterFirstNameFragment newInstance(long dob){
 
@@ -36,21 +38,23 @@ public class EnterFirstNameFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.enter_first_name_dialog,container,false);
+        layoutInflater = inflater;
+        viewGroupContainer = container;
 
         showSoftKeyboard(binding.etFirstName);
 
+        //Todo Intrument test
         binding.btnNext.setOnClickListener(v -> {
 
             String name = binding.etFirstName.getText().toString();
 
             if (name.isEmpty()){
 
-                Snackbar.make(binding.getRoot(),"Please enter a valide first name",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.getRoot(),"Please enter a valid first name",Snackbar.LENGTH_LONG).show();
 
             } else {
 
-                ChangeWelcomeFragments
-                        .addFragmentFadeIn(EnterLastNameFragment.newInstance(dateOfBirth,name), getActivity().getSupportFragmentManager(), "LastNameFragment", null);
+                ChangeWelcomeFragments.addFragmentFadeIn(EnterLastNameFragment.newInstance(dateOfBirth,name), getActivity().getSupportFragmentManager(), "LastNameFragment", null);
             }
         });
 
@@ -59,11 +63,14 @@ public class EnterFirstNameFragment extends Fragment {
             getActivity().onBackPressed();
         });
 
-        Glide.with(getActivity())
-                .load(R.drawable.welcome_background)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(binding.imgViewBackground);
+        if (!ChangeWelcomeFragments.isUnitTesting) {
+
+            Glide.with(getActivity())
+                    .load(R.drawable.welcome_background)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(binding.imgViewBackground);
+        }
 
         return binding.getRoot();
     }
@@ -76,5 +83,9 @@ public class EnterFirstNameFragment extends Fragment {
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
 
+    }
+
+    public ViewGroup getViewGroupContainer() {
+        return viewGroupContainer;
     }
 }
