@@ -1,4 +1,4 @@
-package com.team.mamba.atlas.dashboard;
+package com.team.mamba.atlas.userInterface.dashBoard;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
