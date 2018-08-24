@@ -22,8 +22,8 @@ import static org.mockito.Mockito.*;
 
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
+@RunWith(RobolectricTestRunner.class)
 public class WelcomeViewModelTest {
 
 
