@@ -286,7 +286,8 @@ public class CrmNotes {
 
         String stamp = String.valueOf(getAdjustedTimeStamp());
 
-        if (stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
+        if (stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)
+                && stamp.length() > 1){
 
             return monthName + " " + day + " " + year;
 
@@ -308,7 +309,8 @@ public class CrmNotes {
 
         String stamp = String.valueOf(getAdjustedCloseTimeStamp());
 
-        if (stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)){
+        if (stamp.matches(RegEx.ALLOW_DIGITS_AND_DECIMALS)
+                && stamp.length() > 1){
 
             return monthName + " " + day + " " + year;
 
