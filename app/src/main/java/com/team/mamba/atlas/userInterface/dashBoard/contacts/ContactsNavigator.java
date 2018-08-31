@@ -29,4 +29,10 @@ public interface ContactsNavigator {
     boolean isActivityVisible();
 
     List<UserConnections> getPermConnectionList();
+
+    void onInfoClicked();
+
+    void onNotificationsClicked();
+
+    void onCrmClicked();
 }

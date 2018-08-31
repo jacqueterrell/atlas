@@ -21,6 +21,7 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.databinding.EditAddPageOneBinding;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
 public class EditAddNotePageOneFragment extends Fragment implements EditPageOneNavigator {
@@ -50,7 +51,7 @@ public class EditAddNotePageOneFragment extends Fragment implements EditPageOneN
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.edit_add_page_one,container,false);
 
-        if (isNewContact){
+        if (isNewContact && !CrmViewModel.usersContactProfiles.isEmpty()){
 
             Handler handler = new Handler();
             handler.postDelayed(this::showContactList,800);

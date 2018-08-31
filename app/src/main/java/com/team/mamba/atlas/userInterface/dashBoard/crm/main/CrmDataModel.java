@@ -117,16 +117,20 @@ public class CrmDataModel {
 
                     if (task.isSuccessful()) {
 
-                        List<UserConnections> connections = task.getResult().toObjects(UserConnections.class);
+                        List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
 
                         for (UserProfile profile : userProfiles){
 
-                            for (UserConnections connections1 : connections){
+                            for (UserConnections connection : connectionsList){
 
-                                if (profile.getId().equals(connections1.getConsentingUserID())){
+                                if (connection.isConfirmed){
 
-                                    usersContactProfiles.add(profile);
+                                    if (profile.getId().equals(connection.getConsentingUserID())){
+
+                                        usersContactProfiles.add(profile);
+                                    }
                                 }
+
                             }
                         }
 

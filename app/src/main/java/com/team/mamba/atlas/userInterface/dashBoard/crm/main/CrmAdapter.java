@@ -193,7 +193,10 @@ public class CrmAdapter extends RecyclerView.Adapter<CrmViewHolder> {
             text = text.toLowerCase();
             for (CrmNotes notes : viewModel.getNavigator().getPerCrmNotesList()){
 
-                if (notes.getNoteName().toLowerCase().contains(text)){
+                if (notes.getNoteName().toLowerCase().contains(text)
+                        || notes.getPoc().toLowerCase().contains(text)
+                        || notes.getWhereMetCitySt().toLowerCase().contains(text)
+                        || notes.getWhereMetEventName().toLowerCase().contains(text)){
 
                     crmNotesList.add(notes);
                 }

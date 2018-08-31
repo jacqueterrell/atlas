@@ -11,6 +11,8 @@ public class AnnouncementsViewModel extends BaseViewModel<AnnouncementsNavigator
     private static List<Announcements> announcementsList = new ArrayList<>();
 
 
+    /**************Getters and Setters*******************/
+
     public void setDataModel(AnnouncementsDataModel dataModel) {
         this.dataModel = dataModel;
     }
@@ -26,5 +28,22 @@ public class AnnouncementsViewModel extends BaseViewModel<AnnouncementsNavigator
     public void requestAnnouncements(AnnouncementsViewModel viewModel){
 
         dataModel.requestAnnouncements(viewModel);
+    }
+
+    /*****************OnClick Listeners*****************/
+
+    public void onContactsClicked(){
+
+        getNavigator().onContactsClicked();
+    }
+
+    public void onCrmClicked(){
+
+        getNavigator().onCrmClicked();
+    }
+
+    public void onInfoClicked(){
+
+        getNavigator().onInfoClicked();
     }
 }

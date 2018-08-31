@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -16,6 +17,11 @@ import com.team.mamba.atlas.databinding.AnnouncementsLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
+import com.team.mamba.atlas.utils.ChangeFragments;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -115,5 +121,26 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
 
         showSnackbar(errorMsg);
         binding.swipeContainer.setRefreshing(false);
+    }
+
+    @Override
+    public void onCrmClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
+    }
+
+    @Override
+    public void onInfoClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(InfoFragment.newInstance(), manager, "Info", null);
+    }
+
+    @Override
+    public void onContactsClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
     }
 }
