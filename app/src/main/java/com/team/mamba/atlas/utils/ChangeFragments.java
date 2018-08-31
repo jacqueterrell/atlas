@@ -138,7 +138,7 @@ public class ChangeFragments {
     }
 
 
-    public static void replaceFadeInFromBackStack(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
+    public static void replaceFromBackStack(Fragment fragmentId, FragmentManager fragmentManager, String tag, Bundle args){
 
 
         if (isUnitTesting){//Robolectric cannot handle fragment animations (gets stuck in infinite loop)
@@ -153,9 +153,7 @@ public class ChangeFragments {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         fragmentId.setArguments(args);
-        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,android.R.anim.fade_in,android.R.anim.fade_out);
         transaction.replace(R.id.fragment_container, fragmentId, tag);
-
         transaction.commit();
 
     }
