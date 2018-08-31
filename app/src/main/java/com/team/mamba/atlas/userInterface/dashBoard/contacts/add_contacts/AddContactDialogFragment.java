@@ -53,14 +53,12 @@ public class AddContactDialogFragment extends DialogFragment  {
         binding.btnAddUser.setOnClickListener(view -> {
 
             ChangeFragments.addFragmentVertically(AddUserFragment.newInstance(),parentActivity.getSupportFragmentManager(),"AddUser",null);
-            parentActivity.hideToolBar();
             dialog.dismiss();
         });
 
         binding.btnAddBusiness.setOnClickListener(view -> {
 
             ChangeFragments.addFragmentVertically(AddBusinessFragment.newInstance(),parentActivity.getSupportFragmentManager(),"AddBusiness",null);
-            parentActivity.hideToolBar();
             dialog.dismiss();
         });
 
@@ -80,7 +78,6 @@ public class AddContactDialogFragment extends DialogFragment  {
         binding.btnFindUsers.setOnClickListener(view -> {
 
             ChangeFragments.addFragmentVertically(FindUsersFragment.newInstance(),parentActivity.getSupportFragmentManager(),"FindUsers",null);
-            parentActivity.hideToolBar();
             dialog.dismiss();
         });
 
@@ -88,7 +85,6 @@ public class AddContactDialogFragment extends DialogFragment  {
 
 
             ChangeFragments.addFragmentVertically(SuggestedContactsFragment.newInstance(),parentActivity.getSupportFragmentManager(),"SuggestedContacts",null);
-            parentActivity.hideToolBar();
             dialog.dismiss();
         });
 

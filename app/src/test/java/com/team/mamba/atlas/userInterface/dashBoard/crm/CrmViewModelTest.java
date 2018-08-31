@@ -142,7 +142,7 @@ public class CrmViewModelTest {
         spyViewModel.onInfoClicked();
 
         //assert
-        verify(mockNavigator).onInfoClicked();
+        verify(mockNavigator).onCrmInfoButtonClicked();
     }
 
     @Test

@@ -48,7 +48,7 @@
             android:padding="10dp"
             android:layout_marginRight="15dp"
             android:layout_gravity="end|center_vertical"
-            android:onClick="@{()-> viewModel.onInfoClicked()}"
+            android:onClick="@{()-> viewModel.onCrmInfoButtonClicked()}"
             />
     </FrameLayout>
 

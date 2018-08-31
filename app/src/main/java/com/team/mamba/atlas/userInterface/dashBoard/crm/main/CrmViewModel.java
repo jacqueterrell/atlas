@@ -70,9 +70,24 @@ public class CrmViewModel extends BaseViewModel<CrmNavigator> {
     }
 
     /******OnClick Listeners**********/
+    public void onCrmInfoButtonClicked(){
+
+        getNavigator().onCrmInfoButtonClicked();
+    }
+
     public void onInfoClicked(){
 
         getNavigator().onInfoClicked();
+    }
+
+    public void onContactsClicked(){
+
+        getNavigator().onContactsClicked();
+    }
+
+    public void onNotificationsClicked(){
+
+        getNavigator().onNotificationsClicked();
     }
 
     public void onSettingsClicked(){

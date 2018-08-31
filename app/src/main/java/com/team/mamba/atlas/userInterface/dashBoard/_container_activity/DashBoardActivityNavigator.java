@@ -11,21 +11,9 @@ public interface DashBoardActivityNavigator {
 
     void openSettingsScreen();
 
-    void onContactsClicked();
-
     void openUserProfile(UserProfile userProfile);
 
     void openBusinessProfile(BusinessProfile businessProfile);
-
-    void onCrmClicked();
-
-    void onNotificationsClicked();
-
-    void onInfoClicked();
-
-    void showToolBar();
-
-    void hideToolBar();
 
     void setUserProfile(UserProfile userProfile);
 

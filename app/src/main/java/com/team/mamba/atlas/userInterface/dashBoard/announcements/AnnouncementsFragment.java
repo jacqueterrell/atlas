@@ -95,8 +95,6 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
 
         viewModel.requestAnnouncements(getViewModel());
 
-        setUpToolBar();
-
         return binding.getRoot();
     }
 
@@ -117,14 +115,5 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
 
         showSnackbar(errorMsg);
         binding.swipeContainer.setRefreshing(false);
-    }
-
-    private void setUpToolBar(){
-
-        parentNavigator.showToolBar();
-        parentActivity.hideCrmIcon();
-        parentActivity.hideContactsIcon();
-        parentActivity.hideInfoIcon();
-        parentActivity.showNotificationsIcon();
     }
 }

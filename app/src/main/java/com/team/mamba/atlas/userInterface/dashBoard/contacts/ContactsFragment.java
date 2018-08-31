@@ -127,7 +127,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         }
 
-        setUpToolBar();
         setUpSearchView();
         return binding.getRoot();
     }
@@ -383,14 +382,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         return true;
     }
 
-    private void setUpToolBar() {
-
-        parentNavigator.showToolBar();
-        parentActivity.hideCrmIcon();
-        parentActivity.showContactsIcon();
-        parentActivity.hideInfoIcon();
-        parentActivity.hideNotificationsIcon();
-    }
 
     private void setUpSearchView() {
 
