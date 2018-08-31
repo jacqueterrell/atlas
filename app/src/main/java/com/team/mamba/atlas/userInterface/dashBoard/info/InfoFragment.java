@@ -427,21 +427,21 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     public void onCrmClicked() {
 
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.replaceHorizontallyFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
+        ChangeFragments.replaceFadeInFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
     }
 
     @Override
     public void onNotificationsClicked() {
 
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.replaceHorizontallyFromBackStack(AnnouncementsFragment.newInstance(), manager, "Announcements", null);
+        ChangeFragments.replaceFadeInFromBackStack(AnnouncementsFragment.newInstance(), manager, "Announcements", null);
     }
 
     @Override
     public void onContactsClicked() {
 
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.replaceHorizontallyFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
+        ChangeFragments.replaceFadeInFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
     }
 
     @Override

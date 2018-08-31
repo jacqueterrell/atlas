@@ -222,21 +222,21 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
     public void onInfoClicked() {
 
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.replaceHorizontallyFromBackStack(InfoFragment.newInstance(), manager, "Info", null);
+        ChangeFragments.replaceFadeInFromBackStack(InfoFragment.newInstance(), manager, "Info", null);
     }
 
     @Override
     public void onNotificationsClicked() {
 
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.replaceHorizontallyFromBackStack(AnnouncementsFragment.newInstance(), manager, "Announcements", null);
+        ChangeFragments.replaceFadeInFromBackStack(AnnouncementsFragment.newInstance(), manager, "Announcements", null);
     }
 
     @Override
     public void onContactsClicked() {
 
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.replaceHorizontallyFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
+        ChangeFragments.replaceFadeInFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
     }
 
     @Override
