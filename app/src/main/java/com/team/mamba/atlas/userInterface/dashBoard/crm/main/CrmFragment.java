@@ -334,11 +334,27 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
             if (binding.dialogExport.chkBoxContacts.isChecked()) {
 
-                exportContacts();
+                if (viewModel.getUsersContactProfiles().isEmpty()){
+
+                    String body = "Your Contact list is empty";
+                    showAlert("No Contacts Found",body);
+
+                } else {
+
+                    exportContacts();
+                }
 
             } else {
 
-                exportOpportunities();
+                if (viewModel.getCrmNotesList().isEmpty()){
+
+                    String title = "Your Opportunities list is empty";
+                    showAlert(title,"");
+
+                } else {
+
+                    exportOpportunities();
+                }
             }
         }
     }
@@ -436,14 +452,14 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
             for (UserProfile profile : viewModel.getUsersContactProfiles()) {
 
-                writeCsvData(writer, profile.getFirstName().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getLastName().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getEmail().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkPhone().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getCurrentEmployer().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getCurrentPosition().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkStreet().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkCityStateZip() + "\n");
+                writeCsvData(writer, profile.getFirstName().replaceAll(",", " ") + ",");
+                writeCsvData(writer, profile.getLastName().replaceAll(",", " ") + ",");
+                writeCsvData(writer, profile.getEmail().replaceAll(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkPhone().replaceAll(",", " ") + ",");
+                writeCsvData(writer, profile.getCurrentEmployer().replaceAll(",", " ") + ",");
+                writeCsvData(writer, profile.getCurrentPosition().replaceAll(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkStreet().replaceAll(",", " ") + ",");
+                writeCsvData(writer, profile.getWorkCityStateZip().replaceAll(",", " ") + "\n");
 
             }
 
@@ -502,41 +518,41 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
             writeCsvHeader(writer, "Description,");
             writeCsvHeader(writer, "Next Step,");
             writeCsvHeader(writer, "Date Created,");
-            writeCsvHeader(writer, "Date Closed,");
+            writeCsvHeader(writer, "Date Closed\n");
 
-            writeCsvHeader(writer, "First Name,");
-            writeCsvHeader(writer, "Last Name,");
-            writeCsvHeader(writer, "Email,");
-            writeCsvHeader(writer, "Work Phone,");
-            writeCsvHeader(writer, "Current Employer,");
-            writeCsvHeader(writer, "Current Position,");
-            writeCsvHeader(writer, "Work Street,");
-            writeCsvHeader(writer, "Work City/State/Zip\n");
+//            writeCsvHeader(writer, "First Name,");
+//            writeCsvHeader(writer, "Last Name,");
+//            writeCsvHeader(writer, "Email,");
+//            writeCsvHeader(writer, "Work Phone,");
+//            writeCsvHeader(writer, "Current Employer,");
+//            writeCsvHeader(writer, "Current Position,");
+//            writeCsvHeader(writer, "Work Street,");
+//            writeCsvHeader(writer, "Work City/State/Zip\n");
 
             for (CrmNotes notes : viewModel.getCrmNotesList()) {
 
-                writeCsvData(writer, notes.getPoc() + ",");
-                writeCsvData(writer, notes.getNoteName() + ",");
-                writeCsvData(writer, notes.getWhereMetCitySt() + ",");
-                writeCsvData(writer, notes.getWhereMetEventName() + ",");
-                writeCsvData(writer, notes.getHowMetToString() + ",");
-                writeCsvData(writer, notes.getStageToString() + ",");
-                writeCsvData(writer, notes.getTypeToString() + ",");
+                writeCsvData(writer, notes.getPoc().replaceAll(","," ") + ",");
+                writeCsvData(writer, notes.getNoteName().replaceAll(","," ") + ",");
+                writeCsvData(writer, notes.getWhereMetCitySt().replaceAll(",","") + ",");
+                writeCsvData(writer, notes.getWhereMetEventName().replaceAll(","," ") + ",");
+                writeCsvData(writer, notes.getHowMetToString().replaceAll(","," ") + ",");
+                writeCsvData(writer, notes.getStageToString().replaceAll(","," ") + ",");
+                writeCsvData(writer, notes.getTypeToString().replaceAll(","," ") + ",");
                 writeCsvData(writer, notes.getOpportunityGoalToString() + ",");
-                writeCsvData(writer, notes.getDesc() + ",");
-                writeCsvData(writer, notes.getNextStepToString() + ",");
-                writeCsvData(writer, notes.getDateCreatedToString() + ",");
-                writeCsvData(writer, notes.getDateClosedToString() + ",");
+                writeCsvData(writer, notes.getDesc().replaceAll(","," ") + ",");
+                writeCsvData(writer, notes.getNextStepToString().replaceAll(","," ") + ",");
+                writeCsvData(writer, notes.getDateCreatedToString().replaceAll(","," ") + ",");
+                writeCsvData(writer, notes.getDateClosedToString().replaceAll(","," ") + "\n");
 
                 //Fixme the second iteration puts the first name in the wrong place
-                writeCsvData(writer, profile.getFirstName().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getLastName().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getEmail().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkPhone().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getCurrentEmployer().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getCurrentPosition().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkStreet().replace(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkCityStateZip() + "\n");
+//                writeCsvData(writer, profile.getFirstName().replace(",", " ") + ",");
+//                writeCsvData(writer, profile.getLastName().replace(",", " ") + ",");
+//                writeCsvData(writer, profile.getEmail().replace(",", " ") + ",");
+//                writeCsvData(writer, profile.getWorkPhone().replace(",", " ") + ",");
+//                writeCsvData(writer, profile.getCurrentEmployer().replace(",", " ") + ",");
+//                writeCsvData(writer, profile.getCurrentPosition().replace(",", " ") + ",");
+//                writeCsvData(writer, profile.getWorkStreet().replace(",", " ") + ",");
+//                writeCsvData(writer, profile.getWorkCityStateZip() + "\n");
 
             }
 
