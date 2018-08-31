@@ -34,4 +34,10 @@ public interface InfoNavigator {
 
     void restartApplication();
 
+    void onCrmClicked();
+
+    void onNotificationsClicked();
+
+    void onContactsClicked();
+
 }

@@ -134,6 +134,7 @@ public class CrmDataModel {
                                         usersContactProfiles.add(profile);
                                     }
                                 }
+
                             }
                         }
 

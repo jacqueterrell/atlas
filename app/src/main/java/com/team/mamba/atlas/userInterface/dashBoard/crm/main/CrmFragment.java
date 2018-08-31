@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -36,11 +37,14 @@ import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.CrmLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageOneFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.filter_list.CrmFilterSettingsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.selected_crm.SelectedCrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
@@ -111,8 +115,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
 
-        setUpToolBar();
-
         crmAdapter = new CrmAdapter(getViewModel(), crmNotesList);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -170,14 +172,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    private void setUpToolBar() {
-
-        parentNavigator.showToolBar();
-        parentActivity.showCrmIcon();
-        parentActivity.hideContactsIcon();
-        parentActivity.hideInfoIcon();
-        parentActivity.hideNotificationsIcon();
-    }
 
     @Override
     public void handleError(String error) {
@@ -214,14 +208,35 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         ChangeFragments.replaceFragmentVertically(SelectedCrmFragment.newInstance(notes),
                 getBaseActivity().getSupportFragmentManager(), "SelectedCrm", null);
-        parentNavigator.hideToolBar();
+
     }
 
 
     @Override
-    public void onInfoClicked() {
+    public void onCrmInfoButtonClicked() {
 
         showInfoDialog();
+    }
+
+    @Override
+    public void onInfoClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(InfoFragment.newInstance(), manager, "Info", null);
+    }
+
+    @Override
+    public void onNotificationsClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(AnnouncementsFragment.newInstance(), manager, "Announcements", null);
+    }
+
+    @Override
+    public void onContactsClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
     }
 
     @Override
@@ -234,7 +249,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
     public void onShareClicked() {
 
         showExportDialog();
-        parentNavigator.hideToolBar();
+
     }
 
     @Override
@@ -252,7 +267,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         ChangeFragments.replaceFragmentVertically(EditAddNotePageOneFragment.newInstance(crmNotes, true),
                 getBaseActivity().getSupportFragmentManager(), "PageOne", null);
-        parentNavigator.hideToolBar();
+
     }
 
     @Override
@@ -260,7 +275,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         ChangeFragments.replaceFragmentVertically(new CrmFilterSettingsFragment(),
                 getBaseActivity().getSupportFragmentManager(), "FilterCrm", null);
-        parentNavigator.hideToolBar();
+
     }
 
     @Override

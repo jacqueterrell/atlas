@@ -9,8 +9,6 @@ public interface CrmNavigator {
 
     void onRowClicked(CrmNotes notes);
 
-    void onInfoClicked();
-
     void onSettingsClicked();
 
     void onShareClicked();
@@ -32,4 +30,12 @@ public interface CrmNavigator {
     void handleError(String error);
 
     List<CrmNotes> getPerCrmNotesList();
+
+    void onCrmInfoButtonClicked();
+
+    void onInfoClicked();
+
+    void onNotificationsClicked();
+
+    void onContactsClicked();
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -29,7 +30,10 @@ import com.team.mamba.atlas.databinding.InfoLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
@@ -110,8 +114,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
 
-        setUpToolBar();
-
         userStatsAdapter = new UserStatsAdapter(userStatsList);
         binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
         binding.recyclerUserStats.setItemAnimator(new DefaultItemAnimator());
@@ -174,14 +176,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         return binding.getRoot();
     }
 
-    private void setUpToolBar() {
-
-        parentNavigator.showToolBar();
-        parentActivity.hideCrmIcon();
-        parentActivity.hideContactsIcon();
-        parentActivity.showInfoIcon();
-        parentActivity.hideNotificationsIcon();
-    }
 
     @Override
     public void onUserStatsInfoClicked() {
@@ -427,6 +421,27 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         dataManager.getSharedPrefs().setUserLoggedIn(false);
         getBaseActivity().finishAffinity();
         startActivity(WelcomeActivity.newIntent(getBaseActivity()));
+    }
+
+    @Override
+    public void onCrmClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
+    }
+
+    @Override
+    public void onNotificationsClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(AnnouncementsFragment.newInstance(), manager, "Announcements", null);
+    }
+
+    @Override
+    public void onContactsClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -34,7 +35,12 @@ import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.utils.AppConstants;
+import com.team.mamba.atlas.utils.ChangeFragments;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -127,7 +133,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         }
 
-        setUpToolBar();
         setUpSearchView();
         return binding.getRoot();
     }
@@ -373,6 +378,27 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
     @Override
+    public void onInfoClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(InfoFragment.newInstance(), manager, "Info", null);
+    }
+
+    @Override
+    public void onNotificationsClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(AnnouncementsFragment.newInstance(), manager, "Announcements", null);
+    }
+
+    @Override
+    public void onCrmClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
@@ -383,14 +409,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         return true;
     }
 
-    private void setUpToolBar() {
-
-        parentNavigator.showToolBar();
-        parentActivity.hideCrmIcon();
-        parentActivity.showContactsIcon();
-        parentActivity.hideInfoIcon();
-        parentActivity.hideNotificationsIcon();
-    }
 
     private void setUpSearchView() {
 

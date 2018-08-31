@@ -89,6 +89,21 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
     /********Onclick Listeners********/
 
+    public void onInfoClicked(){
+
+        getNavigator().onInfoClicked();
+    }
+
+    public void onCrmClicked(){
+
+        getNavigator().onCrmClicked();
+    }
+
+    public void onNotificationsClicked(){
+
+        getNavigator().onNotificationsClicked();
+    }
+
     public void onAddNewContactClicked(){
 
         getNavigator().onAddNewContactClicked();

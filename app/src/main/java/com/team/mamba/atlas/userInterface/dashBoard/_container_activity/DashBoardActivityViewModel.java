@@ -27,24 +27,4 @@ public class DashBoardActivityViewModel extends BaseViewModel<DashBoardActivityN
         this.userProfile = userProfile;
     }
 
-    public void onContactsClicked(){
-
-        getNavigator().onContactsClicked();
-    }
-
-    public void onCrmClicked(){
-
-        getNavigator().onCrmClicked();
-    }
-
-    public void onNotificationsClicked(){
-
-        getNavigator().onNotificationsClicked();
-    }
-
-    public void onInfoClicked(){
-
-        getNavigator().onInfoClicked();
-    }
-
 }

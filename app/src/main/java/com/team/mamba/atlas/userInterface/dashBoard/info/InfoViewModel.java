@@ -125,6 +125,21 @@ public class InfoViewModel extends BaseViewModel<InfoNavigator> {
 
     /***************onclick listeners************/
 
+    public void onContactsClicked(){
+
+        getNavigator().onContactsClicked();
+    }
+
+    public void onCrmClicked(){
+
+        getNavigator().onCrmClicked();
+    }
+
+    public void onNotificationsClicked(){
+
+        getNavigator().onNotificationsClicked();
+    }
+
     public void onNetworkButtonClicked(){
 
         getNavigator().onNetworkButtonClicked();

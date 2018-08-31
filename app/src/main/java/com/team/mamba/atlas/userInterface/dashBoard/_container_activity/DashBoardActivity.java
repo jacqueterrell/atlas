@@ -86,7 +86,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
 
-        showToolBar();
         setNotificationObservable();
         dataManager.getSharedPrefs().setUserLoggedIn(true);
 
@@ -111,85 +110,18 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     public void resetToFirstFragment() {
 
         getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        showToolBar();
     }
 
     @Override
     public void refreshInfoFragment() {
 
         getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        showToolBar();
-    }
-
-    @Override
-    public void onContactsClicked() {
-
-        showContactsIcon();
-        hideInfoIcon();
-        hideCrmIcon();
-        hideNotificationsIcon();
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-        if (!(fragment instanceof ContactsFragment)) {
-
-            ChangeFragments.replaceHorizontallyFromBackStack(new ContactsFragment(), getSupportFragmentManager(), "ContactsFragment", null);
-        }
-    }
-
-    @Override
-    public void onCrmClicked() {
-
-        showCrmIcon();
-        hideContactsIcon();
-        hideInfoIcon();
-        hideNotificationsIcon();
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-        if (!(fragment instanceof CrmFragment)) {
-
-            ChangeFragments.replaceHorizontallyFromBackStack(new CrmFragment(), getSupportFragmentManager(), "CrmFragment", null);
-        }
-    }
-
-    @Override
-    public void onNotificationsClicked() {
-
-        showNotificationsIcon();
-        hideInfoIcon();
-        hideCrmIcon();
-        hideContactsIcon();
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-        if (!(fragment instanceof AnnouncementsFragment)) {
-
-            ChangeFragments.replaceHorizontallyFromBackStack(AnnouncementsFragment.newInstance(), getSupportFragmentManager(), "Announcements", null);
-        }
-    }
-
-    @Override
-    public void onInfoClicked() {
-
-        showInfoIcon();
-        hideContactsIcon();
-        hideCrmIcon();
-        hideNotificationsIcon();
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-        if (!(fragment instanceof InfoFragment)) {
-
-            ChangeFragments.replaceHorizontallyFromBackStack(InfoFragment.newInstance(), getSupportFragmentManager(), "UserProfile", null);
-        }
     }
 
     @Override
     public void openSettingsScreen() {
 
         ChangeFragments.addFragmentVertically(SettingsFragment.newInstance(), getSupportFragmentManager(), "SettingsFragment", null);
-        hideToolBar();
     }
 
     @Override
@@ -218,12 +150,10 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         if (profile.id.equals(dataManager.getSharedPrefs().getUserId())){
 
             ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(profile), getSupportFragmentManager(), "UserProfile", null);
-            hideToolBar();
 
         } else {
 
             ChangeFragments.addFragmentVertically(ContactProfilePager.newInstance(profile), getSupportFragmentManager(), "ContactPager", null);
-            hideToolBar();
         }
 
     }
@@ -232,7 +162,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     public void openBusinessProfile(BusinessProfile businessProfile) {
 
         ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile), getSupportFragmentManager(), "Business Profile", null);
-        hideToolBar();
     }
 
 
@@ -247,18 +176,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         contactRecentlyDeleted = wasDeleted;
     }
 
-    @Override
-    public void showToolBar() {
-
-        try {
-            YoYo.with(Techniques.FadeIn)
-                    .duration(0)
-                    .onStart(animator -> binding.layoutToolBar.setVisibility(View.VISIBLE))
-                    .playOn(binding.layoutToolBar);
-        } catch (Exception e) {
-            Logger.e(e.getMessage());
-        }
-    }
 
     @Override
     public void setCrmFilter(CrmFilter crmFilter) {
@@ -270,65 +187,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     public CrmFilter getCrmFilter() {
         return viewModel.getCrmFilter();
     }
-
-    @Override
-    public void hideToolBar() {
-
-        YoYo.with(Techniques.FadeOut)
-                .duration(200)
-                .onEnd(animator -> binding.layoutToolBar.setVisibility(View.GONE))
-                .playOn(binding.layoutToolBar);
-    }
-
-    public void showContactsIcon() {
-
-        binding.ivContactsSelected.setVisibility(View.VISIBLE);
-        binding.ivContactsNotSelected.setVisibility(View.GONE);
-    }
-
-    public void hideContactsIcon() {
-
-        binding.ivContactsSelected.setVisibility(View.GONE);
-        binding.ivContactsNotSelected.setVisibility(View.VISIBLE);
-    }
-
-    public void showCrmIcon() {
-
-        binding.ivCrmSelected.setVisibility(View.VISIBLE);
-        binding.ivCrmNotSelected.setVisibility(View.GONE);
-    }
-
-    public void hideCrmIcon() {
-
-        binding.ivCrmSelected.setVisibility(View.GONE);
-        binding.ivCrmNotSelected.setVisibility(View.VISIBLE);
-    }
-
-    public void showInfoIcon() {
-
-        binding.ivInfoSelected.setVisibility(View.VISIBLE);
-        binding.ivInfoNotSelected.setVisibility(View.GONE);
-    }
-
-    public void hideInfoIcon() {
-
-        binding.ivInfoSelected.setVisibility(View.GONE);
-        binding.ivInfoNotSelected.setVisibility(View.VISIBLE);
-    }
-
-    public void showNotificationsIcon() {
-
-        binding.ivNotificationsSelected.setVisibility(View.VISIBLE);
-        binding.ivNotificationsNotSelected.setVisibility(View.GONE);
-    }
-
-    public void hideNotificationsIcon() {
-
-        binding.ivNotificationsSelected.setVisibility(View.GONE);
-        binding.ivNotificationsNotSelected.setVisibility(View.VISIBLE);
-    }
-
-
 
 
     @Override
@@ -378,7 +236,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
                     || currentFragment instanceof AnnouncementsFragment
                     || currentFragment instanceof ContactsFragment) {
 
-                showToolBar();
             }
 
 
