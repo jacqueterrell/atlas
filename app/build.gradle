@@ -42,7 +42,6 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.team.mamba.atlas"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
