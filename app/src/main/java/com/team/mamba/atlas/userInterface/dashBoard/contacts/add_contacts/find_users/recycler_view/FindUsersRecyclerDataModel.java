@@ -100,7 +100,7 @@ public class FindUsersRecyclerDataModel {
         UserProfile requestingProfile = viewModel.getRequestingUserProfile();
 
         Long timeStamp = System.currentTimeMillis() / 1000;
-        String requestingToken = FirebaseInstanceId.getInstance().getToken();
+        String requestingToken = dataManager.getSharedPrefs().getFirebaseDeviceToken();
         String id = newUserRef.getId();
 
         String consentingName = consentingProfile.getFirstName() + " " + consentingProfile.getLastName();
@@ -202,7 +202,7 @@ public class FindUsersRecyclerDataModel {
         BusinessProfile businessProfile = viewModel.getRequestingBusinessProfile();
 
         Long timeStamp = System.currentTimeMillis() / 1000;
-        String requestingToken = FirebaseInstanceId.getInstance().getToken();
+        String requestingToken = dataManager.getSharedPrefs().getFirebaseDeviceToken();
         String id = newUserRef.getId();
 
         String consentingName = consentingProfile.getFirstName() + " " + consentingProfile.getLastName();

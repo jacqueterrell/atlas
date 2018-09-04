@@ -261,6 +261,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
             @Override
             public void onNext(String s) {
 
+                Logger.i(s);
             }
 
             @Override
@@ -272,6 +273,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
             public void onComplete() {
 
                 //show notification badges
+                Logger.i("completed");
             }
         };
 

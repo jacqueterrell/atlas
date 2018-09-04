@@ -2,6 +2,7 @@ package com.team.mamba.atlas.userInterface;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Service;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
@@ -16,8 +17,10 @@ import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.dependencyInjection.component.DaggerApplicationComponent;
 import com.team.mamba.atlas.utils.AppConstants;
 
+import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import dagger.android.HasServiceInjector;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 
@@ -25,7 +28,9 @@ public class AtlasApplication extends Application implements HasActivityInjector
 
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
-
+//
+//    @Inject
+//    DispatchingAndroidInjector<Service> dispatchingServiceInjector;
 
     @Override
     public void onCreate() {
@@ -40,9 +45,6 @@ public class AtlasApplication extends Application implements HasActivityInjector
                 .application(this)
                 .build()
                 .inject(this);
-
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Logger.d("Refreshed token: " + refreshedToken);
 
     }
 
@@ -75,4 +77,8 @@ public class AtlasApplication extends Application implements HasActivityInjector
         firestore.setFirestoreSettings(settings);
     }
 
+//    @Override
+//    public AndroidInjector<Service> serviceInjector() {
+//        return dispatchingServiceInjector;
+//    }
 }

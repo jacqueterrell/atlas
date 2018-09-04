@@ -132,7 +132,7 @@ public class DescribeConnectionsDataModel {
         UserProfile requestingProfile = viewModel.getLoggedInProfileIndividual();
 
         Long timeStamp = System.currentTimeMillis() / 1000;
-        String requestingToken = FirebaseInstanceId.getInstance().getToken();
+        String requestingToken = dataManager.getSharedPrefs().getFirebaseDeviceToken();
         String id = newUserRef.getId();
 
         String consentingName = consentingProfile.getFirstName() + " " + consentingProfile.getLastName();
@@ -331,7 +331,7 @@ public class DescribeConnectionsDataModel {
         BusinessProfile businessProfile = viewModel.getLoggedInProfileBusiness();
 
         Long timeStamp = System.currentTimeMillis() / 1000;
-        String requestingToken = FirebaseInstanceId.getInstance().getToken();
+        String requestingToken = dataManager.getSharedPrefs().getFirebaseDeviceToken();
         String id = newUserRef.getId();
 
         String consentingName = consentingProfile.getFirstName() + " " + consentingProfile.getLastName();

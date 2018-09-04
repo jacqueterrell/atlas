@@ -13,6 +13,11 @@ import android.view.View;
 
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeViewPagerBinding;
@@ -27,8 +32,12 @@ import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeNavigator
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 public class ViewPagerFragment extends BaseFragment<WelcomeViewPagerBinding, ViewPagerViewModel>
-        implements ViewPagerNavigator{
+        implements ViewPagerNavigator {
 
     @Inject
     ViewPagerViewModel viewModel;
@@ -39,7 +48,7 @@ public class ViewPagerFragment extends BaseFragment<WelcomeViewPagerBinding, Vie
     private WelcomePager welcomePager;
     private int currentPage;
 
-    public static ViewPagerFragment newInstance(){
+    public static ViewPagerFragment newInstance() {
 
         return new ViewPagerFragment();
     }
@@ -69,14 +78,17 @@ public class ViewPagerFragment extends BaseFragment<WelcomeViewPagerBinding, Vie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
+
+        getDeviceToken();
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-         binding = getViewDataBinding();
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = getViewDataBinding();
 
-        if (dataManager.getSharedPrefs().isUserLoggedIn()){
+        if (dataManager.getSharedPrefs().isUserLoggedIn()) {
 
             getBaseActivity().finishAffinity();
             startActivity(DashBoardActivity.newIntent(getBaseActivity()));
@@ -85,7 +97,7 @@ public class ViewPagerFragment extends BaseFragment<WelcomeViewPagerBinding, Vie
         welcomePager = new WelcomePager(getBaseActivity().getSupportFragmentManager());
         binding.viewPagerWelcome.setAdapter(welcomePager);
 
-         return binding.getRoot();
+        return binding.getRoot();
     }
 
     private class WelcomePager extends FragmentStatePagerAdapter {
@@ -169,23 +181,41 @@ public class ViewPagerFragment extends BaseFragment<WelcomeViewPagerBinding, Vie
     @Override
     public void onKeyDown() {
 
-            if (binding.viewPagerWelcome.getCurrentItem() == 0) {
+        if (binding.viewPagerWelcome.getCurrentItem() == 0) {
 
-                Fragment fragment = (Fragment) binding.viewPagerWelcome
-                        .getAdapter()
-                        .instantiateItem(binding.viewPagerWelcome, 0);
+            Fragment fragment = (Fragment) binding.viewPagerWelcome
+                    .getAdapter()
+                    .instantiateItem(binding.viewPagerWelcome, 0);
 
-                if (fragment instanceof WelcomeFragment) {
+            if (fragment instanceof WelcomeFragment) {
 
-                    WelcomeNavigator navigator = (WelcomeNavigator) fragment;
-                    navigator.onBackPressed();
-                }
-
-            } else {
-
-                getBaseActivity().onBackPressed();
+                WelcomeNavigator navigator = (WelcomeNavigator) fragment;
+                navigator.onBackPressed();
             }
 
+        } else {
+
+            getBaseActivity().onBackPressed();
+        }
+
+    }
+
+
+    private void getDeviceToken() {
+
+        Completable.fromCallable(() -> {
+
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
+
+                String token = instanceIdResult.getToken();
+                dataManager.getSharedPrefs().setFirebaseDeviceToken(token);
+
+            });
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
 }

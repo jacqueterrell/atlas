@@ -17,6 +17,7 @@ public class AppSharedPrefs {
     private static final String USER_CODE = "userCode";
     private static final String BUSINESS_ACCOUNT = "isIsOrgBus";
     private static final String BUSINESS_REP_ID = "businessRepId";
+    public static final String FIREBASE_DEVICE_TOKEN = "fireBaseDeviceToken";
 
 
     private SharedPreferences sharedPreferences;
@@ -127,17 +128,17 @@ public class AppSharedPrefs {
     }
 
 
-    public String getBusinessRepId(){
+    public String getFirebaseDeviceToken(){
 
         return sharedPreferences
-                .getString(BUSINESS_REP_ID,"");
+                .getString(FIREBASE_DEVICE_TOKEN,"");
     }
 
-    public void setBusinessRepId(String businessRepId){
+    public void setFirebaseDeviceToken(String token){
 
         sharedPreferences
                 .edit()
-                .putString(BUSINESS_REP_ID,businessRepId)
+                .putString(FIREBASE_DEVICE_TOKEN,token)
                 .apply();
     }
 }

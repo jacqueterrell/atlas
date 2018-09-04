@@ -176,7 +176,7 @@ public class AddBusinessDataModel {
         UserProfile requestingProfile = viewModel.getRequestingUserProfile();
 
         Long timeStamp = System.currentTimeMillis() / 1000;
-        String requestingToken = FirebaseInstanceId.getInstance().getToken();
+        String requestingToken = dataManager.getSharedPrefs().getFirebaseDeviceToken();
         String id = newUserRef.getId();
 
         String consentingName = businessProfile.getName();
@@ -292,7 +292,7 @@ public class AddBusinessDataModel {
         BusinessProfile requestingProfile = viewModel.getRequestingBusinessProfile();
 
         Long timeStamp = System.currentTimeMillis() / 1000;
-        String requestingToken = FirebaseInstanceId.getInstance().getToken();
+        String requestingToken = dataManager.getSharedPrefs().getFirebaseDeviceToken();
         String id = newUserRef.getId();
 
         String consentingName = businessProfile.getName();

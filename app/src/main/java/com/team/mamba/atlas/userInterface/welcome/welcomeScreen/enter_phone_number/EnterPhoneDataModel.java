@@ -143,7 +143,7 @@ public class EnterPhoneDataModel {
 
         //convert dob to time stamp
         Long timeStamp = System.currentTimeMillis() / 1000;
-        String token = FirebaseInstanceId.getInstance().getToken();
+
         DocumentReference newUserRef = db.collection(AppConstants.USERS_COLLECTION).document();
         String myId = newUserRef.getId();
         String userCode = "2";
@@ -154,7 +154,7 @@ public class EnterPhoneDataModel {
         user.put("dob", viewModel.getDateOfBirth());
         user.put("phone", viewModel.getPhoneNumber());
         user.put("timestamp", timeStamp);
-        user.put("deviceToken", token);
+        user.put("deviceToken", dataManager.getSharedPrefs().getFirebaseDeviceToken());
         user.put("id", myId);
         user.put("badgeCount", 0);
         user.put("code", userCode);
