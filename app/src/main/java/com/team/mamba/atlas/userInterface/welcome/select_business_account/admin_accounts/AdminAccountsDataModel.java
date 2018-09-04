@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.welcome.select_business_account.admin_accounts;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
@@ -21,6 +22,24 @@ public class AdminAccountsDataModel {
     public AdminAccountsDataModel(AppDataManager dataManager){
 
         this.dataManager = dataManager;
+    }
+
+
+    public void signInAnonymously(AdminAccountsViewModel viewModel, FirebaseAuth firebaseAuth){
+
+        firebaseAuth.signInAnonymously()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()){
+
+                        getAllAdminProfiles(viewModel);
+
+                    } else {
+
+                        viewModel.getNavigator().handleError(task.getException().getLocalizedMessage());
+                    }
+
+                });
     }
 
 

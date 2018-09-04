@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -132,8 +133,9 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     @Override
     public void onProfileUpdated() {
 
-        hideProgressSpinner();
-        parentNavigator.resetToFirstFragment();
+        showToastShort("Profile Updated");
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        manager.popBackStack("UserProfile",0);;
     }
 
     @Override

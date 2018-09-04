@@ -160,10 +160,9 @@ public class EditPhoneFragment extends BaseFragment<EditPhoneLayoutBinding, Edit
     @Override
     public void onProfileUpdated() {
 
-        hideProgressSpinner();
         showToastShort("Profile Updated");
-        getBaseActivity().getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        manager.popBackStack("UserProfile",0);
     }
 
     private String getParsedNumber(String phone) {

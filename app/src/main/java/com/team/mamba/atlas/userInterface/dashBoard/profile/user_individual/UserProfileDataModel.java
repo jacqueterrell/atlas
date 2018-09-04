@@ -25,9 +25,10 @@ public class UserProfileDataModel {
 
 
 
-    public void getUserDetails(UserProfileViewModel viewModel, String userId) {
+    public void updateUserDetails(UserProfileViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.USERS_COLLECTION)
                 .whereEqualTo("id", userId)
@@ -40,6 +41,8 @@ public class UserProfileDataModel {
 
                         if (!userProfiles.isEmpty()) {
 
+                            viewModel.setUserProfile(userProfiles.get(0));
+                            viewModel.getNavigator().onProfileUpdated();
                         }
 
                     } else {

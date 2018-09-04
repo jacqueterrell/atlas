@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,6 @@ public class EditAddressFragment extends BaseFragment<EditAddressLayoutBinding,E
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-
         if (!profile.getCityStateZip().trim().equals("...")){binding.etCityStateZip.setText(profile.getCityStateZip());}
         if (!profile.getStreet().trim().equals("...")){binding.etStreetAddress.setText(profile.getStreet());}
         if (!profile.getWorkCityStateZip().trim().equals("...")){binding.etWorkCityStateZip.setText(profile.getWorkCityStateZip());}
@@ -114,6 +114,7 @@ public class EditAddressFragment extends BaseFragment<EditAddressLayoutBinding,E
     public void onProfileUpdated() {
 
         showToastShort("Profile Updated");
-        parentNavigator.resetToFirstFragment();
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        manager.popBackStack("UserProfile",0);
     }
 }

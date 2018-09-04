@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.welcome.select_business_account.admin_accounts;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
@@ -32,5 +33,10 @@ public class AdminAccountsViewModel extends BaseViewModel<AdminAccountsNavigator
     public void getAllAdminProfiles(AdminAccountsViewModel viewModel) {
 
         dataModel.getAllAdminProfiles(viewModel);
+    }
+
+    public void signInAnonymously(AdminAccountsViewModel viewModel, FirebaseAuth firebaseAuth){
+
+        dataModel.signInAnonymously(viewModel,firebaseAuth);
     }
 }
