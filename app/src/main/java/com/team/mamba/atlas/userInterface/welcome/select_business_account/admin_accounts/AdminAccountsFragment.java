@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
@@ -38,6 +39,7 @@ public class AdminAccountsFragment extends BaseFragment<BusinessAccountsRecycler
     private List<UserProfile> adminProfiles = new ArrayList<>();
     private AdminAccountsAdapter adminAccountsAdapter;
     private WelcomeActivityNavigator parentNavigator;
+    private FirebaseAuth firebaseAuth;
 
 
     public static AdminAccountsFragment newInstance(){
@@ -77,6 +79,7 @@ public class AdminAccountsFragment extends BaseFragment<BusinessAccountsRecycler
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -90,7 +93,17 @@ public class AdminAccountsFragment extends BaseFragment<BusinessAccountsRecycler
         binding.recyclerView.setAdapter(adminAccountsAdapter);
 
         showProgressSpinner();
-        viewModel.getAllAdminProfiles(getViewModel());
+
+        if (firebaseAuth.getCurrentUser() == null){
+
+            viewModel.signInAnonymously(getViewModel(),firebaseAuth);
+            //showSnackbar("anonymously signing in...");
+
+        } else {
+
+            viewModel.getAllAdminProfiles(getViewModel());
+
+        }
 
         return binding.getRoot();
     }
