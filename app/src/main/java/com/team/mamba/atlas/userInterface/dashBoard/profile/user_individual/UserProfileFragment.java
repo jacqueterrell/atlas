@@ -54,17 +54,13 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
     private UserProfileLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
-    private static UserProfile profile;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_GALLERY = 2;
     private File imageFile;
 
 
+    public static UserProfileFragment newInstance(){
 
-
-    public static UserProfileFragment newInstance(UserProfile userProfile){
-
-        profile = userProfile;
         return new UserProfileFragment();
     }
 
@@ -107,16 +103,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-         //check to see if we are viewing the user's profile or one of his contact's
-            binding.setProfile(profile);
-
-            if (profile.getImageUrl() != null){
-
-                Glide.with(getBaseActivity())
-                        .load(profile.getImageUrl())
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(binding.ivUserProfile);
-            }
+                viewModel.updateUserDetails(getViewModel());
 
          return binding.getRoot();
     }
@@ -124,11 +111,21 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     @Override
     public void onResume() {
         super.onResume();
+
+        binding.setProfile(viewModel.getUserProfile());
         setUserDefaultValues();
     }
 
+
     private void setUserDefaultValues(){
 
+        if (viewModel.getUserProfile().getImageUrl() != null){
+
+            Glide.with(getBaseActivity())
+                    .load(viewModel.getUserProfile().getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(binding.ivUserProfile);
+        }
 
         //phone info
         if (binding.tvCellPhone.getText().toString().isEmpty()){
@@ -203,35 +200,35 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     @Override
     public void editPhoneInfo() {
 
-        ChangeFragments.addFragmentFadeIn(EditPhoneFragment.newInstance(profile),getBaseActivity()
+        ChangeFragments.replaceFragmentFadeIn(EditPhoneFragment.newInstance(viewModel.getUserProfile()),getBaseActivity()
                 .getSupportFragmentManager(),"EditPhone",null);
     }
 
     @Override
     public void editEmailInfo() {
 
-        ChangeFragments.addFragmentFadeIn(EditEmailFragment.newInstance(profile),getBaseActivity()
+        ChangeFragments.replaceFragmentFadeIn(EditEmailFragment.newInstance(viewModel.getUserProfile()),getBaseActivity()
                 .getSupportFragmentManager(),"EditEmail",null);
     }
 
     @Override
     public void editAddressInfo() {
 
-        ChangeFragments.addFragmentFadeIn(EditAddressFragment.newInstance(profile),getBaseActivity()
+        ChangeFragments.replaceFragmentFadeIn(EditAddressFragment.newInstance(viewModel.getUserProfile()),getBaseActivity()
                 .getSupportFragmentManager(),"EditAddress",null);
     }
 
     @Override
     public void editWorkHistoryInfo() {
 
-        ChangeFragments.addFragmentFadeIn(EditWorkFragment.newInstance(profile),getBaseActivity()
+        ChangeFragments.replaceFragmentFadeIn(EditWorkFragment.newInstance(viewModel.getUserProfile()),getBaseActivity()
                 .getSupportFragmentManager(),"EditWorkHistory",null);
     }
 
     @Override
     public void editEductionInfo() {
 
-        ChangeFragments.addFragmentFadeIn(EditEducationFragment.newInstance(profile),getBaseActivity()
+        ChangeFragments.replaceFragmentFadeIn(EditEducationFragment.newInstance(viewModel.getUserProfile()),getBaseActivity()
                 .getSupportFragmentManager(),"EditAddress",null);
     }
 
@@ -288,6 +285,10 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
     @Override
     public void onProfileUpdated() {
 
+        UserProfile profile = viewModel.getUserProfile();
+        binding.setProfile(profile);
+
+        setUserDefaultValues();
     }
 
 
@@ -430,7 +431,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
                 if (resultCode == Activity.RESULT_OK) {
 
-                    getViewModel().uploadImage(getViewModel(),profile);
+                    getViewModel().uploadImage(getViewModel(),viewModel.getUserProfile());
 
                     Glide.with(getContext())
                             .load(getViewModel().getSelfiePath())
@@ -452,7 +453,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(binding.ivUserProfile);
 
-                    getViewModel().uploadImage(getViewModel(),profile);
+                    getViewModel().uploadImage(getViewModel(),viewModel.getUserProfile());
 
                 }
                     break;

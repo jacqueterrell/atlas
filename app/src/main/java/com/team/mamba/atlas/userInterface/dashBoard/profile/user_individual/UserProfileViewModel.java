@@ -14,6 +14,7 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     private UserProfileDataModel dataModel;
     private Uri imageUri = null;
     private String selfiePath = null;
+    private static UserProfile userProfile = new UserProfile();
 
 
     /*******Getters and Setters********/
@@ -21,25 +22,18 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
         this.dataModel = dataModel;
     }
 
-    public void setBusinessProfile(BusinessProfile businessProfile) {
-        UserProfileViewModel.businessProfile = businessProfile;
-    }
-
-    public BusinessProfile getBusinessProfile() {
-        return businessProfile;
-    }
-
-
     public void onProfileImageClicked() {
 
         getNavigator().onUserProfileClicked();
     }
 
-    public void getUserDetails(UserProfileViewModel viewModel, String userId) {
-
-        dataModel.getUserDetails(viewModel, userId);
+    public void setUserProfile(UserProfile userProfile) {
+        UserProfileViewModel.userProfile = userProfile;
     }
 
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
 
     public String getSelfiePath() {
         return selfiePath;
@@ -105,9 +99,16 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     }
 
 
+    /****************DataModel Requests*****************/
+
     public void uploadImage(UserProfileViewModel viewModel, UserProfile profile) {
 
         dataModel.uploadImage(viewModel, profile);
     }
 
-}
+    public void updateUserDetails(UserProfileViewModel viewModel) {
+
+        dataModel.updateUserDetails(viewModel);
+    }
+
+    }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,9 +114,9 @@ public class EditEmailFragment extends BaseFragment<EditEmailLayoutBinding,EditE
     @Override
     public void onProfileUpdated() {
 
-        hideProgressSpinner();
-        parentNavigator.resetToFirstFragment();
         showToastShort("Profile Updated");
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        manager.popBackStack("UserProfile",0);
     }
 
     private void setCachedData(){
