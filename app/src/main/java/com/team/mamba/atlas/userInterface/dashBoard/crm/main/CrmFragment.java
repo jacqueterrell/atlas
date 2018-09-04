@@ -499,7 +499,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         File root = Environment.getExternalStorageDirectory();
         File csvFile = new File(root, "CRM_from_Atlas.csv");
         Uri uri;
-        UserProfile profile = viewModel.getUserProfile();
 
         FileWriter writer;
 
@@ -520,14 +519,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
             writeCsvHeader(writer, "Date Created,");
             writeCsvHeader(writer, "Date Closed\n");
 
-//            writeCsvHeader(writer, "First Name,");
-//            writeCsvHeader(writer, "Last Name,");
-//            writeCsvHeader(writer, "Email,");
-//            writeCsvHeader(writer, "Work Phone,");
-//            writeCsvHeader(writer, "Current Employer,");
-//            writeCsvHeader(writer, "Current Position,");
-//            writeCsvHeader(writer, "Work Street,");
-//            writeCsvHeader(writer, "Work City/State/Zip\n");
 
             for (CrmNotes notes : viewModel.getCrmNotesList()) {
 
@@ -543,16 +534,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
                 writeCsvData(writer, notes.getNextStepToString().replaceAll(","," ") + ",");
                 writeCsvData(writer, notes.getDateCreatedToString().replaceAll(","," ") + ",");
                 writeCsvData(writer, notes.getDateClosedToString().replaceAll(","," ") + "\n");
-
-                //Fixme the second iteration puts the first name in the wrong place
-//                writeCsvData(writer, profile.getFirstName().replace(",", " ") + ",");
-//                writeCsvData(writer, profile.getLastName().replace(",", " ") + ",");
-//                writeCsvData(writer, profile.getEmail().replace(",", " ") + ",");
-//                writeCsvData(writer, profile.getWorkPhone().replace(",", " ") + ",");
-//                writeCsvData(writer, profile.getCurrentEmployer().replace(",", " ") + ",");
-//                writeCsvData(writer, profile.getCurrentPosition().replace(",", " ") + ",");
-//                writeCsvData(writer, profile.getWorkStreet().replace(",", " ") + ",");
-//                writeCsvData(writer, profile.getWorkCityStateZip() + "\n");
 
             }
 
