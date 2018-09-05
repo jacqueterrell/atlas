@@ -19,6 +19,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.AppDataManager;
+import com.team.mamba.atlas.userInterface.AtlasApplication;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 
 import dagger.android.AndroidInjection;
@@ -26,6 +27,9 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
+import com.team.mamba.atlas.utils.AppConstants;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -37,7 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //    AppDataManager dataManager;
 
     private static String NOTIFICATION_ID = "my_channel_02";
-    private static PublishSubject<String> data = PublishSubject.create();
+    private static PublishSubject<String>  data = PublishSubject.create();
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -69,7 +73,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         //check if message contains data payload
         if (remoteMessage.getData().size() > 0) {
-            Logger.d("Message data payload: " + remoteMessage.getData());
+
+            for (Map.Entry<String,String> map : remoteMessage.getData().entrySet()){
+
+                String value = map.getValue();
+
+                if (value.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)){//new connection request
+                    Logger.d("new connection request");
+                    DashBoardActivity.newRequestCount += 1;
+
+                    if (AtlasApplication.isAppInBackGround){
+                        //todo put the actual notification message here
+                        sendNotification("New connection request");
+
+                    } else {
+                        data.onNext(AppConstants.NOTIFICATION_NEW_CONNECTION);
+                    }
+                    break;
+                }
+            }
+
         }
 
         //check if message contains a notification payload
@@ -97,9 +120,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Create and show a simple notification containing the received FCM message.
      *
-     * @param body FCM message body received.
      */
-    private void sendNotification(String title, String body) {
+    private void sendNotification(String title) {
 
 //        long[] pattern = {0, 1000};
 //

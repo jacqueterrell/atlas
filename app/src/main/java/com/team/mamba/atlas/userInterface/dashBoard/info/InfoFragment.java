@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,11 +23,13 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.databinding.InfoLayoutBinding;
+import com.team.mamba.atlas.service.MyFirebaseMessagingService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
@@ -35,6 +38,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
+import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
 import java.util.Collections;
@@ -47,6 +51,14 @@ import com.team.mamba.atlas.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         implements InfoNavigator {
@@ -66,6 +78,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     private DashBoardActivityNavigator parentNavigator;
     private DashBoardActivity parentActivity;
     private UserProfile selectedContactProfile;
+    private CompositeDisposable compositeDisposable;
 
 
     public static InfoFragment newInstance() {
@@ -106,7 +119,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
-
     }
 
     @Override
@@ -175,7 +187,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         return binding.getRoot();
     }
-
 
     @Override
     public void onUserStatsInfoClicked() {
@@ -306,6 +317,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
 
             if (userConnections.isNeedsApproval()) {
+
+                resetNewConnectionRequestBadge();
 
                 for (UserProfile profile : viewModel.getAllUsersList()) {
 
@@ -696,5 +709,101 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         binding.layoutOpportunityNotSelected.setVisibility(View.GONE);
         binding.layoutOpportunitySelected.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        compositeDisposable = new CompositeDisposable();
+        setUpNewAnnouncementBadge();
+        setUpNewConnectionRequestBadge();
+        setNotificationObservable();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        compositeDisposable.dispose();
+        resetNewConnectionRequestBadge();
+    }
+
+    /*Set up Notification Badges*/
+
+    private void resetNewConnectionRequestBadge(){
+
+        DashBoardActivity.newRequestCount = 0;
+        binding.cardRequestBadge.setVisibility(View.GONE);
+    }
+
+    private void setUpNewConnectionRequestBadge(){
+
+        if (DashBoardActivity.newRequestCount > 0){//show badge
+
+            binding.cardRequestBadge.setVisibility(View.VISIBLE);
+            binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+
+        } else {//hide badge
+
+            binding.cardRequestBadge.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void setUpNewAnnouncementBadge(){
+
+        if (DashBoardActivity.newAnnouncementCount > 0){//show badge
+
+            binding.cardNotificationBadge.setVisibility(View.VISIBLE);
+            binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
+
+        } else {//hide badge
+
+            binding.cardNotificationBadge.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Subscribes to the Observable in {@link MyFirebaseMessagingService}
+     *
+     */
+    private void setNotificationObservable(){
+
+        Observable<String> observable = MyFirebaseMessagingService.getObservable();
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                compositeDisposable.add(d);
+            }
+            @SuppressLint("CheckResult")
+            @Override
+            public void onNext(String s) {
+
+                Logger.i(s);
+
+                if (s.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)) {
+
+                    Completable.fromCallable(()->{
+
+                        return false;
+                    }).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(()->{
+                                viewModel.getAllUsers(getViewModel());
+                                binding.cardRequestBadge.setVisibility(View.VISIBLE);
+                                binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+                            });
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Logger.e(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onComplete() { }
+        };
+
+        observable.subscribe(observer);
     }
 }

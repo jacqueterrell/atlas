@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.crm.main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,6 +36,7 @@ import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.CrmLayoutBinding;
+import com.team.mamba.atlas.service.MyFirebaseMessagingService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
 import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
@@ -55,6 +57,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         implements CrmNavigator, SearchView.OnQueryTextListener {
 
@@ -72,6 +82,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
     private DashBoardActivity parentActivity;
     private static final int SEND_CSV = 0;
     private static List<CrmNotes> permCrmNotesList = new ArrayList<>();
+    private CompositeDisposable compositeDisposable;
 
 
     @Override
@@ -677,6 +688,94 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         }
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        compositeDisposable = new CompositeDisposable();
+        setNotificationObservable();
+        setUpNewAnnouncementBadge();
+        setUpNewConnectionRequestBadge();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        compositeDisposable.dispose();
+    }
+
+    private void setUpNewConnectionRequestBadge(){
+
+        if (DashBoardActivity.newRequestCount > 0){//show badge
+
+            binding.cardRequestBadge.setVisibility(View.VISIBLE);
+            binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+
+        } else {//hide badge
+
+            binding.cardRequestBadge.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void setUpNewAnnouncementBadge(){
+
+        if (DashBoardActivity.newAnnouncementCount > 0){//show badge
+
+            binding.cardNotificationBadge.setVisibility(View.VISIBLE);
+            binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
+
+        } else {//hide badge
+
+            binding.cardNotificationBadge.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Subscribes to the Observable in {@link MyFirebaseMessagingService}
+     *
+     */
+    private void setNotificationObservable(){
+
+        Observable<String> observable = MyFirebaseMessagingService.getObservable();
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+                compositeDisposable.add(d);
+            }
+            @SuppressLint("CheckResult")
+            @Override
+            public void onNext(String s) {
+
+                Logger.i(s);
+
+                if (s.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)) {
+
+                    Completable.fromCallable(()->{
+
+                        return false;
+                    }).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(()->{
+                                binding.cardRequestBadge.setVisibility(View.VISIBLE);
+                                binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+                            });
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Logger.e(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onComplete() { }
+        };
+
+        observable.subscribe(observer);
     }
 
 }

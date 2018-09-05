@@ -30,4 +30,5 @@ public interface DashBoardActivityNavigator {
     boolean wasContactRecentlyDeleted();
 
     void setContactRecentlyDeleted(boolean wasDeleted);
+
 }

@@ -31,6 +31,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.user_business.Busine
 import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfilePager;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.UserProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
+import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeFragments;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -53,6 +54,8 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
     private FragmentContainerBinding binding;
     private static boolean contactRecentlyDeleted = false;
+    public static int newRequestCount = 0;
+    public static int newAnnouncementCount = 0;
 
 
     public static Intent newIntent(Context context) {
@@ -86,7 +89,6 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
 
-        setNotificationObservable();
         dataManager.getSharedPrefs().setUserLoggedIn(true);
 
         //Load the fragment into our container
@@ -244,39 +246,4 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         return false;
     }
 
-
-    /**
-     * Subscribes to the Observable in {@link MyFirebaseMessagingService}
-     *
-     */
-    private void setNotificationObservable(){
-
-        Observable<String> observable = MyFirebaseMessagingService.getObservable();
-        Observer<String> observer = new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(String s) {
-
-                Logger.i(s);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-                //show notification badges
-                Logger.i("completed");
-            }
-        };
-
-        observable.subscribe(observer);
-    }
 }

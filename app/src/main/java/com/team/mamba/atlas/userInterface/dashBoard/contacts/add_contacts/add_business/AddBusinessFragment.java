@@ -63,7 +63,7 @@ implements AddBusinessNavigator {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        parentNavigator = (DashBoardActivityNavigator) parentNavigator;
+        parentNavigator = (DashBoardActivityNavigator) context;
     }
 
     @Override
@@ -86,6 +86,7 @@ implements AddBusinessNavigator {
     @Override
     public void onFinishButtonClicked() {
 
+        showProgressSpinner();
         String businessName = binding.etBusinessName.getText().toString();
         String code = binding.etIdCode.getText().toString();
 
@@ -135,6 +136,7 @@ implements AddBusinessNavigator {
     @Override
     public void onRequestSent() {
 
+        hideProgressSpinner();
         String title = getBaseActivity().getResources().getString(R.string.connection_sent_title);
         String msg = getBaseActivity().getResources().getString(R.string.connection_sent_body);
 
@@ -146,8 +148,8 @@ implements AddBusinessNavigator {
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
                     parentNavigator.resetToFirstFragment();
-
-                    dialog.show();
                 });
+
+        dialog.show();
     }
 }
