@@ -137,17 +137,16 @@ implements AddBusinessNavigator {
     public void onRequestSent() {
 
         hideProgressSpinner();
-        String title = getBaseActivity().getResources().getString(R.string.connection_sent_title);
-        String msg = getBaseActivity().getResources().getString(R.string.connection_sent_body);
+        String title = "Contact Added";
+        parentNavigator.setContactRecentlyAdded(true);
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
 
         dialog.setTitle(title)
                 .setCancelable(false)
-                .setMessage(msg)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    parentNavigator.resetToFirstFragment();
+                    parentNavigator.refreshInfoFragment();
                 });
 
         dialog.show();

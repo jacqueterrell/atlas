@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
@@ -162,6 +163,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
                 viewModel.getAllUsers(getViewModel());
                 parentNavigator.setContactRecentlyDeleted(false);
+
+            } else if (parentNavigator.wasContactRecentlyAdded()){
+
+                viewModel.getAllUsers(getViewModel());
+                parentNavigator.setContactRecentlyAdded(false);
 
             } else {
 
@@ -718,6 +724,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         setUpNewAnnouncementBadge();
         setUpNewConnectionRequestBadge();
         setNotificationObservable();
+
     }
 
     @Override
@@ -774,7 +781,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
             public void onSubscribe(Disposable d) {
                 compositeDisposable.add(d);
             }
-            @SuppressLint("CheckResult")
             @Override
             public void onNext(String s) {
 
@@ -782,16 +788,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
                 if (s.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)) {
 
-                    Completable.fromCallable(()->{
+                  showNewConnectionRequestBadge();
 
-                        return false;
-                    }).subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(()->{
-                                viewModel.getAllUsers(getViewModel());
-                                binding.cardRequestBadge.setVisibility(View.VISIBLE);
-                                binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
-                            });
+                } else if (s.equals(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT)) {
+
+                    showNewAnnouncementBadge();
                 }
             }
 
@@ -805,5 +806,34 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         };
 
         observable.subscribe(observer);
+    }
+
+    @SuppressLint("CheckResult")
+    private void showNewConnectionRequestBadge(){
+
+        Completable.fromCallable(() -> {
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    viewModel.getAllUsers(getViewModel());
+                    binding.cardRequestBadge.setVisibility(View.VISIBLE);
+                    binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+                });
+    }
+
+    @SuppressLint("CheckResult")
+    private void showNewAnnouncementBadge(){
+
+        Completable.fromCallable(()->{
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{
+                    binding.cardNotificationBadge.setVisibility(View.VISIBLE);
+                    binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
+                });
     }
 }

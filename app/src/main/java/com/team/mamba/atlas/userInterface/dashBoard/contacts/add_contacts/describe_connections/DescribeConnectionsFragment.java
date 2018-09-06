@@ -39,6 +39,8 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
 
     public static DescribeConnectionsFragment newInstance(String lastname,String code){
 
+        isApprovingConnection = false;
+        isUpdatingConnection = false;
         lastName = lastname;
         userCode = code;
         return new DescribeConnectionsFragment();
@@ -94,13 +96,13 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-         if (isApprovingConnection || isUpdatingConnection){
+        setUpListeners();
+
+        if (isApprovingConnection || isUpdatingConnection){
 
              setCachedConnectionType();
              binding.tvTitle.setText("Edit Connection");
          }
-
-         setUpListeners();
 
         return binding.getRoot();
     }
@@ -160,6 +162,13 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 });
 
         dialog.show();
+    }
+
+    @Override
+    public void onConnectionRequestApproved() {
+
+        parentNavigator.setContactRecentlyAdded(true);
+        parentNavigator.refreshInfoFragment();
     }
 
     @Override

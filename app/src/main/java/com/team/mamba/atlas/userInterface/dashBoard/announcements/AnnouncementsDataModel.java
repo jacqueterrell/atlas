@@ -31,8 +31,8 @@ public class AnnouncementsDataModel {
     private void getAllBusinesses(AnnouncementsViewModel viewModel){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        List<String> announcementIdList = new ArrayList<>();
         String userId = dataManager.getSharedPrefs().getUserId();
+        List<String> businessIdList = new ArrayList<>();
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)
                 .get()
@@ -44,21 +44,15 @@ public class AnnouncementsDataModel {
 
                         for (BusinessProfile profile : businessProfiles){
 
-                            if (profile.getContacts().containsKey(userId)){
+                            if (profile.getContacts().containsKey(userId)
+                                    && !businessIdList.contains(profile.getId())){
 
-                                for (Map.Entry<String,String> entry : profile.getAnnouncements().entrySet()){
-
-                                    String id = entry.getKey();
-
-                                    announcementIdList.add(id);
-                                }
-
+                                businessIdList.add(profile.getId());
                             }
 
                         }
 
-                        getAllAnnouncements(viewModel,announcementIdList);
-
+                        getAllAnnouncements(viewModel,businessIdList);
 
                     } else {
 
@@ -70,7 +64,7 @@ public class AnnouncementsDataModel {
                 });
     }
 
-    private void getAllAnnouncements(AnnouncementsViewModel viewModel,List<String> announcementIdList){
+    private void getAllAnnouncements(AnnouncementsViewModel viewModel,List<String> businessIdList){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<Announcements> userAnnouncements = new ArrayList<>();
@@ -85,9 +79,9 @@ public class AnnouncementsDataModel {
 
                         for (Announcements entry : announcementsList){
 
-                            for (String id : announcementIdList){
+                            for (String id : businessIdList){
 
-                                if (id.equals(entry.getId())){
+                                if (id.equals(entry.getOrgBusID())){
 
                                     userAnnouncements.add(entry);
                                 }

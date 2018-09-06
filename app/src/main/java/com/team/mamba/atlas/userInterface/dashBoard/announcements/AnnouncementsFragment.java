@@ -165,6 +165,7 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
         setUpNewAnnouncementBadge();
         setUpNewConnectionRequestBadge();
         setNotificationObservable();
+        resetNewAnnouncementBadge();
     }
 
     @Override
@@ -231,17 +232,11 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
 
                 if (s.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)) {
 
-                    Completable.fromCallable(()->{
+                    showNewConnectionRequestBadge();
 
-                        return false;
-                    }).subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(()->{
-                                binding.cardRequestBadge.setVisibility(View.VISIBLE);
-                                binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
-                                viewModel.requestAnnouncements(getViewModel());
+                } else if (s.equals(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT)) {
 
-                            });
+                    showNewAnnouncementBadge();
                 }
             }
 
@@ -255,5 +250,35 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
         };
 
         observable.subscribe(observer);
+    }
+
+    @SuppressLint("CheckResult")
+    private void showNewConnectionRequestBadge(){
+
+        Completable.fromCallable(() -> {
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+
+                    binding.cardRequestBadge.setVisibility(View.VISIBLE);
+                    binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+                });
+    }
+
+    @SuppressLint("CheckResult")
+    private void showNewAnnouncementBadge(){
+
+        Completable.fromCallable(()->{
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{
+                    viewModel.requestAnnouncements(getViewModel());
+                    binding.cardNotificationBadge.setVisibility(View.VISIBLE);
+                    binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
+                });
     }
 }

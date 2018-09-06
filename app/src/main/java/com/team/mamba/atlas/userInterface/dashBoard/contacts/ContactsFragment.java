@@ -659,15 +659,11 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
                 if (s.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)) {
 
-                    Completable.fromCallable(()->{
+                    showNewConnectionRequestBadge();
 
-                        return false;
-                    }).subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(()->{
-                                binding.cardRequestBadge.setVisibility(View.VISIBLE);
-                                binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
-                            });
+                } else if (s.equals(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT)) {
+
+                    showNewAnnouncementBadge();
                 }
             }
 
@@ -685,6 +681,34 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
 
 
+    @SuppressLint("CheckResult")
+    private void showNewConnectionRequestBadge(){
+
+        Completable.fromCallable(() -> {
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+
+                    binding.cardRequestBadge.setVisibility(View.VISIBLE);
+                    binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+                });
+    }
+
+    @SuppressLint("CheckResult")
+    private void showNewAnnouncementBadge(){
+
+        Completable.fromCallable(()->{
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{
+                    binding.cardNotificationBadge.setVisibility(View.VISIBLE);
+                    binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
+                });
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

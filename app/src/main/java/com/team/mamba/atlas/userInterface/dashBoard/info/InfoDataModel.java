@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
@@ -74,9 +75,9 @@ public class InfoDataModel {
 
                         List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
-                        for (UserProfile profile : userProfiles){
+                        for (UserProfile profile : userProfiles) {
 
-                            if (profile.getId() != null){
+                            if (profile.getId() != null) {
 
                                 adjustedProfileList.add(profile);
                             }
@@ -137,6 +138,7 @@ public class InfoDataModel {
 
                                 if (connection.isOrgBus) {
 
+                                    FirebaseMessaging.getInstance().subscribeToTopic(connection.getConsentingUserID());
                                     companyTotal += 1;
                                     companyUserIds.add(connection.getId());
                                 }
@@ -162,7 +164,6 @@ public class InfoDataModel {
      * Creates a default map of six sets of zeroes, then
      * looks through our list of connection months and appends
      * the number of connections for that month
-     *
      *
      * @param viewModel
      * @param connectionMonths months the connections were added
@@ -223,7 +224,7 @@ public class InfoDataModel {
             totalOpportunities = 0;
         }
 
-             FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         String savedUserId = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)
@@ -352,7 +353,6 @@ public class InfoDataModel {
     /**
      * This creates a list of all totals for our User Stats
      * Recyclerview
-     *
      */
     private void setUserStatsTotal() {
 
@@ -483,11 +483,11 @@ public class InfoDataModel {
         recentActivityConnections.addAll(completedConnections);
         recentActivityConnections.addAll(newConnections);
 
-            setUserStatsTotal();
+        setUserStatsTotal();
 
-            viewModel.setUserStatsList(userStatsList);
-            viewModel.setRecentActivityConnections(recentActivityConnections);
-            viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
+        viewModel.setUserStatsList(userStatsList);
+        viewModel.setRecentActivityConnections(recentActivityConnections);
+        viewModel.getNavigator().setUserStatsAdapter(userStatsList, recentActivityConnections);
 
     }
 

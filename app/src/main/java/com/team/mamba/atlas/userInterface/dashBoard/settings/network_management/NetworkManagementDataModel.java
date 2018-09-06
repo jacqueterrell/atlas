@@ -3,6 +3,7 @@ package com.team.mamba.atlas.userInterface.dashBoard.settings.network_management
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
@@ -193,6 +194,7 @@ public class NetworkManagementDataModel {
                     if (task.isSuccessful()){
 
                         Logger.i("Successfully deleted");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(userConnection.getConsentingUserID());
                         deleteFromContactList(viewModel,userConnection);
 
                     } else {
@@ -215,49 +217,45 @@ public class NetworkManagementDataModel {
         if (dataManager.getSharedPrefs().isBusinessAccount()){
 
             BusinessProfile profile = viewModel.getLoggedInBusinessProfile();
-            String deletedPath = "contacts." + connections.getConsentingUserID();
+            Map<String,String> contactsMap = profile.getContacts();
+            contactsMap.remove(connections.getConsentingUserID());
 
-            DocumentReference docRef = db.collection("businesses").document(profile.getId());
-            Map<String,Object> deletedConnection = new HashMap<>();
-            deletedConnection.put(deletedPath, FieldValue.delete());
-
-            docRef.update(deletedConnection)
+            db.collection(AppConstants.BUSINESSES_COLLECTION)
+                    .document(profile.getId())
+                    .set(profile)
                     .addOnCompleteListener(task -> {
 
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
-                            Logger.i("Deleted business contact");
+                            Logger.i("Deleted contact successfully");
 
                         } else {
 
-                            Logger.e("Failed to delete business contact " + task.getException().getLocalizedMessage());
+                            Logger.e(task.getException().getMessage());
                         }
-
                     });
 
         } else {
 
             UserProfile profile = viewModel.getLoggedInUserProfile();
-            String deletedPath = "connections." + connections.getConsentingUserID();
+            Map<String,String> contactsMap = profile.getConnections();
+            contactsMap.remove(connections.getConsentingUserID());
 
-            DocumentReference docRef = db.collection("users").document(profile.getId());
-            Map<String,Object> deletedConnection = new HashMap<>();
-            deletedConnection.put(deletedPath, FieldValue.delete());
-
-            docRef.update(deletedConnection)
+            db.collection(AppConstants.USERS_COLLECTION)
+                    .document(profile.getId())
+                    .set(profile)
                     .addOnCompleteListener(task -> {
 
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
-                            Logger.i("Deleted user contact");
-                            viewModel.getNavigator().onContactDeleted();
+                            Logger.i("Deleted contact successfully");
 
                         } else {
 
-                            Logger.e("Failed to delete user contact " + task.getException().getLocalizedMessage());
+                            Logger.e(task.getException().getMessage());
                         }
-
                     });
+
         }
 
     }

@@ -18,11 +18,9 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.R;
-import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.userInterface.AtlasApplication;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 
-import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
@@ -30,8 +28,6 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoar
 import com.team.mamba.atlas.utils.AppConstants;
 
 import java.util.Map;
-
-import javax.inject.Inject;
 
 import static com.team.mamba.atlas.utils.AppSharedPrefs.FIREBASE_DEVICE_TOKEN;
 
@@ -43,6 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static String NOTIFICATION_ID = "my_channel_02";
     private static PublishSubject<String>  data = PublishSubject.create();
     private SharedPreferences sharedPreferences;
+    public static boolean isBusinessAnnouncement = false;
 
     @Override
     public void onCreate() {
@@ -83,11 +80,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     DashBoardActivity.newRequestCount += 1;
 
                     if (AtlasApplication.isAppInBackGround){
-                        //todo put the actual notification message here
-                        sendNotification("New connection request");
+
+                        sendNewRequestNotification("New connection request","A new user wants to connect with you!");
 
                     } else {
                         data.onNext(AppConstants.NOTIFICATION_NEW_CONNECTION);
+                    }
+                    break;
+
+                } else if (value.equals(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT)){
+
+                    DashBoardActivity.newAnnouncementCount += 1;
+
+                    if (AtlasApplication.isAppInBackGround){
+
+                        isBusinessAnnouncement = true;
+                        sendNewRequestNotification("New Announcement","You have new business announcements!");
+
+                    } else {
+                        data.onNext(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT);
                     }
                     break;
                 }
@@ -121,46 +132,45 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      *
      */
-    private void sendNotification(String title) {
+    private void sendNewRequestNotification(String title,String body) {
 
-//        long[] pattern = {0, 1000};
-//
-//        Logger.i("send notification: " + title + " " + body);
-//        MediaPlayer mediaPlayer = MediaPlayer.create(this.getApplicationContext(), R.raw.alert_chime);
-//        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//
-//        Intent intent = WelcomeActivity.newIntent(this);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
-//
-//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//
-//            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
-//            notificationChannel.setDescription("RK Scanner Notification");
-//            notificationChannel.enableLights(true);
-//            notificationChannel.setLightColor(Color.RED);
-//            notificationChannel.setVibrationPattern(pattern);
-//            notificationManager.createNotificationChannel(notificationChannel);
-//        }
-//
-//        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_ID)
-//                .setSmallIcon(R.mipmap.ic_launcher_round)
-//                .setContentTitle(title)
-//                .setContentText(body)
-//                .setAutoCancel(true)
-//                .setSound(defaultSoundUri)
-//                .setVibrate(pattern)
-//                .setContentIntent(pendingIntent);
-//
-//        //  mediaPlayer.start();
-//
-//
-//        if (notificationManager != null) {
-//            notificationManager.notify(0, notificationBuilder.build());
-//        }
+        long[] pattern = {0, 1000};
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this.getApplicationContext(), R.raw.alert_chime);
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        Intent intent = WelcomeActivity.newIntent(this);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("RK Scanner Notification");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setVibrationPattern(pattern);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_ID)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setVibrate(pattern)
+                .setContentIntent(pendingIntent);
+
+        //  mediaPlayer.start();
+
+
+        if (notificationManager != null) {
+            notificationManager.notify(0, notificationBuilder.build());
+        }
     }
 
     /**
