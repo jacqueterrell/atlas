@@ -3,6 +3,7 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.descr
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 
@@ -12,6 +13,7 @@ import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -154,11 +156,13 @@ public class DescribeConnectionsDataModel {
         newUserRef.set(userConnections)
                 .addOnSuccessListener(documentReference -> {
 
-                    viewModel.getNavigator().onRequestSent();
-
                     if (viewModel.isApprovingConnection()) {
 
                         updateInitialConnection(viewModel);
+
+                    } else {
+
+                        viewModel.getNavigator().onRequestSent();
                     }
 
                 })
@@ -168,6 +172,12 @@ public class DescribeConnectionsDataModel {
                 });
     }
 
+    /**
+     * If the user is approving a connection request, this updates the original request
+     * setting the confirmed field to 'true' and updating the timestamp
+     *
+     * @param viewModel
+     */
     private void updateInitialConnection(DescribeConnectionsViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -184,7 +194,9 @@ public class DescribeConnectionsDataModel {
 
                     if (task.isSuccessful()) {
 
+                        viewModel.getNavigator().onConnectionRequestApproved();
                         Logger.i("Connection updated successfully");
+                        addToUsersContactList(viewModel);
 
                     } else {
 
@@ -192,6 +204,80 @@ public class DescribeConnectionsDataModel {
                     }
                 });
 
+
+    }
+
+
+    /**
+     * Adds the the consenting user and the requesting user to each other's
+     * contact list.
+     *
+     * @param viewModel
+     */
+    private void addToUsersContactList(DescribeConnectionsViewModel viewModel){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        UserConnections connections = viewModel.getRequestingConnection();
+
+        if (!dataManager.getSharedPrefs().isBusinessAccount()) {
+
+            //add the contact to the users contacts
+
+            UserProfile loggedInUserProfile = viewModel.getLoggedInProfileIndividual();
+            Map<String, String> connectionsMap = loggedInUserProfile.getConnections();
+            connectionsMap.put(connections.getRequestingUserName(), connections.getRequestingUserID());
+
+            db.collection(AppConstants.USERS_COLLECTION)
+                    .document(loggedInUserProfile.getId())
+                    .set(loggedInUserProfile)
+                    .addOnCompleteListener(task -> {
+
+                        if (task.isSuccessful()) {
+
+                            Logger.i("New contact added successfully");
+
+                        } else {
+
+                            Logger.e(task.getException().getMessage());
+                        }
+                    });
+
+            //add the user to the consenting contact's list
+            db.collection(AppConstants.USERS_COLLECTION)
+                    .whereEqualTo("id", connections.getRequestingUserID())
+                    .get()
+                    .addOnCompleteListener(task -> {
+
+                        if (task.isSuccessful()){
+
+                            UserProfile profile = task.getResult().toObjects(UserProfile.class).get(0);
+                            Map<String,String> contactsMap = profile.getConnections();
+                            contactsMap.put(loggedInUserProfile.getId(),loggedInUserProfile.getId());
+
+                            //update the consenting profile with the new contact added
+                            db.collection(AppConstants.USERS_COLLECTION)
+                                    .document(profile.getId())
+                                    .set(profile)
+                                    .addOnCompleteListener(result -> {
+
+                                        if (result.isSuccessful()) {
+
+                                            Logger.i("New contact added successfully");
+
+                                        } else {
+
+                                            Logger.e(result.getException().getMessage());
+                                        }
+                                    });
+
+                        } else {
+
+                            Logger.e(task.getException().getMessage());
+                        }
+
+                    });
+
+        }
 
     }
 
@@ -343,7 +429,7 @@ public class DescribeConnectionsDataModel {
         userConnections.setConsentingUserID(consentingProfile.getId());
         userConnections.setConsentingUserName(consentingName);
         userConnections.setId(id);
-        userConnections.setConfirmed(false);
+        userConnections.setConfirmed(viewModel.isApprovingConnection());
         userConnections.setOrgBus(false);
         userConnections.setReqDeviceToken(requestingToken);
         userConnections.setRequestingUserName(requestingName);
@@ -354,6 +440,12 @@ public class DescribeConnectionsDataModel {
                 .addOnSuccessListener(documentReference -> {
 
                     viewModel.getNavigator().onRequestSent();
+
+                    if (viewModel.isApprovingConnection()) {
+
+                        updateInitialConnection(viewModel);
+
+                    }
 
                 })
                 .addOnFailureListener(e -> {

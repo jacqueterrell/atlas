@@ -2,6 +2,7 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts;
 
 import android.Manifest;
 import android.Manifest.permission;
+import android.annotation.SuppressLint;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -31,6 +32,7 @@ import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.databinding.ContactsLayoutBinding;
+import com.team.mamba.atlas.service.MyFirebaseMessagingService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
@@ -46,6 +48,14 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, ContactsViewModel>
         implements ContactsNavigator, SearchView.OnQueryTextListener {
@@ -63,6 +73,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     private static List<UserConnections> userConnectionsList = new ArrayList<>();
     private static List<UserConnections> permUserConnectionsList = new ArrayList<>();
     private static List<UserConnections> filteredUserConnectionsList = new ArrayList<>();
+    private CompositeDisposable compositeDisposable;
 
     private ContactListAdapter contactListAdapter;
 
@@ -583,6 +594,120 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             return true;
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        compositeDisposable = new CompositeDisposable();
+        setNotificationObservable();
+        setUpNewAnnouncementBadge();
+        setUpNewConnectionRequestBadge();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        compositeDisposable.dispose();
+    }
+
+    private void setUpNewConnectionRequestBadge(){
+
+        if (DashBoardActivity.newRequestCount > 0){//show badge
+
+            binding.cardRequestBadge.setVisibility(View.VISIBLE);
+            binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+
+        } else {//hide badge
+
+            binding.cardRequestBadge.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void setUpNewAnnouncementBadge(){
+
+        if (DashBoardActivity.newAnnouncementCount > 0){//show badge
+
+            binding.cardNotificationBadge.setVisibility(View.VISIBLE);
+            binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
+
+        } else {//hide badge
+
+            binding.cardNotificationBadge.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Subscribes to the Observable in {@link MyFirebaseMessagingService}
+     *
+     */
+    private void setNotificationObservable(){
+
+        Observable<String> observable = MyFirebaseMessagingService.getObservable();
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+                compositeDisposable.add(d);
+            }
+            @SuppressLint("CheckResult")
+            @Override
+            public void onNext(String s) {
+
+                Logger.i(s);
+
+                if (s.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)) {
+
+                    showNewConnectionRequestBadge();
+
+                } else if (s.equals(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT)) {
+
+                    showNewAnnouncementBadge();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Logger.e(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onComplete() { }
+        };
+
+        observable.subscribe(observer);
+    }
+
+
+
+    @SuppressLint("CheckResult")
+    private void showNewConnectionRequestBadge(){
+
+        Completable.fromCallable(() -> {
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+
+                    binding.cardRequestBadge.setVisibility(View.VISIBLE);
+                    binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
+                });
+    }
+
+    @SuppressLint("CheckResult")
+    private void showNewAnnouncementBadge(){
+
+        Completable.fromCallable(()->{
+
+            return false;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{
+                    binding.cardNotificationBadge.setVisibility(View.VISIBLE);
+                    binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
+                });
     }
 
     @Override

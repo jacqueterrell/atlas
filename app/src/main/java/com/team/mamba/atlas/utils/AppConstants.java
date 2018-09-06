@@ -24,4 +24,6 @@ public class AppConstants {
     public static final int REQUEST_CAMERA_PERMISSIONS = 3;
     public static final int REQUEST_READ_EXTERNAL_STORAGE = 2;
 
+    public static final String NOTIFICATION_NEW_CONNECTION = "connRequest";
+    public static final String NOTIFICATION_NEW_ANNOUNCEMENT = "announcement";
 }

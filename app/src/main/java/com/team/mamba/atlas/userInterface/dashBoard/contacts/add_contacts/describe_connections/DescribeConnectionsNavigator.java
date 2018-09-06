@@ -14,5 +14,7 @@ public interface DescribeConnectionsNavigator {
 
     void onRequestSent();
 
+    void onConnectionRequestApproved();
+
     void onConnectionUpdated();
 }

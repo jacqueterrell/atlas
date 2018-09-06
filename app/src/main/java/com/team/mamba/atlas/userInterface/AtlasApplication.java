@@ -3,6 +3,10 @@ package com.team.mamba.atlas.userInterface;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
+import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
@@ -24,7 +28,9 @@ import dagger.android.HasServiceInjector;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 
-public class AtlasApplication extends Application implements HasActivityInjector{
+public class AtlasApplication extends Application implements HasActivityInjector,LifecycleObserver{
+
+    public static boolean isAppInBackGround = false;
 
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
@@ -35,6 +41,8 @@ public class AtlasApplication extends Application implements HasActivityInjector
     @Override
     public void onCreate() {
         super.onCreate();
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+
         Fabric.with(this, new Crashlytics());
         FirebaseApp.initializeApp(this);
 
@@ -46,6 +54,20 @@ public class AtlasApplication extends Application implements HasActivityInjector
                 .build()
                 .inject(this);
 
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onAppBackgrounded(){
+
+        isAppInBackGround = true;
+        Logger.d("App in background");
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void onAppForegrounded(){
+
+        isAppInBackGround = false;
+        Logger.d("App in foreground");
     }
 
     @Override

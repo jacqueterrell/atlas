@@ -163,6 +163,8 @@ implements BusinessLoginNavigator{
 
                dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2"); //Mike R
             //dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC"); // Jacque Terrell
+            //dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC"); // Sofwr
+
             parentNavigator.setBusinessLogin(false);
 
             openDashBoard();

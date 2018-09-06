@@ -31,6 +31,8 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.user_business.Busine
 import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfilePager;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.UserProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
+import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
+import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeFragments;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -53,6 +55,9 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
     private FragmentContainerBinding binding;
     private static boolean contactRecentlyDeleted = false;
+    private static boolean contactRecentlyAdded = false;
+    public static int newRequestCount = 0;
+    public static int newAnnouncementCount = 0;
 
 
     public static Intent newIntent(Context context) {
@@ -86,18 +91,39 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
 
-        setNotificationObservable();
         dataManager.getSharedPrefs().setUserLoggedIn(true);
 
         //Load the fragment into our container
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
-        if (fragment == null) {
-            fragment = InfoFragment.newInstance();
-            fm.beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit();
+        if (MyFirebaseMessagingService.isBusinessAnnouncement){
+
+            if (fragment == null) {
+
+                fragment = AnnouncementsFragment.newInstance();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, fragment)
+                        .commit();
+
+            } else {
+
+                fragment = AnnouncementsFragment.newInstance();
+                fm.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+            }
+
+            MyFirebaseMessagingService.isBusinessAnnouncement = false;
+
+        } else {
+
+            if (fragment == null) {
+                fragment = InfoFragment.newInstance();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, fragment)
+                        .commit();
+            }
         }
     }
 
@@ -115,7 +141,8 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     @Override
     public void refreshInfoFragment() {
 
-        getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        finishAffinity();
+        startActivity(DashBoardActivity.newIntent(DashBoardActivity.this));
     }
 
     @Override
@@ -168,6 +195,16 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     @Override
     public boolean wasContactRecentlyDeleted() {
         return contactRecentlyDeleted;
+    }
+
+    @Override
+    public boolean wasContactRecentlyAdded() {
+        return contactRecentlyAdded;
+    }
+
+    @Override
+    public void setContactRecentlyAdded(boolean wasAdded) {
+        contactRecentlyAdded = wasAdded;
     }
 
     @Override
@@ -244,39 +281,4 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         return false;
     }
 
-
-    /**
-     * Subscribes to the Observable in {@link MyFirebaseMessagingService}
-     *
-     */
-    private void setNotificationObservable(){
-
-        Observable<String> observable = MyFirebaseMessagingService.getObservable();
-        Observer<String> observer = new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(String s) {
-
-                Logger.i(s);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-                //show notification badges
-                Logger.i("completed");
-            }
-        };
-
-        observable.subscribe(observer);
-    }
 }

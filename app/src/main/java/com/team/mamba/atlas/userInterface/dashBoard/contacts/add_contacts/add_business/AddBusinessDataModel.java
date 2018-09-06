@@ -3,6 +3,7 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_b
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
@@ -20,7 +21,6 @@ import javax.inject.Inject;
  * This class uses different queries based on the type account the
  * user is logged in as (individual or business) to add a business
  * profile
- *
  */
 public class AddBusinessDataModel {
 
@@ -39,7 +39,7 @@ public class AddBusinessDataModel {
 
         if (dataManager.getSharedPrefs().isBusinessAccount()) {
 
-            getBusinessProfiles(viewModel,name,code);
+            getBusinessProfiles(viewModel, name, code);
 
         } else {
 
@@ -161,9 +161,6 @@ public class AddBusinessDataModel {
     }
 
 
-
-
-
     /**
      * Creates a new Connection for the User Request
      *
@@ -187,7 +184,7 @@ public class AddBusinessDataModel {
         userConnections.setConsentingUserID(businessProfile.getId());
         userConnections.setConsentingUserName(consentingName);
         userConnections.setId(id);
-        userConnections.setConfirmed(false);
+        userConnections.setConfirmed(true);
         userConnections.setOrgBus(true);
         userConnections.setReqDeviceToken(requestingToken);
         userConnections.setRequestingUserName(requestingName);
@@ -197,6 +194,9 @@ public class AddBusinessDataModel {
         newUserRef.set(userConnections)
                 .addOnSuccessListener(documentReference -> {
 
+                    //subscribe the business to a topic
+                    FirebaseMessaging.getInstance().subscribeToTopic(businessProfile.getName());
+                    addToUsersContactList(viewModel,businessProfile);
                     viewModel.getNavigator().onRequestSent();
 
                 })
@@ -207,15 +207,70 @@ public class AddBusinessDataModel {
     }
 
 
-    /*         Logged in as a Business Account                */
+    /**
+     * Adds the the consenting user and the requesting user to each other's
+     * contact list.
+     *
+     * @param viewModel
+     */
+    private void addToUsersContactList(AddBusinessViewModel viewModel, BusinessProfile consentingBusinessProfile) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        if (!dataManager.getSharedPrefs().isBusinessAccount()) {
+
+            //add the contact to the users contacts
+
+            UserProfile requestingProfile = viewModel.getRequestingUserProfile();
+            Map<String, String> connectionsMap = requestingProfile.getConnections();
+            connectionsMap.put(consentingBusinessProfile.getId(),consentingBusinessProfile.getId());
+
+            db.collection(AppConstants.USERS_COLLECTION)
+                    .document(requestingProfile.getId())
+                    .set(requestingProfile)
+                    .addOnCompleteListener(task -> {
+
+                        if (task.isSuccessful()) {
+
+                            Logger.i("New contact added successfully");
+
+                        } else {
+
+                            Logger.e(task.getException().getMessage());
+                        }
+                    });
+
+            //update the consenting profile with the new contact added
+            Map<String,String> contactsMap = consentingBusinessProfile.getContacts();
+            contactsMap.put(requestingProfile.getId(),requestingProfile.getId());
+
+            db.collection(AppConstants.BUSINESSES_COLLECTION)
+                    .document(consentingBusinessProfile.getId())
+                    .set(consentingBusinessProfile)
+                    .addOnCompleteListener(result -> {
+
+                        if (result.isSuccessful()) {
+
+                            Logger.i("New contact added successfully");
+
+                        } else {
+
+                            Logger.e(result.getException().getMessage());
+                        }
+                    });
+        }
+    }
+
+
+    /*Logged in as a Business Account*/
 
     /**
      * Gets the user profile and their contacts : user is logged
      * in as a Business Account
      *
      * @param viewModel
-     * @param name the business name
-     * @param code the business code
+     * @param name      the business name
+     * @param code      the business code
      */
     public void getBusinessProfiles(AddBusinessViewModel viewModel, String name, String code) {
 
@@ -245,13 +300,13 @@ public class AddBusinessDataModel {
                                 }
 
                             } else if (profile.getName().equals(name)
-                                    && profile.getCode().equals(code)){ //get a list of businesses that match the user's query
+                                    && profile.getCode().equals(code)) { //get a list of businesses that match the user's query
 
                                 selectedProfileList.add(profile);
                             }
                         }
 
-                        if (selectedProfileList.isEmpty()){
+                        if (selectedProfileList.isEmpty()) {
 
                             viewModel.getNavigator().showUserNotFoundAlert();
 
@@ -259,13 +314,13 @@ public class AddBusinessDataModel {
 
                             BusinessProfile profile = selectedProfileList.get(0);
 
-                            if (connectionIdList.contains(profile.getId())){//already a contact
+                            if (connectionIdList.contains(profile.getId())) {//already a contact
 
                                 viewModel.getNavigator().showAlreadyAContactAlert();
 
                             } else {
 
-                                addNewConnectionForBusiness(viewModel,profile);
+                                addNewConnectionForBusiness(viewModel, profile);
                             }
                         }
 

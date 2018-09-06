@@ -63,7 +63,7 @@ implements AddBusinessNavigator {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        parentNavigator = (DashBoardActivityNavigator) parentNavigator;
+        parentNavigator = (DashBoardActivityNavigator) context;
     }
 
     @Override
@@ -86,6 +86,7 @@ implements AddBusinessNavigator {
     @Override
     public void onFinishButtonClicked() {
 
+        showProgressSpinner();
         String businessName = binding.etBusinessName.getText().toString();
         String code = binding.etIdCode.getText().toString();
 
@@ -135,19 +136,19 @@ implements AddBusinessNavigator {
     @Override
     public void onRequestSent() {
 
-        String title = getBaseActivity().getResources().getString(R.string.connection_sent_title);
-        String msg = getBaseActivity().getResources().getString(R.string.connection_sent_body);
+        hideProgressSpinner();
+        String title = "Contact Added";
+        parentNavigator.setContactRecentlyAdded(true);
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
 
         dialog.setTitle(title)
                 .setCancelable(false)
-                .setMessage(msg)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    parentNavigator.resetToFirstFragment();
-
-                    dialog.show();
+                    parentNavigator.refreshInfoFragment();
                 });
+
+        dialog.show();
     }
 }
