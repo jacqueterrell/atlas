@@ -159,7 +159,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
                 binding.layoutSplashScreen.setVisibility(View.VISIBLE);
                 viewModel.getAllUsers(getViewModel());
 
-            } else if (parentNavigator.wasContactRecentlyDeleted()) {
+            } else if (parentNavigator.wasContactRecentlyDeleted()) {//a contact was just deleted
 
                 viewModel.getAllUsers(getViewModel());
                 parentNavigator.setContactRecentlyDeleted(false);
@@ -169,7 +169,13 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
                 viewModel.getAllUsers(getViewModel());
                 parentNavigator.setContactRecentlyAdded(false);
 
-            } else {
+            } else if (DashBoardActivity.newRequestCount > 0){// a new user request was added
+
+                viewModel.getAllUsers(getViewModel());
+                parentNavigator.setContactRecentlyAdded(false);
+            }
+
+            else {
 
                 setUserStatsAdapter(viewModel.getUserStatsList(), viewModel.getRecentActivityConnections());
                 setBarChartData();

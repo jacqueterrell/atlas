@@ -52,6 +52,12 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
     }
 
     /*******Onclick Listeners********/
+
+    public void editEmployer(){
+
+        getNavigator().editEmployer();;
+    }
+
     public void onSettingsClicked() {
 
         getNavigator().onSettingsClicked();
