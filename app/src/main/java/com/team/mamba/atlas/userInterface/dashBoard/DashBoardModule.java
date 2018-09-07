@@ -25,6 +25,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.User
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_employer.EditEmployerViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.add_new.AddWorkViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkViewModel;
@@ -110,15 +111,21 @@ public class DashBoardModule {
     }
 
     @Provides
-    EditAddressViewModel providesEditEducationViewModel(){
+    EditAddressViewModel providesEditAddressViewModel(){
 
         return new EditAddressViewModel();
     }
 
     @Provides
-    EditEducationViewModel providesEditEducationViewModell(){
+    EditEducationViewModel providesEditEducationViewModel(){
 
         return new EditEducationViewModel();
+    }
+
+    @Provides
+    EditEmployerViewModel providesEditEmployerViewModel(){
+
+        return new EditEmployerViewModel();
     }
 
     @Provides

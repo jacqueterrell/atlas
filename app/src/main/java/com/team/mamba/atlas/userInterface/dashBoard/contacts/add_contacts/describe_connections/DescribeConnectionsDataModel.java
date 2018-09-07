@@ -153,23 +153,45 @@ public class DescribeConnectionsDataModel {
         userConnections.setRequestingUserID(requestingProfile.getId());
         userConnections.setTimestamp(timeStamp);
 
-        newUserRef.set(userConnections)
-                .addOnSuccessListener(documentReference -> {
+        //Ensures that duplicate connections never exist
+        db.collection(AppConstants.CONNECTIONS_COLLECTION)
+                .whereEqualTo("requestingUserID", requestingProfile.getId())
+                .get()
+                .addOnCompleteListener(task -> {
 
-                    if (viewModel.isApprovingConnection()) {
+                    if (task.isSuccessful()){
 
-                        updateInitialConnection(viewModel);
+                        List<String> consentingIdList = new ArrayList<>();
 
-                    } else {
+                        List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
 
-                        viewModel.getNavigator().onRequestSent();
+                        for (UserConnections connection : connectionsList){
+
+                            if (connection.getConsentingUserID().equals(consentingProfile.getId())){
+
+                                consentingIdList.add(consentingProfile.getId());
+                            }
+                        }
+
+                        //if the connection does not already exists
+                        if (consentingIdList.isEmpty()){
+
+                            newUserRef.set(userConnections);
+
+                        }
+
                     }
 
-                })
-                .addOnFailureListener(e -> {
-
-                    Logger.e(e.getMessage());
                 });
+
+        if (viewModel.isApprovingConnection()) {
+
+            updateInitialConnection(viewModel);
+
+        } else {
+
+            viewModel.getNavigator().onRequestSent();
+        }
     }
 
     /**

@@ -34,6 +34,7 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoar
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_employer.EditEmployerFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkFragment;
 import com.team.mamba.atlas.utils.AppConstants;
@@ -127,6 +128,11 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
                     .into(binding.ivUserProfile);
         }
 
+        if (binding.tvCurrentPosition.getText().toString().trim().equals(",")){
+
+            binding.tvCurrentPosition.setText("Position, Company Name");
+        }
+
         //phone info
         if (binding.tvCellPhone.getText().toString().isEmpty()){
 
@@ -196,6 +202,12 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
         parentNavigator.openSettingsScreen();
     }
 
+    @Override
+    public void editEmployer() {
+
+        ChangeFragments.replaceFragmentFadeIn(EditEmployerFragment.newInstance(viewModel.getUserProfile()),getBaseActivity()
+                .getSupportFragmentManager(),"EditEmployer",null);
+    }
 
     @Override
     public void editPhoneInfo() {

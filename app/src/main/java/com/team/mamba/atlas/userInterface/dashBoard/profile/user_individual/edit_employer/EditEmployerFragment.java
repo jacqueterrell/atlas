@@ -1,6 +1,5 @@
-package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info;
+package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_employer;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,35 +7,37 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
-import com.team.mamba.atlas.databinding.EditEmailLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
-
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
+
+import com.team.mamba.atlas.databinding.EditEmployerPositionLayoutBinding;
 import javax.inject.Inject;
 
-public class EditEmailFragment extends BaseFragment<EditEmailLayoutBinding,EditEmailViewModel> implements EditEmailNavigator {
+public class EditEmployerFragment extends BaseFragment<EditEmployerPositionLayoutBinding,EditEmployerViewModel> implements EditEmployerNavigator{
 
 
     @Inject
-    EditEmailDataModel dataModel;
+    EditEmployerViewModel viewModel;
 
     @Inject
-    EditEmailViewModel viewModel;
+    EditEmployerDataModel dataModel;
 
-    private EditEmailLayoutBinding binding;
     private static UserProfile profile;
+    private EditEmployerPositionLayoutBinding binding;
 
-    public static EditEmailFragment newInstance(UserProfile userProfile){
+
+    public static EditEmployerFragment newInstance(UserProfile userProfile){
 
         profile = userProfile;
-        return new EditEmailFragment();
+        return new EditEmployerFragment();
     }
-
 
     @Override
     public int getBindingVariable() {
@@ -45,11 +46,11 @@ public class EditEmailFragment extends BaseFragment<EditEmailLayoutBinding,EditE
 
     @Override
     public int getLayoutId() {
-        return R.layout.edit_email_layout;
+        return R.layout.edit_employer_position_layout;
     }
 
     @Override
-    public EditEmailViewModel getViewModel() {
+    public EditEmployerViewModel getViewModel() {
         return viewModel;
     }
 
@@ -57,7 +58,6 @@ public class EditEmailFragment extends BaseFragment<EditEmailLayoutBinding,EditE
     public View getProgressSpinner() {
         return binding.progressSpinner;
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,29 +79,18 @@ public class EditEmailFragment extends BaseFragment<EditEmailLayoutBinding,EditE
     @Override
     public void onContinueClicked() {
 
-        setEmailData();
+        setEmployerData();
 
-        ChangeFragments.addFragmentFadeIn(EditAddressFragment.newInstance(profile),getBaseActivity()
-                .getSupportFragmentManager(),"AddressFragment",null);
+        ChangeFragments.addFragmentFadeIn(EditEmailFragment.newInstance(profile),getBaseActivity()
+                .getSupportFragmentManager(),"EmailFragment",null);
     }
 
     @Override
     public void onSaveAndCloseClicked() {
 
         showProgressSpinner();
-        setEmailData();
+        setEmployerData();
         viewModel.updateUser(getViewModel(),profile);
-    }
-
-    private void setEmailData(){
-
-        String personalEmail = binding.etPersonalEmail.getText().toString();
-        String workEmail = binding.etWorkEmail.getText().toString();
-        Long timeStamp = System.currentTimeMillis() / 1000;
-
-        profile.setTimestamp(timeStamp);
-        profile.setEmail(personalEmail);
-        profile.setWorkEmail(workEmail);
     }
 
     @Override
@@ -112,9 +101,20 @@ public class EditEmailFragment extends BaseFragment<EditEmailLayoutBinding,EditE
         manager.popBackStack("UserProfile",0);
     }
 
+    private void setEmployerData(){
+
+        String position = binding.etTitle.getText().toString();
+        String currentEmployer = binding.etWorkLocation.getText().toString();
+        Long timeStamp = System.currentTimeMillis() / 1000;
+
+        profile.setCurrentPosition(position);
+        profile.setCurrentEmployer(currentEmployer);
+        profile.setTimestamp(timeStamp);
+    }
+
     private void setCachedData(){
 
-        binding.etPersonalEmail.setText(profile.getEmail());
-        binding.etWorkEmail.setText(profile.getWorkEmail());
+        binding.etTitle.setText(profile.getCurrentPosition());
+        binding.etWorkLocation.setText(profile.getCurrentEmployer());
     }
 }

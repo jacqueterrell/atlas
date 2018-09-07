@@ -1,20 +1,19 @@
-package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info;
+package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_employer;
 
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
-public class EditEmailViewModel extends BaseViewModel<EditEmailNavigator> {
+public class EditEmployerViewModel extends BaseViewModel<EditEmployerNavigator> {
 
-    private EditEmailDataModel dataModel;
+    private EditEmployerDataModel dataModel;
 
 
-
-    /***********Getters and Setters**************/
-    public void setDataModel(EditEmailDataModel dataModel) {
+    /***********Getters and Setters***********/
+    public void setDataModel(EditEmployerDataModel dataModel) {
         this.dataModel = dataModel;
     }
 
-    /***********OnClick Listeners***************/
+    /*********OnClick Listeners****************/
     public void onContinueClicked(){
 
         getNavigator().onContinueClicked();
@@ -25,7 +24,7 @@ public class EditEmailViewModel extends BaseViewModel<EditEmailNavigator> {
     }
 
     /***********DataModel Requests***************/
-    public void updateUser(EditEmailViewModel viewModel, UserProfile profile){
+    public void updateUser(EditEmployerViewModel viewModel, UserProfile profile){
 
         dataModel.updateUser(viewModel,profile);
     }

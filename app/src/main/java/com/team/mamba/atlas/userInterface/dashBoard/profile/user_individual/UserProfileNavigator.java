@@ -6,6 +6,8 @@ public interface UserProfileNavigator {
 
     void onSettingsClicked();
 
+    void editEmployer();
+
     void editPhoneInfo();
 
     void editEmailInfo();
