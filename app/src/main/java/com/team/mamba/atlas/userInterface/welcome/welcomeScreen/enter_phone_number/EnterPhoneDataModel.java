@@ -9,11 +9,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_phone_info.EditPhoneViewModel;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -122,13 +125,13 @@ public class EnterPhoneDataModel {
 
                         } else {
 
-                            addUserToFirebaseDatabase(viewModel);
+                            setUserCode(viewModel);
                         }
 
                     } else {
 
                         Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
+                        viewModel.getNavigator().handleError(task.getException().getMessage());
                     }
 
                 });
@@ -136,7 +139,50 @@ public class EnterPhoneDataModel {
     }
 
 
+    /**
+     * Queries the DB for user's with the same last name. This is
+     * used to set the user code.
+     *
+     */
+    public void setUserCode(EnterPhoneViewModel viewModel){
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection(AppConstants.USERS_COLLECTION)
+                .whereEqualTo("lastName", viewModel.getLastName())
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()){
+
+                        List<UserProfile> userProfileList = task.getResult().toObjects(UserProfile.class);
+
+                        if (userProfileList.isEmpty()){
+
+                            viewModel.setUserCode("1");
+
+                        } else {
+
+                            int code = userProfileList.size() + 1;
+                            viewModel.setUserCode(String.valueOf(code));
+                        }
+
+                        addUserToFirebaseDatabase(viewModel);
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                        viewModel.getNavigator().handleError(task.getException().getMessage());
+                    }
+                });
+
+    }
+
+
+    /**
+     * Creates a new user record in our Firebase database
+     *
+     */
     public void addUserToFirebaseDatabase(EnterPhoneViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -146,7 +192,6 @@ public class EnterPhoneDataModel {
 
         DocumentReference newUserRef = db.collection(AppConstants.USERS_COLLECTION).document();
         String myId = newUserRef.getId();
-        String userCode = "2";
 
         Map<String, Object> user = new HashMap<>();
         user.put("firstName", viewModel.getFirstName());
@@ -157,14 +202,14 @@ public class EnterPhoneDataModel {
         user.put("deviceToken", dataManager.getSharedPrefs().getFirebaseDeviceToken());
         user.put("id", myId);
         user.put("badgeCount", 0);
-        user.put("code", userCode);
+        user.put("code", viewModel.getUserCode());
         user.put("score", 0);
 
         newUserRef.set(user)
                 .addOnSuccessListener(documentReference -> {
 
                     dataManager.getSharedPrefs().setUserId(myId);
-                    dataManager.getSharedPrefs().setUserCode(userCode);
+                    dataManager.getSharedPrefs().setUserCode(viewModel.getUserCode());
 
                     viewModel.getNavigator().openDashBoard();
 

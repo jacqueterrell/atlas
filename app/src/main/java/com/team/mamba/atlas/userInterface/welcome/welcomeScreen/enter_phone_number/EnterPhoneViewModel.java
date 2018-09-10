@@ -14,6 +14,7 @@ public class EnterPhoneViewModel extends BaseViewModel<EnterPhoneNavigator> {
 
     private String firstName;
     private String lastName;
+    private String userCode;
     private long dateOfBirth;
 
 
@@ -33,6 +34,14 @@ public class EnterPhoneViewModel extends BaseViewModel<EnterPhoneNavigator> {
     public void setDataModel(
             EnterPhoneDataModel dataModel) {
         this.dataModel = dataModel;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getUserCode() {
+        return userCode;
     }
 
     public void setVerificationId(String verificationId) {
