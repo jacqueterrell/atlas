@@ -46,7 +46,7 @@ public class EnterFirstNameFragment extends Fragment {
         //Todo Intrument test
         binding.btnNext.setOnClickListener(v -> {
 
-            String name = binding.etFirstName.getText().toString();
+            String name = binding.etFirstName.getText().toString().trim();
 
             if (name.isEmpty()){
 

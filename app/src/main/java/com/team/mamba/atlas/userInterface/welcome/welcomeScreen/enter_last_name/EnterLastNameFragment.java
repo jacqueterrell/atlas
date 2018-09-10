@@ -43,7 +43,7 @@ public class EnterLastNameFragment extends Fragment {
 
         binding.btnNext.setOnClickListener(v -> {
 
-            String lastName = binding.etLastName.getText().toString();
+            String lastName = binding.etLastName.getText().toString().trim();
 
             if (lastName.isEmpty()){
 
