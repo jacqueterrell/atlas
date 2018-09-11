@@ -121,9 +121,10 @@ android {
 
             applicationId "com.team.mamba.atlas.dev"
             resValue "string", "app_name", "Atlas-Dev"
-            versionCode 21000300
-            versionName "0.3"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "ca0f3c6e94c847058ab7b90d0a520dfb"]
 
         }
 
@@ -131,8 +132,8 @@ android {
 
             applicationId "com.team.mamba.atlas.staging"
             resValue "string", "app_name", "Atlas-Staging"
-            versionCode 21000300
-            versionName "0.3"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
 
         }
@@ -141,8 +142,8 @@ android {
 
             applicationId "com.team.mamba.atlas"
             resValue "string", "app_name", "Atlas"
-            versionCode 21000300
-            versionName "0.3"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
 
         }
@@ -193,13 +194,13 @@ dependencies {
     implementation "com.android.support:preference-v14:$rootProject.support"
 
     //firebase libraries
-    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-auth:16.0.3'
     implementation 'com.google.firebase:firebase-firestore:17.1.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.0'
-    implementation 'com.google.firebase:firebase-storage:16.0.1'
-    implementation 'com.google.firebase:firebase-crash:16.0.1'
-    implementation 'com.google.firebase:firebase-messaging:17.3.0'
+    implementation 'com.google.firebase:firebase-storage:16.0.2'
+    implementation 'com.google.firebase:firebase-crash:16.2.0'
+    implementation 'com.google.firebase:firebase-messaging:17.3.1'
 
     //all testing dependencies
 
@@ -248,6 +249,7 @@ dependencies {
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
     implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
     implementation "com.google.android.gms:play-services-places:15.0.1"
+    implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
