@@ -122,10 +122,15 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
         if (viewModel.getUserProfile().getImageUrl() != null){
 
-            Glide.with(getBaseActivity())
-                    .load(viewModel.getUserProfile().getImageUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(binding.ivUserProfile);
+            try {
+                Glide.with(getBaseActivity())
+                        .load(viewModel.getUserProfile().getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.ivUserProfile);
+            } catch (Exception e){
+
+                Logger.e(e.getMessage());
+            }
         }
 
         if (binding.tvCurrentPosition.getText().toString().trim().equals(",")){
