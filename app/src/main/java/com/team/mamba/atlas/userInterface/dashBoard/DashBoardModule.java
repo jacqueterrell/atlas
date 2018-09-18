@@ -23,6 +23,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.Con
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.UserProfileViewModel;
 
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressViewModel;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.AddEducationViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_employer.EditEmployerViewModel;
@@ -210,6 +211,13 @@ public class DashBoardModule {
     AddWorkViewModel providesAddWorkViewModel(){
 
         return new AddWorkViewModel();
+    }
+
+
+    @Provides
+    AddEducationViewModel providesAddEducationViewModel(){
+
+        return new AddEducationViewModel();
     }
 
 }

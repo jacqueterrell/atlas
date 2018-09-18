@@ -45,7 +45,10 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
     EditEducationViewModel viewModel;
 
     @Inject
-    public EditEducationDataModel dataModel;
+    EditEducationDataModel dataModel;
+
+    @Inject
+    Context appContext;
 
     private EditEducationLayoutBinding binding;
     private static UserProfile profile;
@@ -236,11 +239,11 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
 
             for (Map.Entry<String,String> entry : map.entrySet()){
 
-                if (entry.getKey().toLowerCase().equals("degree")){
+                if (entry.getKey().equalsIgnoreCase("degree")){
 
                     education.setDegree(entry.getValue());
 
-                } else if (entry.getKey().toLowerCase().equals("school")){
+                } else if (entry.getKey().equalsIgnoreCase("school")){
 
                     education.setSchool(entry.getValue());
 
@@ -318,7 +321,7 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
                                 (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, paint);
-                        icon = BitmapFactory.decodeResource(getBaseActivity().getResources(), R.drawable.ic_delete_image);
+                        icon = BitmapFactory.decodeResource(appContext.getResources(), R.drawable.ic_action_delete);
                         RectF destination = new RectF((float) itemView.getRight() - 2 * width,
                                 (float) itemView.getTop() + width, (float) itemView.getRight() - width,
                                 (float) itemView.getBottom() - width);
@@ -348,7 +351,7 @@ public class EditEducationFragment extends BaseFragment<EditEducationLayoutBindi
 
         Snackbar snackbar = Snackbar.make(binding.getRoot(), "item restored", 2000);
         View v = snackbar.getView();
-        v.setBackgroundColor(ContextCompat.getColor(getBaseActivity(), R.color.dessert_green));
+        v.setBackgroundColor(ContextCompat.getColor(appContext, R.color.dessert_green));
 
         snackbar.show();
     }

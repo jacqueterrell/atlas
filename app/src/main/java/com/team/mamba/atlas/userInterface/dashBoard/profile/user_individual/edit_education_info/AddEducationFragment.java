@@ -19,16 +19,28 @@ import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.local.Education;
 import com.team.mamba.atlas.databinding.AddEducationLayoutBinding;
+import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AddEducationFragment extends Fragment implements AddEducationNavigator,SearchView.OnQueryTextListener {
+import javax.inject.Inject;
+
+public class AddEducationFragment extends BaseFragment<AddEducationLayoutBinding,AddEducationViewModel> implements AddEducationNavigator,SearchView.OnQueryTextListener {
+
+
+    @Inject
+    AddEducationViewModel viewModel;
+
+    @Inject
+    Context appContext;
 
     private AddEducationLayoutBinding binding;
     private static EditEducationNavigator navigator;
@@ -53,27 +65,55 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
     }
 
     @Override
+    public int getBindingVariable() {
+        return BR.viewModel;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.add_education_layout;
+    }
+
+    @Override
+    public AddEducationViewModel getViewModel() {
+        return viewModel;
+    }
+
+    @Override
+    public View getProgressSpinner() {
+        return binding.progressSpinner;
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         parentActivity = (DashBoardActivity) context;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel.setNavigator(this);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.add_education_layout,container,false);
+        super.onCreateView(inflater,container,savedInstanceState);
+        binding = getViewDataBinding();
 
-        getActivity().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getBaseActivity().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         permUniversityList.addAll(Arrays.asList(CollegesArray.colleges));
-        permDegreeList.addAll(Arrays.asList(getActivity().getResources().getStringArray(R.array.degree_array)));
+        permDegreeList.addAll(Arrays.asList(appContext.getResources().getStringArray(R.array.degree_array)));
         permFieldOfStudyList.addAll(Arrays.asList(FieldsOfStudyArray.collegeMajors));
 
         selectSchoolAdapter = new SelectSchoolAdapter(universityList,this);
         selectDegreeAdapter = new SelectDegreeAdapter(degreeList,this);
         fieldOfStudyAdapter = new SelectFieldOfStudyAdapter(fieldOfStudyList,this);
 
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         binding.btnSave.setOnClickListener(v -> onSavedClicked());
@@ -240,7 +280,6 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
 
         } else {
 
-
             Snackbar.make(binding.getRoot(), "Please enter all values", Snackbar.LENGTH_LONG)
                     .show();
         }
@@ -283,7 +322,7 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
 
         //set the color for our search view icon
         ImageView searchMagIcon = binding.searchViewSchool.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
-        searchMagIcon.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white));
+        searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
         searchMagIcon.setVisibility(View.GONE);
 
         //set the line color
@@ -308,7 +347,7 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
 
         //set the color for our search view icon
         ImageView searchMagIcon = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
-        searchMagIcon.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white));
+        searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
         searchMagIcon.setVisibility(View.GONE);
 
         //set the line color
@@ -334,7 +373,7 @@ public class AddEducationFragment extends Fragment implements AddEducationNaviga
 
         //set the color for our search view icon
         ImageView searchMagIcon = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
-        searchMagIcon.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white));
+        searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
         searchMagIcon.setVisibility(View.GONE);
 
         //set the line color
