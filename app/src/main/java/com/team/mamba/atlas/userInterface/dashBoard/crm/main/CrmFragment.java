@@ -75,6 +75,9 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
     @Inject
     CrmDataModel dataModel;
 
+    @Inject
+    Context appContext;
+
     private CrmLayoutBinding binding;
     private static List<CrmNotes> crmNotesList = new ArrayList<>();
     private CrmAdapter crmAdapter;
@@ -175,7 +178,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         //set the color for our search view icon
         ImageView searchMagIcon = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
-        searchMagIcon.setColorFilter(ContextCompat.getColor(getBaseActivity(), R.color.white));
+        searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
         searchMagIcon.setVisibility(View.GONE);
 
         //set the line color

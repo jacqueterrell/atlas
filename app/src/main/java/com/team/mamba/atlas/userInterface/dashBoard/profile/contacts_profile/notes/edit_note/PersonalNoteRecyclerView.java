@@ -48,7 +48,9 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
     @Inject
     PersonalNoteDataModel dataModel;
 
-    private static AppDataManager dataManager;
+    @Inject
+    Context appContext;
+
 
     private PersonalNoteRecyclerViewBinding binding;
     private static PersonalNotes personalNotes;
@@ -63,7 +65,6 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
     public static PersonalNoteRecyclerView newInstance(PersonalNotes notes,AppDataManager appDataManager){
 
         personalNotes = notes;
-        dataManager = appDataManager;
         return new PersonalNoteRecyclerView();
     }
 
@@ -113,11 +114,6 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(personalNoteAdapter);
 
-//
-//        binding.btnFinish.setOnClickListener(view -> {
-//
-//
-//        });
 
         setUpItemTouchHelper();
         return binding.getRoot();
@@ -211,7 +207,7 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
                                 (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, paint);
-                        icon = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.ic_delete_image);
+                        icon = BitmapFactory.decodeResource(appContext.getResources(), R.drawable.ic_action_delete);
                         RectF destination = new RectF((float) itemView.getRight() - 2 * width,
                                 (float) itemView.getTop() + width, (float) itemView.getRight() - width,
                                 (float) itemView.getBottom() - width);
@@ -240,7 +236,7 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
 
         Snackbar snackbar = Snackbar.make(binding.getRoot(), "item restored", 2000);
         View v = snackbar.getView();
-        v.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.dessert_green));
+        v.setBackgroundColor(ContextCompat.getColor(appContext, R.color.dessert_green));
 
         snackbar.show();
     }

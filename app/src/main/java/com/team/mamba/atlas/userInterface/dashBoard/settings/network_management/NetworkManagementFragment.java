@@ -46,6 +46,9 @@ implements NetworkManagementNavigator{
     @Inject
     NetworkManagementDataModel dataModel;
 
+    @Inject
+    Context appContext;
+
 
     public static NetworkManagementFragment newInstance(){
 
@@ -207,7 +210,7 @@ implements NetworkManagementNavigator{
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
                                 (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, paint);
-                        icon = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.ic_delete_image);
+                        icon = BitmapFactory.decodeResource(appContext.getResources(), R.drawable.ic_action_delete);
                         RectF destination = new RectF((float) itemView.getRight() - 2 * width,
                                 (float) itemView.getTop() + width, (float) itemView.getRight() - width,
                                 (float) itemView.getBottom() - width);
@@ -236,8 +239,7 @@ implements NetworkManagementNavigator{
 
         Snackbar snackbar = Snackbar.make(binding.getRoot(), "item restored", 2000);
         View v = snackbar.getView();
-        v.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.dessert_green));
-
+        v.setBackgroundColor(ContextCompat.getColor(appContext, R.color.dessert_green));
         snackbar.show();
     }
 }

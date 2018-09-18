@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,11 +22,12 @@ import javax.inject.Inject;
 public class HowDidYouMeetFragment extends BaseFragment<HowDidYouMeetBinding,HowDidYouMeetViewModel> {
 
 
-    @Inject
-    AppDataManager dataManager;
 
     @Inject
     HowDidYouMeetViewModel viewModel;
+
+    @Inject
+    Context appContext;
 
     private HowDidYouMeetBinding binding;
     private static PersonalNotes personalNotes;

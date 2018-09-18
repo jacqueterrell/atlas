@@ -45,6 +45,9 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
     @Inject
     EditWorkViewModel viewModel;
 
+    @Inject
+    Context appContext;
+
     private EditWorkHistoryLayoutBinding binding;
     private static UserProfile profile;
     private List<WorkHistory> workHistoryList = new ArrayList<>();
@@ -301,7 +304,7 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
                                 (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, paint);
-                        icon = BitmapFactory.decodeResource(getBaseActivity().getResources(), R.drawable.ic_delete_image);
+                        icon = BitmapFactory.decodeResource(appContext.getResources(), R.drawable.ic_action_delete);
                         RectF destination = new RectF((float) itemView.getRight() - 2 * width,
                                 (float) itemView.getTop() + width, (float) itemView.getRight() - width,
                                 (float) itemView.getBottom() - width);
@@ -331,8 +334,7 @@ public class EditWorkFragment extends BaseFragment<EditWorkHistoryLayoutBinding,
 
         Snackbar snackbar = Snackbar.make(binding.getRoot(), "item restored", 2000);
         View v = snackbar.getView();
-        v.setBackgroundColor(ContextCompat.getColor(getBaseActivity(), R.color.dessert_green));
-
+        v.setBackgroundColor(ContextCompat.getColor(appContext, R.color.dessert_green));
         snackbar.show();
     }
 

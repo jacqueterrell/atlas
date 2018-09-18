@@ -21,6 +21,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.UserProfileFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.AddEducationFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.EditEducationFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_employer.EditEmployerFragment;
@@ -141,5 +142,7 @@ public abstract class FragmentBuilder {
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract EditEmployerFragment bindEditEmployerFragment();
 
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract AddEducationFragment bindAddEducationFragment();
 
 }

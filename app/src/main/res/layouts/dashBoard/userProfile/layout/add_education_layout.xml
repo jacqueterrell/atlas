@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailViewModel"/>
+            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.AddEducationViewModel"/>
 
     </data>
 

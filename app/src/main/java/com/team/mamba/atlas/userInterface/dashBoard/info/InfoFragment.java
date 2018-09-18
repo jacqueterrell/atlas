@@ -70,6 +70,9 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Inject
     InfoDataModel dataModel;
 
+    @Inject
+    Context appContext;
+
     private InfoLayoutBinding binding;
     float barWidth = 0.65f; // x2 dataset
     private static List<String> userStatsList = new ArrayList<>();
@@ -571,7 +574,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         BarDataSet dataSet = new BarDataSet(setNetworkBarValues(), "New Connections");
 
-        dataSet.setColor(ContextCompat.getColor(getBaseActivity(), R.color.chart_blue));
+        dataSet.setColor(ContextCompat.getColor(appContext, R.color.chart_blue));
         dataSet.setValueTextColor(R.color.black);
         dataSet.setValueTextSize(14f);
         dataSet.setValueFormatter(new LargeValueFormatter());
@@ -606,7 +609,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.barChartNetwork.setFitBars(true);
         binding.barChartNetwork.setData(data);
 
-        binding.barChartNetwork.getLegend().setTextColor(ContextCompat.getColor(getBaseActivity(), R.color.black));
+        binding.barChartNetwork.getLegend().setTextColor(ContextCompat.getColor(appContext, R.color.black));
         binding.barChartNetwork.invalidate();
         binding.barChartNetwork.animateXY(1000, 1000);
         binding.barChartNetwork.getDescription().setText("");
@@ -626,7 +629,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         BarDataSet dataSet = new BarDataSet(setOpportunitiesBarValues(), "Opportunities");
 
-        dataSet.setColor(ContextCompat.getColor(getBaseActivity(), R.color.chart_red));
+        dataSet.setColor(ContextCompat.getColor(appContext, R.color.chart_red));
         dataSet.setValueTextColor(R.color.black);
         dataSet.setValueTextSize(14f);
         dataSet.setValueFormatter(new LargeValueFormatter());
@@ -660,7 +663,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
         binding.barChartNetwork.setData(data);
         binding.barChartNetwork.setFitBars(true);
-        binding.barChartNetwork.getLegend().setTextColor(ContextCompat.getColor(getBaseActivity(), R.color.black));
+        binding.barChartNetwork.getLegend().setTextColor(ContextCompat.getColor(appContext, R.color.black));
         binding.barChartNetwork.getDescription().setText("");
         binding.barChartNetwork.setClickable(false);
 

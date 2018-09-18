@@ -67,6 +67,9 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Inject
     ContactsDataModel dataModel;
 
+    @Inject
+    Context appContext;
+
     private ContactsLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
     private DashBoardActivity parentActivity;
@@ -434,7 +437,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         //set the color for our search view icon
         ImageView searchMagIcon = binding.searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
-        searchMagIcon.setColorFilter(ContextCompat.getColor(getBaseActivity(), R.color.white));
+        searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
         searchMagIcon.setVisibility(View.GONE);
 
         //set the line color
@@ -447,12 +450,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         for (UserConnections connection : filteredUserConnectionsList){
 
             String displayName = "";
-//            String MobileNumber = "123456";
-//            String HomeNumber = "1111";
             String workNumber = "";
             String emailID = "email@nomail.com";
-      //      String company = "";
-//            String jobTitle = "abcd";
 
             if (connection.isOrgBus){
 
