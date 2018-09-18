@@ -43,7 +43,7 @@ public class EnterFirstNameFragment extends Fragment {
 
         showSoftKeyboard(binding.etFirstName);
 
-        //Todo Intrument test
+
         binding.btnNext.setOnClickListener(v -> {
 
             String name = binding.etFirstName.getText().toString().trim();
