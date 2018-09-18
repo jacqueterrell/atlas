@@ -141,15 +141,16 @@ public class AddBusinessDataModel {
 
                             BusinessProfile selectedProfile = selectedProfileList.get(0);
 
-                            if (viewModel.getConnectionIdList().contains(selectedProfile.getId())) {//already a contact
+                                if (viewModel.getConnectionIdList().contains(selectedProfile.getId())) {//already a contact
 
-                                viewModel.getNavigator().showAlreadyAContactAlert();
+                                    viewModel.getNavigator().showAlreadyAContactAlert();
 
-                            } else {
+                                } else {
 
-                                addNewConnectionForIndividual(viewModel, selectedProfile);
+                                    addNewConnectionForIndividual(viewModel, selectedProfile);
 
-                            }
+                                }
+
                         }
 
                     } else {
@@ -195,7 +196,7 @@ public class AddBusinessDataModel {
                 .addOnSuccessListener(documentReference -> {
 
                     //subscribe the business to a topic
-                    FirebaseMessaging.getInstance().subscribeToTopic(businessProfile.getName());
+                    FirebaseMessaging.getInstance().subscribeToTopic(businessProfile.getId());
                     addToUsersContactList(viewModel,businessProfile);
                     viewModel.getNavigator().onRequestSent();
 
