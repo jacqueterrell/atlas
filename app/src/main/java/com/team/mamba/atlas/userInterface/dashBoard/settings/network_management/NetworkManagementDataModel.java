@@ -46,9 +46,9 @@ public class NetworkManagementDataModel {
 
                         List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
-                        for (UserProfile profile : userProfiles){
+                        for (UserProfile profile : userProfiles) {
 
-                            if (profile.getId() != null){
+                            if (profile.getId() != null) {
 
                                 if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
 
@@ -94,19 +94,19 @@ public class NetworkManagementDataModel {
 
                             for (UserProfile profile : userProfiles) {
 
-                                    if (connections.isConfirmed
-                                            && connections.getConsentingUserID().equals(profile.getId())) {
+                                if (connections.isConfirmed
+                                        && connections.getConsentingUserID().equals(profile.getId())) {
 
-                                        connections.setUserProfile(profile);
-                                        userConnections.add(connections);
-                                    }
+                                    connections.setUserProfile(profile);
+                                    userConnections.add(connections);
+                                }
 
 
                             }
                         }
 
                         //add all individual profiles to the list
-                        getAllBusinesses(viewModel, userConnections,connectionsList);
+                        getAllBusinesses(viewModel, userConnections, connectionsList);
 
                     } else {
 
@@ -122,7 +122,7 @@ public class NetworkManagementDataModel {
      * Queries all business profiles, finds the ones that match the 'consentingUserID'
      * field in the DB, and adds them to the contact list
      *
-     * @param userConnections list of all individual confirmed connections
+     * @param userConnections    list of all individual confirmed connections
      * @param allConnectionsList list of all confirmed connections
      */
     private void getAllBusinesses(NetworkManagementViewModel viewModel,
@@ -140,10 +140,11 @@ public class NetworkManagementDataModel {
 
                         List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
 
+                        viewModel.setBusinessProfiles(businessProfiles);
 
                         for (BusinessProfile profile : businessProfiles) {
 
-                            if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+                            if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
 
                                 viewModel.setLoggedInBusinessProfile(profile);
                             }
@@ -161,7 +162,7 @@ public class NetworkManagementDataModel {
                         }
 
 
-                        Collections.sort(filteredConnections,(o1, o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
+                        Collections.sort(filteredConnections, (o1, o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
 
                         viewModel.setUserConnectionsList(filteredConnections);
                         viewModel.getNavigator().onContactListReceived();
@@ -182,7 +183,7 @@ public class NetworkManagementDataModel {
      *
      * @param userConnection the selected connection
      */
-    public void deleteUserConnection(NetworkManagementViewModel viewModel,UserConnections userConnection){
+    public void deleteUserConnection(NetworkManagementViewModel viewModel, UserConnections userConnection) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -191,17 +192,91 @@ public class NetworkManagementDataModel {
                 .delete()
                 .addOnCompleteListener(task -> {
 
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
 
                         Logger.i("Successfully deleted");
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(userConnection.getConsentingUserID());
-                        deleteFromContactList(viewModel,userConnection);
+
+                        if (userConnection.isOrgBus) {
+
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(userConnection.getConsentingUserID());
+                            deleteUserFromBusiness(viewModel,userConnection);
+
+                        }
+                            deleteFromContactList(viewModel, userConnection);
 
                     } else {
 
                         Logger.e("Failed to delete connection " + task.getException().getLocalizedMessage());
                     }
                 });
+    }
+
+
+    /**
+     * Deletes the logged in user from the selected Organizations contact list
+     *
+     * @param connections the connection that's being removed
+     */
+    private void deleteUserFromBusiness(NetworkManagementViewModel viewModel, UserConnections connections) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            BusinessProfile businessProfile = viewModel.getLoggedInBusinessProfile();
+
+            for (BusinessProfile profile : viewModel.getBusinessProfiles()) {
+
+                if (profile.getId().equals(connections.getConsentingUserID())) {
+
+                    Map<String, String> contactsMap = profile.getContacts();
+                    contactsMap.remove(businessProfile.getId());
+
+                    db.collection(AppConstants.BUSINESSES_COLLECTION)
+                            .document(profile.getId())
+                            .set(profile)
+                            .addOnCompleteListener(task -> {
+
+                                if (task.isSuccessful()) {
+
+                                    Logger.i("Deleted contact from business successfully");
+
+                                } else {
+
+                                    Logger.e(task.getException().getMessage());
+                                }
+                            });
+                }
+            }
+
+        } else {
+
+            UserProfile userProfile = viewModel.getLoggedInUserProfile();
+
+            for (BusinessProfile profile : viewModel.getBusinessProfiles()){
+
+                if (profile.getId().equals(connections.getConsentingUserID())){
+
+                    Map<String, String> contactsMap = profile.getContacts();
+                    contactsMap.remove(userProfile.getId());
+
+                    db.collection(AppConstants.BUSINESSES_COLLECTION)
+                            .document(profile.getId())
+                            .set(profile)
+                            .addOnCompleteListener(task -> {
+
+                                if (task.isSuccessful()) {
+
+                                    Logger.i("Deleted contact from business successfully");
+
+                                } else {
+
+                                    Logger.e(task.getException().getMessage());
+                                }
+                            });
+                }
+            }
+        }
     }
 
 

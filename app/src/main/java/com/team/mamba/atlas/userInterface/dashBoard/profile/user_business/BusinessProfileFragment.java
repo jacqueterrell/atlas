@@ -98,21 +98,24 @@ implements BusinessProfileNavigator {
     @Override
     public void callBusinessContact() {
 
-        String phone = profile.getPhone().replaceAll(RegEx.REMOVE_NON_DIGITS,"");
-        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseActivity());
+        if (isPhonePermissionsGranted()) {
 
-        builder.setMessage(profile.getPhone())
-                .setPositiveButton("Call", (dialog, id) -> {
+            String phone = profile.getPhone().replaceAll(RegEx.REMOVE_NON_DIGITS,"");
+            AlertDialog.Builder builder = new AlertDialog.Builder(getBaseActivity());
 
-                    Long phone2 = Long.valueOf(phone);
-                    callPhone(phone2);
-                })
+            builder.setMessage(profile.getPhone())
+                    .setPositiveButton("Call", (dialog, id) -> {
 
-                .setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
+                        Long phone2 = Long.valueOf(phone);
+                        callPhone(phone2);
+                    })
 
-        AlertDialog alert11 = builder.create();
-        alert11.show();
+                    .setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
 
+            AlertDialog alert11 = builder.create();
+            alert11.show();
+
+        }
 
     }
 
@@ -120,9 +123,6 @@ implements BusinessProfileNavigator {
 
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:" + phone));//change the number
-
-
-        if (isPhonePermissionsGranted()) {
 
             try {
 
@@ -132,7 +132,7 @@ implements BusinessProfileNavigator {
             } catch (Exception e) {
                 Logger.e(e.getMessage());
             }
-        }
+
     }
 
     @Override
@@ -185,8 +185,7 @@ implements BusinessProfileNavigator {
             if (ActivityCompat.checkSelfPermission(getBaseActivity(), Manifest.permission.CALL_PHONE)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(getBaseActivity(),
-                        new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
+                requestPermissions(new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
                         AppConstants.REQUEST_PHONE_PERMISSIONS);
 
                 return false;
