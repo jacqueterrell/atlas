@@ -9,6 +9,7 @@ import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.utils.AppConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -104,6 +105,46 @@ public class ContactsDataModel {
                         }
 
                         viewModel.setUserConnectionsList(userConnections);
+                        getAllConnectionTypes(viewModel);
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                        task.getException().printStackTrace();
+                        viewModel.getNavigator().handleError(task.getException().getMessage());
+                    }
+
+                });
+    }
+
+    private void getAllConnectionTypes(ContactsViewModel viewModel){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection(AppConstants.CONNECTIONS_COLLECTION)
+                .whereEqualTo("consentingUserID", dataManager.getSharedPrefs().getUserId())
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
+
+                        for (UserConnections connections : connectionsList) {
+
+                            for (UserProfile profile : viewModel.getUserProfileList()){
+
+                                if (connections.isConfirmed){
+
+                                    if (profile.getId().equals(connections.getRequestingUserID())){
+
+                                        profile.setConnectionType(connections.getConnectionType());
+                                    }
+                                }
+                            }
+
+                        }
+
                         requestAllBusinessProfiles(viewModel);
 
                     } else {
@@ -152,7 +193,7 @@ public class ContactsDataModel {
                             }
                         }
 
-                        viewModel.getNavigator().onDataValuesReturned();
+                        setDataValues(viewModel);
 
                     } else {
 
@@ -162,6 +203,57 @@ public class ContactsDataModel {
 
                     }
                 });
+
+    }
+
+
+    private void setDataValues(ContactsViewModel viewModel){
+
+        List<UserConnections> individualConnections = new ArrayList<>();
+        List<UserConnections> businessConnections = new ArrayList<>();
+
+        String userId = dataManager.getSharedPrefs().getUserId();
+        List<UserConnections> adjustedConnections = new ArrayList<>();
+
+
+        for (UserConnections connections : viewModel.getUserConnectionsList()) {
+
+            if (connections.isOrgBus) {
+
+                for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
+
+                    if (connections.requestingUserID.equals(userId)
+                            && connections.consentingUserID.equals(profile.getId())) {
+
+                        connections.setBusinessProfile(profile);
+                        businessConnections.add(connections);
+                    }
+                }
+
+            } else {
+
+                for (UserProfile profile : viewModel.getUserProfileList()) {
+
+                    if (connections.requestingUserID.equals(userId)
+                            && connections.consentingUserID.equals(profile.getId())) {
+
+                        connections.setUserProfile(profile);
+                        connections.setConnectionType(profile.getConnectionType());
+                        individualConnections.add(connections);
+
+                    }
+                }
+
+            }
+
+        }
+
+        Collections.sort(individualConnections, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
+        Collections.sort(businessConnections, (o1, o2) -> Boolean.compare(o1.isIsOrgBus(), o2.isOrgBus));
+        adjustedConnections.addAll(individualConnections);
+        adjustedConnections.addAll(businessConnections);
+
+        viewModel.getNavigator().onDataValuesReturned(adjustedConnections);
 
     }
 

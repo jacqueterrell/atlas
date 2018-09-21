@@ -2,6 +2,8 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts;
 
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 
+import net.hockeyapp.android.metrics.model.User;
+
 import java.util.List;
 
 public interface ContactsNavigator {
@@ -22,7 +24,7 @@ public interface ContactsNavigator {
 
     void handleError(String errorMsg);
 
-    void onDataValuesReturned();
+    void onDataValuesReturned(List<UserConnections> connectionsList);
 
     void onBusinessContactsSet(List<UserConnections> businessAssociatesList);
 

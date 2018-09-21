@@ -25,7 +25,8 @@
         android:focusable="true"
         android:clickable="true"
         android:padding="15dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,6 +89,7 @@
                     android:layout_width = "wrap_content"
                     android:layout_height = "wrap_content"
                     android:layout_marginBottom = "10dp"
+                    android:onClick="@{()-> viewModel.onExportContactsCheckboxClicked()}"
                     >
 
                     <android.support.v7.widget.AppCompatCheckBox
@@ -95,6 +97,7 @@
                         android:layout_width = "wrap_content"
                         android:layout_height = "wrap_content"
                         app:buttonTint = "@color/black"
+                        android:onClick="@{()-> viewModel.onExportContactsCheckboxClicked()}"
                         />
 
                     <TextView
@@ -117,6 +120,7 @@
                     android:layout_width = "wrap_content"
                     android:layout_height = "wrap_content"
                     android:layout_marginBottom = "10dp"
+                    android:onClick="@{()-> viewModel.onExportOpportunitiesCheckboxClicked()}"
                     >
 
                     <android.support.v7.widget.AppCompatCheckBox
@@ -125,6 +129,7 @@
                         android:layout_height = "wrap_content"
                         app:buttonTint = "@color/black"
                         android:checked="true"
+                        android:onClick="@{()-> viewModel.onExportOpportunitiesCheckboxClicked()}"
                         />
 
                     <TextView

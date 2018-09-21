@@ -248,13 +248,9 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
     @Override
-    public void onDataValuesReturned() {
+    public void onDataValuesReturned(List<UserConnections> connectionsList) {
 
-        List<UserConnections> individualConnections = new ArrayList<>();
-        List<UserConnections> businessConnections = new ArrayList<>();
 
-        String userId = dataManager.getSharedPrefs().getUserId();
-        List<UserConnections> adjustedConnections = new ArrayList<>();
         binding.swipeContainer.setRefreshing(false);
 
         if (dataManager.getSharedPrefs().isBusinessAccount()) {
@@ -274,50 +270,13 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         }
 
-        for (UserConnections connections : viewModel.getUserConnectionsList()) {
-
-            if (connections.isOrgBus) {
-
-                for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
-
-                    if (connections.requestingUserID.equals(userId)
-                            && connections.consentingUserID.equals(profile.getId())) {
-
-                        connections.setBusinessProfile(profile);
-                        businessConnections.add(connections);
-                    }
-                }
-
-            } else {
-
-                for (UserProfile profile : viewModel.getUserProfileList()) {
-
-                    if (connections.requestingUserID.equals(userId)
-                            && connections.consentingUserID.equals(profile.getId())) {
-
-                        connections.setUserProfile(profile);
-                        individualConnections.add(connections);
-
-                    }
-                }
-
-            }
-
-        }
-
-        Collections.sort(individualConnections, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
-        Collections.sort(businessConnections, (o1, o2) -> Boolean.compare(o1.isIsOrgBus(), o2.isOrgBus));
-
-        adjustedConnections.addAll(individualConnections);
-        adjustedConnections.addAll(businessConnections);
-
         userConnectionsList.clear();
         permUserConnectionsList.clear();
         filteredUserConnectionsList.clear();
 
-        permUserConnectionsList.addAll(adjustedConnections);
-        userConnectionsList.addAll(adjustedConnections);
-        filteredUserConnectionsList.addAll(adjustedConnections);
+        permUserConnectionsList.addAll(connectionsList);
+        userConnectionsList.addAll(connectionsList);
+        filteredUserConnectionsList.addAll(connectionsList);
 
         contactListAdapter.notifyDataSetChanged();
 
@@ -577,8 +536,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             if (ActivityCompat.checkSelfPermission(getBaseActivity(), permission.WRITE_CONTACTS)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(getBaseActivity(),
-                        new String[]{Manifest.permission.WRITE_CONTACTS},   //request specific permission from user
+                requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS},   //request specific permission from user
                         AppConstants.REQUEST_WRITE_CONTACTS_PERMISSIONS);
 
                 return false;

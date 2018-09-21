@@ -7,8 +7,7 @@ public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigat
 
 
     private ContactProfileDataModel dataModel;
-    private String selectedPhone;
-
+    private String profilePhone;
 
     /*************Getters and Setters*****************/
 
@@ -16,12 +15,12 @@ public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigat
         this.dataModel = dataModel;
     }
 
-    public String getSelectedPhone() {
-        return selectedPhone;
+    public void setProfilePhone(String profilePhone) {
+        this.profilePhone = profilePhone;
     }
 
-    public void setSelectedPhone(String selectedPhone) {
-        this.selectedPhone = selectedPhone;
+    public String getProfilePhone() {
+        return profilePhone;
     }
 
     /**************OnClick Listeners**********************/

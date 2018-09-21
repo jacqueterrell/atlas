@@ -138,7 +138,7 @@ public class CrmDataModel {
                             }
                         }
 
-                        viewModel.setUsersContactProfiles(usersContactProfiles);
+                        getAllConnectionTypes(viewModel,usersContactProfiles);
 
                     } else {
 
@@ -152,5 +152,45 @@ public class CrmDataModel {
     }
 
 
+    private void getAllConnectionTypes(CrmViewModel viewModel,List<UserProfile> userProfiles) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection(AppConstants.CONNECTIONS_COLLECTION)
+                .whereEqualTo("consentingUserID",dataManager.getSharedPrefs().getUserId())
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
+
+                        for (UserProfile profile : userProfiles){
+
+                            for (UserConnections connection : connectionsList){
+
+                                if (connection.isConfirmed){
+
+                                    if (profile.getId().equals(connection.getRequestingUserID())){
+
+                                        profile.setConnectionType(connection.getConnectionType());
+                                    }
+                                }
+
+                            }
+                        }
+
+                        viewModel.setUsersContactProfiles(userProfiles);
+
+                    } else {
+
+                        Logger.e(task.getException().getMessage());
+                        task.getException().printStackTrace();
+                        viewModel.getNavigator().handleError(task.getException().getMessage());
+                    }
+
+                });
+
+    }
 
 }
