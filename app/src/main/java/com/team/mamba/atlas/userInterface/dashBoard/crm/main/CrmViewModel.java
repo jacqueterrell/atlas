@@ -120,6 +120,16 @@ public class CrmViewModel extends BaseViewModel<CrmNavigator> {
         getNavigator().onExportButtonClicked();
     }
 
+    public void onExportContactsCheckboxClicked(){
+
+        getNavigator().onExportContactsCheckboxClicked();
+    }
+
+    public void onExportOpportunitiesCheckboxClicked(){
+
+        getNavigator().onExportOpportunitiesCheckboxClicked();
+    }
+
     /******DataModel Requests*********/
     public void requestAllOpportunities(CrmViewModel viewModel){
 

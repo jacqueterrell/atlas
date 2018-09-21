@@ -141,7 +141,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         });
 
-        setUpListeners();
 
         if (viewModel.getCrmNotesList().isEmpty()) {
 
@@ -373,60 +372,32 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         }
     }
 
-    private void setUpListeners() {
+    @Override
+    public void onExportContactsCheckboxClicked() {
 
-        binding.dialogExport.chkBoxContacts.setOnClickListener(view -> {
+        if (binding.dialogExport.chkBoxContacts.isChecked()) {
 
-            if (binding.dialogExport.chkBoxContacts.isChecked()) {
+            binding.dialogExport.chkBoxOpportunities.setChecked(false);
 
-                binding.dialogExport.chkBoxOpportunities.setChecked(false);
+        } else {
 
-            } else {
+            binding.dialogExport.chkBoxOpportunities.setChecked(false);
+            binding.dialogExport.chkBoxContacts.setChecked(true);
+        }
+    }
 
-                binding.dialogExport.chkBoxOpportunities.setChecked(false);
-                binding.dialogExport.chkBoxContacts.setChecked(true);
-            }
-        });
+    @Override
+    public void onExportOpportunitiesCheckboxClicked() {
 
-        binding.dialogExport.chkBoxOpportunities.setOnClickListener(view -> {
+        if (binding.dialogExport.chkBoxOpportunities.isChecked()) {
 
-            if (binding.dialogExport.chkBoxOpportunities.isChecked()) {
+            binding.dialogExport.chkBoxContacts.setChecked(false);
 
-                binding.dialogExport.chkBoxContacts.setChecked(false);
+        } else {
 
-            } else {
-
-                binding.dialogExport.chkBoxOpportunities.setChecked(true);
-                binding.dialogExport.chkBoxContacts.setChecked(false);
-            }
-        });
-
-        binding.dialogExport.layoutContacts.setOnClickListener(v -> {
-
-            if (binding.dialogExport.chkBoxContacts.isChecked()) {
-
-                binding.dialogExport.chkBoxOpportunities.setChecked(false);
-
-            } else {
-
-                binding.dialogExport.chkBoxOpportunities.setChecked(false);
-                binding.dialogExport.chkBoxContacts.setChecked(true);
-            }
-        });
-
-        binding.dialogExport.layoutOpportunities.setOnClickListener(v -> {
-
-            if (binding.dialogExport.chkBoxOpportunities.isChecked()) {
-
-                binding.dialogExport.chkBoxContacts.setChecked(false);
-
-            } else {
-
-                binding.dialogExport.chkBoxOpportunities.setChecked(true);
-                binding.dialogExport.chkBoxContacts.setChecked(false);
-            }
-        });
-
+            binding.dialogExport.chkBoxOpportunities.setChecked(true);
+            binding.dialogExport.chkBoxContacts.setChecked(false);
+        }
     }
 
 
@@ -457,23 +428,55 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
             writer = new FileWriter(csvFile);
             writeCsvHeader(writer, "First Name,");
             writeCsvHeader(writer, "Last Name,");
-            writeCsvHeader(writer, "Email Name,");
+            writeCsvHeader(writer, "Email,");
+            writeCsvHeader(writer, "Work Email,");
+            writeCsvHeader(writer, "Cell Phone,");
             writeCsvHeader(writer, "Work Phone,");
+            writeCsvHeader(writer, "Home Phone,");
+            writeCsvHeader(writer, "Fax,");
+            writeCsvHeader(writer, "Home Address,");
+            writeCsvHeader(writer, "Work Address,");
             writeCsvHeader(writer, "Current Employer,");
-            writeCsvHeader(writer, "Current Position,");
-            writeCsvHeader(writer, "Work Street,");
-            writeCsvHeader(writer, "Work City/State/Zip\n");
+            writeCsvHeader(writer, "Current Position\n");
+
+
 
             for (UserProfile profile : viewModel.getUsersContactProfiles()) {
 
-                writeCsvData(writer, profile.getFirstName().replaceAll(",", " ") + ",");
-                writeCsvData(writer, profile.getLastName().replaceAll(",", " ") + ",");
-                writeCsvData(writer, profile.getEmail().replaceAll(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkPhone().replaceAll(",", " ") + ",");
-                writeCsvData(writer, profile.getCurrentEmployer().replaceAll(",", " ") + ",");
-                writeCsvData(writer, profile.getCurrentPosition().replaceAll(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkStreet().replaceAll(",", " ") + ",");
-                writeCsvData(writer, profile.getWorkCityStateZip().replaceAll(",", " ") + "\n");
+                String workAddress = profile.getWorkStreet() + " " + profile.getWorkCityStateZip();
+                String homeAddress = profile.getStreet() + " " + profile.getCityStateZip();
+
+
+                if (profile.getConnectionType() == 0 || profile.getConnectionType() == 1){//family can see everything
+
+                    writeCsvData(writer, profile.getFirstName().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getLastName().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getEmail().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getWorkEmail().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getPersonalPhone().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getWorkPhone().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getHomePhone().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getFax().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, homeAddress.replaceAll(",", " ") + ",");
+                    writeCsvData(writer, workAddress.replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getCurrentEmployer().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getCurrentPosition().replaceAll(",", " ") + "\n");
+
+                } else { //connectionType = Business
+
+                    writeCsvData(writer, profile.getFirstName().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getLastName().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, "..." + ",");//personal email
+                    writeCsvData(writer, profile.getWorkEmail().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, "..." + ",");//cell phone
+                    writeCsvData(writer, profile.getWorkPhone().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, "..." + ",");//home phone
+                    writeCsvData(writer, profile.getFax().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, "..." + ",");//home address
+                    writeCsvData(writer, workAddress.replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getCurrentEmployer().replaceAll(",", " ") + ",");
+                    writeCsvData(writer, profile.getCurrentPosition().replaceAll(",", " ") + "\n");
+                }
 
             }
 
@@ -587,9 +590,7 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
             if (ActivityCompat.checkSelfPermission(getBaseActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(getBaseActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        //request specific permission from user
+              requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         AppConstants.REQUEST_EXTERNAL_STORAGE_PERMISSIONS);
 
                 return false;
@@ -620,12 +621,6 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        int code = requestCode;
-    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {

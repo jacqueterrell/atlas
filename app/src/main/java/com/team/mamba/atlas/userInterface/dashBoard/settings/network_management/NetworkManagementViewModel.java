@@ -15,6 +15,7 @@ public class NetworkManagementViewModel extends BaseViewModel<NetworkManagementN
     private List<UserConnections> userConnectionsList = new ArrayList<>();
     private BusinessProfile loggedInBusinessProfile;
     private UserProfile loggedInUserProfile;
+    private List<BusinessProfile> businessProfiles = new ArrayList<>();
 
 
     public NetworkManagementDataModel getDataModel() {
@@ -49,6 +50,14 @@ public class NetworkManagementViewModel extends BaseViewModel<NetworkManagementN
         this.loggedInUserProfile = loggedInUserProfile;
     }
 
+    public void setBusinessProfiles(List<BusinessProfile> businessProfiles) {
+        this.businessProfiles = businessProfiles;
+    }
+
+    public List<BusinessProfile> getBusinessProfiles() {
+        return businessProfiles;
+    }
+
     /*****************DataModel Requests*****************/
 
     public void getUsersContacts(NetworkManagementViewModel viewModel){
@@ -61,8 +70,4 @@ public class NetworkManagementViewModel extends BaseViewModel<NetworkManagementN
         dataModel.deleteUserConnection(viewModel,userConnections);
     }
 
-    public void undoConnectionDeletion(){
-
-
-    }
 }

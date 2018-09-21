@@ -38,4 +38,8 @@ public interface CrmNavigator {
     void onNotificationsClicked();
 
     void onContactsClicked();
+
+    void onExportContactsCheckboxClicked();
+
+    void onExportOpportunitiesCheckboxClicked();
 }

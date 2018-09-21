@@ -123,29 +123,41 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
     @Override
     public void contactCellPhoneClicked() {
 
-        viewModel.setSelectedPhone(CELL_PHONE);
-        callPhone(profile.getPhone());
+        viewModel.setProfilePhone(profile.getPhone());
+        if (isPhonePermissionsGranted()) {
+
+            showPhoneAlert();
+        }
     }
 
     @Override
     public void contactOnOfficePhoneClicked() {
 
-        viewModel.setSelectedPhone(OFFICE_PHONE);
-        callPhone(profile.getWorkPhone());
+        viewModel.setProfilePhone(profile.getWorkPhone());
+        if (isPhonePermissionsGranted()) {
+
+            showPhoneAlert();
+        }
     }
 
     @Override
     public void contactOnHomePhoneClicked() {
 
-        viewModel.setSelectedPhone(HOME_PHONE);
-        callPhone(profile.getHomePhone());
+        viewModel.setProfilePhone(profile.getHomePhone());
+        if (isPhonePermissionsGranted()) {
+
+            showPhoneAlert();
+        }
     }
 
     @Override
     public void contactOnPersonalPhoneClicked() {
 
-        viewModel.setSelectedPhone(PERSONAL_PHONE);
-        callPhone(profile.getPersonalPhone());
+        viewModel.setProfilePhone(profile.getPersonalPhone());
+        if (isPhonePermissionsGranted()) {
+
+            showPhoneAlert();
+        }
     }
 
 
@@ -191,8 +203,9 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
         sendToClipBoard(profile.getEducationString());
     }
 
-    private void callPhone(String profilePhone) {
+    private void showPhoneAlert() {
 
+        String profilePhone = viewModel.getProfilePhone();
 
         if (profilePhone.contains("x")) {
 
@@ -217,21 +230,16 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
                 .setPositiveButton("Call", (dialog, id) -> {
 
                     Long phone2 = Long.valueOf(adjustedPhone);
-
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse("tel:" + phone2));//change the number
 
+                    try {
 
-                    if (isPhonePermissionsGranted()) {
+                        startActivity(callIntent);
+                        showToastLong("dialing " + displayPhoneName);
 
-                        try {
-
-                            startActivity(callIntent);
-                            showToastLong("dialing " + displayPhoneName);
-
-                        } catch (Exception e) {
-                            Logger.e(e.getMessage());
-                        }
+                    } catch (Exception e) {
+                        Logger.e(e.getMessage());
                     }
 
                 })
@@ -242,6 +250,8 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
         alert11.show();
 
     }
+
+
 
 
     public void onConnectionTypeSaved() {
@@ -276,6 +286,7 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
             binding.layoutContactHomePhone.setVisibility(View.GONE);
             binding.layoutContactHomeAddress.setVisibility(View.GONE);
             binding.layoutContactPersonalPhone.setVisibility(View.GONE);
+            binding.layoutContactPersonalEmail.setVisibility(View.GONE);
 
         } else { //connectionType = Business
 
@@ -304,8 +315,7 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
             if (ActivityCompat.checkSelfPermission(getBaseActivity(), Manifest.permission.CALL_PHONE)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(getBaseActivity(),
-                        new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
+                requestPermissions(new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
                         AppConstants.REQUEST_PHONE_PERMISSIONS);
 
                 return false;
@@ -401,23 +411,7 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
 
         if (requestCode == AppConstants.REQUEST_PHONE_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-            if (viewModel.getSelectedPhone().equals(CELL_PHONE)) {
-
-                contactCellPhoneClicked();
-
-            } else if (viewModel.getSelectedPhone().equals(OFFICE_PHONE)) {
-
-                contactOnOfficePhoneClicked();
-
-            } else if (viewModel.getSelectedPhone().equals(HOME_PHONE)) {
-
-                contactOnHomePhoneClicked();
-
-            } else if (viewModel.getSelectedPhone().equals(PERSONAL_PHONE)) {
-
-                contactOnPersonalPhoneClicked();
-            }
-
+            showPhoneAlert();
         }
     }
 
