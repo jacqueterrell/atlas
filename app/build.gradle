@@ -10,10 +10,11 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-//apply plugin: "io.fabric"
+
 
 repositories {
     maven { url "https://maven.fabric.io/public" }
@@ -41,7 +42,6 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.team.mamba.atlas"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -68,13 +68,17 @@ android {
     }
 
     signingConfigs {
-
         releaseConfig {
-
-            storeFile file("atlas.jks")
+            storeFile file("../signatures/atlas-store-key.jks")
             storePassword("android")
             keyAlias "atlas"
             keyPassword "android"
+        }
+        devConfig {
+            keyAlias 'atlas-debug'
+            keyPassword 'android'
+            storePassword 'android'
+            storeFile file('../signatures/atlas-development-key.jks')
         }
     }
 
@@ -83,6 +87,9 @@ android {
         release {
             minifyEnabled false
             debuggable false
+            buildConfigField("String", "ATLAS_SITE_URL", "\"https://www.myatlas.co/\"")
+            buildConfigField("String", "ATLAS_BUSINESS_URL", "\"https://www.myatlas.co/business/\"")
+            buildConfigField("String", "GOOGLE_PLACE_URL", "\"https://maps.googleapis.com/maps/api/\"")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
 
@@ -92,7 +99,12 @@ android {
             debuggable true
             minifyEnabled false
             shrinkResources false
+            buildConfigField("String", "ATLAS_SITE_URL", "\"https://www.myatlas.co/\"")
+            buildConfigField("String", "ATLAS_BUSINESS_URL", "\"https://www.myatlas.co/business/\"")
+            buildConfigField("String", "GOOGLE_PLACE_URL", "\"https://maps.googleapis.com/maps/api/\"")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.devConfig
+
             //ext.enableCrashlytics = false
         }
     }
@@ -109,9 +121,10 @@ android {
 
             applicationId "com.team.mamba.atlas.dev"
             resValue "string", "app_name", "Atlas-Dev"
-            versionCode 16010500
-            versionName "1.5.0"
+            versionCode 21010002
+            versionName "1.0.2"
             setProperty("archivesBaseName", "atlas_" + versionName)
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "ca0f3c6e94c847058ab7b90d0a520dfb"]
 
         }
 
@@ -119,9 +132,10 @@ android {
 
             applicationId "com.team.mamba.atlas.staging"
             resValue "string", "app_name", "Atlas-Staging"
-            versionCode 16010000
-            versionName "1.0"
+            versionCode 21010002
+            versionName "1.0.2"
             setProperty("archivesBaseName", "atlas_" + versionName)
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "f96b7678094340329695c6ee1427d195"]
 
         }
 
@@ -129,9 +143,10 @@ android {
 
             applicationId "com.team.mamba.atlas"
             resValue "string", "app_name", "Atlas"
-            versionCode 16010000
-            versionName "1.0"
+            versionCode 21010002
+            versionName "1.0.2"
             setProperty("archivesBaseName", "atlas_" + versionName)
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "d5b53a01d8b241bc80acfd015103afe7"]
 
         }
     }
@@ -158,27 +173,39 @@ android {
     sourceSets {
         main {
             res.srcDirs =
-                    ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/welcome', 'src/main/res/layouts/dashBoard']
+                    ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/welcome',
+                     'src/main/res/layouts/dashBoard', 'src/main/res/layouts/main', 'src/main/res/layouts/dashboard/info',
+                     'src/main/res/layouts/dashBoard/addContacts', 'src/main/res/layouts/dashBoard/userProfile', 'src/main/res/layouts/dashBoard/crm', 'src/main/res/layouts/dashBoard/announcements', 'src/main/res/assets', 'src/main/res/layouts/dashBoard/userProfile/editInfo']
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     //all support dependencies
     implementation "com.android.support:support-v4:$rootProject.support"
     implementation "com.android.support:appcompat-v7:$rootProject.support"
+    implementation "com.android.support:design:$rootProject.support"
     implementation "com.android.support:customtabs:$rootProject.support"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayout"
     implementation "com.android.support:recyclerview-v7:$rootProject.support"
     implementation "com.android.support:cardview-v7:$rootProject.support"
-    implementation "com.android.support:design:$rootProject.support"
     implementation "com.android.support:multidex:$rootProject.multidex"
     implementation "com.android.support:preference-v7:$rootProject.support"
     implementation "com.android.support:preference-v14:$rootProject.support"
 
+    //firebase libraries
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
+    implementation 'com.google.firebase:firebase-firestore:17.1.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.0'
+    implementation 'com.google.firebase:firebase-storage:16.0.2'
+    implementation 'com.google.firebase:firebase-crash:16.2.0'
+    implementation 'com.google.firebase:firebase-messaging:17.3.1'
+
     //all testing dependencies
+
     androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
         exclude group: "com.android.support", module: "support-annotations"
     })
@@ -192,9 +219,9 @@ dependencies {
     implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoCore"
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
-    testImplementation "org.robolectric:robolectric:3.8"
-    testImplementation "org.robolectric:multidex:3.4.2"
-    testImplementation "org.robolectric:shadows-support-v4:3.3.2"
+    testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation 'org.robolectric:multidex:3.4.2'
+    testImplementation 'org.robolectric:shadows-support-v4:3.3.2'
 
     //all REST dependencies
     implementation "com.google.code.gson:gson:$rootProject.gson"
@@ -209,20 +236,27 @@ dependencies {
         exclude group: "stax", module: "stax-api"
         exclude group: "stax", module: "stax"
     }
+
     //all view manipulation dependencies
     implementation "com.github.bumptech.glide:glide:$rootProject.glide"
     implementation "de.hdodenhof:circleimageview:$rootProject.circleImageView"
     implementation "com.commit451:PhotoView:$rootProject.photoView"
+    implementation "com.daimajia.easing:library:$rootProject.yoyoAnimations"
+    implementation "com.daimajia.androidanimations:library:$rootProject.yoyoAndroidAnimation"
+    implementation "net.bohush.geometricprogressview:geometricprogressview:$rootProject.geometricProgressview"
 
     //all tools dependencies
     implementation "com.google.code.findbugs:jsr305:$rootProject.findBugs"
     implementation "com.orhanobut:logger:$rootProject.orhanobutLogger"
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
+    implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
+    implementation "com.google.android.gms:play-services-places:15.0.1"
+    implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0"
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
     implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rootProject.rxjavaForRetrofit"
 
     //RxJava support for ROOM dependencies
@@ -239,8 +273,8 @@ dependencies {
     //all dagger2 dependencies
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
-//    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger"
-//    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
@@ -249,15 +283,19 @@ dependencies {
     androidTestImplementation "com.android.support.test:rules:$rootProject.testRunner"
 
     // Databinding
-    kapt "com.android.databinding:compiler:$gradle_plugin_version"
+    // kapt "com.android.databinding:compiler:$gradle_plugin_version"
 
     // all ViewModel and LiveData dependencies
     implementation "android.arch.lifecycle:extensions:$rootProject.archictectureComponents"
     annotationProcessor "android.arch.lifecycle:common-java8:$rootProject.archictectureComponents"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     kapt "android.arch.lifecycle:compiler:$rootProject.archictectureComponents"
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     //our jar files
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
+        transitive = true;
+    }
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -5,15 +5,18 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 import com.team.mamba.atlas.dependencyInjection.builder.ActivityBuilder;
 import com.team.mamba.atlas.dependencyInjection.builder.FragmentBuilder;
 import dagger.Module;
 import dagger.Provides;
+import dagger.android.AndroidInjectionModule;
 import dagger.android.support.AndroidSupportInjectionModule;
 import javax.inject.Singleton;
 
-@Module(includes = {AndroidSupportInjectionModule.class,
-        DatabaseModule.class, NetworkModule.class, ActivityBuilder.class, FragmentBuilder.class} )
+@Module(includes = {AndroidInjectionModule.class,AndroidSupportInjectionModule.class,
+        DatabaseModule.class, NetworkModule.class, ActivityBuilder.class, FragmentBuilder.class,
+        } )
 public class AppModule {
 
     @Provides

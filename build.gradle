@@ -1,0 +1,88 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.2.51'
+    ext.gradle_plugin_version = '3.1.3'
+
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.0.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url 'https://jitpack.io'
+        }
+        maven {
+            url 'https://maven.google.com'
+        }
+    }
+
+    //Used to increase the compilation error count
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xmaxerrs" << "4000"
+            options.compilerArgs << "-Xmaxwarns" << "4000"
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+
+    // Sdk and tools
+    minSdkVersion = 21
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.3'
+
+    constraintLayout = '1.1.2'
+    support = '27.1.1'
+    dagger = '2.14.1'
+    gson = '2.8.2'
+    okHttp = '3.6.0'
+    retrofit = '2.3.0'
+    roomDatabase = '1.1.1'
+    rxjava = '2.1.9'
+    rxAndroid = '2.0.2'
+    rxjavaForRetrofit = '1.0.0'
+    archictectureComponents = '1.1.1'
+    multidex = '1.0.3'
+    glide = '3.7.0'
+    mpAndroidChart = 'v3.0.1'
+    circleImageView = '2.1.0'
+
+    yoyoAnimations = '2.0@aar'
+    yoyoAndroidAnimation = '2.3@aar'
+    orhanobutLogger = '2.2.0'
+    photoView = '1.2.4'
+    geometricProgressview = '1.1.1'
+
+    //testing versions
+    junit = '4.12'
+    testRunner = '1.0.1'
+    espressoCore = '3.0.2'
+    mockito = '2.15.0'
+    hamCrest = '1.3'
+    findBugs = '3.0.1'
+
+//    crashlytics = '2.9.0@aar'
+//    googlePlayServices = '17.1.0'
+//    googlePlayServicesAuth = '15.0.1'
+}

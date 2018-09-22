@@ -4,7 +4,11 @@ package com.team.mamba.atlas.dependencyInjection.module;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.data.remote.AtlasApiEndPoints;
+import com.team.mamba.atlas.data.remote.GooglePlacesApiEndPoints;
+import com.team.mamba.atlas.dependencyInjection.qualifiers.GooglePlace;
+
 import dagger.Module;
 import dagger.Provides;
 import java.util.concurrent.TimeUnit;
@@ -56,8 +60,20 @@ public  class NetworkModule {
     Retrofit provideRetrofit(Converter.Factory converter, RxJava2CallAdapterFactory callAdapterFactory, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
 
-                //todo change for actual base url
-                .baseUrl("test url")
+                .baseUrl(BuildConfig.GOOGLE_PLACE_URL)
+                .addCallAdapterFactory(callAdapterFactory)
+                .addConverterFactory(converter)
+                .client(okHttpClient)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    @GooglePlace
+    Retrofit provideGooglePlacesRetrofit(Converter.Factory converter, RxJava2CallAdapterFactory callAdapterFactory, OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+
+                .baseUrl(BuildConfig.GOOGLE_PLACE_URL)
                 .addCallAdapterFactory(callAdapterFactory)
                 .addConverterFactory(converter)
                 .client(okHttpClient)
@@ -71,4 +87,9 @@ public  class NetworkModule {
         return retrofit.create(AtlasApiEndPoints.class);
     }
 
+    @Provides
+    @Singleton
+    GooglePlacesApiEndPoints provideGooglePlacesApiEndPoints(@GooglePlace Retrofit retrofit) {
+        return retrofit.create(GooglePlacesApiEndPoints.class);
+    }
 }

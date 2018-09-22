@@ -25,10 +25,9 @@ import dagger.android.support.HasSupportFragmentInjector;
 import javax.inject.Inject;
 
 public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
-        implements HasSupportFragmentInjector{
 
-//   @Inject
-    DispatchingAndroidInjector<Fragment> fragmentInjector;
+      {
+
 
     @Inject
     AppDataManager appDataManager;
@@ -98,11 +97,16 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
         return NetworkUtils.isNetworkConnected(getApplicationContext());
     }
 
-    protected void showToast(String msg) {
+    protected void showToastLong(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
-    protected void showSnackBar(String message) {
+          protected void showToastShort(String msg) {
+              Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+          }
+
+
+          protected void showSnackBar(String message) {
 
         Snackbar.make(getViewDataBinding().getRoot(), message, Snackbar.LENGTH_LONG)
                 .show();
@@ -129,7 +133,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
-        dialog.setTitle("No Network Connection")
+        dialog.setTitle("No Network ConnectionRecord")
                 .setMessage("Please connect to a network")
                 .setNegativeButton("Ok", (paramDialogInterface, paramInt) -> {
 
@@ -180,8 +184,4 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
         }
     }
 
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentInjector;
-    }
 }

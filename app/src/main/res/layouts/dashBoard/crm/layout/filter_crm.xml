@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.team.mamba.atlas.userInterface.dashBoard.crm.filter_list.CrmFilterViewModel" />
+
+    </data>
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+  >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+        style="@style/App_Text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:textSize="17sp"
+        android:text="Status"
+            android:layout_marginBottom="10dp"/>
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/chart_blue"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="-15dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="New"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_new_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> viewModel.onNewClicked()}"
+                        android:padding="5dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_new_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="Qualified"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_qualified_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onQualifiedClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_qualified_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="Proposal"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_proposal_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onProposalClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_proposal_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:text="Negotiation"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textSize="10sp"
+                        android:layout_marginRight="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_negotiation_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/circle_filter"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onNegotiationClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_negotiation_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/circle_filter"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginRight="-15dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:text="Closed"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textSize="10sp"
+                        android:layout_marginRight="10dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_closed_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/circle_filter"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onClosedClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_closed_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/circle_filter"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:textSize="17sp"
+            android:text="Opportunity"
+            android:layout_marginBottom="10dp"/>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/chart_blue"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="-45dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="Solicitation"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_solicitation_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> viewModel.onSolicitationClicked()}"
+                        android:padding="5dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_solicitation_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="Teaming"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_teaming_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onTeamingClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_teaming_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="-45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="Direct Sell"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_direct_sell_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onDirectSellClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_direct_sell_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:textSize="17sp"
+            android:text="Next Step"
+            android:layout_marginBottom="10dp"/>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/chart_blue"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="-25dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="Email"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_email_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> viewModel.onNextStepEmailClicked()}"
+                        android:padding="5dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_email_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="Phone Call"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_phone_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onNextStepPhoneClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_phone_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:text="Teleconference"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_teleconference_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onNextStepTeleconferenceClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_teleconference_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/circle_filter"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginRight="-25dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:text="Meeting"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textSize="10sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_meeting_disabled"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/circle_filter"
+                        android:padding="5dp"
+                        android:onClick="@{()-> viewModel.onNextMeetingClicked()}"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_meeting_enabled"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/circle_filter"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/iv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close"
+                android:padding="10dp"
+                android:layout_marginRight="15dp"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{()-> viewModel.onCancelButtonClicked()}"
+                />
+
+            <ImageView
+                android:id="@+id/iv_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_24dp"
+                android:padding="10dp"
+                android:layout_marginLeft="15dp"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{()-> viewModel.onSubmitButtonClicked()}"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</FrameLayout>
+
+</layout>

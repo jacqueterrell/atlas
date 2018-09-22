@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <data>
+
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.HowDidYouMeetViewModel"/>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="#E0A850"
+                app:cardCornerRadius="7dp"
+                card_view:cardElevation="0dp"
+                >
+
+                <Button
+                    android:id="@+id/btn_continue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/lato"
+                    android:text="Continue"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    />
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="17sp"
+                android:text="Personal Notes"
+                android:paddingLeft="15dp"/>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center"
+                android:text="How did you meet?"/>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textAlignment="center"
+                android:text="Please select one."
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="60dp">
+
+
+
+                 <LinearLayout
+                    android:id = "@+id/layout_chance_encounter"
+                    android:orientation = "horizontal"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginBottom = "10dp"
+                    >
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id = "@+id/chk_box_chance_encounter"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        app:buttonTint = "@color/black"
+                        android:checked="true"
+                        />
+
+                    <TextView
+                        style="@style/App_Text_view"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        android:text = "Chance Encounter"
+                        android:layout_margin = "5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id = "@+id/layout_work_event"
+                    android:orientation = "horizontal"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginBottom = "10dp"
+                    >
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id = "@+id/chk_box_work_event"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        app:buttonTint = "@color/black"
+                        />
+
+                    <TextView
+                        style="@style/App_Text_view"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        android:text = "Work Event"
+                        android:layout_margin = "5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id = "@+id/layout_social_event"
+                    android:orientation = "horizontal"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginBottom = "10dp"
+                    >
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id = "@+id/chk_box_social_event"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        app:buttonTint = "@color/black"
+                        />
+
+                    <TextView
+                        style="@style/App_Text_view"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        android:text = "Social Event"
+                        android:layout_margin = "5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id = "@+id/layout_peer_introduction"
+                    android:orientation = "horizontal"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginBottom = "10dp"
+                    >
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id = "@+id/chk_box_peer_introduction"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        app:buttonTint = "@color/black"
+                        />
+
+                    <TextView
+                        style="@style/App_Text_view"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        android:text = "Peer Introduction"
+                        android:layout_margin = "5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id = "@+id/layout_peer_colleague"
+                    android:orientation = "horizontal"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginBottom = "10dp"
+                    >
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id = "@+id/chk_box_peer_colleague"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        app:buttonTint = "@color/black"
+                        />
+
+                    <TextView
+                        style="@style/App_Text_view"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        android:text = "Peer/Colleague"
+                        android:layout_margin = "5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center"
+                android:text="Where did you meet?"/>
+
+            <EditText
+                android:id="@+id/et_where"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:maxLines="3"
+                android:inputType="textCapSentences|textMultiLine"
+                android:cursorVisible="true"
+                android:fontFamily="@font/lato"
+                android:hint="description"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:padding="15dp"
+                tools:text="Kroger"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryDark">#424242</color>
+    <color name="colorAccent">#3F51B5</color>
+
+    <color name="black">#000</color>
+    <color name="super_transparent_black">#1a000000</color>
+    <color name="transparent_black">#33000000</color>
+    <color name="transparent_black_dark">#BF000000</color>
+    <color name="transparent_black_darker">#D9000000</color>
+    <color name="white">#fff</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_white">#BFffffff</color>
+    <color name="semi_transparent_white">#66ffffff</color>
+    <color name="super_transparent_white">#33ffffff</color>
+
+    <color name="material_icons_light">#d5d5d5</color>
+    <color name="material_icon">#999999</color>
+    <color name="grey">#7f7f7f</color>
+    <color name="chart_blue">#99a0d5</color>
+    <color name="chart_red">#700d08</color>
+    <color name="orange">#fa7847</color>
+    <color name="green">#638143</color>
+    <color name="dessert_green">#6ab187</color>
+
+    <color name="pastel_dark_red">#f05847</color>
+
 </resources>

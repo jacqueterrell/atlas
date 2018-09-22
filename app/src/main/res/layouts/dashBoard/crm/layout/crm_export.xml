@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+
+        <import type = "android.view.View"/>
+
+        <variable
+            name = "viewModel"
+            type = "com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel"/>
+
+    </data>
+
+    <FrameLayout
+        android:id="@+id/layout_export"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"
+        android:padding="15dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="17sp"
+                android:text="CRM Report"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/export_generate_csv"/>
+
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginTop="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:text="@string/export_personal_notes"
+                android:textStyle="italic"/>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/export_select_fields"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:id = "@+id/layout_contacts"
+                    android:orientation = "horizontal"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginBottom = "10dp"
+                    android:onClick="@{()-> viewModel.onExportContactsCheckboxClicked()}"
+                    >
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id = "@+id/chk_box_contacts"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        app:buttonTint = "@color/black"
+                        android:onClick="@{()-> viewModel.onExportContactsCheckboxClicked()}"
+                        />
+
+                    <TextView
+                        android:id = "@+id/tv_family_member"
+                        style="@style/App_Text_view"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        android:text = "Contacts"
+                        android:layout_margin = "5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id = "@+id/layout_opportunities"
+                    android:orientation = "horizontal"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginBottom = "10dp"
+                    android:onClick="@{()-> viewModel.onExportOpportunitiesCheckboxClicked()}"
+                    >
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id = "@+id/chk_box_opportunities"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        app:buttonTint = "@color/black"
+                        android:checked="true"
+                        android:onClick="@{()-> viewModel.onExportOpportunitiesCheckboxClicked()}"
+                        />
+
+                    <TextView
+                        android:id = "@+id/tv_personal_friend"
+                        style="@style/App_Text_view"
+                        android:layout_width = "wrap_content"
+                        android:layout_height = "wrap_content"
+                        android:text = "Opportunities"
+                        android:layout_margin = "5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="105dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="25dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                app:cardBackgroundColor="#E0A850"
+                app:cardCornerRadius="7dp"
+                card_view:cardElevation="0dp"
+                >
+
+                <Button
+                    android:id="@+id/btn_export"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/lato"
+                    android:text="Export"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:onClick="@{()-> viewModel.onExportButtonClicked()}"
+                    />
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

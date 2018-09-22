@@ -1,0 +1,188 @@
+{
+  "project_info": {
+    "project_number": "835794396185",
+    "firebase_url": "https://atlas-35dcb.firebaseio.com",
+    "project_id": "atlas-35dcb",
+    "storage_bucket": "atlas-35dcb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835794396185:android:8c69cf64d878e2ed",
+        "android_client_info": {
+          "package_name": "com.team.mamba.atlas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835794396185-2dsr0sndgmm1aud6118kr3o8hvgoviuv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas",
+            "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
+          }
+        },
+        {
+          "client_id": "835794396185-bj6k8j5vhialk2cl0t3jvvi32idgttpp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas",
+            "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
+          }
+        },
+        {
+          "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkLu1e9NfBZb6eojcHYzF7jE4v8ns32Uc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "835794396185-e04obccemlh0h6o69ovt4ttgf2t3693q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apt.atlas"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835794396185:android:b4bcce416c59df98",
+        "android_client_info": {
+          "package_name": "com.team.mamba.atlas.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835794396185-vvu0nrad9n5bg91qnkjh32f64h9vv5b5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas.dev",
+            "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
+          }
+        },
+        {
+          "client_id": "835794396185-r64l1dn0pvptkom3611gqhse1a48mgvp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas.dev",
+            "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
+          }
+        },
+        {
+          "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkLu1e9NfBZb6eojcHYzF7jE4v8ns32Uc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "835794396185-e04obccemlh0h6o69ovt4ttgf2t3693q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apt.atlas"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835794396185:android:0c1d3fc496d1069a",
+        "android_client_info": {
+          "package_name": "com.team.mamba.atlas.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835794396185-s6c7o6kltlfrv8q6qo6lq62lug6r0fkp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas.staging",
+            "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
+          }
+        },
+        {
+          "client_id": "835794396185-2ecmvc09jm53gbth0oa2prndro4vdk13.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlas.staging",
+            "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
+          }
+        },
+        {
+          "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkLu1e9NfBZb6eojcHYzF7jE4v8ns32Uc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "835794396185-e04obccemlh0h6o69ovt4ttgf2t3693q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apt.atlas"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
