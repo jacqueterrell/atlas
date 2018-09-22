@@ -143,8 +143,8 @@ android {
 
             applicationId "com.team.mamba.atlas"
             resValue "string", "app_name", "Atlas"
-            versionCode 21010001
-            versionName "1.0.1"
+            versionCode 21010002
+            versionName "1.0.2"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "d5b53a01d8b241bc80acfd015103afe7"]
 
