@@ -13,22 +13,22 @@ import java.util.Map;
 @Keep
 public class BusinessProfile {
 
-    public String id = "...";
-    public String code = "...";
-    public String name = "...";
-    public String contactName = "...";
-    public String email = "...";
-    public String phone = "...";
-    public String fax = "...";
-    public String street = "...";
-    public String cityStateZip = "...";
-    public String imageUrl = "...";
-    public Map<String,String> announcements = new LinkedHashMap<>();
-    public Map<String,String> children = new LinkedHashMap<>();
-    public Map<String,String> contacts = new LinkedHashMap<>();
-    public List<Integer> shareNeeds = new LinkedList<>();
+    private String id = "...";
+    private String code = "...";
+    private String name = "...";
+    private String contactName = "...";
+    private String email = "...";
+    private String phone = "...";
+    private String fax = "...";
+    private String street = "...";
+    private String cityStateZip = "...";
+    private String imageUrl = "...";
+    private Map<String,String> announcements = new LinkedHashMap<>();
+    private Map<String,String> children = new LinkedHashMap<>();
+    private Map<String,String> contacts = new LinkedHashMap<>();
+    private String shareNeeds = "...";
 
-    public String businessRepId = "";
+    private String businessRepId = "";
 
 
     public String getId() {
@@ -135,11 +135,11 @@ public class BusinessProfile {
         this.contacts = contacts;
     }
 
-    public List<Integer> getShareNeeds() {
+    public String getShareNeeds() {
         return shareNeeds;
     }
 
-    public void setShareNeeds(List<Integer> shareNeeds) {
+    public void setShareNeeds(String shareNeeds) {
         this.shareNeeds = shareNeeds;
     }
 
