@@ -418,7 +418,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
                 displayName = businessProfile.getName();
                 workNumber = businessProfile.getPhone();
-                emailID = businessProfile.email;
+                emailID = businessProfile.getEmail();
 
             } else {
 

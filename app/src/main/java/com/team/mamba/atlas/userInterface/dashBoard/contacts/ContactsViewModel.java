@@ -150,7 +150,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
                 setSelectedBusinessProfile(connections.getBusinessProfile());
 
-                for (Map.Entry<String, String> entry : connections.getBusinessProfile().contacts.entrySet()) {
+                for (Map.Entry<String, String> entry : connections.getBusinessProfile().getContacts().entrySet()) {
 
                     String userId = entry.getKey();
 
