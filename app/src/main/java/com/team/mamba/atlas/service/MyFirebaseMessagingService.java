@@ -14,10 +14,12 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.preference.PreferenceManager;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.userInterface.AtlasApplication;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 
@@ -27,6 +29,7 @@ import io.reactivex.subjects.PublishSubject;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.utils.AppConstants;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.team.mamba.atlas.utils.AppSharedPrefs.FIREBASE_DEVICE_TOKEN;
@@ -38,8 +41,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static String NOTIFICATION_ID = "my_channel_02";
     private static PublishSubject<String>  data = PublishSubject.create();
+    private static final String BUSINESS_NOTIFICATION = "businessNotification";
+    private static final String CONTACT_NOTIFICATION = "contactNotification";
+    private String notificationType;
     private SharedPreferences sharedPreferences;
     public static boolean isBusinessAnnouncement = false;
+    private String subscribedTopic = "";
+
 
     @Override
     public void onCreate() {
@@ -71,51 +79,84 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //check if message contains data payload
         if (remoteMessage.getData().size() > 0) {
 
+           String from = remoteMessage.getFrom();
+
             for (Map.Entry<String,String> map : remoteMessage.getData().entrySet()){
 
                 String value = map.getValue();
 
+                if (from.contains("topic")){
+
+                    subscribedTopic = from.replaceAll("/topics/","");
+                }
+
                 if (value.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)){//new connection request
                     Logger.d("new connection request");
                     DashBoardActivity.newRequestCount += 1;
-
-                    if (AtlasApplication.isAppInBackGround){
-
-                        sendNewRequestNotification("New connection request","A new user wants to connect with you!");
-
-                    } else {
-                        data.onNext(AppConstants.NOTIFICATION_NEW_CONNECTION);
-                    }
+                    notificationType = CONTACT_NOTIFICATION;
                     break;
+
 
                 } else if (value.equals(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT)){
 
                     DashBoardActivity.newAnnouncementCount += 1;
-
-                    if (AtlasApplication.isAppInBackGround){
-
-                        isBusinessAnnouncement = true;
-                        sendNewRequestNotification("New Announcement","You have new business announcements!");
-
-                    } else {
-                        data.onNext(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT);
-                    }
+                    notificationType = BUSINESS_NOTIFICATION;
                     break;
+
                 }
             }
 
+            prepareMessage();
+
         }
 
-        //check if message contains a notification payload
-        if (remoteMessage.getNotification() != null) {
+    }
 
-            Logger.d("Message notification body: " + remoteMessage.getNotification().getBody());
-            String body = remoteMessage.getNotification().getBody();
 
-            if (body != null) {
-                data.onNext(body);
+    private void prepareMessage(){
+
+        if (notificationType.equals(CONTACT_NOTIFICATION)){//new contact notification received
+
+            if (AtlasApplication.isAppInBackGround){
+
+                sendNewRequestNotification("New connection request","A new user wants to connect with you!");
+
+            } else {
+                data.onNext(AppConstants.NOTIFICATION_NEW_CONNECTION);
             }
 
+        } else if (notificationType.equals(BUSINESS_NOTIFICATION)){// new business announcement notification received
+
+            if (AtlasApplication.isAppInBackGround){
+
+                isBusinessAnnouncement = true;
+
+                if (subscribedTopic != null){
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection(AppConstants.BUSINESSES_COLLECTION)
+                            .whereEqualTo("id",subscribedTopic)
+                            .get()
+                            .addOnCompleteListener(task -> {
+
+                                if (task.isSuccessful()){
+
+                                    BusinessProfile profile = task.getResult().toObjects((BusinessProfile.class)).get(0);
+                                    sendNewRequestNotification(profile.getName() + " Sending an Announcement","You have new business announcements!");
+
+                                }
+                            });
+
+                } else {
+
+                    sendNewRequestNotification("New Business Announcement","You have new business announcements!");
+
+                }
+
+
+            } else {
+                data.onNext(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT);
+            }
         }
     }
 
