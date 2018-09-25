@@ -35,6 +35,7 @@ public class UserConnections {
     @Exclude private boolean recentActivity;
     @Exclude private UserProfile userProfile;
     @Exclude private BusinessProfile businessProfile;
+    @Exclude private boolean overrideBusinessProfile;
 
 
 
@@ -149,11 +150,15 @@ public class UserConnections {
     }
 
 
+    @Exclude public void setOverrideBusinessProfile(boolean overrideBusinessProfile) {
+        this.overrideBusinessProfile = overrideBusinessProfile;
+    }
 
+   @Exclude public boolean isOverrideBusinessProfile() {
+        return overrideBusinessProfile;
+    }
 
-
-
-   @Exclude public boolean isNeedsApproval() {
+    @Exclude public boolean isNeedsApproval() {
         return needsApproval;
     }
 

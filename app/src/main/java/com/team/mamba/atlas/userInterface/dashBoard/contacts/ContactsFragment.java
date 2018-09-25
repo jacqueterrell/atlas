@@ -126,7 +126,18 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(contactListAdapter);
 
-        binding.swipeContainer.setOnRefreshListener(() -> viewModel.requestContactsInfo(getViewModel()));
+        binding.swipeContainer.setOnRefreshListener(() -> {
+
+            if (viewModel.isBusinessContactsShown()){
+
+                viewModel.setBusinessContactProfiles();
+
+            } else {
+
+                viewModel.requestContactsInfo(getViewModel());
+            }
+
+        });
 
         if (viewModel.getUserConnectionsList().isEmpty()) {
 
@@ -209,24 +220,33 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         binding.layoutIndividualProfile.setVisibility(View.GONE);
         binding.ivBusinessProfile.setVisibility(View.VISIBLE);
+        viewModel.setBusinessContactsShown(true);
 
         viewModel.setBusinessContactProfiles();
-        createCharList();
     }
 
     @Override
     public void onIndividualFilterClicked() {
+
+        for (UserConnections connections : permUserConnectionsList){
+
+            connections.setOverrideBusinessProfile(false);
+        }
 
         binding.ivGroupFilter.setVisibility(View.VISIBLE);
         binding.ivIndividualFilter.setVisibility(View.GONE);
 
         binding.ivBusinessProfile.setVisibility(View.GONE);
         binding.layoutIndividualProfile.setVisibility(View.VISIBLE);
+        viewModel.setBusinessContactsShown(false);
 
         userConnectionsList.clear();
         filteredUserConnectionsList.clear();
         filteredUserConnectionsList.addAll(permUserConnectionsList);
         userConnectionsList.addAll(permUserConnectionsList);
+        contactListAdapter.clearTitleList();
+
+        binding.recyclerView.getLayoutManager().scrollToPosition(0);
         contactListAdapter.notifyDataSetChanged();
         createCharList();
     }
@@ -234,7 +254,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onRowClicked(UserConnections userConnections) {
 
-        if (userConnections.isOrgBus) {
+        if (userConnections.isOrgBus && !userConnections.isOverrideBusinessProfile()) {
 
             parentNavigator.openBusinessProfile(userConnections.getBusinessProfile());
 
@@ -277,6 +297,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         permUserConnectionsList.addAll(connectionsList);
         userConnectionsList.addAll(connectionsList);
         filteredUserConnectionsList.addAll(connectionsList);
+        contactListAdapter.clearTitleList();
 
         contactListAdapter.notifyDataSetChanged();
 
@@ -292,10 +313,14 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         userConnectionsList.addAll(businessAssociatesList);
         filteredUserConnectionsList.addAll(businessAssociatesList);
+        contactListAdapter.clearTitleList();
 
+        binding.recyclerView.getLayoutManager().scrollToPosition(0);
         contactListAdapter.notifyDataSetChanged();
 
         hideProgressSpinner();
+        createCharList();
+        binding.swipeContainer.setRefreshing(false);
     }
 
     /**
@@ -309,7 +334,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         for (UserConnections connections : userConnectionsList) {
 
-            if (connections.isOrgBus) {
+            if (connections.isOrgBus  && !connections.isOverrideBusinessProfile()) {
 
                 businessConnections.add(connections);
 
