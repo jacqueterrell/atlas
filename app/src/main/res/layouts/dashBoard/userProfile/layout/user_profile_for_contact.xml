@@ -108,7 +108,9 @@
                 android:id="@+id/layout_contact_title_and_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tv_position"
@@ -118,8 +120,24 @@
                     android:layout_marginBottom="5dp"
                     android:textSize="20sp"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                    tools:text="Founder, APT"
-                    android:text="@{profile.getCurrentPosition() + `, ` + profile.getCurrentEmployer}"/>
+                    tools:text="Founder, "
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:text="@{profile.getCurrentPosition() + `, `}"/>
+
+
+                <TextView
+                    android:id="@+id/tv_employer"
+                    android:fontFamily="@font/lato_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="20sp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    tools:text="APT"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:text="@{profile.getCurrentEmployer()}"/>
 
             </LinearLayout>
 
@@ -396,6 +414,7 @@
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:visibility="gone"
+                        tools:visibility="visible"
                         android:onClick="@{()-> viewModel.contactOnWorkAddressClicked()}"
                         >
 

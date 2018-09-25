@@ -231,6 +231,11 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         for (UserConnections connections : permUserConnectionsList){
 
             connections.setOverrideBusinessProfile(false);
+
+            if (connections.getUserProfile() != null){
+
+                connections.getUserProfile().setShareNeeds("");
+            }
         }
 
         binding.ivGroupFilter.setVisibility(View.VISIBLE);
