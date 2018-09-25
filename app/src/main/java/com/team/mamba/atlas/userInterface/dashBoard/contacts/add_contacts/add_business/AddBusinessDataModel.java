@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.add_business;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -102,7 +103,7 @@ public class AddBusinessDataModel {
 
 
     /**
-     * Query all business accounts as a user.
+     * Finds the Business Profile associated with the business name and code the user has entered in
      *
      * @param viewModel
      * @param name
@@ -132,26 +133,8 @@ public class AddBusinessDataModel {
 
                         }
 
+                        checkForNoContactFound(viewModel,selectedProfileList,code);
 
-                        if (selectedProfileList.isEmpty()) {//no business found
-
-                            viewModel.getNavigator().showUserNotFoundAlert();
-
-                        } else {
-
-                            BusinessProfile selectedProfile = selectedProfileList.get(0);
-
-                                if (viewModel.getConnectionIdList().contains(selectedProfile.getId())) {//already a contact
-
-                                    viewModel.getNavigator().showAlreadyAContactAlert();
-
-                                } else {
-
-                                    addNewConnectionForIndividual(viewModel, selectedProfile);
-
-                                }
-
-                        }
 
                     } else {
 
@@ -159,6 +142,50 @@ public class AddBusinessDataModel {
                     }
 
                 });
+    }
+
+
+    private void checkForNoContactFound(AddBusinessViewModel viewModel,List<BusinessProfile> selectedProfileList,String code){
+
+        if (selectedProfileList.isEmpty()) {//no business found
+
+            viewModel.getNavigator().showUserNotFoundAlert();
+
+        } else {
+
+            checkForCurrentContact(viewModel,selectedProfileList,code);
+        }
+    }
+
+
+    private void checkForCurrentContact(AddBusinessViewModel viewModel,List<BusinessProfile> selectedProfileList,String code){
+
+        BusinessProfile selectedProfile = selectedProfileList.get(0);
+
+        if (viewModel.getConnectionIdList().contains(selectedProfile.getId())) {//already a contact
+
+            viewModel.getNavigator().showAlreadyAContactAlert();
+
+        } else {
+
+            checkBusinessCode(viewModel,selectedProfileList,code);
+        }
+    }
+
+    private void checkBusinessCode(AddBusinessViewModel viewModel,List<BusinessProfile> selectedProfileList,String code){
+
+        BusinessProfile selectedProfile = selectedProfileList.get(0);
+
+        if (Integer.parseInt(code) >= 9000) {//level 9000 business
+
+            selectedProfile.setDirectory(true);
+            addNewConnectionForIndividual(viewModel, selectedProfile);
+
+        } else {
+
+            selectedProfile.setDirectory(false);
+            addNewConnectionForIndividual(viewModel, selectedProfile);
+        }
     }
 
 
@@ -187,6 +214,7 @@ public class AddBusinessDataModel {
         userConnections.setId(id);
         userConnections.setConfirmed(true);
         userConnections.setOrgBus(true);
+        userConnections.setDirectory(businessProfile.isDirectory());
         userConnections.setReqDeviceToken(requestingToken);
         userConnections.setRequestingUserName(requestingName);
         userConnections.setRequestingUserID(requestingProfile.getId());
@@ -197,7 +225,7 @@ public class AddBusinessDataModel {
 
                     //subscribe the business to a topic
                     FirebaseMessaging.getInstance().subscribeToTopic(businessProfile.getId());
-                    addToUsersContactList(viewModel,businessProfile);
+                    addToUsersContactList(viewModel, businessProfile);
                     viewModel.getNavigator().onRequestSent();
 
                 })
@@ -224,7 +252,7 @@ public class AddBusinessDataModel {
 
             UserProfile requestingProfile = viewModel.getRequestingUserProfile();
             Map<String, String> connectionsMap = requestingProfile.getConnections();
-            connectionsMap.put(consentingBusinessProfile.getId(),consentingBusinessProfile.getId());
+            connectionsMap.put(consentingBusinessProfile.getId(), consentingBusinessProfile.getId());
 
             db.collection(AppConstants.USERS_COLLECTION)
                     .document(requestingProfile.getId())
@@ -242,8 +270,8 @@ public class AddBusinessDataModel {
                     });
 
             //update the consenting profile with the new contact added
-            Map<String,String> contactsMap = consentingBusinessProfile.getContacts();
-            contactsMap.put(requestingProfile.getId(),requestingProfile.getId());
+            Map<String, String> contactsMap = consentingBusinessProfile.getContacts();
+            contactsMap.put(requestingProfile.getId(), requestingProfile.getId());
 
             db.collection(AppConstants.BUSINESSES_COLLECTION)
                     .document(consentingBusinessProfile.getId())

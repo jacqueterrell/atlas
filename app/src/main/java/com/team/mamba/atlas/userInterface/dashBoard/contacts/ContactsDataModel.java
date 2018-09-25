@@ -85,10 +85,9 @@ public class ContactsDataModel {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserConnections> userConnections = new ArrayList<>();
-        String userId = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.CONNECTIONS_COLLECTION)
-                .whereEqualTo("requestingUserID", dataManager.getSharedPrefs().getUserId())
+                .whereEqualTo("isConfirmed", true)
                 .get()
                 .addOnCompleteListener(task -> {
 
@@ -96,9 +95,11 @@ public class ContactsDataModel {
 
                         List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
 
+                        viewModel.setAllConnectionsList(connectionsList);
+
                         for (UserConnections connections : connectionsList) {
 
-                            if (connections.isConfirmed ) {
+                            if (connections.getRequestingUserID().equals(dataManager.getSharedPrefs().getUserId())){
 
                                 userConnections.add(connections);
                             }
@@ -193,7 +194,7 @@ public class ContactsDataModel {
                             }
                         }
 
-                        setDataValues(viewModel);
+                        setConnectionsProfiles(viewModel);
 
                     } else {
 
@@ -207,7 +208,12 @@ public class ContactsDataModel {
     }
 
 
-    private void setDataValues(ContactsViewModel viewModel){
+
+    /**
+     * Sets the correlating profile for our UserConnections list
+     *
+     */
+    private void setConnectionsProfiles(ContactsViewModel viewModel){
 
         List<UserConnections> individualConnections = new ArrayList<>();
         List<UserConnections> businessConnections = new ArrayList<>();
@@ -218,7 +224,7 @@ public class ContactsDataModel {
 
         for (UserConnections connections : viewModel.getUserConnectionsList()) {
 
-            if (connections.isOrgBus) {
+            if (connections.isOrgBus && !connections.isOverrideBusinessProfile()) {
 
                 for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
 

@@ -66,7 +66,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListViewHold
 
         UserConnections connection = userConnectionsList.get(position);
 
-        if (!connection.isOrgBus){
+        if (!connection.isOrgBus || connection.isOverrideBusinessProfile()){
 
             UserProfile profile = connection.getUserProfile();
 
@@ -158,5 +158,12 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListViewHold
         }
 
         notifyDataSetChanged();
+    }
+
+
+    public void clearTitleList(){
+
+        letterPositions.clear();
+        letterTitleList.clear();
     }
 }

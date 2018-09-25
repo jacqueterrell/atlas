@@ -27,8 +27,8 @@ public class BusinessProfile {
     private Map<String,String> children = new LinkedHashMap<>();
     private Map<String,String> contacts = new LinkedHashMap<>();
     private String shareNeeds = "...";
-
     private String businessRepId = "";
+    @Exclude private boolean isDirectory = false;
 
 
     public String getId() {
@@ -151,4 +151,12 @@ public class BusinessProfile {
         this.businessRepId = businessRepId;
     }
 
+
+   @Exclude public boolean isDirectory() {
+        return isDirectory;
+    }
+
+    @Exclude public void setDirectory(boolean directory) {
+        isDirectory = directory;
+    }
 }

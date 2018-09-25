@@ -142,7 +142,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 if (task.isSuccessful()){
 
                                     BusinessProfile profile = task.getResult().toObjects((BusinessProfile.class)).get(0);
-                                    sendNewRequestNotification(profile.getName() + " Sending an Announcement","You have new business announcements!");
+                                    sendNewRequestNotification(profile.getName() + " Sending an Announcement","You have new announcements!");
 
                                 }
                             });
