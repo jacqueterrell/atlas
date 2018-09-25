@@ -22,7 +22,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     private static BusinessProfile businessProfile;
     private static List<UserConnections> userConnectionsList = new ArrayList<>();
     private static List<UserConnections> allConnectionsList = new ArrayList<>();
-
+    private static BusinessProfile selectedDirectory;
     private static String savedUserId = "";
     private boolean businessContactsShown = false;
 
@@ -103,8 +103,16 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         ContactsViewModel.allConnectionsList = allConnectionsList;
     }
 
-    public List<UserConnections> getAllConnectionsList() {
+    private List<UserConnections> getAllConnectionsList() {
         return allConnectionsList;
+    }
+
+    private void setSelectedDirectory(BusinessProfile selectedDirectory) {
+        ContactsViewModel.selectedDirectory = selectedDirectory;
+    }
+
+    private BusinessProfile getSelectedDirectory() {
+        return selectedDirectory;
     }
 
     /********Onclick Listeners********/
@@ -202,12 +210,21 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
             }
         }
 
+        for (BusinessProfile profile : getBusinessProfileList()){
+
+            if (selectedConnections.getConsentingUserID().equals(profile.getId())){
+
+                setSelectedDirectory(profile);
+            }
+        }
+
         for (UserConnections connections : requestingConnections) {
 
                 for (UserProfile profile : getUserProfileList()) {
 
                     if (connections.requestingUserID.equals(profile.getId())) {
 
+                        profile.setShareNeeds(getSelectedDirectory().getShareNeeds());
                         connections.setUserProfile(profile);
                         connections.setOverrideBusinessProfile(true);
                         connections.setConnectionType(profile.getConnectionType());
@@ -215,6 +232,9 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
                     }
                 }
         }
+
+
+
 
         setBusinessContactsList(selectedConnections,requestingConnections);
     }

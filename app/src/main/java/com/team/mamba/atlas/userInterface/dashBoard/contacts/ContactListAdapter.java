@@ -145,7 +145,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListViewHold
             text = text.toLowerCase();
             for (UserConnections connections : viewModel.getNavigator().getPermConnectionList()){
 
-                if (!connections.isOrgBus){
+                if (connections.isOrgBus && !connections.isOverrideBusinessProfile()){
+
+                    if (connections.getBusinessProfile().getName().toLowerCase().contains(text)) {
+
+                        userConnectionsList.add(connections);
+                    }
+
+                } else if (!connections.isOrgBus || connections.isOverrideBusinessProfile()){
 
                     if (connections.getUserProfile().getFirstName().toLowerCase().contains(text)
                             || connections.getUserProfile().getLastName().toLowerCase().contains(text)){
