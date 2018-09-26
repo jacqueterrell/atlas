@@ -54,7 +54,7 @@ public class UserProfile {
     private String phone= "";
 
     @Exclude private int connectionType = 3;
-    @Exclude private String shareNeeds;
+    @Exclude private String shareNeeds = "...";
 
 
 
