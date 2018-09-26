@@ -80,11 +80,13 @@
                         card_view:cardElevation="0dp">
 
                         <ImageView
+                            android:id="@+id/iv_default"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:layout_marginBottom="5dp"
-                            android:src="@drawable/ic_person" />
+                            android:src="@drawable/ic_person"
+                            />
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/iv_user_profile"

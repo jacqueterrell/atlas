@@ -105,12 +105,14 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
 
         onConnectionTypeSaved();
 
-        if (profile.getImageUrl() != null) {
+        if (!profile.getImageUrl().replace(".","").isEmpty()) {
 
             Glide.with(getBaseActivity())
                     .load(profile.getImageUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(binding.ivUserProfile);
+
+            binding.ivDefault.setVisibility(View.GONE);
         }
 
 
@@ -258,7 +260,7 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
     public void onConnectionTypeSaved() {
 
 
-        if (profile.getShareNeeds() != null) {
+        if (!profile.getShareNeeds().replace(".","").isEmpty()) {
 
             setUpShareNeeds();
 
