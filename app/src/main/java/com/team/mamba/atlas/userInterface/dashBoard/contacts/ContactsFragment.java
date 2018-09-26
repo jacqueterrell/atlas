@@ -465,7 +465,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             String workNumber = "";
             String emailID = "email@nomail.com";
 
-            if (connection.isOrgBus) {
+            if (connection.isOrgBus && !connection.isOverrideBusinessProfile()) {
 
                 BusinessProfile businessProfile = connection.getBusinessProfile();
 
