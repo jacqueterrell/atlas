@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts;
 
+import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
@@ -16,11 +17,14 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
 
     private List<UserProfile> userProfileList = new ArrayList<>();
-    private static List<BusinessProfile>businessProfileList = new ArrayList<>();
+    private static List<BusinessProfile> businessProfileList = new ArrayList<>();
     private static UserProfile userProfile;
     private static BusinessProfile businessProfile;
     private static List<UserConnections> userConnectionsList = new ArrayList<>();
+    private static List<UserConnections> allConnectionsList = new ArrayList<>();
+    private static BusinessProfile selectedDirectory;
     private static String savedUserId = "";
+    private boolean businessContactsShown = false;
 
     private static BusinessProfile selectedBusinessProfile;
 
@@ -87,49 +91,73 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         return selectedBusinessProfile;
     }
 
+    public void setBusinessContactsShown(boolean businessContactsShown) {
+        this.businessContactsShown = businessContactsShown;
+    }
+
+    public boolean isBusinessContactsShown() {
+        return businessContactsShown;
+    }
+
+    public void setAllConnectionsList(List<UserConnections> allConnectionsList) {
+        ContactsViewModel.allConnectionsList = allConnectionsList;
+    }
+
+    private List<UserConnections> getAllConnectionsList() {
+        return allConnectionsList;
+    }
+
+    private void setSelectedDirectory(BusinessProfile selectedDirectory) {
+        ContactsViewModel.selectedDirectory = selectedDirectory;
+    }
+
+    private BusinessProfile getSelectedDirectory() {
+        return selectedDirectory;
+    }
+
     /********Onclick Listeners********/
 
-    public void onInfoClicked(){
+    public void onInfoClicked() {
 
         getNavigator().onInfoClicked();
     }
 
-    public void onCrmClicked(){
+    public void onCrmClicked() {
 
         getNavigator().onCrmClicked();
     }
 
-    public void onNotificationsClicked(){
+    public void onNotificationsClicked() {
 
         getNavigator().onNotificationsClicked();
     }
 
-    public void onAddNewContactClicked(){
+    public void onAddNewContactClicked() {
 
         getNavigator().onAddNewContactClicked();
     }
 
-    public void onSycnContactsClicked(){
+    public void onSycnContactsClicked() {
 
         getNavigator().onSyncContactsClicked();
     }
 
-    public void onSettingsClicked(){
+    public void onSettingsClicked() {
 
         getNavigator().onSettingsClicked();
     }
 
-    public void onProfileImageClicked(){
+    public void onProfileImageClicked() {
 
         getNavigator().onProfileImageClicked();
     }
 
-    public void onGroupFilterClicked(){
+    public void onGroupFilterClicked() {
 
         getNavigator().onBusinessFilterClicked();
     }
 
-    public void onIndividualFilterClicked(){
+    public void onIndividualFilterClicked() {
 
         getNavigator().onIndividualFilterClicked();
     }
@@ -140,44 +168,116 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
     public void setBusinessContactProfiles() {
 
-        List<String> businessContactList = new ArrayList<>();
-        List<UserConnections> businessAssociatesList = new ArrayList<>();
+        getListOfAllDirectories();
+    }
 
-        //gets a list of all business contacts
-        for (UserConnections connections : userConnectionsList) {
 
-            if (connections.isOrgBus) {
+    /**
+     * Gets a the most current business directory for the user
+     */
+    private void getListOfAllDirectories() {
 
-                setSelectedBusinessProfile(connections.getBusinessProfile());
+        List<UserConnections> directoryConnections = new ArrayList<>();
 
-                for (Map.Entry<String, String> entry : connections.getBusinessProfile().getContacts().entrySet()) {
+        for (UserConnections connections : getUserConnectionsList()) {
 
-                    String userId = entry.getKey();
+            if (connections.isOrgBus && connections.isDirectory) {
 
-                    if (!businessContactList.contains(userId)) {
-
-                        businessContactList.add(userId);
-                    }
-                }
+                directoryConnections.add(connections);
             }
         }
 
-        //Gets all contacts connected to the user's business account
-        for (UserConnections connections : getUserConnectionsList()) {
+        Collections.sort(directoryConnections, (o1, o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
 
-            if (!connections.isOrgBus) {
+        if (!directoryConnections.isEmpty()) {
+
+            UserConnections selectedConnection = directoryConnections.get(0);
+            setSelectedBusinessProfile(selectedConnection.getBusinessProfile());
+            getAllBusinessConnections(selectedConnection);
+        }
+    }
+
+
+    private void getAllBusinessConnections(UserConnections selectedConnections){
+
+        List<UserConnections> requestingConnections = new ArrayList<>();
+
+        for (UserConnections connections: getAllConnectionsList()){
+
+            if (connections.getConsentingUserID().equals(selectedConnections.getConsentingUserID())){
+
+                requestingConnections.add(connections);
+            }
+        }
+
+        for (BusinessProfile profile : getBusinessProfileList()){
+
+            if (selectedConnections.getConsentingUserID().equals(profile.getId())){
+
+                setSelectedDirectory(profile);
+            }
+        }
+
+        for (UserConnections connections : requestingConnections) {
+
+                for (UserProfile profile : getUserProfileList()) {
+
+                    if (connections.requestingUserID.equals(profile.getId())) {
+
+                        profile.setShareNeeds(getSelectedDirectory().getShareNeeds());
+                        connections.setUserProfile(profile);
+                        connections.setOverrideBusinessProfile(true);
+                        connections.setConnectionType(profile.getConnectionType());
+
+                    }
+                }
+        }
+
+
+
+
+        setBusinessContactsList(selectedConnections,requestingConnections);
+    }
+
+
+    /**
+     * Gets a list of business contacts for the most recently connected organization
+     * and saves the correlating UserConnection object
+     *
+     * @param selectedConnections
+     */
+    private void setBusinessContactsList(UserConnections selectedConnections,List<UserConnections> connectionsList){
+
+        List<String> businessContactList = new ArrayList<>();
+        List<UserConnections> businessAssociatesList = new ArrayList<>();
+
+        for (Map.Entry<String, String> entry : selectedConnections.getBusinessProfile().getContacts().entrySet()) {
+
+            String userId = entry.getKey();
+
+            if (!businessContactList.contains(userId)) {
+
+                businessContactList.add(userId);
+            }
+        }
+
+        for (UserConnections connections : connectionsList) {
+
+            try{
 
                 if (businessContactList.contains(connections.getUserProfile().getId())) {
 
                     businessAssociatesList.add(connections);
                 }
+
+            }catch (Exception e){
+
+                Logger.e(e.getMessage());
             }
+
         }
 
-        //add the user's profile to the company directory?
-        UserConnections userConnections = new UserConnections();
-        userConnections.setUserProfile(getUserProfile());
-        businessAssociatesList.add(userConnections);
+
 
         Collections.sort(businessAssociatesList,
                 (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
@@ -186,15 +286,10 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     }
 
 
+        /*********DataModel Requests*******/
 
+        public void requestContactsInfo (ContactsViewModel viewModel){
 
-
-
-
-    /*********DataModel Requests*******/
-
-    public void requestContactsInfo(ContactsViewModel viewModel){
-
-        dataModel.requestContactsInfo(viewModel);
+            dataModel.requestContactsInfo(viewModel);
+        }
     }
-}

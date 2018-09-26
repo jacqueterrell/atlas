@@ -8,6 +8,10 @@ public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigat
 
     private ContactProfileDataModel dataModel;
     private String profilePhone;
+    private boolean streetAddress = false;
+    private boolean cityStateZip = false;
+    private boolean workStreet = false;
+    private boolean workCityStateZip = false;
 
     /*************Getters and Setters*****************/
 
@@ -21,6 +25,38 @@ public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigat
 
     public String getProfilePhone() {
         return profilePhone;
+    }
+
+    public void setStreetAddress(boolean streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public boolean isStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setCityStateZip(boolean cityStateZip) {
+        this.cityStateZip = cityStateZip;
+    }
+
+    public boolean isCityStateZip() {
+        return cityStateZip;
+    }
+
+    public void setWorkStreet(boolean workStreet) {
+        this.workStreet = workStreet;
+    }
+
+    public boolean isWorkStreet() {
+        return workCityStateZip;
+    }
+
+    public void setWorkCityStateZip(boolean workCityStateZip) {
+        this.workCityStateZip = workCityStateZip;
+    }
+
+    public boolean isWorkCityStateZip() {
+        return workCityStateZip;
     }
 
     /**************OnClick Listeners**********************/

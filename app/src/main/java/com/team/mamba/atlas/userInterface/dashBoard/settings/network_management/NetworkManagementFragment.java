@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -168,9 +169,25 @@ implements NetworkManagementNavigator{
                 if (direction == ItemTouchHelper.LEFT) {
 
                     deletedUserConnection = userConnections.get(position);
-                    userConnections.remove(position);
-                    networkManagementAdapter.notifyDataSetChanged();
-                    viewModel.deleteUserConnection(getViewModel(),deletedUserConnection);
+                    String user = deletedUserConnection.getConsentingUserName();
+                    String title = "Remove Connection?";
+                    String msg = "Tap yes to remove your info from " + user + "'s contacts";
+
+                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+                    dialog.setTitle(title)
+                            .setMessage(msg)
+                            .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
+
+                            })
+                            .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
+
+                                userConnections.remove(position);
+                                networkManagementAdapter.notifyDataSetChanged();
+                                viewModel.deleteUserConnection(getViewModel(),deletedUserConnection);
+                            });
+
+                    dialog.show();
 
 //                    Snackbar snackbar = Snackbar.make(binding.getRoot(), "connection removed", 4000)
 //

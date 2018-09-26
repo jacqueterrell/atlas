@@ -174,7 +174,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     public void openUserProfile(UserProfile profile) {
 
         //check if the profile is a contacts or the signed in use
-        if (profile.id.equals(dataManager.getSharedPrefs().getUserId())){
+        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
 
             ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(), getSupportFragmentManager(), "UserProfile", null);
 

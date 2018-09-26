@@ -26,110 +26,37 @@ import java.util.Map;
 public class UserProfile {
 
 
-    @SerializedName("id")
-    public String id = "";
-
-    @SerializedName("deviceToken")
-    public String deviceToken = "";
-
-    @SerializedName("code")
-    @Expose
-    public String code = "";
-
-    @SerializedName("score")
-    @Expose
-    public int score;
-
-    @SerializedName("firstName")
-    @Expose
-    public String firstName= "";
-
-    @SerializedName("lastName")
-    @Expose
-    public String lastName= "";
-
-    @SerializedName("email")
-    @Expose
-    public String email= "";
-
-    @SerializedName("workEmail")
-    @Expose
-    public String workEmail= "";
-
-    @SerializedName("homePhone")
-    @Expose
-    public String homePhone= "";
-
-    @SerializedName("personalPhone")
-    @Expose
-    public String personalPhone= "";
-
-    @SerializedName("workPhone")
-    @Expose
-    public String workPhone= "";
-
-    @SerializedName("fax")
-    @Expose
-    public String fax= "";
-
-    @SerializedName("street")
-    @Expose
-    public String street= "";
-
-    @SerializedName("cityStateZip")
-    @Expose
-    public String cityStateZip= "";
-
-    @SerializedName("workHistory")
-    @Expose
-    public List<Map<String,String>> workHistory = new ArrayList<>();
-
-    @SerializedName("education")
-    @Expose
-    public List<Map<String,String>> education = new ArrayList<>();
-
-    @SerializedName("currentEmployer")
-    @Expose
-    public String currentEmployer= "";
-
-    @SerializedName("currentPosition")
-    @Expose
-    public String currentPosition= "";
-
-    @SerializedName("workStreet")
-    @Expose
-    public String workStreet= "";
-
-    @SerializedName("workCityStateZip")
-    @Expose
-    public String workCityStateZip= "";
-
-    @SerializedName("imageUrl")
-    @Expose
-    public String imageUrl= "";
-
-
-    @SerializedName("connections")
-    @Expose
-    public Map<String,String> connections = new LinkedHashMap<>();
-
-    @SerializedName("connectionsCount")
-    @Expose
-    public int connectionsCount;
-
-    @SerializedName("timestamp")
-    @Expose
-    public double timestamp;
-
-    @SerializedName("dob")
-    @Expose
-    public double dob;
-
-    @SerializedName("phone")
-    @Expose
-    public String phone= "";
+    private String id = "";
+    private String deviceToken = "";
+    private String code = "";
+    private int score;
+    private String firstName= "";
+    private String lastName= "";
+    private String email= "";
+    private String workEmail= "";
+    private String homePhone= "";
+    private String personalPhone= "";
+    private String workPhone= "";
+    private String fax= "";
+    private String street= "";
+    private String cityStateZip= "";
+    private List<Map<String,String>> workHistory = new ArrayList<>();
+    private List<Map<String,String>> education = new ArrayList<>();
+    private String currentEmployer= "";
+    private String currentPosition= "";
+    private String workStreet= "";
+    private String workCityStateZip= "";
+    private String imageUrl= "";
+    private Map<String,String> connections = new LinkedHashMap<>();
+    private int connectionsCount;
+    private double timestamp;
+    private double dob;
+    private String phone= "";
 
     @Exclude private int connectionType = 3;
+    @Exclude private String shareNeeds = "...";
+
+
 
     public UserProfile() {
 
@@ -254,7 +181,16 @@ public class UserProfile {
         return workHistory;
     }
 
-   @Exclude public String getWorkHistoryString(){
+
+    @Exclude public void setShareNeeds(String shareNeeds) {
+        this.shareNeeds = shareNeeds;
+    }
+
+   @Exclude public String getShareNeeds() {
+        return shareNeeds;
+    }
+
+    @Exclude public String getWorkHistoryString(){
 
         StringBuilder workHistoryBuilder = new StringBuilder();
 

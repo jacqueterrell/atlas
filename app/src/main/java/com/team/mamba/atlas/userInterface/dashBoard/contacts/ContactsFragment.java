@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
@@ -126,7 +127,18 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(contactListAdapter);
 
-        binding.swipeContainer.setOnRefreshListener(() -> viewModel.requestContactsInfo(getViewModel()));
+        binding.swipeContainer.setOnRefreshListener(() -> {
+
+            if (viewModel.isBusinessContactsShown()) {
+
+                viewModel.setBusinessContactProfiles();
+
+            } else {
+
+                viewModel.requestContactsInfo(getViewModel());
+            }
+
+        });
 
         if (viewModel.getUserConnectionsList().isEmpty()) {
 
@@ -166,7 +178,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         dialog.setTitle(title)
                 .setMessage(body)
-                .setNegativeButton("Not Now",(paramDialogInterface, paremInt) ->{
+                .setNegativeButton("Not Now", (paramDialogInterface, paremInt) -> {
 
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
@@ -208,25 +220,39 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         binding.ivIndividualFilter.setVisibility(View.VISIBLE);
 
         binding.layoutIndividualProfile.setVisibility(View.GONE);
-        binding.ivBusinessProfile.setVisibility(View.VISIBLE);
+        binding.layoutBusinessProfile.setVisibility(View.VISIBLE);
+        viewModel.setBusinessContactsShown(true);
 
         viewModel.setBusinessContactProfiles();
-        createCharList();
     }
 
     @Override
     public void onIndividualFilterClicked() {
 
+        for (UserConnections connections : permUserConnectionsList) {
+
+            connections.setOverrideBusinessProfile(false);
+
+            if (connections.getUserProfile() != null) {
+
+                connections.getUserProfile().setShareNeeds("");
+            }
+        }
+
         binding.ivGroupFilter.setVisibility(View.VISIBLE);
         binding.ivIndividualFilter.setVisibility(View.GONE);
 
-        binding.ivBusinessProfile.setVisibility(View.GONE);
+        binding.layoutBusinessProfile.setVisibility(View.GONE);
         binding.layoutIndividualProfile.setVisibility(View.VISIBLE);
+        viewModel.setBusinessContactsShown(false);
 
         userConnectionsList.clear();
         filteredUserConnectionsList.clear();
         filteredUserConnectionsList.addAll(permUserConnectionsList);
         userConnectionsList.addAll(permUserConnectionsList);
+        contactListAdapter.clearTitleList();
+
+        binding.recyclerView.getLayoutManager().scrollToPosition(0);
         contactListAdapter.notifyDataSetChanged();
         createCharList();
     }
@@ -234,7 +260,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onRowClicked(UserConnections userConnections) {
 
-        if (userConnections.isOrgBus) {
+        if (userConnections.isOrgBus && !userConnections.isOverrideBusinessProfile()) {
 
             parentNavigator.openBusinessProfile(userConnections.getBusinessProfile());
 
@@ -258,7 +284,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         } else {
 
             UserProfile profile = viewModel.getUserProfile();
-
             String name = profile.getFirstName() + " " + profile.getLastName();
             binding.tvUserCode.setText(profile.getCode());
             binding.tvUserName.setText(name);
@@ -267,6 +292,11 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
                     .load(profile.getImageUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(binding.ivUserProfileImage);
+
+            if (!profile.getImageUrl().replace(".","").isEmpty()) {
+
+                binding.ivDefault.setVisibility(View.GONE);
+            }
 
         }
 
@@ -277,6 +307,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         permUserConnectionsList.addAll(connectionsList);
         userConnectionsList.addAll(connectionsList);
         filteredUserConnectionsList.addAll(connectionsList);
+        contactListAdapter.clearTitleList();
 
         contactListAdapter.notifyDataSetChanged();
 
@@ -292,10 +323,32 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         userConnectionsList.addAll(businessAssociatesList);
         filteredUserConnectionsList.addAll(businessAssociatesList);
+        contactListAdapter.clearTitleList();
 
+        binding.recyclerView.getLayoutManager().scrollToPosition(0);
         contactListAdapter.notifyDataSetChanged();
 
+        BusinessProfile businessProfile = viewModel.getSelectedBusinessProfile();
+
+        if (businessProfile != null) {
+
+            binding.tvBusinessName.setText(businessProfile.getName());
+
+            if (!businessProfile.getImageUrl().replace(".","").isEmpty()) {
+
+                Glide.with(getBaseActivity())
+                        .load(businessProfile.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.ivBusinessProfile);
+
+                binding.ivBusinessDefault.setVisibility(View.GONE);
+
+            }
+        }
+
         hideProgressSpinner();
+        createCharList();
+        binding.swipeContainer.setRefreshing(false);
     }
 
     /**
@@ -309,7 +362,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         for (UserConnections connections : userConnectionsList) {
 
-            if (connections.isOrgBus) {
+            if (connections.isOrgBus && !connections.isOverrideBusinessProfile()) {
 
                 businessConnections.add(connections);
 
@@ -404,15 +457,15 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    private void syncAllContactRequest(){
+    private void syncAllContactRequest() {
 
-        for (UserConnections connection : filteredUserConnectionsList){
+        for (UserConnections connection : filteredUserConnectionsList) {
 
             String displayName = "";
             String workNumber = "";
             String emailID = "email@nomail.com";
 
-            if (connection.isOrgBus){
+            if (connection.isOrgBus) {
 
                 BusinessProfile businessProfile = connection.getBusinessProfile();
 
@@ -431,7 +484,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             }
 
-            ArrayList < ContentProviderOperation > ops = new ArrayList < > ();
+            ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
             ops.add(ContentProviderOperation.newInsert(
                     ContactsContract.RawContacts.CONTENT_URI)
@@ -514,7 +567,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             // Asking the Contact provider to create a new contact
 
-            if (isWriteContactsPermissionsGranted()){
+            if (isWriteContactsPermissionsGranted()) {
 
                 try {
                     getBaseActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
@@ -568,9 +621,9 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         compositeDisposable.dispose();
     }
 
-    private void setUpNewConnectionRequestBadge(){
+    private void setUpNewConnectionRequestBadge() {
 
-        if (DashBoardActivity.newRequestCount > 0){//show badge
+        if (DashBoardActivity.newRequestCount > 0) {//show badge
 
             binding.cardRequestBadge.setVisibility(View.VISIBLE);
             binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
@@ -582,9 +635,9 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
 
-    private void setUpNewAnnouncementBadge(){
+    private void setUpNewAnnouncementBadge() {
 
-        if (DashBoardActivity.newAnnouncementCount > 0){//show badge
+        if (DashBoardActivity.newAnnouncementCount > 0) {//show badge
 
             binding.cardNotificationBadge.setVisibility(View.VISIBLE);
             binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
@@ -597,9 +650,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
     /**
      * Subscribes to the Observable in {@link MyFirebaseMessagingService}
-     *
      */
-    private void setNotificationObservable(){
+    private void setNotificationObservable() {
 
         Observable<String> observable = MyFirebaseMessagingService.getObservable();
         Observer<String> observer = new Observer<String>() {
@@ -608,6 +660,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
                 compositeDisposable.add(d);
             }
+
             @SuppressLint("CheckResult")
             @Override
             public void onNext(String s) {
@@ -630,16 +683,16 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             }
 
             @Override
-            public void onComplete() { }
+            public void onComplete() {
+            }
         };
 
         observable.subscribe(observer);
     }
 
 
-
     @SuppressLint("CheckResult")
-    private void showNewConnectionRequestBadge(){
+    private void showNewConnectionRequestBadge() {
 
         Completable.fromCallable(() -> {
 
@@ -654,14 +707,14 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
     @SuppressLint("CheckResult")
-    private void showNewAnnouncementBadge(){
+    private void showNewAnnouncementBadge() {
 
-        Completable.fromCallable(()->{
+        Completable.fromCallable(() -> {
 
             return false;
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(()->{
+                .subscribe(() -> {
                     binding.cardNotificationBadge.setVisibility(View.VISIBLE);
                     binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
                 });
