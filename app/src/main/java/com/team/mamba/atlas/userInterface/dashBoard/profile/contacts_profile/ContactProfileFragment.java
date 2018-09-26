@@ -29,6 +29,9 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoar
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.formatData.RegEx;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.inject.Inject;
 
 public class ContactProfileFragment extends BaseFragment<UserProfileForContactBinding, ContactProfileViewModel>
@@ -102,12 +105,14 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
 
         onConnectionTypeSaved();
 
-        if (profile.getImageUrl() != null) {
+        if (!profile.getImageUrl().replace(".","").isEmpty()) {
 
             Glide.with(getBaseActivity())
                     .load(profile.getImageUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(binding.ivUserProfile);
+
+            binding.ivDefault.setVisibility(View.GONE);
         }
 
 
@@ -252,59 +257,183 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
     }
 
 
-
-
     public void onConnectionTypeSaved() {
 
 
-        connectionType = profile.getConnectionType();
+        if (!profile.getShareNeeds().replace(".","").isEmpty()) {
 
-        if (connectionType == 0 || connectionType == 1) {//family can see everything
+            setUpShareNeeds();
 
-            binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
-            binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
-            binding.layoutContactHomePhone.setVisibility(View.VISIBLE);
-            binding.layoutContactPersonalPhone.setVisibility(View.VISIBLE);
-            binding.layoutContactFax.setVisibility(View.VISIBLE);
-            binding.layoutContactPersonalEmail.setVisibility(View.VISIBLE);
-            binding.layoutContactWorkEmail.setVisibility(View.VISIBLE);
-            binding.layoutContactWorkHistory.setVisibility(View.VISIBLE);
-            binding.layoutContactEducation.setVisibility(View.VISIBLE);
-            binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
-            binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+        } else {
 
-        } else if (connectionType == 2) { //connection type is 2(New Acquaintance)
+            connectionType = profile.getConnectionType();
+            binding.tvPosition.setVisibility(View.VISIBLE);
+            binding.tvEmployer.setVisibility(View.VISIBLE);
 
-            binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
-            binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
-            binding.layoutContactFax.setVisibility(View.VISIBLE);
-            binding.layoutContactWorkEmail.setVisibility(View.VISIBLE);
-            binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+            if (connectionType == 0 || connectionType == 1) {//family can see everything
 
-            binding.layoutContactWorkHistory.setVisibility(View.GONE);
-            binding.layoutContactEducation.setVisibility(View.GONE);
-            binding.layoutContactHomePhone.setVisibility(View.GONE);
-            binding.layoutContactHomeAddress.setVisibility(View.GONE);
-            binding.layoutContactPersonalPhone.setVisibility(View.GONE);
-            binding.layoutContactPersonalEmail.setVisibility(View.GONE);
+                binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
+                binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
+                binding.layoutContactHomePhone.setVisibility(View.VISIBLE);
+                binding.layoutContactPersonalPhone.setVisibility(View.VISIBLE);
+                binding.layoutContactFax.setVisibility(View.VISIBLE);
+                binding.layoutContactPersonalEmail.setVisibility(View.VISIBLE);
+                binding.layoutContactWorkEmail.setVisibility(View.VISIBLE);
+                binding.layoutContactWorkHistory.setVisibility(View.VISIBLE);
+                binding.layoutContactEducation.setVisibility(View.VISIBLE);
+                binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
+                binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
 
-        } else { //connectionType = Business
+            } else if (connectionType == 2) { //connection type is 2(New Acquaintance)
 
-            binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
-            binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
-            binding.layoutContactFax.setVisibility(View.VISIBLE);
-            binding.layoutContactWorkEmail.setVisibility(View.VISIBLE);
-            binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
-            binding.layoutContactWorkHistory.setVisibility(View.VISIBLE);
-            binding.layoutContactEducation.setVisibility(View.GONE);
+                binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
+                binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
+                binding.layoutContactFax.setVisibility(View.VISIBLE);
+                binding.layoutContactWorkEmail.setVisibility(View.VISIBLE);
+                binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
 
-            binding.layoutContactHomePhone.setVisibility(View.GONE);
-            binding.layoutContactHomeAddress.setVisibility(View.GONE);
-            binding.layoutContactPersonalPhone.setVisibility(View.GONE);
+                binding.layoutContactWorkHistory.setVisibility(View.GONE);
+                binding.layoutContactEducation.setVisibility(View.GONE);
+                binding.layoutContactHomePhone.setVisibility(View.GONE);
+                binding.layoutContactHomeAddress.setVisibility(View.GONE);
+                binding.layoutContactPersonalPhone.setVisibility(View.GONE);
+                binding.layoutContactPersonalEmail.setVisibility(View.GONE);
+
+            } else { //connectionType = Business
+
+                binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
+                binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
+                binding.layoutContactFax.setVisibility(View.VISIBLE);
+                binding.layoutContactWorkEmail.setVisibility(View.VISIBLE);
+                binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+                binding.layoutContactWorkHistory.setVisibility(View.VISIBLE);
+                binding.layoutContactEducation.setVisibility(View.GONE);
+
+                binding.layoutContactHomePhone.setVisibility(View.GONE);
+                binding.layoutContactHomeAddress.setVisibility(View.GONE);
+                binding.layoutContactPersonalPhone.setVisibility(View.GONE);
+            }
+
         }
 
         binding.layoutContactProfile.setVisibility(View.VISIBLE);
         setContactsDefaultValues();
+    }
+
+
+    private void setUpShareNeeds() {
+
+        List<String> shareNeedsList = Arrays.asList(profile.getShareNeeds().split(","));
+
+        for (String shareNeeds : shareNeedsList) {
+
+            switch (shareNeeds.trim()) {
+
+                case "2":
+                    binding.layoutContactPersonalEmail.setVisibility(View.VISIBLE);
+                    break;
+
+                case "3":
+                    binding.layoutContactWorkEmail.setVisibility(View.VISIBLE);
+                    break;
+
+                case "4":
+                    binding.layoutContactCellPhone.setVisibility(View.VISIBLE);
+                    break;
+
+                case "5":
+                    binding.layoutContactOfficePhone.setVisibility(View.VISIBLE);
+                    break;
+
+                case "6":
+                    binding.layoutContactHomePhone.setVisibility(View.VISIBLE);
+                    break;
+
+                case "7":
+                    binding.layoutContactPersonalPhone.setVisibility(View.VISIBLE);
+                    break;
+
+                case "8":
+                    binding.layoutContactFax.setVisibility(View.VISIBLE);
+                    break;
+
+                case "9":
+                    viewModel.setStreetAddress(true);
+                    break;
+
+                case "10":
+                    viewModel.setCityStateZip(true);
+                    break;
+
+                case "11":
+                    binding.layoutContactEducation.setVisibility(View.VISIBLE);
+                    break;
+
+                case "12":
+                    binding.layoutContactWorkHistory.setVisibility(View.VISIBLE);
+                    break;
+
+                case "13":
+                    binding.tvEmployer.setVisibility(View.VISIBLE);
+                    break;
+
+                case "14":
+                    binding.tvPosition.setVisibility(View.VISIBLE);
+                    break;
+
+                case "15":
+                    viewModel.setWorkStreet(true);
+                    break;
+
+                case "16":
+                    profile.setWorkCityStateZip(toString());
+                    break;
+
+            }
+
+
+
+            String street = profile.getStreet();
+            String cityState = profile.getCityStateZip();
+
+            if (viewModel.isCityStateZip() && viewModel.isStreetAddress()){
+
+                String address = street + " " + cityState;
+                binding.tvHomeAddress.setText(address);
+                binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
+
+            } else if (viewModel.isCityStateZip()){
+
+                binding.tvHomeAddress.setText(cityState);
+                binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
+
+            } else if (viewModel.isStreetAddress()){
+
+                binding.tvHomeAddress.setText(street);
+                binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
+            }
+        }
+
+
+        String workStreet = profile.getWorkStreet();
+        String workCityStateZip = profile.getWorkCityStateZip();
+
+        if (viewModel.isWorkStreet() && viewModel.isWorkCityStateZip()){
+
+            String address = workStreet + " " + workCityStateZip;
+            binding.tvWorkAddress.setText(address);
+            binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+
+        } else if (viewModel.isWorkCityStateZip()){
+
+            binding.tvWorkAddress.setText(workCityStateZip);
+            binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+
+        } else if (viewModel.isWorkStreet()){
+
+            binding.tvHomeAddress.setText(workStreet);
+            binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
+        }
     }
 
 

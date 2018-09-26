@@ -16,6 +16,9 @@ import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
@@ -80,18 +83,37 @@ implements BusinessProfileNavigator {
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){//the logged in account is the business
 
             binding.contactProfile.layoutContactsProfile.setVisibility(View.GONE);
             binding.setProfile(profile);
+
+            if (!profile.getImageUrl().replace(".","").isEmpty()) {
+
+                Glide.with(getBaseActivity())
+                        .load(profile.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.ivUserProfile);
+
+                binding.ivDefault.setVisibility(View.GONE);
+            }
+
 
         } else {
 
             binding.contactProfile.layoutContactsProfile.setVisibility(View.VISIBLE);
             binding.contactProfile.setProfile(profile);
 
-        }
+            if (!profile.getImageUrl().replace(".","").isEmpty()) {
 
+                Glide.with(getBaseActivity())
+                        .load(profile.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.contactProfile.ivUserProfile);
+
+            }
+
+        }
          return binding.getRoot();
     }
 
