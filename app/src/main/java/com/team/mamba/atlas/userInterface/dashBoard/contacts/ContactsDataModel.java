@@ -19,6 +19,7 @@ public class ContactsDataModel {
     private AppDataManager dataManager;
     private boolean isSuccesful = true;
     private Exception exception;
+    private List<UserConnections> defaultConnectionsList = new ArrayList<>();
 
 
     @Inject
@@ -105,7 +106,7 @@ public class ContactsDataModel {
                             }
                         }
 
-                        viewModel.setUserConnectionsList(userConnections);
+                        defaultConnectionsList = userConnections;
                         getAllConnectionTypes(viewModel);
 
                     } else {
@@ -222,7 +223,7 @@ public class ContactsDataModel {
         List<UserConnections> adjustedConnections = new ArrayList<>();
 
 
-        for (UserConnections connections : viewModel.getUserConnectionsList()) {
+        for (UserConnections connections : defaultConnectionsList) {
 
             if (connections.isOrgBus && !connections.isOverrideBusinessProfile()) {
 
@@ -259,6 +260,7 @@ public class ContactsDataModel {
         adjustedConnections.addAll(individualConnections);
         adjustedConnections.addAll(businessConnections);
 
+        viewModel.setUserConnectionsList(adjustedConnections);
         viewModel.getNavigator().onDataValuesReturned(adjustedConnections);
 
     }

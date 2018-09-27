@@ -85,6 +85,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         return null;
     }
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

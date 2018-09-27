@@ -77,6 +77,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     private static List<UserConnections> userConnectionsList = new ArrayList<>();
     private static List<UserConnections> permUserConnectionsList = new ArrayList<>();
     private static List<UserConnections> filteredUserConnectionsList = new ArrayList<>();
+    private static String userName = "";
+    private static String userCode = "";
     private CompositeDisposable compositeDisposable;
 
     private ContactListAdapter contactListAdapter;
@@ -140,6 +142,17 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         });
 
+        checkForEmptyContactList();
+
+        setUpSearchView();
+        return binding.getRoot();
+    }
+
+    /**
+     * Checks to see if our contact list is empty
+     */
+    private void checkForEmptyContactList() {
+
         if (viewModel.getUserConnectionsList().isEmpty()) {
 
             showProgressSpinner();
@@ -147,20 +160,37 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         } else {
 
-            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {
-
-                showProgressSpinner();
-                viewModel.requestContactsInfo(getViewModel());
-
-            } else {
-
-                viewModel.requestContactsInfo(getViewModel());
-            }
-
+            checkIfDifferentUserHasLoggedIn();
         }
+    }
 
-        setUpSearchView();
-        return binding.getRoot();
+
+    /**
+     * Checks to see if a different user has logged in
+     */
+    private void checkIfDifferentUserHasLoggedIn() {
+
+        if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {
+
+            showProgressSpinner();
+            viewModel.requestContactsInfo(getViewModel());
+
+        } else {
+
+            checkShownContactType();
+        }
+    }
+
+
+    /**
+     * Resets list back to individual contacts
+     */
+    private void checkShownContactType() {
+
+        binding.tvUserName.setText(userName);
+        binding.tvUserCode.setText(userCode);
+        onIndividualFilterClicked();
+        viewModel.requestContactsInfo(getViewModel());
     }
 
     @Override
@@ -285,6 +315,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             UserProfile profile = viewModel.getUserProfile();
             String name = profile.getFirstName() + " " + profile.getLastName();
+            userCode = profile.getCode();
+            userName = name;
             binding.tvUserCode.setText(profile.getCode());
             binding.tvUserName.setText(name);
 
@@ -293,7 +325,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(binding.ivUserProfileImage);
 
-            if (!profile.getImageUrl().replace(".","").isEmpty()) {
+            if (!profile.getImageUrl().replace(".", "").isEmpty()) {
 
                 binding.ivDefault.setVisibility(View.GONE);
             }
@@ -334,7 +366,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             binding.tvBusinessName.setText(businessProfile.getName());
 
-            if (!businessProfile.getImageUrl().replace(".","").isEmpty()) {
+            if (!businessProfile.getImageUrl().replace(".", "").isEmpty()) {
 
                 Glide.with(getBaseActivity())
                         .load(businessProfile.getImageUrl())
@@ -465,7 +497,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             String workNumber = "";
             String emailID = "email@nomail.com";
 
-            if (connection.isOrgBus) {
+            if (connection.isOrgBus && !connection.isOverrideBusinessProfile()) {
 
                 BusinessProfile businessProfile = connection.getBusinessProfile();
 

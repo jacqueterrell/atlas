@@ -119,6 +119,15 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        binding.barChartNetwork.clearAnimation();
+        binding.barChartNetwork.clearAllViewportJobs();
+        binding.barChartOpportunities.clearAnimation();
+        binding.barChartOpportunities.clearAllViewportJobs();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
@@ -167,18 +176,12 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
                 viewModel.getAllUsers(getViewModel());
                 parentNavigator.setContactRecentlyDeleted(false);
 
-            } else if (parentNavigator.wasContactRecentlyAdded()){
+            } else if (parentNavigator.wasContactRecentlyAdded() || DashBoardActivity.newRequestCount > 0){
 
                 viewModel.getAllUsers(getViewModel());
                 parentNavigator.setContactRecentlyAdded(false);
 
-            } else if (DashBoardActivity.newRequestCount > 0){// a new user request was added
-
-                viewModel.getAllUsers(getViewModel());
-                parentNavigator.setContactRecentlyAdded(false);
-            }
-
-            else {
+            } else {
 
                 setUserStatsAdapter(viewModel.getUserStatsList(), viewModel.getRecentActivityConnections());
                 setBarChartData();
