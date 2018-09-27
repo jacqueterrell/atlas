@@ -103,6 +103,16 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
         binding = getViewDataBinding();
         binding.setProfile(profile);
 
+        if (profile == null){
+
+            getBaseActivity().onBackPressed();
+        }
+
+        if (!(String.valueOf(profile.getConnectionType()).matches(RegEx.ALLOW_DIGITS_AND_DECIMALS))){
+
+            profile.setConnectionType(3);
+        }
+
         onConnectionTypeSaved();
 
         if (!profile.getImageUrl().replace(".","").isEmpty()) {
