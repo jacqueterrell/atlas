@@ -121,7 +121,7 @@ android {
 
             applicationId "com.team.mamba.atlas.dev"
             resValue "string", "app_name", "Atlas-Dev"
-            versionCode 21010005
+            versionCode 2101000500
             versionName "1.0.5"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "ca0f3c6e94c847058ab7b90d0a520dfb"]
@@ -132,7 +132,7 @@ android {
 
             applicationId "com.team.mamba.atlas.staging"
             resValue "string", "app_name", "Atlas-Staging"
-            versionCode 21010005
+            versionCode 2101000500
             versionName "1.0.5"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "f96b7678094340329695c6ee1427d195"]
@@ -143,7 +143,7 @@ android {
 
             applicationId "com.team.mamba.atlas"
             resValue "string", "app_name", "Atlas"
-            versionCode 21010005
+            versionCode 2101000500
             versionName "1.0.5"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "d5b53a01d8b241bc80acfd015103afe7"]
