@@ -43,7 +43,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static PublishSubject<String>  data = PublishSubject.create();
     private static final String BUSINESS_NOTIFICATION = "businessNotification";
     private static final String CONTACT_NOTIFICATION = "contactNotification";
-    private String notificationType;
+    private String notificationType = "";
     private SharedPreferences sharedPreferences;
     public static boolean isBusinessAnnouncement = false;
     private String subscribedTopic = "";
