@@ -140,6 +140,17 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         });
 
+        checkForEmptyContactList();
+
+        setUpSearchView();
+        return binding.getRoot();
+    }
+
+    /**
+     * Checks to see if our contact list is empty
+     */
+    private void checkForEmptyContactList(){
+
         if (viewModel.getUserConnectionsList().isEmpty()) {
 
             showProgressSpinner();
@@ -147,20 +158,42 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         } else {
 
-            if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {
+            checkIfDifferentUserHasLoggedIn();
+        }
+    }
 
-                showProgressSpinner();
-                viewModel.requestContactsInfo(getViewModel());
 
-            } else {
+    /**
+     * Checks to see if a different user has logged in
+     */
+    private void checkIfDifferentUserHasLoggedIn(){
 
-                viewModel.requestContactsInfo(getViewModel());
-            }
+        if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {
 
+            showProgressSpinner();
+            viewModel.requestContactsInfo(getViewModel());
+
+        } else {
+
+            checkShownContactType();
+        }
+    }
+
+
+    /**
+     * Checks to see if the user is on the business directory list
+     */
+    private void checkShownContactType(){
+
+        if (viewModel.isBusinessContactsShown()){
+
+            onBusinessFilterClicked();
+
+        } else {
+
+            viewModel.requestContactsInfo(getViewModel());
         }
 
-        setUpSearchView();
-        return binding.getRoot();
     }
 
     @Override
