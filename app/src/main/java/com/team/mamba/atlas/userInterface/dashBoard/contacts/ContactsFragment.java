@@ -77,6 +77,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     private static List<UserConnections> userConnectionsList = new ArrayList<>();
     private static List<UserConnections> permUserConnectionsList = new ArrayList<>();
     private static List<UserConnections> filteredUserConnectionsList = new ArrayList<>();
+    private static String userName = "";
+    private static String userCode = "";
     private CompositeDisposable compositeDisposable;
 
     private ContactListAdapter contactListAdapter;
@@ -149,7 +151,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     /**
      * Checks to see if our contact list is empty
      */
-    private void checkForEmptyContactList(){
+    private void checkForEmptyContactList() {
 
         if (viewModel.getUserConnectionsList().isEmpty()) {
 
@@ -166,7 +168,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     /**
      * Checks to see if a different user has logged in
      */
-    private void checkIfDifferentUserHasLoggedIn(){
+    private void checkIfDifferentUserHasLoggedIn() {
 
         if (!viewModel.getSavedUserId().equals(dataManager.getSharedPrefs().getUserId())) {
 
@@ -181,19 +183,14 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
 
     /**
-     * Checks to see if the user is on the business directory list
+     * Resets list back to individual contacts
      */
-    private void checkShownContactType(){
+    private void checkShownContactType() {
 
-        if (viewModel.isBusinessContactsShown()){
-
-            onBusinessFilterClicked();
-
-        } else {
-
-            viewModel.requestContactsInfo(getViewModel());
-        }
-
+        binding.tvUserName.setText(userName);
+        binding.tvUserCode.setText(userCode);
+        onIndividualFilterClicked();
+        viewModel.requestContactsInfo(getViewModel());
     }
 
     @Override
@@ -318,6 +315,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             UserProfile profile = viewModel.getUserProfile();
             String name = profile.getFirstName() + " " + profile.getLastName();
+            userCode = profile.getCode();
+            userName = name;
             binding.tvUserCode.setText(profile.getCode());
             binding.tvUserName.setText(name);
 
@@ -326,7 +325,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(binding.ivUserProfileImage);
 
-            if (!profile.getImageUrl().replace(".","").isEmpty()) {
+            if (!profile.getImageUrl().replace(".", "").isEmpty()) {
 
                 binding.ivDefault.setVisibility(View.GONE);
             }
@@ -367,7 +366,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             binding.tvBusinessName.setText(businessProfile.getName());
 
-            if (!businessProfile.getImageUrl().replace(".","").isEmpty()) {
+            if (!businessProfile.getImageUrl().replace(".", "").isEmpty()) {
 
                 Glide.with(getBaseActivity())
                         .load(businessProfile.getImageUrl())
