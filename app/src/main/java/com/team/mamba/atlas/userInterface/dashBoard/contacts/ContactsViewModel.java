@@ -24,7 +24,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     private static List<UserConnections> allConnectionsList = new ArrayList<>();
     private static BusinessProfile selectedDirectory;
     private static String savedUserId = "";
-    private boolean businessContactsShown = false;
+    private static boolean businessContactsShown = false;
 
     private static BusinessProfile selectedBusinessProfile;
 
@@ -92,7 +92,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     }
 
     public void setBusinessContactsShown(boolean businessContactsShown) {
-        this.businessContactsShown = businessContactsShown;
+        ContactsViewModel.businessContactsShown = businessContactsShown;
     }
 
     public boolean isBusinessContactsShown() {
@@ -233,10 +233,8 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
                 }
         }
 
+            setBusinessContactsList(selectedConnections,requestingConnections);
 
-
-
-        setBusinessContactsList(selectedConnections,requestingConnections);
     }
 
 
