@@ -61,7 +61,7 @@ public class EnterPhoneDataModel {
 
                     if (task.isSuccessful()) {
 
-                        saveUser(viewModel);
+                        checkForCurrentUser(viewModel);
                         Logger.d("signInWithCredential:success");
 
                     } else {
@@ -81,7 +81,7 @@ public class EnterPhoneDataModel {
     /**
      * Checks to see if the user's details have already been saved
      */
-    private void saveUser(EnterPhoneViewModel viewModel) {
+    private void checkForCurrentUser(EnterPhoneViewModel viewModel) {
 
         String phone = viewModel.getPhoneNumber();
         String firstName = viewModel.getFirstName();
@@ -97,27 +97,20 @@ public class EnterPhoneDataModel {
 
                     if (task.isSuccessful()) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        List<UserProfile> userProfileList = task.getResult().toObjects(UserProfile.class);
 
-                            String userId = document.getData().get("id").toString();
-                            String userCode = document.getData().get("code").toString();
-                            String last = document.getData().get("lastName").toString();
-                            String phoneNumber = document.getData().get("phone").toString();
-                            String dob = document.getData().get("dob").toString();
+                        for (UserProfile profile: userProfileList){
 
-                            String adjustedDob = AppFormatter.timeStampFormatter.format(Double.valueOf(dob));
-
-                            if (last.equals(lastName)
-                                    && phoneNumber.equals(phone)
-                                    && adjustedDob.equals(dateOfBirth)) {
+                            if (profile.getPersonalPhone().equals(phone)
+                                    || profile.getPhone().equals(phone)){
 
                                 isUser = true;
-
-                                dataManager.getSharedPrefs().setUserId(userId);
-                                dataManager.getSharedPrefs().setUserCode(userCode);
+                                dataManager.getSharedPrefs().setUserId(profile.getId());
+                                dataManager.getSharedPrefs().setUserCode(profile.getCode());
                                 break;
                             }
                         }
+
 
                         if (isUser) {
 
@@ -210,7 +203,6 @@ public class EnterPhoneDataModel {
 
                     dataManager.getSharedPrefs().setUserId(myId);
                     dataManager.getSharedPrefs().setUserCode(viewModel.getUserCode());
-
                     viewModel.getNavigator().openDashBoard();
 
                 })

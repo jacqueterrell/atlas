@@ -246,6 +246,9 @@ implements EnterPhoneNavigator{
         }
     }
 
+
+
+
     /**
      * Shows an alert to validate the phone number
      *
