@@ -304,6 +304,25 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
     @Override
+    public void onDirectoryCountClicked() {
+
+        int count = viewModel.getDirectoryConnections().size();
+        //todo set the count total in the alert dialog
+        showTotalDirectoriesLayout();
+    }
+
+    @Override
+    public void onDirectoryCancelClicked() {
+        hideTotalDirectoriesLayout();
+    }
+
+    @Override
+    public void onDirectoryRowClicked(UserConnections userConnections) {
+
+        viewModel.getAllBusinessConnections(userConnections);
+    }
+
+    @Override
     public void onDataValuesReturned(List<UserConnections> connectionsList) {
 
 
@@ -376,6 +395,17 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
                 binding.ivBusinessDefault.setVisibility(View.GONE);
 
             }
+        }
+
+        if (viewModel.getDirectoryConnections().size() > 1){
+
+            int otherDirectoriesCount = viewModel.getDirectoryConnections().size() - 1;
+            String total = "+" + otherDirectoriesCount;
+            binding.tvDirectoryCount.setText(total);
+            binding.tvDirectoryCount.setVisibility(View.VISIBLE);
+
+        } else {
+            binding.tvDirectoryCount.setVisibility(View.INVISIBLE);
         }
 
         hideProgressSpinner();
@@ -678,6 +708,16 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             binding.cardNotificationBadge.setVisibility(View.GONE);
         }
+    }
+
+    private void showTotalDirectoriesLayout(){
+
+        //todo show the alert dialog and populate the adapter
+    }
+
+    private void hideTotalDirectoriesLayout(){
+
+        //todo hide the alert dialog
     }
 
     /**

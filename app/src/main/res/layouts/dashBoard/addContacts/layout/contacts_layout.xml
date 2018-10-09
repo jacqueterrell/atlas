@@ -85,6 +85,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:visibility="gone"
+            tools:visibility="visible"
             >
 
 
@@ -97,7 +98,6 @@
                 app:cardCornerRadius="35dp"
                 card_view:cardElevation="0dp"
                 android:layout_marginLeft="10dp"
-
                 >
 
 
@@ -136,6 +136,24 @@
                 tools:text="Raymond Engineering"
                 android:layout_gravity="center_vertical"/>
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tv_directory_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="22dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:padding="5dp"
+                tools:text="+1"
+                android:textColor="@color/colorPrimary"
+                android:background="?selectableItemBackgroundBorderless"/>
+
         </LinearLayout>
 
             <LinearLayout
@@ -146,6 +164,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:onClick="@{()-> viewModel.onProfileImageClicked()}"
+                tools:visibility="gone"
                 >
 
                 <FrameLayout
