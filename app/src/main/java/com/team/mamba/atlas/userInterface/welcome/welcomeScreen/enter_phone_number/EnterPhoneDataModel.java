@@ -100,9 +100,11 @@ public class EnterPhoneDataModel {
                         List<UserProfile> userProfileList = task.getResult().toObjects(UserProfile.class);
 
                         for (UserProfile profile: userProfileList){
+                            boolean isPhone = profile.getPersonalPhone().equals(phone) || profile.getPhone().equals(phone);
 
-                            if (profile.getPersonalPhone().equals(phone)
-                                    || profile.getPhone().equals(phone)){
+                            if (isPhone
+                                    && profile.getFirstName().trim().equalsIgnoreCase(firstName)
+                                    && profile.getLastName().trim().equalsIgnoreCase(lastName)){
 
                                 isUser = true;
                                 dataManager.getSharedPrefs().setUserId(profile.getId());
@@ -208,7 +210,7 @@ public class EnterPhoneDataModel {
                 })
                 .addOnFailureListener(e -> {
                     viewModel.getNavigator().handleError("Upload failed");
-                    //
+
                 });
 
     }
