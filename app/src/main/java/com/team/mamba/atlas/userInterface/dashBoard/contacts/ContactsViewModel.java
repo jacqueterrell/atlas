@@ -25,7 +25,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     private static BusinessProfile selectedDirectory;
     private static String savedUserId = "";
     private static boolean businessContactsShown = false;
-
+    private static List<UserConnections> directoryConnections = new ArrayList<>();
     private static BusinessProfile selectedBusinessProfile;
 
 
@@ -115,6 +115,11 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         return selectedDirectory;
     }
 
+    public List<UserConnections> getDirectoryConnections() {
+        return ContactsViewModel.directoryConnections;
+    }
+
+
     /********Onclick Listeners********/
 
     public void onInfoClicked() {
@@ -162,6 +167,10 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         getNavigator().onIndividualFilterClicked();
     }
 
+    public void onDirectoryCountClicked(){
+
+        getNavigator().onDirectoryCountClicked();
+    }
 
     /**************App Logic**************/
 
@@ -177,7 +186,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
      */
     private void getListOfAllDirectories() {
 
-        List<UserConnections> directoryConnections = new ArrayList<>();
+        directoryConnections.clear();
 
         for (UserConnections connections : getUserConnectionsList()) {
 
@@ -198,7 +207,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     }
 
 
-    private void getAllBusinessConnections(UserConnections selectedConnections){
+    public void getAllBusinessConnections(UserConnections selectedConnections){
 
         List<UserConnections> requestingConnections = new ArrayList<>();
 
