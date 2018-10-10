@@ -42,8 +42,6 @@
         android:theme="@style/AppTheme">
        <!-- android:largeHeap="true"-->
 
-
-
         <activity android:name=".userInterface.welcome._container_activity.WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
