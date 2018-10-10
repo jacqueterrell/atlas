@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -304,6 +305,21 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     }
 
     @Override
+    public void onDirectoryCountClicked() {
+
+        Fragment fragment = DirectoryListRecycler.newInstance(this,viewModel.getDirectoryConnections());
+        ChangeFragments.addFragmentFadeIn(fragment,getBaseActivity().getSupportFragmentManager(),"DirectoryRecycler",null);
+    }
+
+
+    @Override
+    public void onDirectoryRowClicked(UserConnections userConnections) {
+
+        viewModel.setSelectedBusinessProfile(userConnections.getBusinessProfile());
+        viewModel.getAllBusinessConnections(userConnections);
+    }
+
+    @Override
     public void onDataValuesReturned(List<UserConnections> connectionsList) {
 
 
@@ -375,7 +391,22 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
                 binding.ivBusinessDefault.setVisibility(View.GONE);
 
+            } else {
+
+                binding.ivBusinessProfile.setImageResource(android.R.color.transparent);
+                binding.ivBusinessDefault.setVisibility(View.VISIBLE);
             }
+        }
+
+        if (viewModel.getDirectoryConnections().size() > 1){
+
+            int otherDirectoriesCount = viewModel.getDirectoryConnections().size() - 1;
+            String total = "+" + otherDirectoriesCount;
+            binding.tvDirectoryCount.setText(total);
+            binding.tvDirectoryCount.setVisibility(View.VISIBLE);
+
+        } else {
+            binding.tvDirectoryCount.setVisibility(View.INVISIBLE);
         }
 
         hideProgressSpinner();
