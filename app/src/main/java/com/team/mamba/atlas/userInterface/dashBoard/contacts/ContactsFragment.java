@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -306,19 +307,15 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onDirectoryCountClicked() {
 
-        int count = viewModel.getDirectoryConnections().size();
-        //todo set the count total in the alert dialog
-        showTotalDirectoriesLayout();
+        Fragment fragment = DirectoryListRecycler.newInstance(this,viewModel.getDirectoryConnections());
+        ChangeFragments.addFragmentFadeIn(fragment,getBaseActivity().getSupportFragmentManager(),"DirectoryRecycler",null);
     }
 
-    @Override
-    public void onDirectoryCancelClicked() {
-        hideTotalDirectoriesLayout();
-    }
 
     @Override
     public void onDirectoryRowClicked(UserConnections userConnections) {
 
+        viewModel.setSelectedBusinessProfile(userConnections.getBusinessProfile());
         viewModel.getAllBusinessConnections(userConnections);
     }
 
@@ -394,6 +391,10 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
                 binding.ivBusinessDefault.setVisibility(View.GONE);
 
+            } else {
+
+                binding.ivBusinessProfile.setImageResource(android.R.color.transparent);
+                binding.ivBusinessDefault.setVisibility(View.VISIBLE);
             }
         }
 
@@ -708,16 +709,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
             binding.cardNotificationBadge.setVisibility(View.GONE);
         }
-    }
-
-    private void showTotalDirectoriesLayout(){
-
-        //todo show the alert dialog and populate the adapter
-    }
-
-    private void hideTotalDirectoriesLayout(){
-
-        //todo hide the alert dialog
     }
 
     /**

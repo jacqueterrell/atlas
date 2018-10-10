@@ -26,8 +26,6 @@ public interface ContactsNavigator {
 
     void onDirectoryRowClicked(UserConnections userConnections);
 
-    void onDirectoryCancelClicked();
-
     void handleError(String errorMsg);
 
     void onDataValuesReturned(List<UserConnections> connectionsList);

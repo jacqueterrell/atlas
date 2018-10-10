@@ -147,12 +147,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginRight="22dp"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 android:padding="5dp"
                 tools:text="+1"
                 android:textColor="@color/colorPrimary"
-                android:background="?selectableItemBackgroundBorderless"/>
+                android:background="?selectableItemBackgroundBorderless"
+                android:onClick="@{()-> viewModel.onDirectoryCountClicked()}"
+                />
 
         </LinearLayout>
 

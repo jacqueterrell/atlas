@@ -167,6 +167,10 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         getNavigator().onIndividualFilterClicked();
     }
 
+    public void onDirectoryCountClicked(){
+
+        getNavigator().onDirectoryCountClicked();
+    }
 
     /**************App Logic**************/
 
@@ -182,6 +186,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
      */
     private void getListOfAllDirectories() {
 
+        directoryConnections.clear();
 
         for (UserConnections connections : getUserConnectionsList()) {
 
