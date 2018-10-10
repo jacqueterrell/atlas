@@ -60,7 +60,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         String deviceToken = s;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         setFirebaseDeviceToken(deviceToken);
     }
 
@@ -189,7 +188,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("RK Scanner Notification");
+            notificationChannel.setDescription("Atlas Notification");
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.setVibrationPattern(pattern);

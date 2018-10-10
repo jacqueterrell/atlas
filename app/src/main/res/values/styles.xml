@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:dialogTheme">@style/MyDialogTheme</item>
         <item name="android:datePickerStyle">@style/MyDatePicker</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
 

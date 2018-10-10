@@ -125,5 +125,4 @@ public class EnterPhoneViewModel extends BaseViewModel<EnterPhoneNavigator> {
 
         dataModel.signInWithPhoneAuthCredential(viewModel);
     }
-
-}
+    }
