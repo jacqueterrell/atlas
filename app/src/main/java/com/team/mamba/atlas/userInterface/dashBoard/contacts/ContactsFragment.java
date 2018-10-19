@@ -247,7 +247,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onBusinessFilterClicked() {
 
-        binding.ivGroupFilter.setVisibility(View.GONE);
+        binding.layoutGroupFilter.setVisibility(View.GONE);
         binding.ivIndividualFilter.setVisibility(View.VISIBLE);
 
         binding.layoutIndividualProfile.setVisibility(View.GONE);
@@ -270,7 +270,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             }
         }
 
-        binding.ivGroupFilter.setVisibility(View.VISIBLE);
+        binding.layoutGroupFilter.setVisibility(View.VISIBLE);
         binding.ivIndividualFilter.setVisibility(View.GONE);
 
         binding.layoutBusinessProfile.setVisibility(View.GONE);
@@ -322,7 +322,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onDataValuesReturned(List<UserConnections> connectionsList) {
 
-
         binding.swipeContainer.setRefreshing(false);
 
         if (dataManager.getSharedPrefs().isBusinessAccount()) {
@@ -346,6 +345,8 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
                 binding.ivDefault.setVisibility(View.GONE);
             }
 
+            setUpDirectoryBadge();
+
         }
 
         userConnectionsList.clear();
@@ -361,6 +362,22 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         createCharList();
         hideProgressSpinner();
+    }
+
+
+    /**
+     * Sets the count for the directory badge
+     */
+    private void setUpDirectoryBadge(){
+
+        if (viewModel.getTotalDirectories() > 0){
+
+            binding.cardDirectoryBadge.setVisibility(View.VISIBLE);
+            binding.tvDirectoryBadgeCount.setText(String.valueOf(viewModel.getTotalDirectories()));
+
+        } else {
+            binding.cardDirectoryBadge.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -407,6 +424,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         } else {
             binding.tvDirectoryCount.setVisibility(View.INVISIBLE);
+            binding.cardDirectoryBadge.setVisibility(View.INVISIBLE);
         }
 
         hideProgressSpinner();

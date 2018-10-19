@@ -211,7 +211,7 @@ public class ContactsDataModel {
 
 
     /**
-     * Sets the correlating profile for our UserConnections list
+     * Sets the correlating profile (business or user) for our UserConnections list
      *
      */
     private void setConnectionsProfiles(ContactsViewModel viewModel){
@@ -260,9 +260,17 @@ public class ContactsDataModel {
         adjustedConnections.addAll(individualConnections);
         adjustedConnections.addAll(businessConnections);
 
+
+        int totalDirectories = 0;
+        for (UserConnections connections : adjustedConnections) {
+            if (connections.isOrgBus && connections.isDirectory) {
+                totalDirectories += 1;
+            }
+        }
+
+        viewModel.setTotalDirectories(totalDirectories);
         viewModel.setUserConnectionsList(adjustedConnections);
         viewModel.getNavigator().onDataValuesReturned(adjustedConnections);
-
     }
 
 

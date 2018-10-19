@@ -149,17 +149,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         binding.recyclerRecentActivity.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerRecentActivity.setAdapter(recentActivitiesAdapter);
 
-        binding.swipeContainerRecentActiviy.setOnRefreshListener(() -> {
-
-            viewModel.getAllUsers(getViewModel());
-
-        });
-
-        binding.swipeContainerUserStats.setOnRefreshListener(() -> {
-
-            viewModel.getAllUsers(getViewModel());
-
-        });
+        binding.swipeContainerRecentActiviy.setOnRefreshListener(() -> viewModel.getAllUsers(getViewModel()));
+        binding.swipeContainerUserStats.setOnRefreshListener(() -> viewModel.getAllUsers(getViewModel()));
 
 
         //retrieves the cached list, also checks to see if the user logged out

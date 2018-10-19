@@ -27,6 +27,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     private static boolean businessContactsShown = false;
     private static List<UserConnections> directoryConnections = new ArrayList<>();
     private static BusinessProfile selectedBusinessProfile;
+    private static int totalDirectories = 0;
 
 
     public void setDataModel(ContactsDataModel dataModel) {
@@ -119,6 +120,13 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         return ContactsViewModel.directoryConnections;
     }
 
+    public void setTotalDirectories(int totalDirectories) {
+        ContactsViewModel.totalDirectories = totalDirectories;
+    }
+
+    public int getTotalDirectories() {
+        return totalDirectories;
+    }
 
     /********Onclick Listeners********/
 
