@@ -139,16 +139,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
 
-        userStatsAdapter = new UserStatsAdapter(userStatsList);
-        binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
-        binding.recyclerUserStats.setItemAnimator(new DefaultItemAnimator());
-        binding.recyclerUserStats.setAdapter(userStatsAdapter);
-
-        recentActivitiesAdapter = new RecentActivitiesAdapter(getViewModel(), recentActivityConnections);
-        binding.recyclerRecentActivity.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
-        binding.recyclerRecentActivity.setItemAnimator(new DefaultItemAnimator());
-        binding.recyclerRecentActivity.setAdapter(recentActivitiesAdapter);
-
+        setUpRecyclerViews();
+        showHideAddContactButton();
         binding.swipeContainerRecentActiviy.setOnRefreshListener(() -> viewModel.getAllUsers(getViewModel()));
         binding.swipeContainerUserStats.setOnRefreshListener(() -> viewModel.getAllUsers(getViewModel()));
 
@@ -197,7 +189,37 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         return binding.getRoot();
     }
 
-    @Override
+    private void setUpRecyclerViews(){
+
+        userStatsAdapter = new UserStatsAdapter(userStatsList);
+        binding.recyclerUserStats.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerUserStats.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerUserStats.setAdapter(userStatsAdapter);
+
+        recentActivitiesAdapter = new RecentActivitiesAdapter(getViewModel(), recentActivityConnections);
+        binding.recyclerRecentActivity.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerRecentActivity.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerRecentActivity.setAdapter(recentActivitiesAdapter);
+
+    }
+
+    /**
+     * Hides the add contact button if the user is logged in as
+     * a business.
+     */
+    private void showHideAddContactButton(){
+
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            binding.ivAdd.setVisibility(View.INVISIBLE);
+
+        } else {
+
+            binding.ivAdd.setVisibility(View.VISIBLE);
+        }
+    }
+
+        @Override
     public void onUserStatsInfoClicked() {
 
         YoYo.with(Techniques.FadeIn)
@@ -270,7 +292,10 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onAddContactClicked() {
 
-        parentNavigator.openAddContactDialog();
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+
+            parentNavigator.openAddContactDialog();
+        }
     }
 
     @Override
@@ -311,7 +336,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     @Override
     public void onRecentActivitiesRowClicked(UserConnections userConnections) {
 
-        if (userConnections.isOrgBus) {
+        if (userConnections.isOrgBus && !userConnections.isOverrideBusinessProfile()) {
 
             for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
 
@@ -364,30 +389,77 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
             } else {
 
-                for (UserProfile profile : viewModel.getAllUsersList()) {//find the contact's profile
 
-                    if (profile.getId().equals(userConnections.getConsentingUserID())) {
+                if (userConnections.isOverrideBusinessProfile()){
 
-                        selectedContactProfile = profile;
-                    }
+                    openUserProfileLoggedInAsOrg(userConnections);
+
+                } else {
+                    openUserProfile(userConnections);
                 }
+            }
+        }
+    }
 
-                for (UserConnections con : viewModel.getUserConnections()) {// get the contact's connection type
+    /**
+     * Selects the correct profile for If the user is logged in as a business
+     * and clicks on an individual profile
+     * @param userConnections
+     */
+    private void openUserProfileLoggedInAsOrg(UserConnections userConnections){
 
-                    String userId = dataManager.getSharedPrefs().getUserId();
+        for (UserProfile profile : viewModel.getAllUsersList()) {//find the contact's profile
 
-                    if (con.getConsentingUserID().equals(userId) && con.getRequestingUserID().equals(userConnections.getConsentingUserID())) {
+            if (profile.getId().equals(userConnections.getRequestingUserID())) {
+
+                selectedContactProfile = profile;
+            }
+        }
+
+        for (UserConnections con : viewModel.getUserConnections()) {// get the contact's connection type
+
+            String userId = dataManager.getSharedPrefs().getUserId();
+
+            if (con.getConsentingUserID().equals(userId) && con.getRequestingUserID().equals(userConnections.getRequestingUserID())) {
 
 
-                        selectedContactProfile.setConnectionType(con.getConnectionType());
-
-                    }
-                }
-
-                parentNavigator.openUserProfile(selectedContactProfile);
+                selectedContactProfile.setConnectionType(con.getConnectionType());
 
             }
         }
+
+        parentNavigator.openUserProfile(selectedContactProfile);
+    }
+
+
+    /**
+     * Selects the correct profile for If the user is logged in as an individual
+     * and clicks on an individual profile
+     * @param userConnections
+     */
+    private void openUserProfile(UserConnections userConnections){
+
+        for (UserProfile profile : viewModel.getAllUsersList()) {//find the contact's profile
+
+            if (profile.getId().equals(userConnections.getConsentingUserID())) {
+
+                selectedContactProfile = profile;
+            }
+        }
+
+        for (UserConnections con : viewModel.getUserConnections()) {// get the contact's connection type
+
+            String userId = dataManager.getSharedPrefs().getUserId();
+
+            if (con.getConsentingUserID().equals(userId) && con.getRequestingUserID().equals(userConnections.getConsentingUserID())) {
+
+
+                selectedContactProfile.setConnectionType(con.getConnectionType());
+
+            }
+        }
+
+        parentNavigator.openUserProfile(selectedContactProfile);
     }
 
     @Override

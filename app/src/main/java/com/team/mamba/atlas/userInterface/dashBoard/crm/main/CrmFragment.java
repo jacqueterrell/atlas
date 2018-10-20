@@ -206,6 +206,12 @@ public class CrmFragment extends BaseFragment<CrmLayoutBinding, CrmViewModel>
 
         crmAdapter.notifyDataSetChanged();
         binding.swipeContainer.setRefreshing(false);
+
+        if (getFilteredNotes().isEmpty()){
+            binding.tvEmptyCrmPrompt.setVisibility(View.VISIBLE);
+        } else {
+        binding.tvEmptyCrmPrompt.setVisibility(View.GONE);
+        }
     }
 
     @Override

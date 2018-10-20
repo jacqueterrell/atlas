@@ -50,6 +50,8 @@
     </string>
     <string name="describe_the_opp">Please describe the opportunity.</string>
 
+    <string name="empty_crm_prompt">Add business opportunities by tapping the above pencil button.</string>
+
     <string name="export_generate_csv">The export function generates a CSV file that is sent to your work email address.</string>
     <string name="export_personal_notes">Personal notes are not exported.</string>
     <string name="export_select_fields">Please select the fields you would like to export.</string>
@@ -85,6 +87,8 @@
     <string name="my_birthday">My Birthday:</string>
 
     <string name="network">Network</string>
+    <string name="network_management_title">View and edit all users with whom you are sharing your profile data. Just
+    swipe to delete, or tap to edit the connection type.</string>
 
     <string-array name="next_step_array">
         <item>Email</item>
@@ -141,8 +145,4 @@
     <string name="where_did_you_meet_event">Where did you meet? \n(i.e., Name of the Event)</string>
 
     <string name="who_did_you_meet_body">Who did you meet? \n (i.e., Primary Point of Contact)</string>
-
-    <string name="network_management_title">View and edit all users with whom you are sharing your profile data. Just
-    swipe to delete, or tap to edit the connection type.</string>
-
 </resources>

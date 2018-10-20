@@ -190,7 +190,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
 
     /**
-     * Gets a the most current business directory for the user
+     * Gets the most current business directory for the user
      */
     private void getListOfAllDirectories() {
 
@@ -237,17 +237,17 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
         for (UserConnections connections : requestingConnections) {
 
-                for (UserProfile profile : getUserProfileList()) {
+            for (UserProfile profile : getUserProfileList()) {
 
-                    if (connections.requestingUserID.equals(profile.getId())) {
+                if (connections.requestingUserID.equals(profile.getId())) {
 
-                        profile.setShareNeeds(getSelectedDirectory().getShareNeeds());
-                        connections.setUserProfile(profile);
-                        connections.setOverrideBusinessProfile(true);
-                        connections.setConnectionType(profile.getConnectionType());
+                    profile.setShareNeeds(getSelectedDirectory().getShareNeeds());
+                    connections.setUserProfile(profile);
+                    connections.setOverrideBusinessProfile(true);
+                    connections.setConnectionType(profile.getConnectionType());
 
-                    }
                 }
+            }
         }
 
             setBusinessContactsList(selectedConnections,requestingConnections);

@@ -44,7 +44,7 @@ public class NetworkManagementAdapter extends RecyclerView.Adapter<NetworkManage
 
         UserConnections connections = userProfileList.get(position);
 
-        if (connections.isOrgBus){
+        if (connections.isOrgBus && !connections.isOverrideBusinessProfile()){
 
             BusinessProfile profile = connections.getBusinessProfile();
             holder.binding.tvName.setText(profile.getName());
@@ -54,7 +54,6 @@ public class NetworkManagementAdapter extends RecyclerView.Adapter<NetworkManage
         } else {
 
             UserProfile profile = connections.getUserProfile();
-
             String name = profile.getFirstName() + " " + profile.getLastName();
             holder.binding.tvDate.setText(connections.getDateToString());
             holder.binding.tvName.setText(name);

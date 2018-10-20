@@ -466,7 +466,6 @@ public class DescribeConnectionsDataModel {
                     if (viewModel.isApprovingConnection()) {
 
                         updateInitialConnection(viewModel);
-
                     }
 
                 })
