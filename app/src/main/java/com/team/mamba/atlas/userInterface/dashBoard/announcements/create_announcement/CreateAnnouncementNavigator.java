@@ -3,4 +3,6 @@ package com.team.mamba.atlas.userInterface.dashBoard.announcements.create_announ
 public interface CreateAnnouncementNavigator {
 
     void onSendButtonClicked();
+
+    void handleError(String errorMsg);
 }

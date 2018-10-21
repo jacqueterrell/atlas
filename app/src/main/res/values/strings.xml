@@ -44,6 +44,9 @@
         <item>Doctor of Dental Surgery (DDS)</item>
     </string-array>
 
+    <string name="send_announcement_alert_body">All of your business or organization\'s contacts will receive a notification informing
+    them of the new announcement.</string>
+
     <string name="describe_connections_info">Atlas uses the following designations to determine how much information
         you share with your connection. Atlas will only share your work information with the Business Contact, Colleague,
         New Acquaintance, and Client designations (similar to if you shared your business card). Should you have personal

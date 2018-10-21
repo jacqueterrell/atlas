@@ -5,7 +5,8 @@ import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 public class CreateAnnouncementViewModel extends BaseViewModel<CreateAnnouncementNavigator> {
 
     private CreateAnnouncementDataModel dataModel;
-    private boolean announcment = true;
+    private boolean event = true;
+    private String announcementMessage;
 
     /*************Getters and Setters***************/
 
@@ -14,18 +15,33 @@ public class CreateAnnouncementViewModel extends BaseViewModel<CreateAnnouncemen
         this.dataModel = dataModel;
     }
 
-    public void setAnnouncment(boolean announcment) {
-        this.announcment = announcment;
+    public void setEvent(boolean event) {
+        this.event = event;
     }
 
-    public boolean isAnnouncment() {
-        return announcment;
+    public boolean isEvent() {
+        return event;
+    }
+
+    public void setAnnouncementMessage(String announcementMessage) {
+        this.announcementMessage = announcementMessage;
+    }
+
+    public String getAnnouncementMessage() {
+        return announcementMessage;
     }
 
     /***********Onclick Listeners**************/
 
-    public void onSendButtonClicked(){
+    public void onSendButtonClicked() {
 
         getNavigator().onSendButtonClicked();
+    }
+
+    /*********DataModel Requests*************/
+
+    public void sendAnnouncement(CreateAnnouncementViewModel viewModel) {
+
+        dataModel.sendAnnouncement(viewModel);
     }
 }

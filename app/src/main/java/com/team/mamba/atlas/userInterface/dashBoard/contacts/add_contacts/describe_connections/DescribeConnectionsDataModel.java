@@ -1,7 +1,9 @@
 package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.orhanobut.logger.Logger;
@@ -33,13 +35,9 @@ public class DescribeConnectionsDataModel {
     /**
      * Based on the account type of business or individual, makes a
      * request to add a user based on received credentials
-     *
-     * @param viewModel
-     * @param lastName
-     * @param code
-     * @param connectionType
      */
-    public void initiateNewUserRequest(DescribeConnectionsViewModel viewModel, String lastName, String code, int connectionType) {
+    public void initiateNewUserRequest(DescribeConnectionsViewModel viewModel, String lastName, String code,
+            int connectionType) {
         //query users and search for a match...
 
         if (dataManager.getSharedPrefs().isBusinessAccount()) {
@@ -61,7 +59,8 @@ public class DescribeConnectionsDataModel {
      * @param code           the selected code
      * @param connectionType the passed in connection type
      */
-    private void requestNewUserIndividual(DescribeConnectionsViewModel viewModel, String lastName, String code, int connectionType) {
+    private void requestNewUserIndividual(DescribeConnectionsViewModel viewModel, String lastName, String code,
+            int connectionType) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserProfile> selectedProfileList = new ArrayList<>();
@@ -115,7 +114,7 @@ public class DescribeConnectionsDataModel {
 
                     } else {
 
-                        Logger.e(task.getException().getMessage());
+                        handleError(task,viewModel);
                     }
                 });
     }
@@ -123,11 +122,9 @@ public class DescribeConnectionsDataModel {
 
     /**
      * Creates a new Connection for the User Request
-     *
-     * @param viewModel
-     * @param consentingProfile
      */
-    private void addNewConnectionIndividual(DescribeConnectionsViewModel viewModel, UserProfile consentingProfile, int connectionType) {
+    private void addNewConnectionIndividual(DescribeConnectionsViewModel viewModel, UserProfile consentingProfile,
+            int connectionType) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference newUserRef = db.collection(AppConstants.CONNECTIONS_COLLECTION).document();
@@ -159,46 +156,48 @@ public class DescribeConnectionsDataModel {
                 .get()
                 .addOnCompleteListener(task -> {
 
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
 
                         List<String> consentingIdList = new ArrayList<>();
 
                         List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
 
-                        for (UserConnections connection : connectionsList){
+                        for (UserConnections connection : connectionsList) {
 
-                            if (connection.getConsentingUserID().equals(consentingProfile.getId())){
+                            if (connection.getConsentingUserID().equals(consentingProfile.getId())) {
 
                                 consentingIdList.add(consentingProfile.getId());
                             }
                         }
 
                         //if the connection does not already exists
-                        if (consentingIdList.isEmpty()){
+                        if (consentingIdList.isEmpty()) {
 
                             newUserRef.set(userConnections);
 
                         }
 
+                        if (viewModel.isApprovingConnection()) {
+
+                            updateInitialConnection(viewModel);
+
+                        } else {
+
+                            viewModel.getNavigator().onRequestSent();
+                        }
+
+                    } else {
+
+                        handleError(task,viewModel);
                     }
 
                 });
 
-        if (viewModel.isApprovingConnection()) {
-
-            updateInitialConnection(viewModel);
-
-        } else {
-
-            viewModel.getNavigator().onRequestSent();
-        }
     }
 
     /**
      * If the user is approving a connection request, this updates the original request
      * setting the confirmed field to 'true' and updating the timestamp
-     *
-     * @param viewModel
      */
     private void updateInitialConnection(DescribeConnectionsViewModel viewModel) {
 
@@ -222,7 +221,11 @@ public class DescribeConnectionsDataModel {
 
                     } else {
 
-                        Logger.e("Failed to update connection " + task.getException().getLocalizedMessage());
+                        if (task.getException() != null) {
+
+                            viewModel.getNavigator().handleError(
+                                    "Failed to update connection " + task.getException().getLocalizedMessage());
+                        }
                     }
                 });
 
@@ -233,10 +236,8 @@ public class DescribeConnectionsDataModel {
     /**
      * Adds the the consenting user and the requesting user to each other's
      * contact list.
-     *
-     * @param viewModel
      */
-    private void addToUsersContactList(DescribeConnectionsViewModel viewModel){
+    private void addToUsersContactList(DescribeConnectionsViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         UserConnections connections = viewModel.getRequestingConnection();
@@ -260,7 +261,7 @@ public class DescribeConnectionsDataModel {
 
                         } else {
 
-                            Logger.e(task.getException().getMessage());
+                            handleError(task,viewModel);
                         }
                     });
 
@@ -270,11 +271,11 @@ public class DescribeConnectionsDataModel {
                     .get()
                     .addOnCompleteListener(task -> {
 
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
                             UserProfile profile = task.getResult().toObjects(UserProfile.class).get(0);
-                            Map<String,String> contactsMap = profile.getConnections();
-                            contactsMap.put(loggedInUserProfile.getId(),loggedInUserProfile.getId());
+                            Map<String, String> contactsMap = profile.getConnections();
+                            contactsMap.put(loggedInUserProfile.getId(), loggedInUserProfile.getId());
 
                             //update the consenting profile with the new contact added
                             db.collection(AppConstants.USERS_COLLECTION)
@@ -288,13 +289,16 @@ public class DescribeConnectionsDataModel {
 
                                         } else {
 
-                                            Logger.e(result.getException().getMessage());
+                                            handleError(task, viewModel);
                                         }
                                     });
 
                         } else {
 
-                            Logger.e(task.getException().getMessage());
+                            if (task.getException() != null) {
+
+                                viewModel.getNavigator().handleError(task.getException().getLocalizedMessage());
+                            }
                         }
 
                     });
@@ -302,6 +306,7 @@ public class DescribeConnectionsDataModel {
         }
 
     }
+
 
     public void updateContactsConnection(DescribeConnectionsViewModel viewModel, UserConnections connection) {
 
@@ -319,7 +324,11 @@ public class DescribeConnectionsDataModel {
 
                     } else {
 
-                        Logger.e("Failed to update connection " + task.getException().getLocalizedMessage());
+                        if (task.getException() != null) {
+
+                            viewModel.getNavigator().handleError(
+                                    "Failed to update connection " + task.getException().getLocalizedMessage());
+                        }
                     }
                 });
 
@@ -332,13 +341,9 @@ public class DescribeConnectionsDataModel {
     /**
      * Retrieves the business profile for the logged in Business
      * Also adds all of their contacts to a list.
-     *
-     * @param viewModel
-     * @param lastName
-     * @param code
-     * @param connectionType
      */
-    public void getBusinessProfile(DescribeConnectionsViewModel viewModel, String lastName, String code, int connectionType) {
+    public void getBusinessProfile(DescribeConnectionsViewModel viewModel, String lastName, String code,
+            int connectionType) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<String> connectionIdList = new ArrayList<>();
@@ -356,7 +361,8 @@ public class DescribeConnectionsDataModel {
 
                         viewModel.setLoggedInProfileBusiness(businessProfiles.get(0));
 
-                        for (Map.Entry<String, String> entry : profile.getContacts().entrySet()) {//get a list of all current connections
+                        for (Map.Entry<String, String> entry : profile.getContacts()
+                                .entrySet()) {//get a list of all current connections
 
                             String userId = entry.getKey();
                             connectionIdList.add(userId);
@@ -367,7 +373,7 @@ public class DescribeConnectionsDataModel {
 
                     } else {
 
-                        Logger.e(task.getException().getMessage());
+                        handleError(task, viewModel);
                     }
                 });
 
@@ -375,14 +381,9 @@ public class DescribeConnectionsDataModel {
 
     /**
      * uses the received credentials to query our Users Collection for a match
-     *
-     * @param viewModel
-     * @param lastName
-     * @param code
-     * @param connectionType
-     * @param idList
      */
-    private void getAllUsersForBusiness(DescribeConnectionsViewModel viewModel, String lastName, String code, int connectionType, List<String> idList) {
+    private void getAllUsersForBusiness(DescribeConnectionsViewModel viewModel, String lastName, String code,
+            int connectionType, List<String> idList) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserProfile> selectedProfileList = new ArrayList<>();
@@ -391,34 +392,40 @@ public class DescribeConnectionsDataModel {
                 .get()
                 .addOnCompleteListener(task -> {
 
-                    List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
+                    if (task.isSuccessful()) {
 
-                    for (UserProfile profile : userProfiles) {
+                        List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
-                        if (profile.getLastName().toLowerCase().equals(lastName.toLowerCase().trim())
-                                && profile.getCode().equals(code)) {
+                        for (UserProfile profile : userProfiles) {
 
-                            selectedProfileList.add(profile);
+                            if (profile.getLastName().toLowerCase().equals(lastName.toLowerCase().trim())
+                                    && profile.getCode().equals(code)) {
+
+                                selectedProfileList.add(profile);
+                            }
                         }
-                    }
 
+                        if (selectedProfileList.isEmpty()) {//no user found
 
-                    if (selectedProfileList.isEmpty()) {//no user found
-
-                        viewModel.getNavigator().showUserNotFoundAlert();
-
-                    } else {
-
-                        UserProfile selectedProfile = selectedProfileList.get(0);
-
-                        if (idList.contains(selectedProfile.getId())) {//already a contact
-
-                            viewModel.getNavigator().showAlreadyAContactAlert();
+                            viewModel.getNavigator().showUserNotFoundAlert();
 
                         } else {
 
-                            addNewConnectionBusiness(viewModel, selectedProfile, connectionType);
+                            UserProfile selectedProfile = selectedProfileList.get(0);
+
+                            if (idList.contains(selectedProfile.getId())) {//already a contact
+
+                                viewModel.getNavigator().showAlreadyAContactAlert();
+
+                            } else {
+
+                                addNewConnectionBusiness(viewModel, selectedProfile, connectionType);
+                            }
                         }
+
+                    } else {
+
+                        handleError(task, viewModel);
                     }
 
                 });
@@ -428,11 +435,9 @@ public class DescribeConnectionsDataModel {
 
     /**
      * Creates a new Connection for the User Request
-     *
-     * @param viewModel
-     * @param consentingProfile
      */
-    private void addNewConnectionBusiness(DescribeConnectionsViewModel viewModel, UserProfile consentingProfile, int connectionType) {
+    private void addNewConnectionBusiness(DescribeConnectionsViewModel viewModel, UserProfile consentingProfile,
+            int connectionType) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference newUserRef = db.collection(AppConstants.CONNECTIONS_COLLECTION).document();
@@ -471,9 +476,18 @@ public class DescribeConnectionsDataModel {
                 })
                 .addOnFailureListener(e -> {
 
+                    viewModel.getNavigator().handleError(e.getMessage());
                     Logger.e(e.getMessage());
                 });
     }
 
 
+    private void handleError(Task task, DescribeConnectionsViewModel viewModel) {
+
+        if (task.getException() != null) {
+
+            viewModel.getNavigator().handleError(task.getException().getLocalizedMessage());
+        }
+
+    }
 }

@@ -259,6 +259,13 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         dialog.show();
     }
 
+    @Override
+    public void handleError(String errorMsg) {
+
+        hideProgressSpinner();
+        showAlert("Error",errorMsg);
+    }
+
     private void setUpListeners(){
 
         //family member

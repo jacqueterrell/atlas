@@ -1,25 +1,24 @@
 package com.team.mamba.atlas.userInterface.dashBoard.announcements.create_announcement;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.databinding.CreateAnnouncementBinding;
 import javax.inject.Inject;
 
-public class CreateAnnouncementFragment extends BaseFragment<CreateAnnouncementBinding,CreateAnnouncementViewModel>
-implements CreateAnnouncementNavigator{
+public class CreateAnnouncementFragment extends BaseFragment<CreateAnnouncementBinding, CreateAnnouncementViewModel>
+        implements CreateAnnouncementNavigator {
 
 
     @Inject
@@ -48,14 +47,9 @@ implements CreateAnnouncementNavigator{
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
-    @Override
-    public void onSendButtonClicked() {
-
-        String msg = binding.etMessage.getText().toString();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,47 +60,70 @@ implements CreateAnnouncementNavigator{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-         binding = getViewDataBinding();
-         setUpSwitchListener();
-         setUpEditText();
-         showSoftKeyboard(binding.etMessage);
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = getViewDataBinding();
+        setUpSwitchListener();
+        setUpEditText();
 
-
-         return binding.getRoot();
+        return binding.getRoot();
     }
 
-    private void showSoftKeyboard(View view) {
+    @Override
+    public void onSendButtonClicked() {
 
-        if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        String msg = binding.etMessage.getText().toString();
+
+        if (!msg.isEmpty()) {
+
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+            String title = "Send Announcement";
+            dialog.setTitle(title)
+                    .setMessage(getResources().getString(R.string.send_announcement_alert_body))
+                    .setNegativeButton("Cancel", (paramDialogInterface, paramInt) -> {
+                    })
+                    .setPositiveButton("Send", (paramDialogInterface, paramInt) -> {
+
+                        viewModel.setAnnouncementMessage(msg);
+                        viewModel.sendAnnouncement(getViewModel());
+                        showSnackbar("Your announcement has been posted");
+                    });
+
+            dialog.show();
         }
-
     }
 
-    private void setUpSwitchListener(){
+    @Override
+    public void handleError(String errorMsg) {
 
-        binding.switchFlipLabel.setOnCheckedChangeListener((compoundButton, isChecked) ->{
+        showAlert("Error",errorMsg);
+    }
 
-            if (isChecked){
+    private void setUpSwitchListener() {
 
-                viewModel.setAnnouncment(true);
+        binding.switchFlipLabel.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+
+            if (isChecked) {
+
+                viewModel.setEvent(false);
                 binding.tvAnnouncement.setTextColor(getResources().getColor(R.color.black));
                 binding.tvEvent.setTextColor(getResources().getColor(R.color.material_icons_light));
-                binding.switchFlipLabel.getTrackDrawable().setColorFilter(getResources().getColor(R.color.dessert_green), PorterDuff.Mode.MULTIPLY);
+                binding.switchFlipLabel.getTrackDrawable()
+                        .setColorFilter(getResources().getColor(R.color.dessert_green), PorterDuff.Mode.MULTIPLY);
 
             } else {
 
-                viewModel.setAnnouncment(false);
+                viewModel.setEvent(true);
                 binding.tvAnnouncement.setTextColor(getResources().getColor(R.color.material_icons_light));
                 binding.tvEvent.setTextColor(getResources().getColor(R.color.black));
-                binding.switchFlipLabel.getTrackDrawable().setColorFilter(getResources().getColor(R.color.material_icons_light), PorterDuff.Mode.MULTIPLY);
+                binding.switchFlipLabel.getTrackDrawable()
+                        .setColorFilter(getResources().getColor(R.color.material_icons_light),
+                                PorterDuff.Mode.MULTIPLY);
             }
         });
     }
 
-    private void setUpEditText(){
+    private void setUpEditText() {
 
         binding.etMessage.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,7 +138,7 @@ implements CreateAnnouncementNavigator{
                 int leftToGo = 140 - size;
                 binding.tvCharRemaining.setText(String.valueOf(leftToGo));
 
-                if (leftToGo == 0){
+                if (leftToGo == 0) {
 
                     binding.tvCharRemaining.setTextColor(Color.RED);
                     binding.tvRemaining.setTextColor(Color.RED);

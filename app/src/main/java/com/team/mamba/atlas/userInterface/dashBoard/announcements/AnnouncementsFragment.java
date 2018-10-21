@@ -80,7 +80,7 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
     @Override
@@ -123,6 +123,7 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
             binding.ivAddAnnouncement.setVisibility(View.INVISIBLE);
         }
 
+        showProgressSpinner();
         viewModel.requestAnnouncements(getViewModel());
 
         return binding.getRoot();
@@ -131,9 +132,9 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
     @Override
     public void onAnnouncementsReturned() {
 
+        hideProgressSpinner();
         announcementsList.clear();
         announcementsList.addAll(viewModel.getAnnouncementsList());
-
         Collections.sort(announcementsList,(o1,o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
 
         announcementsAdapter.notifyDataSetChanged();
@@ -143,7 +144,8 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
     @Override
     public void handleError(String errorMsg) {
 
-        showSnackbar(errorMsg);
+        hideProgressSpinner();
+        showAlert("Error",errorMsg);
         binding.swipeContainer.setRefreshing(false);
     }
 
