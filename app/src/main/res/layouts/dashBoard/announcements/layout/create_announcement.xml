@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.team.mamba.atlas.userInterface.dashBoard.announcements.create_announcement.CreateAnnouncementViewModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <ImageButton
+                android:id="@+id/iv_send_announcement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{()-> viewModel.onSendButtonClicked()}"
+                android:padding="10dp"
+                android:src="@drawable/ic_send" />
+
+            <EditText
+                android:id="@+id/et_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="@font/lato"
+                android:hint="@string/create_announcement_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters"
+                android:maxLength="140" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".3" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="85dp">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_flip_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:checked="true"
+                    android:padding="15dp"
+                    app:switchMinWidth="50dp"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/dessert_green" />
+
+                <LinearLayout
+                    android:id="@+id/layout_char_remaining"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_char_remaining"
+                        style="@style/App_Text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="3"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textSize="17sp"
+                        android:text="140" />
+
+                    <TextView
+                        style="@style/App_Text_view"
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:text=" characters remain"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textSize="17sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/layout_char_remaining"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_event"
+                        style="@style/App_Text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="Event"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textColor="@color/material_icons_light"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/tv_announcement"
+                        style="@style/App_Text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Announcement"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textSize="17sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".7" />
+
+        </LinearLayout>
+
+
+        <net.bohush.geometricprogressview.GeometricProgressView
+            android:id="@+id/progress_spinner"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:gp_color="@color/grey"
+            app:gp_duration="800"
+            app:gp_figure_padding="3dp"
+            app:gp_number_of_angles="12"
+            app:gp_type="triangle"
+            android:layout_marginBottom="100dp"/>
+
+    </FrameLayout>
+
+</layout>

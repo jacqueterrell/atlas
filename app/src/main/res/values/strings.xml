@@ -22,6 +22,8 @@
     acquaintance type sees the least. To change the Connection Type please go under Settings -&gt; Network Management and select the individual
     you\'d like to edit.</string>
 
+    <string name="create_announcement_hint">Your announcement will be shared with your\n business or organization\'s contacts.\n Please enter here:</string>
+
     <string name="crm_stage_four">Congratulations are in order</string>
     <string name="crm_stage_one">The qualification stage. You\'re evaluating whether to this is a real opportunity and meeting with the client</string>
     <string name="crm_stage_three">Your\'re currently negotiating with the client</string>

@@ -1,199 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsViewModel"/>
+            type="com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsViewModel" />
 
     </data>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <TextView
-        style="@style/App_Text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-        android:textSize="20sp"
-        android:text="Notifications"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="15dp"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-    </android.support.v7.widget.RecyclerView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp">
-
-        <FrameLayout
-            android:layout_width="55dp"
-            android:layout_height="55dp">
-
-            <ImageView
-                style="@style/IconImageView"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_tachometer_solid"
-                android:layout_gravity="center"
-                android:tint="@color/material_icon"
-                android:onClick="@{()-> viewModel.onInfoClicked()}"
-                />
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_request_badge"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_gravity="end"
-                android:innerRadius = "0dp"
-                android:shape = "ring"
-                app:cardCornerRadius = "13dp"
-                app:cardBackgroundColor="#c3352b"
-                android:visibility="gone"
-                tools:visibility="visible"
-                >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_request_badge_count"
+                    style="@style/App_Text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    style="@style/App_Text_view"
-                    tools:text="15"
-                    android:textSize="12sp"
-                    android:maxLength="2"
-                    android:textColor="@color/white"/>
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Notifications"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:textSize="20sp" />
 
-            </android.support.v7.widget.CardView>
+                <ImageView
+                    android:id="@+id/iv_add_announcement"
+                    style="@style/IconImageView"
+                    android:layout_gravity="end|center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{()-> viewModel.onAddAnnouncementClicked()}"
+                    android:scaleX="1.3"
+                    android:scaleY="1.3"
+                    android:src="@drawable/ic_add"
+                    android:tint="@color/dessert_green"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
-        </FrameLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <FrameLayout
-            android:layout_width="55dp"
-            android:layout_height="55dp">
-
-
-
-            <ImageView
-                android:id="@+id/iv_contacts"
-                style="@style/IconImageView"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_address_book_solid"
-                android:onClick="@{()-> viewModel.onContactsClicked()}"
-                android:layout_gravity="center"
-                android:tint="@color/material_icon"
-                />
+            </FrameLayout>
 
 
-        </FrameLayout>
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp">
+
+                <FrameLayout
+                    android:layout_width="55dp"
+                    android:layout_height="55dp">
+
+                    <ImageView
+                        style="@style/IconImageView"
+                        android:layout_gravity="center"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> viewModel.onInfoClicked()}"
+                        android:src="@drawable/ic_tachometer_solid"
+                        android:tint="@color/material_icon" />
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_request_badge"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="end"
+                        android:innerRadius="0dp"
+                        android:shape="ring"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="#c3352b"
+                        app:cardCornerRadius="13dp"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/tv_request_badge_count"
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:maxLength="2"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            tools:text="15" />
+
+                    </android.support.v7.widget.CardView>
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <FrameLayout
+                    android:layout_width="55dp"
+                    android:layout_height="55dp">
 
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <FrameLayout
-            android:layout_width="55dp"
-            android:layout_height="55dp">
-
-
-            <ImageView
-                android:id="@+id/iv_crm"
-                style="@style/IconImageView"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_pie_chart"
-                android:layout_gravity="center"
-                android:tint="@color/material_icon"
-                android:onClick="@{()-> viewModel.onCrmClicked()}"
-                />
-
-        </FrameLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <FrameLayout
-            android:layout_width="55dp"
-            android:layout_height="55dp">
+                    <ImageView
+                        android:id="@+id/iv_contacts"
+                        style="@style/IconImageView"
+                        android:layout_gravity="center"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> viewModel.onContactsClicked()}"
+                        android:src="@drawable/ic_address_book_solid"
+                        android:tint="@color/material_icon" />
 
 
-            <ImageView
-                android:id="@+id/iv_notifications"
-                style="@style/IconImageView"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_bell_solid"
-                android:layout_gravity="center"
-                />
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_notification_badge"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_gravity="end"
-                android:innerRadius = "0dp"
-                android:shape = "ring"
-                app:cardCornerRadius = "13dp"
-                app:cardBackgroundColor="#c3352b"
-                android:visibility="gone"
-                tools:visibility="visible"
-                >
-
-                <TextView
-                    android:id="@+id/tv_notification_badge_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    style="@style/App_Text_view"
-                    tools:text="15"
-                    android:textSize="12sp"
-                    android:maxLength="2"
-                    android:textColor="@color/white"/>
-
-            </android.support.v7.widget.CardView>
-
-        </FrameLayout>
-
-    </LinearLayout>
+                </FrameLayout>
 
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
 
-</LinearLayout>
+                <FrameLayout
+                    android:layout_width="55dp"
+                    android:layout_height="55dp">
+
+
+                    <ImageView
+                        android:id="@+id/iv_crm"
+                        style="@style/IconImageView"
+                        android:layout_gravity="center"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> viewModel.onCrmClicked()}"
+                        android:src="@drawable/ic_pie_chart"
+                        android:tint="@color/material_icon" />
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <FrameLayout
+                    android:layout_width="55dp"
+                    android:layout_height="55dp">
+
+
+                    <ImageView
+                        android:id="@+id/iv_notifications"
+                        style="@style/IconImageView"
+                        android:layout_gravity="center"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_bell_solid" />
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_notification_badge"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="end"
+                        android:innerRadius="0dp"
+                        android:shape="ring"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="#c3352b"
+                        app:cardCornerRadius="13dp"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/tv_notification_badge_count"
+                            style="@style/App_Text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:maxLength="2"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            tools:text="15" />
+
+                    </android.support.v7.widget.CardView>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
 </layout>

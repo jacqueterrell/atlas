@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard;
 
 
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.create_announcement.CreateAnnouncementViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.recycler_view.FindUsersRecyclerViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.edit_add_note.EditAddNotePageSixViewModel;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.filter_list.CrmFilterViewModel;
@@ -218,6 +219,12 @@ public class DashBoardModule {
     AddEducationViewModel providesAddEducationViewModel(){
 
         return new AddEducationViewModel();
+    }
+
+    @Provides
+    CreateAnnouncementViewModel providesCreateAnnouncementViewModel(){
+
+        return new CreateAnnouncementViewModel();
     }
 
 }

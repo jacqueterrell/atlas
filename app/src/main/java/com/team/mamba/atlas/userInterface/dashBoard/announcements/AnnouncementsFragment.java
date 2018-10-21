@@ -21,6 +21,7 @@ import com.team.mamba.atlas.service.MyFirebaseMessagingService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.create_announcement.CreateAnnouncementFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
@@ -113,6 +114,15 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
             onAnnouncementsReturned();
         }
 
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            binding.ivAddAnnouncement.setVisibility(View.VISIBLE);
+
+        } else {
+
+            binding.ivAddAnnouncement.setVisibility(View.INVISIBLE);
+        }
+
         viewModel.requestAnnouncements(getViewModel());
 
         return binding.getRoot();
@@ -159,6 +169,13 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
     }
 
     @Override
+    public void onAddAnnouncementClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFragmentVertically(new CreateAnnouncementFragment(), manager, "CreateAnnouncement", null);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         compositeDisposable = new CompositeDisposable();
@@ -181,7 +198,6 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
 
         DashBoardActivity.newAnnouncementCount = 0;
         binding.cardNotificationBadge.setVisibility(View.GONE);
-
     }
 
     private void setUpNewConnectionRequestBadge(){
