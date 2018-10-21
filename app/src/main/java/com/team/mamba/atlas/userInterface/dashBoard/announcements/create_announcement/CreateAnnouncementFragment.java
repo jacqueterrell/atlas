@@ -1,5 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.announcements.create_announcement;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
@@ -67,8 +70,19 @@ implements CreateAnnouncementNavigator{
          binding = getViewDataBinding();
          setUpSwitchListener();
          setUpEditText();
+         showSoftKeyboard(binding.etMessage);
+
 
          return binding.getRoot();
+    }
+
+    private void showSoftKeyboard(View view) {
+
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
+
     }
 
     private void setUpSwitchListener(){
@@ -106,6 +120,18 @@ implements CreateAnnouncementNavigator{
                 int size = charSequence.length();
                 int leftToGo = 140 - size;
                 binding.tvCharRemaining.setText(String.valueOf(leftToGo));
+
+                if (leftToGo == 0){
+
+                    binding.tvCharRemaining.setTextColor(Color.RED);
+                    binding.tvRemaining.setTextColor(Color.RED);
+
+                } else {
+
+                    binding.tvCharRemaining.setTextColor(Color.BLACK);
+                    binding.tvRemaining.setTextColor(Color.BLACK);
+
+                }
             }
 
             @Override

@@ -28,6 +28,11 @@ public class AnnouncementsDataModel {
     }
 
 
+    /**
+     * Retrieves all Business profiles, loops through each one to see if
+     * the logged in user is a contact of the business.
+     * @param viewModel
+     */
     private void getAllBusinesses(AnnouncementsViewModel viewModel){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -42,14 +47,21 @@ public class AnnouncementsDataModel {
 
                         List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
 
-                        for (BusinessProfile profile : businessProfiles){
+                        if (dataManager.getSharedPrefs().isBusinessAccount()){
 
-                            if (profile.getContacts().containsKey(userId)
-                                    && !businessIdList.contains(profile.getId())){
+                            businessIdList.add(userId);
 
-                                businessIdList.add(profile.getId());
+                        } else {
+
+                            for (BusinessProfile profile : businessProfiles){
+
+                                if (profile.getContacts().containsKey(userId)
+                                        && !businessIdList.contains(profile.getId())){
+
+                                    businessIdList.add(profile.getId());
+                                }
+
                             }
-
                         }
 
                         getAllAnnouncements(viewModel,businessIdList);
@@ -64,6 +76,12 @@ public class AnnouncementsDataModel {
                 });
     }
 
+    /**
+     * Retrieves all Business Announcements and finds the ones that belong to
+     * any business the signed in user is a contact of.
+     * @param viewModel
+     * @param businessIdList
+     */
     private void getAllAnnouncements(AnnouncementsViewModel viewModel,List<String> businessIdList){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
