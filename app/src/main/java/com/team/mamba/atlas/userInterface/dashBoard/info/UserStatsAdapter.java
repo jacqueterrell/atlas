@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsViewHolder> {
 
-    private List<String> userStatsList = new ArrayList<>();
+    private List<String> userStatsList;
 
     public UserStatsAdapter(List<String> userStatsList){
 

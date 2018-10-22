@@ -75,7 +75,6 @@ public class AddBusinessDataModel {
 
                         UserProfile profile = userProfiles.get(0);
 
-
                         if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
 
                             viewModel.setRequestingUserProfile(profile);
@@ -124,7 +123,12 @@ public class AddBusinessDataModel {
 
                         for (BusinessProfile profile : businessProfiles) {
 
-                            if (profile.getName().toLowerCase().trim().equals(name.toLowerCase().trim())
+                            if (profile.getSearchName().trim().equalsIgnoreCase(name.toLowerCase().trim())
+                                    && profile.getCode().equals(code)){
+
+                                selectedProfileList.add(profile);
+
+                            } else if (profile.getName().toLowerCase().trim().equals(name.toLowerCase().trim())
                                     && profile.getCode().equals(code)) {
 
                                 selectedProfileList.add(profile);

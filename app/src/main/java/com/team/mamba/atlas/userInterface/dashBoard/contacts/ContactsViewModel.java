@@ -27,6 +27,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     private static boolean businessContactsShown = false;
     private static List<UserConnections> directoryConnections = new ArrayList<>();
     private static BusinessProfile selectedBusinessProfile;
+    private static int totalDirectories = 0;
 
 
     public void setDataModel(ContactsDataModel dataModel) {
@@ -119,6 +120,13 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         return ContactsViewModel.directoryConnections;
     }
 
+    public void setTotalDirectories(int totalDirectories) {
+        ContactsViewModel.totalDirectories = totalDirectories;
+    }
+
+    public int getTotalDirectories() {
+        return totalDirectories;
+    }
 
     /********Onclick Listeners********/
 
@@ -182,7 +190,7 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
 
     /**
-     * Gets a the most current business directory for the user
+     * Gets the most current business directory for the user
      */
     private void getListOfAllDirectories() {
 
@@ -229,17 +237,17 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
         for (UserConnections connections : requestingConnections) {
 
-                for (UserProfile profile : getUserProfileList()) {
+            for (UserProfile profile : getUserProfileList()) {
 
-                    if (connections.requestingUserID.equals(profile.getId())) {
+                if (connections.requestingUserID.equals(profile.getId())) {
 
-                        profile.setShareNeeds(getSelectedDirectory().getShareNeeds());
-                        connections.setUserProfile(profile);
-                        connections.setOverrideBusinessProfile(true);
-                        connections.setConnectionType(profile.getConnectionType());
+                    profile.setShareNeeds(getSelectedDirectory().getShareNeeds());
+                    connections.setUserProfile(profile);
+                    connections.setOverrideBusinessProfile(true);
+                    connections.setConnectionType(profile.getConnectionType());
 
-                    }
                 }
+            }
         }
 
             setBusinessContactsList(selectedConnections,requestingConnections);

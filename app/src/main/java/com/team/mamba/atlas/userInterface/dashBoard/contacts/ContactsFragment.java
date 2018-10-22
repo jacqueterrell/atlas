@@ -125,6 +125,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
 
+        showHideAddContactButton();
         contactListAdapter = new ContactListAdapter(userConnectionsList, getViewModel());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -147,6 +148,24 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         setUpSearchView();
         return binding.getRoot();
+    }
+
+    /**
+     * Hides the add contact button if the user is logged in as
+     * a business.
+     */
+    private void showHideAddContactButton(){
+
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            binding.ivAddContact.setVisibility(View.INVISIBLE);
+            binding.layoutGroupFilter.setVisibility(View.INVISIBLE);
+
+        } else {
+
+            binding.ivAddContact.setVisibility(View.VISIBLE);
+            binding.layoutGroupFilter.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -190,14 +209,20 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         binding.tvUserName.setText(userName);
         binding.tvUserCode.setText(userCode);
-        onIndividualFilterClicked();
+
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+            onIndividualFilterClicked();
+        }
         viewModel.requestContactsInfo(getViewModel());
     }
 
     @Override
     public void onAddNewContactClicked() {
 
-        parentActivity.openAddContactDialog();
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+
+            parentActivity.openAddContactDialog();
+        }
     }
 
     @Override
@@ -230,16 +255,23 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onProfileImageClicked() {
 
-        if (binding.layoutIndividualProfile.getVisibility() == View.VISIBLE) {//showing all contacts
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
 
-            parentActivity.openUserProfile(viewModel.getUserProfile());
+            parentActivity.openBusinessProfile(viewModel.getBusinessProfile());
 
-        } else { //showing business directory
+        } else {
 
-            if (viewModel.getSelectedBusinessProfile() != null) {
+            if (binding.layoutIndividualProfile.getVisibility() == View.VISIBLE) {//showing all contacts
 
-                parentActivity.openBusinessProfile(viewModel.getSelectedBusinessProfile());
+                parentActivity.openUserProfile(viewModel.getUserProfile());
 
+            } else { //showing business directory
+
+                if (viewModel.getSelectedBusinessProfile() != null) {
+
+                    parentActivity.openBusinessProfile(viewModel.getSelectedBusinessProfile());
+
+                }
             }
         }
     }
@@ -247,14 +279,15 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onBusinessFilterClicked() {
 
-        binding.ivGroupFilter.setVisibility(View.GONE);
-        binding.ivIndividualFilter.setVisibility(View.VISIBLE);
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
 
-        binding.layoutIndividualProfile.setVisibility(View.GONE);
-        binding.layoutBusinessProfile.setVisibility(View.VISIBLE);
-        viewModel.setBusinessContactsShown(true);
-
-        viewModel.setBusinessContactProfiles();
+            binding.layoutGroupFilter.setVisibility(View.GONE);
+            binding.ivIndividualFilter.setVisibility(View.VISIBLE);
+            binding.layoutIndividualProfile.setVisibility(View.GONE);
+            binding.layoutBusinessProfile.setVisibility(View.VISIBLE);
+            viewModel.setBusinessContactsShown(true);
+            viewModel.setBusinessContactProfiles();
+        }
     }
 
     @Override
@@ -270,7 +303,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             }
         }
 
-        binding.ivGroupFilter.setVisibility(View.VISIBLE);
+        binding.layoutGroupFilter.setVisibility(View.VISIBLE);
         binding.ivIndividualFilter.setVisibility(View.GONE);
 
         binding.layoutBusinessProfile.setVisibility(View.GONE);
@@ -322,10 +355,26 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onDataValuesReturned(List<UserConnections> connectionsList) {
 
-
         binding.swipeContainer.setRefreshing(false);
 
         if (dataManager.getSharedPrefs().isBusinessAccount()) {
+
+            BusinessProfile profile = viewModel.getBusinessProfile();
+            String name = profile.getName();
+            userCode = profile.getCode();
+            userName = name;
+            binding.tvUserCode.setText(profile.getCode());
+            binding.tvUserName.setText(name);
+
+            if (!profile.getImageUrl().replace(".", "").isEmpty()) {
+
+                Glide.with(getBaseActivity())
+                        .load(profile.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.ivUserProfileImage);
+
+                binding.ivDefault.setVisibility(View.GONE);
+            }
 
         } else {
 
@@ -336,15 +385,17 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
             binding.tvUserCode.setText(profile.getCode());
             binding.tvUserName.setText(name);
 
-            Glide.with(getBaseActivity())
-                    .load(profile.getImageUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(binding.ivUserProfileImage);
-
             if (!profile.getImageUrl().replace(".", "").isEmpty()) {
+
+                Glide.with(getBaseActivity())
+                        .load(profile.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.ivUserProfileImage);
 
                 binding.ivDefault.setVisibility(View.GONE);
             }
+
+            setUpDirectoryBadge();
 
         }
 
@@ -361,6 +412,21 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         createCharList();
         hideProgressSpinner();
+    }
+
+    /**
+     * Sets the count for the directory badge
+     */
+    private void setUpDirectoryBadge(){
+
+        if (viewModel.getTotalDirectories() > 0){
+
+            binding.cardDirectoryBadge.setVisibility(View.VISIBLE);
+            binding.tvDirectoryBadgeCount.setText(String.valueOf(viewModel.getTotalDirectories()));
+
+        } else {
+            binding.cardDirectoryBadge.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -407,6 +473,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         } else {
             binding.tvDirectoryCount.setVisibility(View.INVISIBLE);
+            binding.cardDirectoryBadge.setVisibility(View.INVISIBLE);
         }
 
         hideProgressSpinner();

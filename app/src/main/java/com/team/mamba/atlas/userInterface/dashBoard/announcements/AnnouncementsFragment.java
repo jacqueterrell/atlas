@@ -21,6 +21,7 @@ import com.team.mamba.atlas.service.MyFirebaseMessagingService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard.announcements.create_announcement.CreateAnnouncementFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
@@ -79,7 +80,7 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
     @Override
@@ -113,6 +114,16 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
             onAnnouncementsReturned();
         }
 
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+
+            binding.ivAddAnnouncement.setVisibility(View.VISIBLE);
+
+        } else {
+
+            binding.ivAddAnnouncement.setVisibility(View.INVISIBLE);
+        }
+
+        showProgressSpinner();
         viewModel.requestAnnouncements(getViewModel());
 
         return binding.getRoot();
@@ -121,9 +132,9 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
     @Override
     public void onAnnouncementsReturned() {
 
+        hideProgressSpinner();
         announcementsList.clear();
         announcementsList.addAll(viewModel.getAnnouncementsList());
-
         Collections.sort(announcementsList,(o1,o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
 
         announcementsAdapter.notifyDataSetChanged();
@@ -133,7 +144,8 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
     @Override
     public void handleError(String errorMsg) {
 
-        showSnackbar(errorMsg);
+        hideProgressSpinner();
+        showAlert("Error",errorMsg);
         binding.swipeContainer.setRefreshing(false);
     }
 
@@ -159,6 +171,13 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
     }
 
     @Override
+    public void onAddAnnouncementClicked() {
+
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFragmentVertically(new CreateAnnouncementFragment(), manager, "CreateAnnouncement", null);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         compositeDisposable = new CompositeDisposable();
@@ -181,7 +200,6 @@ public class AnnouncementsFragment extends BaseFragment<AnnouncementsLayoutBindi
 
         DashBoardActivity.newAnnouncementCount = 0;
         binding.cardNotificationBadge.setVisibility(View.GONE);
-
     }
 
     private void setUpNewConnectionRequestBadge(){

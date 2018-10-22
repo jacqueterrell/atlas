@@ -46,4 +46,9 @@ public class AnnouncementsViewModel extends BaseViewModel<AnnouncementsNavigator
 
         getNavigator().onInfoClicked();
     }
+
+    public void onAddAnnouncementClicked(){
+
+        getNavigator().onAddAnnouncementClicked();
+    }
 }

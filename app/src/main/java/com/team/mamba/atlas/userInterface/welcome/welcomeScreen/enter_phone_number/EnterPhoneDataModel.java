@@ -109,6 +109,7 @@ public class EnterPhoneDataModel {
                                 isUser = true;
                                 dataManager.getSharedPrefs().setUserId(profile.getId());
                                 dataManager.getSharedPrefs().setUserCode(profile.getCode());
+                                updateDeviceToken(viewModel,profile);
                                 break;
                             }
                         }
@@ -125,13 +126,47 @@ public class EnterPhoneDataModel {
 
                     } else {
 
-                        Logger.e(task.getException().getMessage());
-                        viewModel.getNavigator().handleError(task.getException().getMessage());
+                        if (task.getException() != null){
+
+                            Logger.e(task.getException().getMessage());
+                            viewModel.getNavigator().handleError(task.getException().getMessage());
+                        }
+
                     }
 
                 });
 
     }
+
+    private void updateDeviceToken(EnterPhoneViewModel viewModel,UserProfile profile){
+
+        //eEsa5_ETxqE:APA91bFpGqvJNeiOpzazRA_udmL7k9qud4aewNUQnMD59Cf-X8Ij4ag0I4LlsKIJ6_ss5orTIdh9D6iFnBemuJ2KWL14aFuwbMGorFWXURbHplYgxDcrM2S3Blve2fF-C45JhzRjAr8z
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String deviceToken = dataManager.getSharedPrefs().getFirebaseDeviceToken();
+        profile.setDeviceToken(deviceToken);
+
+        //add the announcement to the businesses announcement list
+        db.collection(AppConstants.USERS_COLLECTION)
+                .document(profile.getId())
+                .set(profile)
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        Logger.i("device token updated successfully");
+
+                    } else {
+
+                        if (task.getException() != null){
+
+                            Logger.e(task.getException().getMessage());
+                            viewModel.getNavigator().handleError(task.getException().getMessage());
+                        }                    }
+
+    });
+}
+
 
 
     /**

@@ -100,9 +100,20 @@ public class ContactsDataModel {
 
                         for (UserConnections connections : connectionsList) {
 
-                            if (connections.getRequestingUserID().equals(dataManager.getSharedPrefs().getUserId())){
+                            if (dataManager.getSharedPrefs().isBusinessAccount()){
 
-                                userConnections.add(connections);
+                                if (connections.getConsentingUserID().equals(dataManager.getSharedPrefs().getUserId())){
+
+                                    connections.setOverrideBusinessProfile(true);
+                                    userConnections.add(connections);
+                                }
+
+                            } else {
+
+                                if (connections.getRequestingUserID().equals(dataManager.getSharedPrefs().getUserId())){
+
+                                    userConnections.add(connections);
+                                }
                             }
                         }
 
@@ -119,6 +130,11 @@ public class ContactsDataModel {
                 });
     }
 
+    /**
+     * This finds the connection type and assigns it to the appropriate
+     * UserProfile
+     * @param viewModel
+     */
     private void getAllConnectionTypes(ContactsViewModel viewModel){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -134,9 +150,9 @@ public class ContactsDataModel {
 
                         for (UserConnections connections : connectionsList) {
 
-                            for (UserProfile profile : viewModel.getUserProfileList()){
+                            if (connections.isConfirmed){
 
-                                if (connections.isConfirmed){
+                                for (UserProfile profile : viewModel.getUserProfileList()){
 
                                     if (profile.getId().equals(connections.getRequestingUserID())){
 
@@ -144,7 +160,6 @@ public class ContactsDataModel {
                                     }
                                 }
                             }
-
                         }
 
                         requestAllBusinessProfiles(viewModel);
@@ -211,7 +226,7 @@ public class ContactsDataModel {
 
 
     /**
-     * Sets the correlating profile for our UserConnections list
+     * Sets the correlating profile (business or user) for our UserConnections list
      *
      */
     private void setConnectionsProfiles(ContactsViewModel viewModel){
@@ -223,46 +238,78 @@ public class ContactsDataModel {
         List<UserConnections> adjustedConnections = new ArrayList<>();
 
 
-        for (UserConnections connections : defaultConnectionsList) {
+            if (dataManager.getSharedPrefs().isBusinessAccount()){//logged in as a business
 
-            if (connections.isOrgBus && !connections.isOverrideBusinessProfile()) {
+                for (UserConnections connections : defaultConnectionsList) {
 
-                for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
+                    for (UserProfile profile : viewModel.getUserProfileList()) {
 
-                    if (connections.requestingUserID.equals(userId)
-                            && connections.consentingUserID.equals(profile.getId())) {
+                        if (connections.requestingUserID.equals(profile.getId())
+                                && connections.consentingUserID.equals(userId)) {
 
-                        connections.setBusinessProfile(profile);
-                        businessConnections.add(connections);
+                            profile.setShareNeeds(viewModel.getBusinessProfile().getShareNeeds());
+                            connections.setUserProfile(profile);
+                            connections.setConnectionType(profile.getConnectionType());
+                            individualConnections.add(connections);
+                        }
                     }
                 }
 
             } else {
 
-                for (UserProfile profile : viewModel.getUserProfileList()) {
+                for (UserConnections connections : defaultConnectionsList) {
 
-                    if (connections.requestingUserID.equals(userId)
-                            && connections.consentingUserID.equals(profile.getId())) {
+                    if (connections.isOrgBus && !connections.isOverrideBusinessProfile()) {
 
-                        connections.setUserProfile(profile);
-                        connections.setConnectionType(profile.getConnectionType());
-                        individualConnections.add(connections);
+                        for (BusinessProfile profile : viewModel.getBusinessProfileList()) {
+
+                            if (connections.requestingUserID.equals(userId)
+                                    && connections.consentingUserID.equals(profile.getId())) {
+
+                                connections.setBusinessProfile(profile);
+                                businessConnections.add(connections);
+                            }
+                        }
+
+                    } else {
+
+                        for (UserProfile profile : viewModel.getUserProfileList()) {
+
+                            if (connections.requestingUserID.equals(userId)
+                                    && connections.consentingUserID.equals(profile.getId())) {
+
+                                connections.setUserProfile(profile);
+                                connections.setConnectionType(profile.getConnectionType());
+                                individualConnections.add(connections);
+
+                            }
+                        }
 
                     }
                 }
-
             }
-
-        }
 
         Collections.sort(individualConnections, (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
         Collections.sort(businessConnections, (o1, o2) -> Boolean.compare(o1.isIsOrgBus(), o2.isOrgBus));
         adjustedConnections.addAll(individualConnections);
         adjustedConnections.addAll(businessConnections);
 
+
+        int totalDirectories = 0;
+
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+
+            for (UserConnections connections : adjustedConnections) {
+                if (connections.isOrgBus && connections.isDirectory) {
+                    totalDirectories += 1;
+                }
+            }
+        }
+
+
+        viewModel.setTotalDirectories(totalDirectories);
         viewModel.setUserConnectionsList(adjustedConnections);
         viewModel.getNavigator().onDataValuesReturned(adjustedConnections);
-
     }
 
 
