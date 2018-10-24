@@ -1,7 +1,7 @@
 package com.team.mamba.atlas.userInterface.base;
 
-import android.arch.lifecycle.ViewModel;
-import android.databinding.ObservableBoolean;
+import androidx.lifecycle.ViewModel;
+import androidx.databinding.ObservableBoolean;
 import com.team.mamba.atlas.data.AppDataManager;
 import io.reactivex.disposables.CompositeDisposable;
 import javax.inject.Inject;

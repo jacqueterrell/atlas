@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.data.model.api.fireStore;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import com.google.firebase.firestore.Exclude;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;

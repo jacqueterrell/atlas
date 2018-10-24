@@ -1,7 +1,7 @@
 package com.team.mamba.atlas.data.model.api.fireStore;
 
 import android.graphics.Typeface;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import android.text.Html;
 import android.text.Spannable;
