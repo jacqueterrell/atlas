@@ -2,9 +2,9 @@ package com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.descr
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -257,6 +257,13 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 });
 
         dialog.show();
+    }
+
+    @Override
+    public void handleError(String errorMsg) {
+
+        hideProgressSpinner();
+        showAlert("Error",errorMsg);
     }
 
     private void setUpListeners(){

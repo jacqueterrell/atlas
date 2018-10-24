@@ -1,8 +1,8 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
-import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.DataBindingUtil;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +48,8 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
 
         UserConnections record = connectionRecords.get(position);
 
-        if (record.isNeedsApproval()){
+        if (record.isNeedsApproval()
+                || record.isOverrideBusinessProfile()){
 
             holder.binding.tvUserStat.setText(record.getRequestingUserName());
 
@@ -58,14 +59,15 @@ public class RecentActivitiesAdapter extends RecyclerView.Adapter<RecentActiviti
 
         }
 
-        if (record.isIsOrgBus()){ //confirmed business record
+        if (record.isIsOrgBus() && !record.isOverrideBusinessProfile()){ //confirmed business record
 
             holder.binding.ivConfirmedConnectionBusiness.setVisibility(View.VISIBLE);
             holder.binding.ivConfirmedConnectionIndividual.setVisibility(View.GONE);
             holder.binding.ivAddNewConnection.setVisibility(View.GONE);
             holder.binding.ivRecentUpdatedAccount.setVisibility(View.GONE);
 
-        } else if (!record.isIsOrgBus() && !record.isNeedsApproval() && !record.isRecentActivity()){ //confirmed individual record
+        } else if (!record.isIsOrgBus() && !record.isNeedsApproval() && !record.isRecentActivity()
+                || record.isIsOrgBus() && record.isOverrideBusinessProfile()){ //confirmed individual record
 
             holder.binding.ivConfirmedConnectionBusiness.setVisibility(View.GONE);
             holder.binding.ivConfirmedConnectionIndividual.setVisibility(View.VISIBLE);

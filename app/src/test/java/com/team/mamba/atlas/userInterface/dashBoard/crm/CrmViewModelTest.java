@@ -93,18 +93,18 @@ public class CrmViewModelTest {
     }
 
 
-    @Test
-    public void getUserProfile() {
-
-        //set up
-        UserProfile  profile = new UserProfile();
-
-        //action
-        viewModel.setUserProfile(profile);
-
-        //assert
-        assertEquals(profile,viewModel.getUserProfile());
-    }
+//    @Test
+//    public void getUserProfile() {
+//
+//        //set up
+//        UserProfile  profile = new UserProfile();
+//
+//        //action
+//        viewModel.setUserProfile(profile);
+//
+//        //assert
+//        assertEquals(profile,viewModel.getUserProfile());
+//    }
 
 
 

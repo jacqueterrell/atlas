@@ -17,4 +17,6 @@ public interface DescribeConnectionsNavigator {
     void onConnectionRequestApproved();
 
     void onConnectionUpdated();
+
+    void handleError(String errorMsg);
 }
