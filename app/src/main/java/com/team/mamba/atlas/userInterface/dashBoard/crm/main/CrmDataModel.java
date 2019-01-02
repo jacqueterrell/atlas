@@ -17,7 +17,7 @@ public class CrmDataModel {
     private AppDataManager dataManager;
 
     @Inject
-    public CrmDataModel(AppDataManager dataManager){
+    public CrmDataModel(AppDataManager dataManager) {
 
         this.dataManager = dataManager;
     }
@@ -25,18 +25,16 @@ public class CrmDataModel {
 
     /**
      * Retrieves a list of business notes authored by the user
-     *
-     * @param viewModel
      */
-           public void getAllOpportunities(CrmViewModel viewModel){
+    public void getAllOpportunities(CrmViewModel viewModel) {
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            viewModel.setSavedUserId(dataManager.getSharedPrefs().getUserId());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        viewModel.setSavedUserId(dataManager.getSharedPrefs().getUserId());
 
-            getUserDetails(viewModel);
+        getUserDetails(viewModel);
 
         db.collection(AppConstants.BUS_NOTES_COLLECTION)
-                .whereEqualTo("authorID",dataManager.getSharedPrefs().getUserId())
+                .whereEqualTo("authorID", dataManager.getSharedPrefs().getUserId())
                 .get()
                 .addOnCompleteListener(task -> {
 
@@ -44,14 +42,15 @@ public class CrmDataModel {
 
                         List<CrmNotes> crmNotes = task.getResult().toObjects(CrmNotes.class);
 
-                        Collections.sort(crmNotes, (o1, o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
+                        Collections.sort(crmNotes,
+                                (o1, o2) -> Double.compare(o2.getAdjustedTimeStamp(), o1.getAdjustedTimeStamp()));
 
                         viewModel.setCrmNotesList(crmNotes);
                         viewModel.getNavigator().onCrmDataReturned();
 
                     } else {
 
-                        viewModel.getNavigator().handleError(task   .getException().getMessage());
+                        viewModel.getNavigator().handleError(task.getException().getMessage());
                         Logger.e(task.getException().getMessage());
                     }
 
@@ -60,9 +59,7 @@ public class CrmDataModel {
 
 
     /**
-     * Gets a list of all profiles and saves the user's profile
-     *
-     * @param viewModel
+     * Gets a list of all profiles
      */
     private void getUserDetails(CrmViewModel viewModel) {
 
@@ -77,25 +74,20 @@ public class CrmDataModel {
 
                         List<UserProfile> userProfiles = task.getResult().toObjects(UserProfile.class);
 
-                        for (UserProfile profile : userProfiles){
+                        for (UserProfile profile : userProfiles) {
 
-                            if (profile.getId() != null){
-
-                                if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
-
-                                    viewModel.setUserProfile(profile);
-                                }
+                            if (profile.getId() != null) {
 
                                 adjustedProfileList.add(profile);
                             }
                         }
-                        getAllConnections(viewModel,adjustedProfileList);
+                        getAllConnections(viewModel, adjustedProfileList);
 
                     } else {
 
                         Logger.e(task.getException().getMessage());
                         task.getException().printStackTrace();
-                        viewModel.getNavigator().handleError(task   .getException().getMessage());
+                        viewModel.getNavigator().handleError(task.getException().getMessage());
 
                     }
 
@@ -109,13 +101,13 @@ public class CrmDataModel {
      *
      * @param userProfiles list of all user profiles
      */
-    private void getAllConnections(CrmViewModel viewModel,List<UserProfile> userProfiles) {
+    private void getAllConnections(CrmViewModel viewModel, List<UserProfile> userProfiles) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserProfile> usersContactProfiles = new ArrayList<>();
+        String userId = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.CONNECTIONS_COLLECTION)
-                .whereEqualTo("requestingUserID",dataManager.getSharedPrefs().getUserId())
                 .get()
                 .addOnCompleteListener(task -> {
 
@@ -123,22 +115,40 @@ public class CrmDataModel {
 
                         List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
 
-                        for (UserProfile profile : userProfiles){
+                        if (dataManager.getSharedPrefs().isBusinessAccount()){
 
-                            for (UserConnections connection : connectionsList){
+                            for (UserProfile profile : userProfiles) {
 
-                                if (connection.isConfirmed){
+                                for (UserConnections connection : connectionsList) {
 
-                                    if (profile.getId().equals(connection.getConsentingUserID())){
+                                    if (connection.isConfirmed
+                                            && connection.getConsentingUserID().equals(userId)
+                                            && profile.getId().equals(connection.getRequestingUserID())) {
 
                                         usersContactProfiles.add(profile);
                                     }
-                                }
 
+                                }
+                            }
+
+                        } else {
+
+                            for (UserProfile profile : userProfiles) {
+
+                                for (UserConnections connection : connectionsList) {
+
+                                    if (connection.isConfirmed
+                                            && connection.getRequestingUserID().equals(userId)
+                                            && profile.getId().equals(connection.getConsentingUserID())) {
+
+                                            usersContactProfiles.add(profile);
+                                    }
+
+                                }
                             }
                         }
 
-                        getAllConnectionTypes(viewModel,usersContactProfiles);
+                        getAllConnectionTypes(viewModel, usersContactProfiles);
 
                     } else {
 
@@ -152,12 +162,17 @@ public class CrmDataModel {
     }
 
 
-    private void getAllConnectionTypes(CrmViewModel viewModel,List<UserProfile> userProfiles) {
+    /**
+     * Sets the connection type for each UserProfile
+     * @param viewModel
+     * @param userProfiles
+     */
+    private void getAllConnectionTypes(CrmViewModel viewModel, List<UserProfile> userProfiles) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection(AppConstants.CONNECTIONS_COLLECTION)
-                .whereEqualTo("consentingUserID",dataManager.getSharedPrefs().getUserId())
+                .whereEqualTo("consentingUserID", dataManager.getSharedPrefs().getUserId())
                 .get()
                 .addOnCompleteListener(task -> {
 
@@ -165,13 +180,13 @@ public class CrmDataModel {
 
                         List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
 
-                        for (UserProfile profile : userProfiles){
+                        for (UserProfile profile : userProfiles) {
 
-                            for (UserConnections connection : connectionsList){
+                            for (UserConnections connection : connectionsList) {
 
-                                if (connection.isConfirmed){
+                                if (connection.isConfirmed) {
 
-                                    if (profile.getId().equals(connection.getRequestingUserID())){
+                                    if (profile.getId().equals(connection.getRequestingUserID())) {
 
                                         profile.setConnectionType(connection.getConnectionType());
                                     }

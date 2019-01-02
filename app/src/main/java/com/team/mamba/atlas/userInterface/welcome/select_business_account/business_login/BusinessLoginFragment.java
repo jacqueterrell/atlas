@@ -5,8 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
+import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessLoginLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
@@ -25,8 +27,8 @@ import com.team.mamba.atlas.utils.ChangeWelcomeFragments;
 
 import javax.inject.Inject;
 
-public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBinding,BusinessLoginViewModel>
-implements BusinessLoginNavigator{
+public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBinding, BusinessLoginViewModel>
+        implements BusinessLoginNavigator {
 
 
     @Inject
@@ -41,7 +43,7 @@ implements BusinessLoginNavigator{
     private long dateOfBirth;
 
 
-    public static BusinessLoginFragment newInstance(){
+    public static BusinessLoginFragment newInstance() {
 
         return new BusinessLoginFragment();
     }
@@ -85,12 +87,11 @@ implements BusinessLoginNavigator{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-         binding = getViewDataBinding();
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = getViewDataBinding();
 
-
-         showSoftKeyboard(binding.etEmail);
-         return binding.getRoot();
+        showSoftKeyboard(binding.etEmail);
+        return binding.getRoot();
     }
 
     @Override
@@ -103,19 +104,32 @@ implements BusinessLoginNavigator{
     public void openDashBoard() {
         hideProgressSpinner();
 
-        if (parentNavigator.isBusinessLogin()){
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+        BusinessProfile profile = viewModel.getBusinessProfileList().get(0);
+        String title = "Login as " + profile.getName();
+        String body = "You are an authorized representative for " + profile.getName();
 
-            dataManager.getSharedPrefs().setBusinessAccount(true);
-            getBaseActivity().finishAffinity();
-            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
+        dialog.setTitle(title)
+                .setMessage(body)
+                .setNegativeButton("No", (paramDialogInterface, paramInt) -> {
 
-        } else {
+                })
+                .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
 
-            dataManager.getSharedPrefs().setBusinessAccount(false);
-            getBaseActivity().finishAffinity();
-            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
+                    if (parentNavigator.isBusinessLogin()) {
 
-        }
+                        dataManager.getSharedPrefs().setBusinessAccount(true);
+
+                    } else {
+
+                        dataManager.getSharedPrefs().setBusinessAccount(false);
+                    }
+
+                    getBaseActivity().finishAffinity();
+                    startActivity(DashBoardActivity.newIntent(getBaseActivity()));
+                });
+
+        dialog.show();
 
     }
 
@@ -123,7 +137,7 @@ implements BusinessLoginNavigator{
     public void showMultipleBusinessLogin() {
 
         hideProgressSpinner();
-        startActivity(BusinessAccountsActivity.newIntent(getBaseActivity(),viewModel.getBusinessProfileList()));
+        startActivity(BusinessAccountsActivity.newIntent(getBaseActivity(), viewModel.getBusinessProfileList()));
     }
 
     @Override
@@ -132,12 +146,11 @@ implements BusinessLoginNavigator{
         hideProgressSpinner();
         String title = "Login Issue";
         String body = getBaseActivity().getResources().getString(R.string.business_not_found_body);
-        showAlert(title,body);
+        showAlert(title, body);
     }
 
     @Override
     public void onBusinessScreenLearnMoreClicked() {
-
 
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
         startActivity(i);
@@ -146,22 +159,19 @@ implements BusinessLoginNavigator{
     @Override
     public void onBusinessScreenLoginClicked() {
 
-
         String email = binding.etEmail.getText().toString();
         String password = binding.etPassword.getText().toString();
         hideKeyboard();
 
-
-        if (email.isEmpty() && password.equals("admin")){
-
+        if (email.isEmpty() && password.equals("admin")) {
 
             ChangeWelcomeFragments.addFragmentFadeIn(AdminAccountsFragment.newInstance(),
                     getBaseActivity().getSupportFragmentManager(), "ContactsFragment", null);
 
 
-        } else if (email.isEmpty() && password.equals("test")){
+        } else if (email.isEmpty() && password.equals("test")) {
 
-               dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2"); //Mike R
+            dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2"); //Mike R
             //dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC"); // Jacque Terrell
             //dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC"); // Sofwr
 
@@ -171,9 +181,9 @@ implements BusinessLoginNavigator{
 
         } else {
 
-            if (viewModel.isEmailValid(email) && viewModel.isPasswordValid(password)){
+            if (viewModel.isEmailValid(email) && viewModel.isPasswordValid(password)) {
 
-                viewModel.firebaseAuthenticateByEmail(viewModel,email,password);
+                viewModel.firebaseAuthenticateByEmail(viewModel, email, password);
                 showProgressSpinner();
 
             } else {
@@ -182,7 +192,7 @@ implements BusinessLoginNavigator{
 
                     showSnackbar("Please enter a valid email and password");
 
-                } else if (!viewModel.isEmailValid(email)){
+                } else if (!viewModel.isEmailValid(email)) {
 
                     showSnackbar("Please enter a valid email");
 

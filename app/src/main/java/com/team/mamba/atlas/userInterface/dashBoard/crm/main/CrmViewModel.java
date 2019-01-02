@@ -45,14 +45,6 @@ public class CrmViewModel extends BaseViewModel<CrmNavigator> {
         return usersContactProfiles;
     }
 
-    public void setUserProfile(UserProfile userProfile) {
-        CrmViewModel.userProfile = userProfile;
-    }
-
-    public UserProfile getUserProfile() {
-        return userProfile;
-    }
-
     public void setSelectedOpportunity(CrmNotes selectedOpportunity) {
         CrmViewModel.selectedOpportunity = selectedOpportunity;
     }

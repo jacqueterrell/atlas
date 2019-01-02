@@ -1,8 +1,8 @@
 package com.team.mamba.atlas.userInterface.dashBoard.settings.network_management;
 
-import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.DataBindingUtil;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +44,7 @@ public class NetworkManagementAdapter extends RecyclerView.Adapter<NetworkManage
 
         UserConnections connections = userProfileList.get(position);
 
-        if (connections.isOrgBus){
+        if (connections.isOrgBus && !connections.isOverrideBusinessProfile()){
 
             BusinessProfile profile = connections.getBusinessProfile();
             holder.binding.tvName.setText(profile.getName());
@@ -54,7 +54,6 @@ public class NetworkManagementAdapter extends RecyclerView.Adapter<NetworkManage
         } else {
 
             UserProfile profile = connections.getUserProfile();
-
             String name = profile.getFirstName() + " " + profile.getLastName();
             holder.binding.tvDate.setText(connections.getDateToString());
             holder.binding.tvName.setText(name);

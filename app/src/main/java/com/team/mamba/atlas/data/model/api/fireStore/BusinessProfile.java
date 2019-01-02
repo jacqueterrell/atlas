@@ -1,6 +1,6 @@
 package com.team.mamba.atlas.data.model.api.fireStore;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import com.google.firebase.firestore.Exclude;
 import com.team.mamba.atlas.utils.formatData.AppFormatter;
@@ -23,6 +23,7 @@ public class BusinessProfile {
     private String street = "...";
     private String cityStateZip = "...";
     private String imageUrl = "...";
+    private String searchName = "";
     private Map<String,String> announcements = new LinkedHashMap<>();
     private Map<String,String> children = new LinkedHashMap<>();
     private Map<String,String> contacts = new LinkedHashMap<>();
@@ -151,8 +152,15 @@ public class BusinessProfile {
         this.businessRepId = businessRepId;
     }
 
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
+    }
 
-   @Exclude public boolean isDirectory() {
+    public String getSearchName() {
+        return searchName;
+    }
+
+    @Exclude public boolean isDirectory() {
         return isDirectory;
     }
 

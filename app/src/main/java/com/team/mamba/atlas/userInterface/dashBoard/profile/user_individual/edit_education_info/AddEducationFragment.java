@@ -1,17 +1,17 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.SearchView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.widget.SearchView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -218,7 +218,7 @@ public class AddEducationFragment extends BaseFragment<AddEducationLayoutBinding
 
         binding.searchViewSchool.setQuery(university,true);
         binding.searchViewSchool.clearFocus();
-        EditText searchEditText = binding.searchViewSchool.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText searchEditText = binding.searchViewSchool.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setSelection(0);
 
         universityList.clear();
@@ -232,7 +232,7 @@ public class AddEducationFragment extends BaseFragment<AddEducationLayoutBinding
 
         binding.searchViewDegree.setQuery(degree,true);
         binding.searchViewDegree.clearFocus();
-        EditText searchEditText = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText searchEditText = binding.searchViewDegree.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setSelection(0);
 
         degreeList.clear();
@@ -245,7 +245,7 @@ public class AddEducationFragment extends BaseFragment<AddEducationLayoutBinding
 
         binding.searchViewFieldOfStudy.setQuery(fieldOfStudy,true);
         binding.searchViewFieldOfStudy.clearFocus();
-        EditText searchEditText = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText searchEditText = binding.searchViewFieldOfStudy.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setSelection(0);
 
         fieldOfStudyList.clear();
@@ -315,18 +315,18 @@ public class AddEducationFragment extends BaseFragment<AddEducationLayoutBinding
         binding.searchViewSchool.setFocusable(false);
 
         //set the color for our search view edit text and text hint
-        EditText searchEditText = binding.searchViewSchool.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText searchEditText = binding.searchViewSchool.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setHintTextColor(getResources().getColor(R.color.material_icons_light));
         searchEditText.setHint("School");
         searchEditText.setGravity(Gravity.CENTER);
 
         //set the color for our search view icon
-        ImageView searchMagIcon = binding.searchViewSchool.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+        ImageView searchMagIcon = binding.searchViewSchool.findViewById(androidx.appcompat.R.id.search_mag_icon);
         searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
         searchMagIcon.setVisibility(View.GONE);
 
         //set the line color
-        View v = binding.searchViewSchool.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        View v = binding.searchViewSchool.findViewById(androidx.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
@@ -340,18 +340,18 @@ public class AddEducationFragment extends BaseFragment<AddEducationLayoutBinding
         binding.searchViewDegree.setFocusable(false);
 
         //set the color for our search view edit text and text hint
-        EditText searchEditText = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText searchEditText = binding.searchViewDegree.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setHintTextColor(getResources().getColor(R.color.material_icons_light));
         searchEditText.setHint("Degree");
         searchEditText.setGravity(Gravity.CENTER);
 
         //set the color for our search view icon
-        ImageView searchMagIcon = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+        ImageView searchMagIcon = binding.searchViewDegree.findViewById(androidx.appcompat.R.id.search_mag_icon);
         searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
         searchMagIcon.setVisibility(View.GONE);
 
         //set the line color
-        View v = binding.searchViewDegree.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        View v = binding.searchViewDegree.findViewById(androidx.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
@@ -366,18 +366,18 @@ public class AddEducationFragment extends BaseFragment<AddEducationLayoutBinding
         binding.searchViewFieldOfStudy.setFocusable(false);
 
         //set the color for our search view edit text and text hint
-        EditText searchEditText = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText searchEditText = binding.searchViewFieldOfStudy.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setHintTextColor(getResources().getColor(R.color.material_icons_light));
         searchEditText.setHint("Field of Study");
         searchEditText.setGravity(Gravity.CENTER);
 
         //set the color for our search view icon
-        ImageView searchMagIcon = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+        ImageView searchMagIcon = binding.searchViewFieldOfStudy.findViewById(androidx.appcompat.R.id.search_mag_icon);
         searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
         searchMagIcon.setVisibility(View.GONE);
 
         //set the line color
-        View v = binding.searchViewFieldOfStudy.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        View v = binding.searchViewFieldOfStudy.findViewById(androidx.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 }

@@ -2,10 +2,10 @@ package com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 
 import com.orhanobut.logger.Logger;

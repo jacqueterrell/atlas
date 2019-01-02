@@ -1,8 +1,8 @@
 package com.team.mamba.atlas.userInterface.dashBoard.info;
 
-import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.DataBindingUtil;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsViewHolder> {
 
-    private List<String> userStatsList = new ArrayList<>();
+    private List<String> userStatsList;
 
     public UserStatsAdapter(List<String> userStatsList){
 

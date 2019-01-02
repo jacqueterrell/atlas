@@ -4,6 +4,8 @@ public interface AnnouncementsNavigator {
 
     void onAnnouncementsReturned();
 
+    void onAddAnnouncementClicked();
+
     void handleError(String errorMsg);
 
     void onCrmClicked();
