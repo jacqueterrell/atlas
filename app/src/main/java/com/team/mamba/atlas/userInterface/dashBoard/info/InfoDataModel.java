@@ -372,8 +372,7 @@ public class InfoDataModel {
 
         for (UserConnections record : viewModel.getUserConnections()) {
 
-            if (record.isIsConfirmed() && record.getRequestingUserID()
-                    .equals(userId)) { //The connection has been confirmed
+            if (record.isIsConfirmed() && record.getRequestingUserID().equals(userId)) { //The connection has been confirmed
 
                 Calendar calendar = Calendar.getInstance();
                 int today = calendar.get(Calendar.DAY_OF_YEAR);
