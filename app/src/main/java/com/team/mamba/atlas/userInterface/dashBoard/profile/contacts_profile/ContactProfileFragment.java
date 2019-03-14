@@ -1,6 +1,7 @@
 package com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
@@ -29,6 +32,14 @@ import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoar
 import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.formatData.RegEx;
 
+import ezvcard.Ezvcard;
+import ezvcard.VCard;
+import ezvcard.VCardVersion;
+import ezvcard.parameter.TelephoneType;
+import ezvcard.property.StructuredName;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -103,19 +114,19 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
         binding = getViewDataBinding();
         binding.setProfile(profile);
 
-        if (profile == null){
+        if (profile == null) {
 
             getBaseActivity().onBackPressed();
         }
 
-        if (!(String.valueOf(profile.getConnectionType()).matches(RegEx.ALLOW_DIGITS_AND_DECIMALS))){
+        if (!(String.valueOf(profile.getConnectionType()).matches(RegEx.ALLOW_DIGITS_AND_DECIMALS))) {
 
             profile.setConnectionType(3);
         }
 
         onConnectionTypeSaved();
 
-        if (!profile.getImageUrl().replace(".","").isEmpty()) {
+        if (!profile.getImageUrl().replace(".", "").isEmpty()) {
 
             Glide.with(getBaseActivity())
                     .load(profile.getImageUrl())
@@ -125,7 +136,6 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
             binding.ivDefault.setVisibility(View.GONE);
         }
 
-
         return binding.getRoot();
     }
 
@@ -133,6 +143,53 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
     public void onResume() {
         super.onResume();
         setContactsDefaultValues();
+    }
+
+    @Override
+    public void onShareContactClicked() {
+
+        if (isReadStoreagePermissionsGranted()){
+            try {
+                sendVcard();
+            } catch (Exception e) {
+                showAlert("Whoops", getResources().getString(R.string.vcard_not_sent_alert));
+            }
+        }
+    }
+
+    private void sendVcard() throws Exception{
+
+        File storageDir = getBaseActivity().getExternalFilesDir(null);
+        String fileName = "vCard";
+        File vCardFile = File.createTempFile(fileName, ".vcf", storageDir);
+
+        try (FileOutputStream stream = new FileOutputStream(vCardFile)) {
+            stream.write(getVcardString().getBytes());
+        }
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/x-vcard");
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(vCardFile.toString()));
+        startActivity(intent);
+    }
+
+    private String getVcardString() {
+
+        String name = binding.tvName.getText().toString();
+        String cellPhone = binding.tvCellPhone.getText().toString();
+        String officePhone = binding.tvOfficePhone.getText().toString();
+
+        VCard vcard = new VCard();
+        vcard.setFormattedName(name);
+        if (!cellPhone.isEmpty()) {
+            vcard.addTelephoneNumber(cellPhone, TelephoneType.CELL);
+        }
+        if (!officePhone.isEmpty()) {
+            vcard.addTelephoneNumber(officePhone, TelephoneType.WORK);
+        }
+
+        return Ezvcard.write(vcard).version(VCardVersion.V4_0).go();
     }
 
     @Override
@@ -269,8 +326,7 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
 
     public void onConnectionTypeSaved() {
 
-
-        if (!profile.getShareNeeds().replace(".","").isEmpty()) {
+        if (!profile.getShareNeeds().replace(".", "").isEmpty()) {
 
             setUpShareNeeds();
 
@@ -401,45 +457,42 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
 
             }
 
-
-
             String street = profile.getStreet();
             String cityState = profile.getCityStateZip();
 
-            if (viewModel.isCityStateZip() && viewModel.isStreetAddress()){
+            if (viewModel.isCityStateZip() && viewModel.isStreetAddress()) {
 
                 String address = street + " " + cityState;
                 binding.tvHomeAddress.setText(address);
                 binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
 
-            } else if (viewModel.isCityStateZip()){
+            } else if (viewModel.isCityStateZip()) {
 
                 binding.tvHomeAddress.setText(cityState);
                 binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
 
-            } else if (viewModel.isStreetAddress()){
+            } else if (viewModel.isStreetAddress()) {
 
                 binding.tvHomeAddress.setText(street);
                 binding.layoutContactHomeAddress.setVisibility(View.VISIBLE);
             }
         }
 
-
         String workStreet = profile.getWorkStreet();
         String workCityStateZip = profile.getWorkCityStateZip();
 
-        if (viewModel.isWorkStreet() && viewModel.isWorkCityStateZip()){
+        if (viewModel.isWorkStreet() && viewModel.isWorkCityStateZip()) {
 
             String address = workStreet + " " + workCityStateZip;
             binding.tvWorkAddress.setText(address);
             binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
 
-        } else if (viewModel.isWorkCityStateZip()){
+        } else if (viewModel.isWorkCityStateZip()) {
 
             binding.tvWorkAddress.setText(workCityStateZip);
             binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
 
-        } else if (viewModel.isWorkStreet()){
+        } else if (viewModel.isWorkStreet()) {
 
             binding.tvHomeAddress.setText(workStreet);
             binding.layoutContactWorkAddress.setVisibility(View.VISIBLE);
@@ -447,14 +500,15 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
     }
 
 
-    public boolean isPhonePermissionsGranted() {
+    private boolean isPhonePermissionsGranted() {
 
         if (sdk >= marshMallow) {
 
             if (ActivityCompat.checkSelfPermission(getBaseActivity(), Manifest.permission.CALL_PHONE)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                requestPermissions(new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
+                requestPermissions(new String[]{Manifest.permission.CALL_PHONE},
+                        //request specific permission from user
                         AppConstants.REQUEST_PHONE_PERMISSIONS);
 
                 return false;
@@ -469,6 +523,27 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
             return true;
         }
 
+    }
+
+    private boolean isReadStoreagePermissionsGranted() {
+
+        if (sdk >= marshMallow) {
+
+            if (ActivityCompat.checkSelfPermission(getBaseActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        AppConstants.REQUEST_READ_EXTERNAL_STORAGE);
+
+                return false;
+
+            } else {
+                return true;
+            }
+
+        } else {
+            return false;
+        }
     }
 
 
@@ -544,21 +619,34 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        switch (requestCode){
 
-        if (requestCode == AppConstants.REQUEST_PHONE_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            case AppConstants.REQUEST_PHONE_PERMISSIONS : {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    showPhoneAlert();
+                }
+                break;
+            }
 
-            showPhoneAlert();
+            case AppConstants.REQUEST_READ_EXTERNAL_STORAGE: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    try {
+                        sendVcard();
+                    } catch (Exception e) {
+                        showAlert("Whoops", getResources().getString(R.string.vcard_not_sent_alert));
+                    }                }
+                break;
+            }
         }
     }
 
 
     /**
      * Copys the text to the clip board
-     *
-     * @param text
      */
     private void sendToClipBoard(String text) {
 
@@ -568,7 +656,8 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
 
             try {
 
-                ClipboardManager clipboard = (ClipboardManager) getBaseActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getBaseActivity()
+                        .getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText(label, text);
                 clipboard.setPrimaryClip(clip);
                 showToastShort(label);

@@ -44,18 +44,37 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp">
 
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    style="@style/App_Text_view"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                    android:textSize="20sp"
-                    tools:text="Matt Maher"
-                    android:layout_gravity="center_vertical"
-                    android:text="@{profile.getFirstName() + ` ` + profile.getLastName()}"
-                    />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        style="@style/App_Text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:textSize="20sp"
+                        tools:text="Matt Maher"
+                        android:layout_gravity="center_vertical"
+                        android:text="@{profile.getFirstName() + ` ` + profile.getLastName()}"
+                        />
+
+                    <Button
+                        android:id="@+id/btn_share_contact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/share_contact"
+                        android:textColor="@color/colorPrimary"
+                        android:textAlignment="textStart"
+                        android:background="?attr/selectableItemBackground"
+                        android:textAllCaps="false"
+                        android:onClick="@{()-> viewModel.onShareContactClicked()}"
+                        />
+
+                </LinearLayout>
+
 
                 <View
                     android:layout_width="0dp"
@@ -111,7 +130,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp">
 
                 <TextView

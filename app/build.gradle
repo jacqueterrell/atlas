@@ -252,6 +252,8 @@ dependencies {
     implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
     implementation "com.google.android.gms:play-services-places:16.0.0"
     implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
+    implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
+
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
@@ -260,15 +262,15 @@ dependencies {
     implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rootProject.rxjavaForRetrofit"
 
     //RxJava support for ROOM dependencies
-    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
-    implementation 'androidx.room:room-rxjava2:2.1.0-alpha01'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha01'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha04'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha04'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha04'
 
     //all ROOM dependencies
-    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
-    implementation 'androidx.room:room-rxjava2:2.1.0-alpha01'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha01'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha01'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha04'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha04'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha04'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha04'
 
     //all dagger2 dependencies
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"

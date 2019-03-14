@@ -2,6 +2,8 @@ package com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile;
 
 public interface ContactProfileNavigator {
 
+    void onShareContactClicked();
+
     void contactCellPhoneClicked();
 
     void contactOnOfficePhoneClicked();
