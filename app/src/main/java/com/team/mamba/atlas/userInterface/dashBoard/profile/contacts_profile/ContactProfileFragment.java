@@ -42,6 +42,7 @@ import ezvcard.parameter.TelephoneType;
 import ezvcard.property.Photo;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -165,9 +166,20 @@ public class ContactProfileFragment extends BaseFragment<UserProfileForContactBi
         String fileName = "vCard";
         File vCardFile = File.createTempFile(fileName, ".vcf", storageDir);
 
-        try (FileOutputStream stream = new FileOutputStream(vCardFile)) {
-            stream.write(getVcardString().getBytes());
+        FileWriter fw = new FileWriter(vCardFile);
+        fw.write("BEGIN:VCARD\r\n");
+        fw.write("VERSION:3.0\r\n");
+        fw.write("FN:" + binding.tvName.getText().toString() + "\r\n");
+        fw.write("TITLE:" + binding.tvPosition.getText().toString() + "\r\n");
+        fw.write("TEL;TYPE=cell:" + binding.tvCellPhone.getText().toString() + "\r\n");
+        fw.write("TEL;TYPE=WORK,VOICE:" + binding.tvOfficePhone.getText().toString() + "\r\n");
+        fw.write("EMAIL;TYPE=PREF, EMAIL:" + binding.tvWorkEmail.getText().toString() + "\r\n");
+
+        if (!profile.getImageUrl().replace(".", "").isEmpty()) {
+            fw.write("PHOTO;TYPE=JPEG;VALUE=URL:" + profile.getImageUrl() + "\r\n");
         }
+        fw.write("END:VCARD\r\n");
+        fw.close();
 
         if (sdk >= VERSION_CODES.N){
             vUri = FileProvider.getUriForFile(getBaseActivity(),
