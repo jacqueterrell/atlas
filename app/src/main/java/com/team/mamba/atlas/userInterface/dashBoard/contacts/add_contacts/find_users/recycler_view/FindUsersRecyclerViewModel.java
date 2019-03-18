@@ -31,7 +31,6 @@ public class FindUsersRecyclerViewModel extends BaseViewModel<FindUsersRecyclerN
     }
 
     public void initiateNewUserRequest(FindUsersRecyclerViewModel viewModel, UserProfile profile) {
-
         dataModel.initiateNewUserRequest(viewModel, profile);
     }
 }

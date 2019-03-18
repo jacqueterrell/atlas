@@ -6,6 +6,8 @@
 
     <string name="already_connected_body">Check your contacts. It looks like you\'ve already connected.</string>
     <string name="already_connected_title">Already Connected</string>
+    <string name="already_sent_contact_request_title">Already Requested</string>
+    <string name="already_sent_contact_request_body">You have already sent this contact a request</string>
 
     <string name="business_login_title">Business Organizational Login</string>
     <string name="business_not_found_body">We couldn\'t find your business or organization with the provided credentials.
@@ -125,6 +127,7 @@
         <item>Closed</item>
     </string-array>
 
+    <string name="edit_connection">Edit Connection</string>
     <string name="share_contact"><u>Share Contact</u></string>
     <string name="vcard_not_sent_alert">The vcard for this contact could not be sent.</string>
     <string name="sync_contacts_body">Would you like to sync your Atlas contacts to your dedicated contacts app?</string>

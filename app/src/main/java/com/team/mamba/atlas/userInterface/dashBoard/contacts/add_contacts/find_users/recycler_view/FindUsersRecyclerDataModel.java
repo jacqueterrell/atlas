@@ -8,6 +8,7 @@ import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
+import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +30,9 @@ public class FindUsersRecyclerDataModel {
     public void initiateNewUserRequest(FindUsersRecyclerViewModel viewModel,UserProfile profile){
 
         if (dataManager.getSharedPrefs().isBusinessAccount()){
-
             requestNewUserBusiness(viewModel,profile);
 
         } else {
-
             requestNewUserIndividual(viewModel,profile);
         }
 
@@ -64,7 +63,6 @@ public class FindUsersRecyclerDataModel {
                         viewModel.setRequestingUserProfile(requestingProfile);
 
                         for (Map.Entry<String,String> entry : requestingProfile.getConnections().entrySet()){//get a list of all current connections
-
                             String userId = entry.getKey();
                             connectionIdList.add(userId);
                         }
@@ -75,7 +73,6 @@ public class FindUsersRecyclerDataModel {
                             viewModel.getNavigator().showAlreadyAContactAlert();
 
                         } else {
-
                             addNewConnectionIndividual(viewModel,selectedProfile);
                         }
 
@@ -95,6 +92,46 @@ public class FindUsersRecyclerDataModel {
      */
     private void addNewConnectionIndividual(FindUsersRecyclerViewModel viewModel,UserProfile consentingProfile){
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        UserProfile requestingProfile = viewModel.getRequestingUserProfile();
+
+        //Ensures that duplicate connections never exist
+        db.collection(AppConstants.CONNECTIONS_COLLECTION)
+                .whereEqualTo("requestingUserID", requestingProfile.getId())
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+                        UserConnections selectedUserConnection = null;
+                        List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
+
+                        for (UserConnections connection : connectionsList) {
+                            if (connection.getConsentingUserID().equals(consentingProfile.getId())) {
+                                selectedUserConnection = connection;
+                            }
+                        }
+
+                        //if the connection does not already exists create a new one
+                        if (selectedUserConnection == null) {
+                            createNewDocRef(viewModel,consentingProfile);
+
+                        } else {
+                            handleRequest(selectedUserConnection,viewModel);
+                        }
+                    }
+                });
+
+    }
+
+
+    private void handleRequest(UserConnections selectedConnection, FindUsersRecyclerViewModel viewModel){
+
+        if (selectedConnection != null && !selectedConnection.isConfirmed){
+            viewModel.getNavigator().showAlreadySentRequestAlert();
+        }
+    }
+
+    private void createNewDocRef(FindUsersRecyclerViewModel viewModel,UserProfile consentingProfile){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference newUserRef = db.collection(AppConstants.CONNECTIONS_COLLECTION).document();
         UserProfile requestingProfile = viewModel.getRequestingUserProfile();
@@ -129,11 +166,9 @@ public class FindUsersRecyclerDataModel {
 
                 })
                 .addOnFailureListener(e -> {
-
                     viewModel.getNavigator().handleError(e.getMessage());
                     Logger.e(e.getMessage());
                 });
-
     }
 
     /**********************User Logged in as a Business Account***************/
