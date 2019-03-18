@@ -125,6 +125,8 @@
         <item>Closed</item>
     </string-array>
 
+    <string name="share_contact"><u>Share Contact</u></string>
+    <string name="vcard_not_sent_alert">The vcard for this contact could not be sent.</string>
     <string name="sync_contacts_body">Would you like to sync your Atlas contacts to your dedicated contacts app?</string>
     <string name="sync_contacts_title">Sync Contacts</string>
 

@@ -394,7 +394,6 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
             if (ActivityCompat.checkSelfPermission(getBaseActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
 
-
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         AppConstants.REQUEST_READ_EXTERNAL_STORAGE);
 

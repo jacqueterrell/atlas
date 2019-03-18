@@ -62,68 +62,61 @@ public class ContactProfileViewModel extends BaseViewModel<ContactProfileNavigat
     /**************OnClick Listeners**********************/
 
     public void contactCellPhoneClicked() {
-
         getNavigator().contactCellPhoneClicked();
     }
 
 
     public void contactOnOfficePhoneClicked() {
-
         getNavigator().contactOnOfficePhoneClicked();
     }
 
 
     public void contactOnHomePhoneClicked() {
-
         getNavigator().contactOnHomePhoneClicked();
     }
 
 
     public void contactOnPersonalPhoneClicked() {
-
         getNavigator().contactOnPersonalPhoneClicked();
     }
 
 
     public void contactOnFaxClicked() {
-
         getNavigator().contactOnFaxClicked();
     }
 
 
     public void contactOnPersonalEmailClicked() {
-
         getNavigator().contactOnPersonalEmailClicked();
     }
 
 
     public void contactOnWorkEmailClicked() {
-
         getNavigator().contactOnWorkEmailClicked();
     }
 
 
     public void contactOnHomeAddressClicked() {
-
         getNavigator().contactOnHomeAddressClicked();
     }
 
 
     public void contactOnWorkAddressClicked() {
-
         getNavigator().contactOnWorkAddressClicked();
     }
 
 
     public void contactOnWorkHistoryClicked() {
-
         getNavigator().contactOnWorkHistoryClicked();
     }
 
 
     public void contactOnEducationClicked() {
-
         getNavigator().contactOnEducationClicked();
+    }
+
+    public void onShareContactClicked(){
+        getNavigator().onShareContactClicked();
     }
 
 
