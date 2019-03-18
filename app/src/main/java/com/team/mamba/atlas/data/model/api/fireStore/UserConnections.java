@@ -20,12 +20,7 @@ public class UserConnections {
     public String conDeviceToken = "";
     public String reqDeviceToken = "";
     public int connectionType;
-
-
     public boolean isOrgBus;
-
-
-
     public boolean isConfirmed;
     public boolean isViewed;
     public boolean isDirectory;

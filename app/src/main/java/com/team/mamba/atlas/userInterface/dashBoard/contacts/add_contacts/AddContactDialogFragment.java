@@ -32,7 +32,6 @@ public class AddContactDialogFragment extends DialogFragment  {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         parentActivity = (DashBoardActivity) context;
     }
 
@@ -51,13 +50,11 @@ public class AddContactDialogFragment extends DialogFragment  {
         dialog.show();
 
         binding.btnAddUser.setOnClickListener(view -> {
-
             ChangeFragments.addFragmentVertically(AddUserFragment.newInstance(),parentActivity.getSupportFragmentManager(),"AddUser",null);
             dialog.dismiss();
         });
 
         binding.btnAddBusiness.setOnClickListener(view -> {
-
             ChangeFragments.addFragmentVertically(AddBusinessFragment.newInstance(),parentActivity.getSupportFragmentManager(),"AddBusiness",null);
             dialog.dismiss();
         });
@@ -76,20 +73,16 @@ public class AddContactDialogFragment extends DialogFragment  {
         });
 
         binding.btnFindUsers.setOnClickListener(view -> {
-
             ChangeFragments.addFragmentVertically(FindUsersFragment.newInstance(),parentActivity.getSupportFragmentManager(),"FindUsers",null);
             dialog.dismiss();
         });
 
         binding.btnSuggestedContacts.setOnClickListener(view -> {
-
-
             ChangeFragments.addFragmentVertically(SuggestedContactsFragment.newInstance(),parentActivity.getSupportFragmentManager(),"SuggestedContacts",null);
             dialog.dismiss();
         });
 
         binding.btnCancelAddContact.setOnClickListener(view -> {
-
             dialog.dismiss();
         });
 

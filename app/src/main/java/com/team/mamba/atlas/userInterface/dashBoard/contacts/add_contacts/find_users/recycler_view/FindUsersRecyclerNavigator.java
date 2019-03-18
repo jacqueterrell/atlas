@@ -8,6 +8,8 @@ public interface FindUsersRecyclerNavigator {
 
     void showAlreadyAContactAlert();
 
+    void showAlreadySentRequestAlert();
+
     void showInvitationSentAlert(String first,String last);
 
     void handleError(String msg);

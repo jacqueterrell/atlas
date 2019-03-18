@@ -142,9 +142,7 @@ implements NetworkManagementNavigator{
 
         if (connection.isOrgBus){
 
-
         } else {
-
             ChangeFragments.addFragmentFadeIn(DescribeConnectionsFragment.newInstance(connection,false,true),getBaseActivity()
                     .getSupportFragmentManager(),"DescribeConnections",null);
         }
