@@ -45,21 +45,16 @@ public class EnterFirstNameFragment extends Fragment {
 
 
         binding.btnNext.setOnClickListener(v -> {
-
             String name = binding.etFirstName.getText().toString().trim();
-
             if (name.isEmpty()){
-
                 Snackbar.make(binding.getRoot(),"Please enter a valid first name",Snackbar.LENGTH_LONG).show();
 
             } else {
-
                 ChangeWelcomeFragments.addFragmentFadeIn(EnterLastNameFragment.newInstance(dateOfBirth,name), getActivity().getSupportFragmentManager(), "LastNameFragment", null);
             }
         });
 
         binding.layoutOpenWelcomeScreen.setOnClickListener(v -> {
-
             getActivity().onBackPressed();
         });
 
