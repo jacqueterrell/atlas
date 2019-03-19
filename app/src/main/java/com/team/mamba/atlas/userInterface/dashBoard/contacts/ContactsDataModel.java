@@ -17,20 +17,16 @@ import javax.inject.Inject;
 public class ContactsDataModel {
 
     private AppDataManager dataManager;
-    private boolean isSuccesful = true;
-    private Exception exception;
     private List<UserConnections> defaultConnectionsList = new ArrayList<>();
 
 
     @Inject
     public ContactsDataModel(AppDataManager dataManager) {
-
         this.dataManager = dataManager;
     }
 
 
     public void requestContactsInfo(ContactsViewModel viewModel) {
-
         viewModel.setSavedUserId(dataManager.getSharedPrefs().getUserId());
         requestUserProfiles(viewModel);
     }
@@ -42,7 +38,6 @@ public class ContactsDataModel {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserProfile> adjustedProfileList = new ArrayList<>();
-
 
         db.collection(AppConstants.USERS_COLLECTION)
                 .get()
@@ -69,8 +64,6 @@ public class ContactsDataModel {
                         requestAllConnections(viewModel);
 
                     } else {
-
-                        exception = task.getException();
                         Logger.e(task.getException().getMessage());
                         viewModel.getNavigator().handleError(task.getException().getMessage());
                     }
@@ -165,7 +158,6 @@ public class ContactsDataModel {
                         requestAllBusinessProfiles(viewModel);
 
                     } else {
-
                         Logger.e(task.getException().getMessage());
                         task.getException().printStackTrace();
                         viewModel.getNavigator().handleError(task.getException().getMessage());
@@ -196,15 +188,12 @@ public class ContactsDataModel {
                             return;
                         }
 
-                        isSuccesful = true;
                         List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
-
                         viewModel.setBusinessProfileList(businessProfiles);
 
                         for (BusinessProfile profile : businessProfiles) {
 
                             if (profile.getId().equals(savedUserId)) {
-
                                 viewModel.setBusinessProfile(profile);
 
                             }
@@ -213,10 +202,8 @@ public class ContactsDataModel {
                         setConnectionsProfiles(viewModel);
 
                     } else {
-
                         Logger.e(task.getException().getMessage());
-
-                            viewModel.getNavigator().handleError("Error requesting business collections");
+                        viewModel.getNavigator().handleError("Error requesting business collections");
 
                     }
                 });

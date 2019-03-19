@@ -131,52 +131,42 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
     /********Onclick Listeners********/
 
     public void onInfoClicked() {
-
         getNavigator().onInfoClicked();
     }
 
     public void onCrmClicked() {
-
         getNavigator().onCrmClicked();
     }
 
     public void onNotificationsClicked() {
-
         getNavigator().onNotificationsClicked();
     }
 
     public void onAddNewContactClicked() {
-
         getNavigator().onAddNewContactClicked();
     }
 
-    public void onSycnContactsClicked() {
-
+    public void onSyncContactsClicked() {
         getNavigator().onSyncContactsClicked();
     }
 
     public void onSettingsClicked() {
-
         getNavigator().onSettingsClicked();
     }
 
     public void onProfileImageClicked() {
-
         getNavigator().onProfileImageClicked();
     }
 
     public void onGroupFilterClicked() {
-
         getNavigator().onBusinessFilterClicked();
     }
 
     public void onIndividualFilterClicked() {
-
         getNavigator().onIndividualFilterClicked();
     }
 
     public void onDirectoryCountClicked(){
-
         getNavigator().onDirectoryCountClicked();
     }
 
@@ -184,7 +174,6 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
 
 
     public void setBusinessContactProfiles() {
-
         getListOfAllDirectories();
     }
 
@@ -199,7 +188,6 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         for (UserConnections connections : getUserConnectionsList()) {
 
             if (connections.isOrgBus && connections.isDirectory) {
-
                 directoryConnections.add(connections);
             }
         }
@@ -207,7 +195,6 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         Collections.sort(directoryConnections, (o1, o2) -> Double.compare(o2.getTimestamp(), o1.getTimestamp()));
 
         if (!directoryConnections.isEmpty()) {
-
             UserConnections selectedConnection = directoryConnections.get(0);
             setSelectedBusinessProfile(selectedConnection.getBusinessProfile());
             getAllBusinessConnections(selectedConnection);
@@ -222,7 +209,6 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         for (UserConnections connections: getAllConnectionsList()){
 
             if (connections.getConsentingUserID().equals(selectedConnections.getConsentingUserID())){
-
                 requestingConnections.add(connections);
             }
         }
@@ -230,7 +216,6 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         for (BusinessProfile profile : getBusinessProfileList()){
 
             if (selectedConnections.getConsentingUserID().equals(profile.getId())){
-
                 setSelectedDirectory(profile);
             }
         }
@@ -240,7 +225,6 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
             for (UserProfile profile : getUserProfileList()) {
 
                 if (connections.requestingUserID.equals(profile.getId())) {
-
                     profile.setShareNeeds(getSelectedDirectory().getShareNeeds());
                     connections.setUserProfile(profile);
                     connections.setOverrideBusinessProfile(true);
@@ -251,7 +235,6 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         }
 
             setBusinessContactsList(selectedConnections,requestingConnections);
-
     }
 
 
@@ -267,11 +250,8 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         List<UserConnections> businessAssociatesList = new ArrayList<>();
 
         for (Map.Entry<String, String> entry : selectedConnections.getBusinessProfile().getContacts().entrySet()) {
-
             String userId = entry.getKey();
-
             if (!businessContactList.contains(userId)) {
-
                 businessContactList.add(userId);
             }
         }
@@ -281,18 +261,13 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
             try{
 
                 if (businessContactList.contains(connections.getUserProfile().getId())) {
-
                     businessAssociatesList.add(connections);
                 }
 
-            }catch (Exception e){
-
+            } catch (Exception e){
                 Logger.e(e.getMessage());
             }
-
         }
-
-
 
         Collections.sort(businessAssociatesList,
                 (o1, o2) -> o1.getUserProfile().getLastName().compareTo(o2.getUserProfile().getLastName()));
@@ -304,7 +279,6 @@ public class ContactsViewModel extends BaseViewModel<ContactsNavigator> {
         /*********DataModel Requests*******/
 
         public void requestContactsInfo (ContactsViewModel viewModel){
-
             dataModel.requestContactsInfo(viewModel);
         }
     }

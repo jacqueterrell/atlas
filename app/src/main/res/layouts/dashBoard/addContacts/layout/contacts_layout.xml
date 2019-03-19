@@ -59,9 +59,9 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="10dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="@{()-> viewModel.onSycnContactsClicked()}"
+                    android:onClick="@{()-> viewModel.onSyncContactsClicked()}"
                     android:src="@drawable/ic_refresh_solid"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/iv_settings"
@@ -379,7 +379,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipeContainer"
                     android:layout_width="match_parent"
@@ -391,6 +390,59 @@
                         android:layout_height="match_parent">
 
                     </androidx.recyclerview.widget.RecyclerView>
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_empty_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:id="@+id/layout_empty_contact_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <ImageView
+                            android:id="@+id/iv_empty_user"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="55dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_users_solid"
+                            android:tint="@color/material_icon" />
+
+                        <TextView
+                            android:id="@+id/tv_empty_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/iv_empty_user"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="15dp"
+                            android:text="No contacts found"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_below="@id/tv_empty_title"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="10dp"
+                            android:onClick="@{()-> viewModel.onAddNewContactClicked()}"
+                            android:text="Add Contact"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/black"
+                            app:backgroundTint="@color/super_transparent_white"
+                            app:cornerRadius="5dp"
+                            app:rippleColor="@color/material_icon"
+                            app:strokeColor="@color/material_icon"
+                            app:strokeWidth="2dp" />
+
+                    </RelativeLayout>
 
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

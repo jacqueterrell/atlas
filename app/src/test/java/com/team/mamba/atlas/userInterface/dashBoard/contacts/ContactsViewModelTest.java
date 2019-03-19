@@ -4,9 +4,6 @@ import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsDataModel;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -166,7 +163,7 @@ public class ContactsViewModelTest {
     public void onSycnContactsClicked() {
 
         //action
-        spyViewModel.onSycnContactsClicked();
+        spyViewModel.onSyncContactsClicked();
 
         //assert
         verify(mockNavigator).onSyncContactsClicked();
