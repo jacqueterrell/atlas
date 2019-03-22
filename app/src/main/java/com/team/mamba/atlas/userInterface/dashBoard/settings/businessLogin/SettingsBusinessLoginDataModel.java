@@ -1,95 +1,66 @@
-package com.team.mamba.atlas.userInterface.welcome.select_business_account.business_login;
+package com.team.mamba.atlas.userInterface.dashBoard.settings.businessLogin;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
-import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeViewModel;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.business_login.BusinessLoginViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
-
+import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 
-public class BusinessLoginDataModel {
+public class SettingsBusinessLoginDataModel {
 
 
     private AppDataManager dataManager;
 
-
     @Inject
-    public BusinessLoginDataModel(AppDataManager dataManager){
-
+    public SettingsBusinessLoginDataModel(AppDataManager dataManager){
         this.dataManager = dataManager;
     }
-
-
-    public void firebaseAuthenticateByEmail(BusinessLoginViewModel viewModel, String email, String password) {
-
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(viewModel.getNavigator().getParentActivity(), task -> {
-
-                    if (task.isSuccessful()) {
-
-                        checkAllBusinesses(viewModel, email);
-
-                    } else {
-
-                        viewModel.getNavigator().showBusinessNotFoundAlert();
-                    }
-                });
-
-    }
-
 
     /**
      * Query the DB to look for the email, if a match is found
      * login in as the business. If multiple are found a recyclerview
      * gives the user options on which business to represent
      *
-     * @param email the business email address
      */
-    public void checkAllBusinesses(BusinessLoginViewModel viewModel, String email) {
+    public void checkAllBusinesses(SettingsBusinessLoginViewModel viewModel) {
 
         //query database to look for the email
         //if match found login as the business
         //if multiple matched, show recylerview to select the business to represent
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String id = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)
-                .whereEqualTo("email", email)
+                .whereEqualTo("repId", id)
                 .get()
                 .addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
 
                         List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
-
                         viewModel.setBusinessProfileList(businessProfiles);
 
                         if (viewModel.getBusinessProfileList().isEmpty()) {
-
-                            //todo can this situation exist
-                            viewModel.getNavigator().showBusinessNotFoundAlert();
+                            viewModel.getNavigator().onEmptyBusinessesReturned();
 
                         } else if (viewModel.getBusinessProfileList().size() == 1) {
 
-                            dataManager.getSharedPrefs().setUserId(businessProfiles.get(0).getId());
-                            viewModel.getNavigator().openDashBoard();
+                            //todo open the dashboard with this as the business profile
+//                            dataManager.getSharedPrefs().setUserId(businessProfiles.get(0).getId());
+//                            viewModel.getNavigator().openDashBoard();
 
                         } else {
-
-                            viewModel.getNavigator().showMultipleBusinessLogin();
+                            viewModel.getNavigator().onSuccessfulBusinessProfileResponse();
                         }
 
                     } else {
-
                         Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
+                        viewModel.getNavigator().handleError(task.getException().getLocalizedMessage());
                     }
                 });
 

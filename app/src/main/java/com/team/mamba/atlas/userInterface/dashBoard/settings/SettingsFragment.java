@@ -40,7 +40,6 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding,Setting
     private SettingsLayoutBinding binding;
 
     public static SettingsFragment newInstance(){
-
         return new SettingsFragment();
     }
 
@@ -85,6 +84,18 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding,Setting
         return binding.getRoot();
     }
 
+    private void setLoginButton(){
+        if (dataManager.getSharedPrefs().isBusinessAccount()){
+            binding.tvBuisinessLogin.setVisibility(View.VISIBLE);
+            binding.tvUserLogin.setVisibility(View.VISIBLE);
+
+            //todo login as a user of the business
+
+        } else {
+
+        }
+    }
+
     @Override
     public void onSiteLinkClicked() {
 
@@ -114,6 +125,15 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding,Setting
         startActivity(i);
     }
 
+    @Override
+    public void onUserLoginClicked() {
+
+    }
+
+    @Override
+    public void onBusinessLoginClick() {
+
+    }
 
     @Override
     public void onPrivacyPolicyClicked() {
@@ -155,6 +175,11 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding,Setting
     public void onNetworkManagementClicked() {
 
         ChangeFragments.addFragmentVertically(NetworkManagementFragment.newInstance(), getBaseActivity().getSupportFragmentManager(), "NetworkManagement", null);
+
+    }
+
+    @Override
+    public void onBusinessAgentsSuccessfullyReturned() {
 
     }
 

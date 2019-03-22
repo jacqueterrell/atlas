@@ -6,6 +6,10 @@ public interface SettingsNavigator {
 
     void onOrganizationalOutreachClicked();
 
+    void onUserLoginClicked();
+
+    void onBusinessLoginClick();
+
     void onAlumniNetworkingClicked();
 
     void onPrivacyPolicyClicked();
@@ -19,5 +23,7 @@ public interface SettingsNavigator {
     void onDeleteMyAccountClicked();
 
     void onSiteLinkClicked();
+
+    void onBusinessAgentsSuccessfullyReturned();
 
 }

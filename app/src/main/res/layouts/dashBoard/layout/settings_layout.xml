@@ -147,11 +147,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
-                    android:text="Network Managerment"
+                    android:text="Network Management"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                     android:background="?attr/selectableItemBackground"
                     android:textSize="15sp"
                     android:onClick="@{()-> viewModel.onNetworkManagementClicked()}"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_buisiness_login"
+                    style="@style/App_Text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="Business Login"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:background="?attr/selectableItemBackground"
+                    android:textSize="15sp"
+                    android:onClick="@{()-> viewModel.onBusinessLoginClick()}"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_user_login"
+                    style="@style/App_Text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="User Login"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:background="?attr/selectableItemBackground"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    android:onClick="@{()-> viewModel.onUserLoginClicked()}"
                     />
 
                 <TextView
