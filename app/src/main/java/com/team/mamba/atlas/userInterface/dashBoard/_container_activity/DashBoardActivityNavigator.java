@@ -25,7 +25,7 @@ public interface DashBoardActivityNavigator {
 
     void resetToFirstFragment();
 
-    void refreshInfoFragment();
+    void resetEntireApp();
 
     boolean wasContactRecentlyDeleted();
 

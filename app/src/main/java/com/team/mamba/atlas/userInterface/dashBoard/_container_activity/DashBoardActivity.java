@@ -135,13 +135,11 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
     @Override
     public void resetToFirstFragment() {
-
         getSupportFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
-    public void refreshInfoFragment() {
-
+    public void resetEntireApp() {
         finishAffinity();
         startActivity(DashBoardActivity.newIntent(DashBoardActivity.this));
     }

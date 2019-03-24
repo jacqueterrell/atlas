@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +14,7 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.AddBusinessLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
-import com.team.mamba.atlas.userInterface.dashBoard.info.InfoFragment;
 import javax.inject.Inject;
 
 public class AddBusinessFragment extends BaseFragment<AddBusinessLayoutBinding, AddBusinessViewModel>
@@ -146,7 +142,7 @@ implements AddBusinessNavigator {
                 .setCancelable(false)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
 
-                    parentNavigator.refreshInfoFragment();
+                    parentNavigator.resetEntireApp();
                 });
 
         dialog.show();

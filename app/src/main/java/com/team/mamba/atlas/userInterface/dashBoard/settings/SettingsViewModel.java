@@ -8,8 +8,6 @@ public class SettingsViewModel extends BaseViewModel<SettingsNavigator> {
 
 
     private SettingsDataModel dataModel;
-
-
     private List<BusinessProfile> businessProfileList;
 
 
@@ -52,39 +50,32 @@ public class SettingsViewModel extends BaseViewModel<SettingsNavigator> {
     }
 
     public void onPrivacyPolicyClicked(){
-
         getNavigator().onPrivacyPolicyClicked();
     }
 
     public void onTermsOfServiceClicked(){
-
         getNavigator().onTermsOfServiceClicked();
     }
 
     public void onNetworkManagementClicked(){
-
         getNavigator().onNetworkManagementClicked();
     }
 
     public void onLogOutClicked(){
-
         getNavigator().onLogOutClicked();
     }
 
     public void onDeleteMyAccountClicked(){
-
         getNavigator().onDeleteMyAccountClicked();
     }
 
     public void onSiteLinkClicked(){
-
         getNavigator().onSiteLinkClicked();;
     }
 
     /**************DataModel Requests**********************/
 
     public void deleteUser(){
-
         dataModel.deleteUser();
     }
 }

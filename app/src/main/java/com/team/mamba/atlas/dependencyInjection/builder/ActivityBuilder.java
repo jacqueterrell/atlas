@@ -20,4 +20,6 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = WelcomeScreenModule.class)
     abstract BusinessAccountsActivity bindBusinessAccountsActivity();
+
+
 }

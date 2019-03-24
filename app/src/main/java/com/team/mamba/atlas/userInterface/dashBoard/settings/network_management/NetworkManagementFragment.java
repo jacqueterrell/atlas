@@ -27,7 +27,6 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlas.databinding.NetworkManagementLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
-import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
@@ -128,7 +127,7 @@ implements NetworkManagementNavigator{
     public void onContactDeleted() {
 
         parentNavigator.setContactRecentlyDeleted(true);
-        parentNavigator.refreshInfoFragment();
+        parentNavigator.resetEntireApp();
     }
 
     @Override

@@ -36,7 +36,7 @@ public class SettingsBusinessLoginDataModel {
         String id = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.BUSINESSES_COLLECTION)
-                .whereEqualTo("repId", id)
+                .whereEqualTo("businessRepId", id)
                 .get()
                 .addOnCompleteListener(task -> {
 
@@ -48,13 +48,7 @@ public class SettingsBusinessLoginDataModel {
                         if (viewModel.getBusinessProfileList().isEmpty()) {
                             viewModel.getNavigator().onEmptyBusinessesReturned();
 
-                        } else if (viewModel.getBusinessProfileList().size() == 1) {
-
-                            //todo open the dashboard with this as the business profile
-//                            dataManager.getSharedPrefs().setUserId(businessProfiles.get(0).getId());
-//                            viewModel.getNavigator().openDashBoard();
-
-                        } else {
+                         } else {
                             viewModel.getNavigator().onSuccessfulBusinessProfileResponse();
                         }
 

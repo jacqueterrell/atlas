@@ -20,7 +20,6 @@ public class BusinessLoginDataModel {
 
     @Inject
     public BusinessLoginDataModel(AppDataManager dataManager){
-
         this.dataManager = dataManager;
     }
 

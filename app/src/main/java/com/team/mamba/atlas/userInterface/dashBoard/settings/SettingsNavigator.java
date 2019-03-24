@@ -24,6 +24,4 @@ public interface SettingsNavigator {
 
     void onSiteLinkClicked();
 
-    void onBusinessAgentsSuccessfullyReturned();
-
 }
