@@ -147,11 +147,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
-                    android:text="Network Managerment"
+                    android:text="Network Management"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                     android:background="?attr/selectableItemBackground"
                     android:textSize="15sp"
                     android:onClick="@{()-> viewModel.onNetworkManagementClicked()}"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_buisiness_login"
+                    style="@style/App_Text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="Business Login"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:background="?attr/selectableItemBackground"
+                    android:textSize="15sp"
+                    android:onClick="@{()-> viewModel.onBusinessLoginClick()}"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_user_login"
+                    style="@style/App_Text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="User Login"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:background="?attr/selectableItemBackground"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    android:onClick="@{()-> viewModel.onUserLoginClicked()}"
                     />
 
                 <TextView
@@ -259,21 +286,8 @@
 
         </FrameLayout>
 
-
-
-        <net.bohush.geometricprogressview.GeometricProgressView
-            android:id="@+id/progress_spinner"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:gp_color="@color/grey"
-            app:gp_duration="800"
-            app:gp_figure_padding="3dp"
-            app:gp_number_of_angles="12"
-            app:gp_type="triangle"
-            android:layout_marginBottom="100dp"/>
+        <include layout="@layout/default_spinner"
+            android:id="@+id/default_spinner"/>
 
     </FrameLayout>
 

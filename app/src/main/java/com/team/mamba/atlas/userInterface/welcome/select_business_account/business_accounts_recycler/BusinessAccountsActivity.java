@@ -79,6 +79,7 @@ public class BusinessAccountsActivity
 
                     finishAffinity();
 
+                    dataManager.getSharedPrefs().setBusinessRepId(profile.getBusinessRepId());
                     dataManager.getSharedPrefs().setUserId(profile.getId());
                     dataManager.getSharedPrefs().setUserLoggedIn(true);
                     dataManager.getSharedPrefs().setBusinessAccount(true);

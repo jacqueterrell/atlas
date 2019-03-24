@@ -30,6 +30,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.add_new.AddWorkFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_work_history.edit_work.EditWorkFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.SettingsFragment;
+import com.team.mamba.atlas.userInterface.dashBoard.settings.businessLogin.SettingsBusinessLoginFragment;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementFragment;
 import com.team.mamba.atlas.userInterface.welcome.WelcomeScreenModule;
 import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
@@ -149,4 +150,6 @@ public abstract class FragmentBuilder {
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract CreateAnnouncementFragment bindCreateAnnouncementFragment();
 
+    @ContributesAndroidInjector(modules = DashBoardModule.class)
+    abstract SettingsBusinessLoginFragment bindSettingsBusinessLoginFragment();
 }

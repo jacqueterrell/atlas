@@ -20,7 +20,6 @@ public class BusinessLoginDataModel {
 
     @Inject
     public BusinessLoginDataModel(AppDataManager dataManager){
-
         this.dataManager = dataManager;
     }
 
@@ -56,7 +55,7 @@ public class BusinessLoginDataModel {
 
         //query database to look for the email
         //if match found login as the business
-        //if multiple matched recylerview to select the business to represent
+        //if multiple matched, show recylerview to select the business to represent
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

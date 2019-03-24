@@ -160,7 +160,7 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     @Override
     public void onConnectionRequestApproved() {
         parentNavigator.setContactRecentlyAdded(true);
-        parentNavigator.refreshInfoFragment();
+        parentNavigator.resetEntireApp();
     }
 
     @Override

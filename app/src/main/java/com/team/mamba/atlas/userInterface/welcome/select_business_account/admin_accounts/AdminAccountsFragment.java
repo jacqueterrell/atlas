@@ -64,7 +64,7 @@ public class AdminAccountsFragment extends BaseFragment<BusinessAccountsRecycler
 
     @Override
     public View getProgressSpinner() {
-        return binding.progressSpinner;
+        return binding.defaultSpinner.progressSpinner;
     }
 
 

@@ -181,6 +181,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         return binding.getRoot();
     }
 
+
     private void setUpRecyclerViews(){
 
         userStatsAdapter = new UserStatsAdapter(userStatsList);
