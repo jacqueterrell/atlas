@@ -35,7 +35,6 @@ public class WelcomeActivity extends BaseActivity<WelcomeFragmentContainerBindin
 
 
     public static Intent newIntent(Context context){
-
         return new Intent(context,WelcomeActivity.class);
     }
 

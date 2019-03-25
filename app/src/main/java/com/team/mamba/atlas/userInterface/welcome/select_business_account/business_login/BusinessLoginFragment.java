@@ -40,8 +40,6 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
 
     private BusinessLoginLayoutBinding binding;
     private WelcomeActivityNavigator parentNavigator;
-    private long dateOfBirth;
-
 
     public static BusinessLoginFragment newInstance() {
 
@@ -66,7 +64,7 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
 
@@ -89,7 +87,6 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
-
         showSoftKeyboard(binding.etEmail);
         return binding.getRoot();
     }
@@ -117,11 +114,9 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
 
                     if (parentNavigator.isBusinessLogin()) {
-
                         dataManager.getSharedPrefs().setBusinessAccount(true);
 
                     } else {
-
                         dataManager.getSharedPrefs().setBusinessAccount(false);
                     }
 
@@ -134,15 +129,19 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
     }
 
     @Override
-    public void showMultipleBusinessLogin() {
+    public void handleError(String errorMsg) {
+        hideProgressSpinner();
+        showAlert("Error",errorMsg);
+    }
 
+    @Override
+    public void showMultipleBusinessLogin() {
         hideProgressSpinner();
         startActivity(BusinessAccountsActivity.newIntent(getBaseActivity(), viewModel.getBusinessProfileList()));
     }
 
     @Override
     public void showBusinessNotFoundAlert() {
-
         hideProgressSpinner();
         String title = "Login Issue";
         String body = getBaseActivity().getResources().getString(R.string.business_not_found_body);
@@ -150,8 +149,15 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
     }
 
     @Override
-    public void onBusinessScreenLearnMoreClicked() {
+    public void showCreateUserAccountAlert() {
+        hideProgressSpinner();
+        String title = "User account not found";
+        String body = "You must create a user account first to login as a business representative";
+        showAlert(title,body);
+    }
 
+    @Override
+    public void onBusinessScreenLearnMoreClicked() {
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.ATLAS_BUSINESS_URL));
         startActivity(i);
     }
@@ -176,7 +182,6 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
             //dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC"); // Sofwr
 
             parentNavigator.setBusinessLogin(false);
-
             openDashBoard();
 
         } else {
@@ -189,15 +194,12 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
             } else {
 
                 if (!viewModel.isEmailValid(email) && !viewModel.isPasswordValid(password)) {
-
                     showSnackbar("Please enter a valid email and password");
 
                 } else if (!viewModel.isEmailValid(email)) {
-
                     showSnackbar("Please enter a valid email");
 
                 } else {
-
                     showSnackbar("Please enter a valid password");
                 }
             }
