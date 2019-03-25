@@ -5,4 +5,10 @@ import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 public interface BusinessAccountsNavigator {
 
     void onAccountSelected(BusinessProfile profile);
+
+    void onAccountUpdatedSuccessfully(BusinessProfile profile);
+
+    void handleError(String errorMsg);
+
+    void showCreateUserAccountAlert();
 }
