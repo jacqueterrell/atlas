@@ -17,6 +17,7 @@ import com.team.mamba.atlas.userInterface.base.BaseActivity;
 
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 
+import com.team.mamba.atlas.utils.AppConstants;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +84,9 @@ public class BusinessAccountsActivity
                     dataManager.getSharedPrefs().setUserId(profile.getId());
                     dataManager.getSharedPrefs().setUserLoggedIn(true);
                     dataManager.getSharedPrefs().setBusinessAccount(true);
-                    startActivity(DashBoardActivity.newIntent(BusinessAccountsActivity.this));
+
+                    Intent intent = DashBoardActivity.newIntent(this);
+                    startActivity(intent);
                 });
 
         dialog.show();
@@ -95,7 +98,6 @@ public class BusinessAccountsActivity
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
-
 
         BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(), businessProfiles);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

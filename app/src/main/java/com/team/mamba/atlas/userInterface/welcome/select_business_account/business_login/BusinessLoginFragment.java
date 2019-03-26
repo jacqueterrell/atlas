@@ -18,11 +18,13 @@ import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessLoginLayoutBinding;
+import com.team.mamba.atlas.service.IncompleteProfileInfoService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivityNavigator;
 import com.team.mamba.atlas.userInterface.welcome.select_business_account.admin_accounts.AdminAccountsFragment;
 import com.team.mamba.atlas.userInterface.welcome.select_business_account.business_accounts_recycler.BusinessAccountsActivity;
+import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.ChangeWelcomeFragments;
 
 import javax.inject.Inject;
@@ -121,12 +123,12 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
                         dataManager.getSharedPrefs().setBusinessAccount(true);
 
                     } else {
-
                         dataManager.getSharedPrefs().setBusinessAccount(false);
                     }
 
                     getBaseActivity().finishAffinity();
-                    startActivity(DashBoardActivity.newIntent(getBaseActivity()));
+                    Intent intent = DashBoardActivity.newIntent(getBaseActivity());
+                    startActivity(intent);
                 });
 
         dialog.show();

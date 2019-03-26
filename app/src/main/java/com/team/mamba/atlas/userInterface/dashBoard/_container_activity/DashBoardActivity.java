@@ -1,13 +1,24 @@
 package com.team.mamba.atlas.userInterface.dashBoard._container_activity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.View;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.orhanobut.logger.Logger;
@@ -17,6 +28,8 @@ import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.data.model.local.CrmFilter;
 import com.team.mamba.atlas.databinding.FragmentContainerBinding;
+import com.team.mamba.atlas.service.AddContactsCrmService;
+import com.team.mamba.atlas.service.IncompleteProfileInfoService;
 import com.team.mamba.atlas.service.MyFirebaseMessagingService;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
 import com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsFragment;
@@ -93,12 +106,11 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         binding = getViewDataBinding();
 
         dataManager.getSharedPrefs().setUserLoggedIn(true);
-
         //Load the fragment into our container
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
-        if (MyFirebaseMessagingService.isBusinessAnnouncement){
+        if (MyFirebaseMessagingService.isBusinessAnnouncement) {
 
             if (fragment == null) {
 
@@ -126,7 +138,23 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
                         .commit();
             }
         }
+
+        if (getIntent().getExtras() != null && getIntent().getExtras().get(AppConstants.START_SERVICE) != null) {
+            startIncompleteProfileDataService();
+            startAddCrmAndContactsService();
+        }
     }
+
+    private void startIncompleteProfileDataService() {
+        Intent intentService = new Intent(this, IncompleteProfileInfoService.class);
+        startService(intentService);
+    }
+
+    private void startAddCrmAndContactsService() {
+        Intent intentService = new Intent(this, AddContactsCrmService.class);
+        startService(intentService);
+    }
+
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
@@ -146,14 +174,12 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
     @Override
     public void openSettingsScreen() {
-
-        ChangeFragments.addFragmentVertically(SettingsFragment.newInstance(), getSupportFragmentManager(), "SettingsFragment", null);
+        ChangeFragments.addFragmentVertically(SettingsFragment.newInstance(), getSupportFragmentManager(),
+                "SettingsFragment", null);
     }
 
     @Override
     public void openAddContactDialog() {
-
-//        showAddContactDialog();
         AddContactDialogFragment dialog = new AddContactDialogFragment();
         dialog.show(getSupportFragmentManager(), "ContactDialog");
     }
@@ -173,21 +199,24 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     public void openUserProfile(UserProfile profile) {
 
         //check if the profile is a contacts or the signed in use
-        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
 
-            ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(), getSupportFragmentManager(), "UserProfile", null);
+            ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(), getSupportFragmentManager(),
+                    "UserProfile", null);
 
         } else {
 
-            ChangeFragments.addFragmentVertically(ContactProfilePager.newInstance(profile), getSupportFragmentManager(), "ContactPager", null);
+            ChangeFragments
+                    .addFragmentVertically(ContactProfilePager.newInstance(profile), getSupportFragmentManager(),
+                            "ContactPager", null);
         }
 
     }
 
     @Override
     public void openBusinessProfile(BusinessProfile businessProfile) {
-
-        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile), getSupportFragmentManager(), "Business Profile", null);
+        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile),
+                getSupportFragmentManager(), "Business Profile", null);
     }
 
 
@@ -208,14 +237,12 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
     @Override
     public void setContactRecentlyDeleted(boolean wasDeleted) {
-
         contactRecentlyDeleted = wasDeleted;
     }
 
 
     @Override
     public void setCrmFilter(CrmFilter crmFilter) {
-
         viewModel.setCrmFilter(crmFilter);
     }
 
@@ -233,15 +260,12 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
             Fragment previousFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
             if (previousFragment instanceof CrmFragment) {
-
                 CrmNavigator navigator = (CrmNavigator) previousFragment;
 
                 if (navigator.isInfoDialogShown()) {
-
                     navigator.hideCrmInfoDialog();
 
                 } else if (navigator.isExportScreenShown()) {
-
                     navigator.hideExportScreen();
 
                 } else {
@@ -253,16 +277,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
                 EditPageOneNavigator navigator = (EditPageOneNavigator) previousFragment;
 
                 if (navigator.isContactsScreenShown()) {
-
                     navigator.closeContactsScreen();
 
                 } else {
-
                     onBackPressed();
                 }
 
             } else {
-
                 onBackPressed();
             }
 
@@ -280,4 +301,8 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

@@ -2,6 +2,7 @@ package com.team.mamba.atlas.userInterface.welcome.welcomeScreen.enter_phone_num
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -32,10 +33,12 @@ import com.orhanobut.logger.Logger;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.EnterPhoneNumberDialogBinding;
+import com.team.mamba.atlas.service.IncompleteProfileInfoService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivityNavigator;
 import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerNavigator;
+import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.CommonUtils;
 import com.team.mamba.atlas.utils.formatData.RegEx;
 import javax.inject.Inject;
@@ -134,7 +137,6 @@ implements EnterPhoneNavigator{
 
     @Override
     public void onPhoneSubmitClicked() {
-
         submitPhoneNumber();
     }
 
@@ -158,7 +160,6 @@ implements EnterPhoneNavigator{
 
     @Override
     public void onEnterSmsCancelClicked() {
-
         hideEnterSMSCode();
         hideProgressSpinner();
     }
@@ -326,26 +327,23 @@ implements EnterPhoneNavigator{
     public void openDashBoard() {
 
         hideProgressSpinner();
+        Intent intent = DashBoardActivity.newIntent(getBaseActivity());
+        intent.putExtra(AppConstants.START_SERVICE,AppConstants.START_SERVICE);
 
         if (parenNavigator.isBusinessLogin()){
-
             dataManager.getSharedPrefs().setBusinessAccount(true);
             getBaseActivity().finishAffinity();
             startActivity(DashBoardActivity.newIntent(getBaseActivity()));
 
         } else {
-
             dataManager.getSharedPrefs().setBusinessAccount(false);
             getBaseActivity().finishAffinity();
-            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
-
+            startActivity(intent);
         }
-
     }
 
     @Override
     public void onPhoneSubmitPreviousClicked() {
-
         getBaseActivity().onBackPressed();
     }
 
