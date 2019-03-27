@@ -97,6 +97,15 @@
             </intent-filter>
         </service>
 
+        <service android:name=".service.IncompleteProfileInfoService" />
+        <service android:name=".service.AddContactsCrmService" />
+
+        <receiver android:name=".service.ProfileReceiver"
+            android:enabled="true"/>
+
+        <receiver android:name=".service.CheckContactsReceiver"
+            android:enabled="true"/>
+
         <meta-data android:name="net.hockeyapp.android.appIdentifier" android:value="${HOCKEYAPP_APP_ID}"/>
 
     </application>

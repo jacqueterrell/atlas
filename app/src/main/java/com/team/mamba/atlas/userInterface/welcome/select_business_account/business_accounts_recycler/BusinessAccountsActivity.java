@@ -17,6 +17,7 @@ import com.team.mamba.atlas.userInterface.base.BaseActivity;
 
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 
+import com.team.mamba.atlas.utils.AppConstants;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +30,6 @@ public class BusinessAccountsActivity
 
     @Inject
     BusinessAccountsViewModel viewModel;
-
-    @Inject
-    BusinessAccountsDataModel dataModel;
 
     private BusinessAccountsRecyclerViewBinding binding;
     private static List<BusinessProfile> businessProfiles = new ArrayList<>();
@@ -67,7 +65,6 @@ public class BusinessAccountsActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
-        viewModel.setDataModel(dataModel);
         binding = getViewDataBinding();
         BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(), businessProfiles);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

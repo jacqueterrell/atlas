@@ -3,6 +3,7 @@ package com.team.mamba.atlas.userInterface;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -24,19 +25,24 @@ import com.team.mamba.atlas.utils.AppConstants;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import dagger.android.HasBroadcastReceiverInjector;
 import dagger.android.HasServiceInjector;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 
-public class AtlasApplication extends Application implements HasActivityInjector,LifecycleObserver{
+public class AtlasApplication extends Application implements HasActivityInjector,LifecycleObserver,HasServiceInjector,
+        HasBroadcastReceiverInjector {
 
     public static boolean isAppInBackGround = false;
 
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
-//
-//    @Inject
-//    DispatchingAndroidInjector<Service> dispatchingServiceInjector;
+
+    @Inject
+    DispatchingAndroidInjector<Service> dispatchingServiceInjector;
+
+    @Inject
+    DispatchingAndroidInjector<BroadcastReceiver> dispatchingReceiverInjector;
 
     @Override
     public void onCreate() {
@@ -71,6 +77,12 @@ public class AtlasApplication extends Application implements HasActivityInjector
     }
 
     @Override
+    public AndroidInjector<BroadcastReceiver> broadcastReceiverInjector() {
+        return dispatchingReceiverInjector;
+    }
+
+
+    @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
@@ -91,7 +103,6 @@ public class AtlasApplication extends Application implements HasActivityInjector
     }
 
     private void setFirebaseSettings(){
-
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
@@ -99,8 +110,8 @@ public class AtlasApplication extends Application implements HasActivityInjector
         firestore.setFirestoreSettings(settings);
     }
 
-//    @Override
-//    public AndroidInjector<Service> serviceInjector() {
-//        return dispatchingServiceInjector;
-//    }
+    @Override
+    public AndroidInjector<Service> serviceInjector() {
+        return dispatchingServiceInjector;
+    }
 }
