@@ -46,8 +46,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        versionCode 21010200
-        versionName "1.2.0"
+        versionCode rootProject.ext.appVersionCode
+        versionName rootProject.ext.appVersionName
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -120,30 +120,24 @@ android {
     productFlavors {
 
         developmentFlavor {
-
             applicationId "com.team.mamba.atlas.dev"
             resValue "string", "app_name", "Atlas-Dev"
-            setProperty("archivesBaseName", "atlas_" + versionName)
+            setProperty("archivesBaseName", "atlas_" + rootProject.ext.appVersionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "ca0f3c6e94c847058ab7b90d0a520dfb"]
-
         }
 
         stagingFlavor {
-
             applicationId "com.team.mamba.atlas.staging"
             resValue "string", "app_name", "Atlas-Staging"
-            setProperty("archivesBaseName", "atlas_" + versionName)
+            setProperty("archivesBaseName", "atlas_" + rootProject.ext.appVersionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "f96b7678094340329695c6ee1427d195"]
-
         }
 
         productionFlavor {
-
             applicationId "com.team.mamba.atlas"
             resValue "string", "app_name", "Atlas"
-            setProperty("archivesBaseName", "atlas_" + versionName)
+            setProperty("archivesBaseName", "atlas_" + rootProject.ext.appVersionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "d5b53a01d8b241bc80acfd015103afe7"]
-
         }
     }
 
