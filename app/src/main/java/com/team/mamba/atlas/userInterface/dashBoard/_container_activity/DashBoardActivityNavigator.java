@@ -7,7 +7,6 @@ import com.team.mamba.atlas.data.model.local.CrmFilter;
 public interface DashBoardActivityNavigator {
 
 
-    void setUpLocalNotifications(UserProfile profile);
     void openAddContactDialog();
 
     void openSettingsScreen();

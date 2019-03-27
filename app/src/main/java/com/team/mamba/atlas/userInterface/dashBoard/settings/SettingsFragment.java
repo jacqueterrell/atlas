@@ -19,6 +19,8 @@ import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.SettingsLayoutBinding;
+import com.team.mamba.atlas.service.AddContactsCrmService;
+import com.team.mamba.atlas.service.IncompleteProfileInfoService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.dashBoard.settings.businessLogin.SettingsBusinessLoginFragment;
@@ -228,10 +230,21 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding, Settin
                     dataManager.getSharedPrefs().setUserLoggedIn(false);
                     showToastShort("Logging out");
                     resetApplication();
-
+                    stopIncompleteProfileDataService();
+                    stopAddCrmAndContactsService();
                 })
                 .show();
 
+    }
+
+    private void stopIncompleteProfileDataService() {
+        Intent intentService = new Intent(getContext(), IncompleteProfileInfoService.class);
+        getBaseActivity().stopService(intentService);
+    }
+
+    private void stopAddCrmAndContactsService() {
+        Intent intentService = new Intent(getContext(), AddContactsCrmService.class);
+        getBaseActivity().stopService(intentService);
     }
 
 

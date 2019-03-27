@@ -59,12 +59,18 @@ public class IncompleteProfileInfoService extends Service {
         calendar.add(Calendar.HOUR_OF_DAY,2);
         long expiryTime = calendar.getTimeInMillis();//expiry time is in two hours
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent broadCastIntent = new Intent(getApplicationContext(), ProfileReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, broadCastIntent, 0);
-        alarmManager.set(AlarmManager.RTC,expiryTime,pendingIntent);
+            getAlarmManager().set(AlarmManager.RTC,expiryTime,getAlarmPendingInent());
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private PendingIntent getAlarmPendingInent(){
+        Intent broadCastIntent = new Intent(getApplicationContext(), ProfileReceiver.class);
+        return PendingIntent.getBroadcast(getApplicationContext(), 0, broadCastIntent, 0);
+    }
+
+    private AlarmManager getAlarmManager(){
+        return (AlarmManager) getSystemService(Context.ALARM_SERVICE);
     }
 
     private void queryUserData(){
@@ -89,7 +95,7 @@ public class IncompleteProfileInfoService extends Service {
                         } else {
                             String error = task.getException() != null ? task.getException().getLocalizedMessage() : "Error getting userInfo";
                             Logger.e(error);
-                            stopSelf();
+                            cancelAlarm();
                         }
 
                     });
@@ -106,8 +112,7 @@ public class IncompleteProfileInfoService extends Service {
         if (email.isEmpty() && workHistory.isEmpty()){
             sendNotification();
         }
-        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(broadcastReceiver);
-        stopSelf();
+        cancelAlarm();
     }
 
     private void sendNotification(){
@@ -146,5 +151,17 @@ public class IncompleteProfileInfoService extends Service {
         if (notificationManager != null) {
             notificationManager.notify(0, notificationBuilder.build());
         }
+    }
+
+    private void cancelAlarm(){
+        stopSelf();
+        getAlarmManager().cancel(getAlarmPendingInent());
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cancelAlarm();
     }
 }

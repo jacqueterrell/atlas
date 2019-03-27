@@ -23,13 +23,11 @@ import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.AppDataManager;
 import com.team.mamba.atlas.data.model.api.fireStore.CrmNotes;
 import com.team.mamba.atlas.data.model.api.fireStore.UserConnections;
-import com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlas.utils.AppConstants;
 import dagger.android.AndroidInjection;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -73,27 +71,34 @@ public class AddContactsCrmService extends Service {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR,8);
         long expiryTime = calendar.getTimeInMillis();//expiry time is in 8 days
+        getAlarmManager().set(AlarmManager.RTC,expiryTime,getCrmPendingIntent());
+    }
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    private AlarmManager getAlarmManager(){
+        return (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    }
+
+    private PendingIntent getCrmPendingIntent(){
         Intent broadCastIntent = new Intent(getApplicationContext(), CheckContactsReceiver.class);
         broadCastIntent.putExtra(FILTER,CONTACT_AND_CRM_FILTER);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, broadCastIntent, 0);
-        alarmManager.set(AlarmManager.RTC,expiryTime,pendingIntent);
+        return PendingIntent.getBroadcast(getApplicationContext(), 0, broadCastIntent, 0);
     }
+
 
     private void setContactOnlyAlarm(){
         IntentFilter intentFilter = new IntentFilter(FILTER);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver,intentFilter);
-
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR,4);
         long expiryTime = calendar.getTimeInMillis();//expiry time is in four days
+        getAlarmManager().set(AlarmManager.RTC,expiryTime,getContactPendingIntent());
+    }
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+    private PendingIntent getContactPendingIntent(){
         Intent broadCastIntent = new Intent(getApplicationContext(), CheckContactsReceiver.class);
         broadCastIntent.putExtra(FILTER,CONTACT_ONLY_FILTER);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, broadCastIntent, 0);
-        alarmManager.set(AlarmManager.RTC,expiryTime,pendingIntent);
+        return PendingIntent.getBroadcast(getApplicationContext(), 0, broadCastIntent, 0);
     }
 
 
@@ -170,7 +175,7 @@ public class AddContactsCrmService extends Service {
                             String body = "Add, manage, and organize your contacts and opportunities on Atlas";
                             sendNotification(title,body);
                         } else {
-                            stopSelf();
+                            cancelAlarm();
                         }
 
                     } else {
@@ -216,5 +221,18 @@ public class AddContactsCrmService extends Service {
         if (notificationManager != null) {
             notificationManager.notify(0, notificationBuilder.build());
         }
+    }
+
+    private void cancelAlarm(){
+        stopSelf();
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(broadcastReceiver);
+        getAlarmManager().cancel(getCrmPendingIntent());
+        getAlarmManager().cancel(getContactPendingIntent());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cancelAlarm();
     }
 }

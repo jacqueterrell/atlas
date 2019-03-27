@@ -407,7 +407,6 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         } else {
             try {
                 binding.tvUserId.setText(viewModel.getUserProfile().getCode());
-                parentNavigator.setUpLocalNotifications(viewModel.getUserProfile());
             } catch (Exception e) {
                 dataManager.getSharedPrefs().setUserLoggedIn(false);
                 getBaseActivity().finishAffinity();
