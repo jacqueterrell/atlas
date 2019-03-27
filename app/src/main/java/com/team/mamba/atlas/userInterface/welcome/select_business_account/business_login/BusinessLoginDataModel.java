@@ -19,7 +19,7 @@ public class BusinessLoginDataModel {
 
 
     @Inject
-    public BusinessLoginDataModel(AppDataManager dataManager){
+    public BusinessLoginDataModel(AppDataManager dataManager) {
         this.dataManager = dataManager;
     }
 
@@ -71,26 +71,53 @@ public class BusinessLoginDataModel {
                         viewModel.setBusinessProfileList(businessProfiles);
 
                         if (viewModel.getBusinessProfileList().isEmpty()) {
-
-                            //todo can this situation exist
                             viewModel.getNavigator().showBusinessNotFoundAlert();
 
                         } else if (viewModel.getBusinessProfileList().size() == 1) {
-
-                            dataManager.getSharedPrefs().setUserId(businessProfiles.get(0).getId());
-                            viewModel.getNavigator().openDashBoard();
+                            updateBusinessProfile(viewModel, businessProfiles.get(0));
 
                         } else {
-
                             viewModel.getNavigator().showMultipleBusinessLogin();
                         }
 
                     } else {
-
-                        Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
+                        String error = task.getException() != null ? task.getException().getLocalizedMessage()
+                                : "Could not return list of businesses";
+                        viewModel.getNavigator().handleError(error);
                     }
                 });
 
+    }
+
+    private void updateBusinessProfile(BusinessLoginViewModel viewModel, BusinessProfile profile) {
+
+        if (dataManager.getSharedPrefs().getUserId().isEmpty()) {
+            viewModel.getNavigator().showCreateUserAccountAlert();
+            return;
+        }
+        String userId = dataManager.getSharedPrefs().getUserId();
+        dataManager.getSharedPrefs().setBusinessRepId(userId);
+
+        if (!dataManager.getSharedPrefs().isBusinessAccount()) {
+            profile.setBusinessRepId(userId);
+        } else {
+            String savedRepId = dataManager.getSharedPrefs().getBusinessRepId();
+            profile.setBusinessRepId(savedRepId);
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(AppConstants.BUSINESSES_COLLECTION)
+                .document(profile.getId())
+                .set(profile)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        dataManager.getSharedPrefs().setUserId(profile.getId());
+                        viewModel.getNavigator().openDashBoard();
+                    } else {
+                        String error = task.getException() != null ? task.getException().getLocalizedMessage()
+                                : "Could not update business profile";
+                        viewModel.getNavigator().handleError(error);
+                    }
+                });
     }
 }

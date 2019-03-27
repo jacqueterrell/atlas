@@ -17,4 +17,8 @@ public interface BusinessLoginNavigator {
 
     void showMultipleBusinessLogin();
 
+    void handleError(String errorMsg);
+
+    void showCreateUserAccountAlert();
+
 }

@@ -37,7 +37,6 @@ public class BusinessAccountsActivity
 
 
     public static Intent newIntent(Context context, List<BusinessProfile>profiles) {
-
         businessProfiles = profiles;
         return new Intent(context, BusinessAccountsActivity.class);
     }
@@ -63,11 +62,34 @@ public class BusinessAccountsActivity
     }
 
     @Override
-    public void onAccountSelected(BusinessProfile profile) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel.setNavigator(this);
+        binding = getViewDataBinding();
+        BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(), businessProfiles);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerView.setAdapter(accountsAdapter);
 
+    }
+
+    @Override
+    public void onAccountSelected(BusinessProfile profile) {
+        viewModel.updateBusinessProfile(profile);
+    }
+
+    @Override
+    public void showCreateUserAccountAlert() {
+        hideProgressSpinner();
+        String title = "User account not found";
+        String body = "You must create a user account first to login as a business representative";
+        showAlert(title,body);
+    }
+
+    @Override
+    public void onAccountUpdatedSuccessfully(BusinessProfile profile) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-
         String title = "Login as " + profile.getName() + "?";
         String msg = "You are an authorized representative for " + profile.getName();
 
@@ -77,32 +99,18 @@ public class BusinessAccountsActivity
 
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
-
                     finishAffinity();
-
-                    dataManager.getSharedPrefs().setBusinessRepId(profile.getBusinessRepId());
                     dataManager.getSharedPrefs().setUserId(profile.getId());
                     dataManager.getSharedPrefs().setUserLoggedIn(true);
                     dataManager.getSharedPrefs().setBusinessAccount(true);
-
-                    Intent intent = DashBoardActivity.newIntent(this);
-                    startActivity(intent);
+                    startActivity(DashBoardActivity.newIntent(BusinessAccountsActivity.this));
                 });
 
         dialog.show();
-
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        viewModel.setNavigator(this);
-        binding = getViewDataBinding();
-
-        BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(), businessProfiles);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        binding.recyclerView.setAdapter(accountsAdapter);
-
+    public void handleError(String errorMsg) {
+        showAlert("Error",errorMsg);
     }
 }

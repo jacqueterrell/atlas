@@ -180,13 +180,13 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
 
     @Override
     public void openAddContactDialog() {
+//        showAddContactDialog();
         AddContactDialogFragment dialog = new AddContactDialogFragment();
         dialog.show(getSupportFragmentManager(), "ContactDialog");
     }
 
     @Override
     public void setUserProfile(UserProfile userProfile) {
-
         viewModel.setUserProfile(userProfile);
     }
 
@@ -199,24 +199,18 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
     public void openUserProfile(UserProfile profile) {
 
         //check if the profile is a contacts or the signed in use
-        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())) {
-
-            ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(), getSupportFragmentManager(),
-                    "UserProfile", null);
+        if (profile.getId().equals(dataManager.getSharedPrefs().getUserId())){
+            ChangeFragments.addFragmentVertically(UserProfileFragment.newInstance(), getSupportFragmentManager(), "UserProfile", null);
 
         } else {
-
-            ChangeFragments
-                    .addFragmentVertically(ContactProfilePager.newInstance(profile), getSupportFragmentManager(),
-                            "ContactPager", null);
+            ChangeFragments.addFragmentVertically(ContactProfilePager.newInstance(profile), getSupportFragmentManager(), "ContactPager", null);
         }
 
     }
 
     @Override
     public void openBusinessProfile(BusinessProfile businessProfile) {
-        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile),
-                getSupportFragmentManager(), "Business Profile", null);
+        ChangeFragments.addFragmentVertically(BusinessProfileFragment.newInstance(businessProfile), getSupportFragmentManager(), "Business Profile", null);
     }
 
 
@@ -251,6 +245,15 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         return viewModel.getCrmFilter();
     }
 
+    @Override
+    public void setUpLocalNotifications(UserProfile profile) {
+
+        //todo check if the user has an email and work history
+
+        //todo check if the user has no contacts and no crm notes
+
+        //todo check if the user has no contacts
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
