@@ -61,8 +61,9 @@ public class AddContactDialogFragment extends DialogFragment  {
 
         binding.btnInviteToAtlas.setOnClickListener(view -> {
 
-            final String appPackageName = BuildConfig.APPLICATION_ID; // package name of the app
-            String msg = "Join me on Atlas Networking! " + AppConstants.BASE_PLAY_STORE_LINK +  appPackageName;
+            final String androidLink = AppConstants.ANDROID_APP_LINK;
+            final String iosLink = AppConstants.IOS_APP_LINK;
+            String msg = getResources().getString(R.string.invite_message,iosLink,androidLink);
 
             ShareCompat.IntentBuilder.from(parentActivity)
                     .setType("text/plain")
