@@ -114,7 +114,8 @@ public class SettingsBusinessLoginFragment
         businessProfiles.clear();
         businessProfiles.addAll(viewModel.getBusinessProfileList());
         if (viewModel.getBusinessProfileList().size() == 1) {
-            onAccountSelected(viewModel.getBusinessProfileList().get(0));
+           // onAccountSelected(viewModel.getBusinessProfileList().get(0));
+            adapter.notifyDataSetChanged();
         } else {
             adapter.notifyDataSetChanged();
         }

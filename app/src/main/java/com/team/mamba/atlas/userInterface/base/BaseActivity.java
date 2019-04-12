@@ -121,9 +121,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
                 });
 
         if (!isFinishing()) {
-
             dialog.show();
-
         }
     }
 
