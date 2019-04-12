@@ -85,22 +85,14 @@ public class WelcomeViewModel extends BaseViewModel<WelcomeNavigator> {
     /***************onclick listeners************/
 
     public void onStartButtonClicked(){
-
         getNavigator().onStartButtonClicked();
     }
 
-    public void onBusinessLoginClicked(){
-
-        getNavigator().onBusinessLoginClicked();
-    }
-
     public void onDateVerifyClicked(){
-
         getNavigator().onDateVerifyClicked();
     }
 
     public void onDateCancelClicked(){
-
         getNavigator().onDateCancelClicked();
     }
 

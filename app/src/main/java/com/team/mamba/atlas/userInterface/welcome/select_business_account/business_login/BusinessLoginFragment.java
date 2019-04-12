@@ -5,28 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessLoginLayoutBinding;
-import com.team.mamba.atlas.service.IncompleteProfileInfoService;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
-import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivityNavigator;
+import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlas.userInterface.welcome.select_business_account.admin_accounts.AdminAccountsFragment;
 import com.team.mamba.atlas.userInterface.welcome.select_business_account.business_accounts_recycler.BusinessAccountsActivity;
-import com.team.mamba.atlas.utils.AppConstants;
-import com.team.mamba.atlas.utils.ChangeWelcomeFragments;
-
+import com.team.mamba.atlas.utils.ChangeFragments;
 import javax.inject.Inject;
 
 public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBinding, BusinessLoginViewModel>
@@ -41,10 +37,9 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
 
 
     private BusinessLoginLayoutBinding binding;
-    private WelcomeActivityNavigator parentNavigator;
+    private DashBoardActivityNavigator parentNavigator;
 
     public static BusinessLoginFragment newInstance() {
-
         return new BusinessLoginFragment();
     }
 
@@ -73,7 +68,7 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        parentNavigator = (WelcomeActivityNavigator) context;
+        parentNavigator = (DashBoardActivityNavigator) context;
 
     }
 
@@ -114,14 +109,7 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
 
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
-
-                    if (parentNavigator.isBusinessLogin()) {
-                        dataManager.getSharedPrefs().setBusinessAccount(true);
-
-                    } else {
-                        dataManager.getSharedPrefs().setBusinessAccount(false);
-                    }
-
+                    dataManager.getSharedPrefs().setBusinessAccount(true);
                     getBaseActivity().finishAffinity();
                     Intent intent = DashBoardActivity.newIntent(getBaseActivity());
                     startActivity(intent);
@@ -134,7 +122,7 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
     @Override
     public void handleError(String errorMsg) {
         hideProgressSpinner();
-        showAlert("Error",errorMsg);
+        showAlert("Error", errorMsg);
     }
 
     @Override
@@ -156,7 +144,7 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
         hideProgressSpinner();
         String title = "User account not found";
         String body = "You must create a user account first to login as a business representative";
-        showAlert(title,body);
+        showAlert(title, body);
     }
 
     @Override
@@ -174,18 +162,9 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
 
         if (email.isEmpty() && password.equals("admin")) {
 
-            ChangeWelcomeFragments.addFragmentFadeIn(AdminAccountsFragment.newInstance(),
+            ChangeFragments.addFragmentFadeIn(AdminAccountsFragment.newInstance(),
                     getBaseActivity().getSupportFragmentManager(), "ContactsFragment", null);
 
-
-        } else if (email.isEmpty() && password.equals("test")) {
-
-            dataManager.getSharedPrefs().setUserId("Dy3PDR8BiWS0L7gqfjo16YqFKKN2"); //Mike R
-            //dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC"); // Jacque Terrell
-            //dataManager.getSharedPrefs().setUserId("RGxZhoaRI2WE6Ge2I6oC"); // Sofwr
-
-            parentNavigator.setBusinessLogin(false);
-            openDashBoard();
 
         } else {
 

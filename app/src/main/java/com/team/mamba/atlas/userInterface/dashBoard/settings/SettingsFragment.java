@@ -27,6 +27,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.settings.businessLogin.Setti
 import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementFragment;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.business_login.BusinessLoginFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
 import java.io.InputStream;
@@ -168,7 +169,8 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding, Settin
     @Override
     public void onBusinessLoginClick() {
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.addFragmentVertically(SettingsBusinessLoginFragment.newInstance(), manager, "SettingsBusinessLogin", null);
+        ChangeFragments.addFragmentVertically(BusinessLoginFragment.newInstance(),manager,"BusinessLogin",null);
+        //ChangeFragments.addFragmentVertically(SettingsBusinessLoginFragment.newInstance(), manager, "SettingsBusinessLogin", null);
     }
 
     @Override

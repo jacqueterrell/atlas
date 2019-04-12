@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.team.mamba.atlas.BR;
+import com.team.mamba.atlas.BuildConfig;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeScreenLayoutBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
@@ -36,7 +37,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
     private WelcomeActivityNavigator parentNavigator;
 
     public static WelcomeFragment newInstance() {
-
         return new WelcomeFragment();
     }
 
@@ -62,9 +62,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
     @Override
     public void onStartButtonClicked() {
-
-        parentNavigator.setBusinessLogin(false);
-
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
                 .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
@@ -72,16 +69,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
     }
 
-    @Override
-    public void onBusinessLoginClicked() {
-
-        parentNavigator.setBusinessLogin(true);
-
-        YoYo.with(Techniques.FadeIn)
-                .duration(500)
-                .onStart(animator -> binding.dialogVerifyAge.layoutVerifyAge.setVisibility(View.VISIBLE))
-                .playOn(binding.dialogVerifyAge.layoutVerifyAge);
-    }
 
     @Override
     public void onDateVerifyClicked() {
@@ -138,7 +125,6 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(binding.imgViewBackground);
 
-
         //Todo reserved for when the adding a business feature is enabled
 //        String email = "jacqueterrell@yahoo.com";
 //        String password = "123456";
@@ -170,20 +156,10 @@ public class WelcomeFragment extends BaseFragment<WelcomeScreenLayoutBinding, We
 
 
         if (viewModel.isAgeValid(month, day, year)) {
-
             onDateCancelClicked();
-
-            if (parentNavigator.isBusinessLogin()){
-
-                ChangeWelcomeFragments.addFragmentFadeIn(BusinessLoginFragment.newInstance(), getBaseActivity().getSupportFragmentManager(), "ContactsFragment", null);
-
-            } else {
-
-                ChangeWelcomeFragments.addFragmentFadeIn(EnterFirstNameFragment.newInstance(viewModel.getDateOfBirth()), getBaseActivity().getSupportFragmentManager(), "ContactsFragment", null);
-            }
+            ChangeWelcomeFragments.addFragmentFadeIn(EnterFirstNameFragment.newInstance(viewModel.getDateOfBirth()), getBaseActivity().getSupportFragmentManager(), "ContactsFragment", null);
 
         } else {
-
             showSnackbar("You must be 13 years or older");
         }
 
