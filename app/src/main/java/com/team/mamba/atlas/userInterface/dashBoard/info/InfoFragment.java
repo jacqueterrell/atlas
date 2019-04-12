@@ -181,6 +181,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         return binding.getRoot();
     }
 
+
     private void setUpRecyclerViews(){
 
         userStatsAdapter = new UserStatsAdapter(userStatsList);
@@ -428,6 +429,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         UserProfile profile = viewModel.getUserProfile();
         parentNavigator.setUserProfile(profile);
     }
+
 
 
     @Override

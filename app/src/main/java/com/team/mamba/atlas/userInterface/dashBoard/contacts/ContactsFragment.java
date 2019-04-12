@@ -132,20 +132,24 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         binding.recyclerView.setAdapter(contactListAdapter);
 
         binding.swipeContainer.setOnRefreshListener(() -> {
-
             if (viewModel.isBusinessContactsShown()) {
-
                 viewModel.setBusinessContactProfiles();
 
             } else {
-
                 viewModel.requestContactsInfo(getViewModel());
             }
+        });
 
+        binding.swipeEmptyContact.setOnRefreshListener(() -> {
+            if (viewModel.isBusinessContactsShown()) {
+                viewModel.setBusinessContactProfiles();
+
+            } else {
+                viewModel.requestContactsInfo(getViewModel());
+            }
         });
 
         checkForEmptyContactList();
-
         setUpSearchView();
         return binding.getRoot();
     }
@@ -174,12 +178,10 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     private void checkForEmptyContactList() {
 
         if (viewModel.getUserConnectionsList().isEmpty()) {
-
             showProgressSpinner();
             viewModel.requestContactsInfo(getViewModel());
 
         } else {
-
             checkIfDifferentUserHasLoggedIn();
         }
     }
@@ -355,7 +357,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     @Override
     public void onDataValuesReturned(List<UserConnections> connectionsList) {
 
-        binding.swipeContainer.setRefreshing(false);
+        cancelSwipeRefreshing();
 
         if (dataManager.getSharedPrefs().isBusinessAccount()) {
 
@@ -410,7 +412,13 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         contactListAdapter.notifyDataSetChanged();
 
-        createCharList();
+        if (userConnectionsList.isEmpty()){
+            binding.swipeEmptyContact.setVisibility(View.VISIBLE);
+        } else {
+            binding.swipeEmptyContact.setVisibility(View.GONE);
+            createCharList();
+        }
+
         hideProgressSpinner();
     }
 
@@ -478,7 +486,12 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
 
         hideProgressSpinner();
         createCharList();
+        cancelSwipeRefreshing();
+    }
+
+    private void cancelSwipeRefreshing(){
         binding.swipeContainer.setRefreshing(false);
+        binding.swipeEmptyContact.setRefreshing(false);
     }
 
     /**
@@ -493,15 +506,11 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         for (UserConnections connections : userConnectionsList) {
 
             if (connections.isOrgBus && !connections.isOverrideBusinessProfile()) {
-
                 businessConnections.add(connections);
 
             } else {
-
                 String firstChar = connections.getUserProfile().getLastName().substring(0, 1);
-
                 if (!charList.contains(firstChar)) {
-
                     stringBuilder.append(firstChar + "\n");
                     charList.add(firstChar);
                 }
@@ -509,17 +518,14 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         }
 
         if (!businessConnections.isEmpty()) {
-
             stringBuilder.append("+");
         }
-
         binding.tvCharList.setText(stringBuilder.toString());
     }
 
     @Override
     public void handleError(String errorMsg) {
-
-        binding.swipeContainer.setRefreshing(false);
+        cancelSwipeRefreshing();
         hideProgressSpinner();
     }
 

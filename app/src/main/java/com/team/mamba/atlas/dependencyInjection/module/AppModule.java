@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 
 import com.team.mamba.atlas.dependencyInjection.builder.ActivityBuilder;
 import com.team.mamba.atlas.dependencyInjection.builder.FragmentBuilder;
+import com.team.mamba.atlas.dependencyInjection.builder.ServiceBuilder;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjectionModule;
@@ -15,8 +16,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 import javax.inject.Singleton;
 
 @Module(includes = {AndroidInjectionModule.class,AndroidSupportInjectionModule.class,
-        DatabaseModule.class, NetworkModule.class, ActivityBuilder.class, FragmentBuilder.class,
-        } )
+        DatabaseModule.class, NetworkModule.class, ActivityBuilder.class, FragmentBuilder.class})
 public class AppModule {
 
     @Provides

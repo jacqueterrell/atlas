@@ -114,9 +114,7 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
 
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
-
-                    //todo send the request to the db
-                   // showInvitationSentAlert(first,last);
+                    showProgressSpinner();
                     viewModel.initiateNewUserRequest(viewModel,profile);
                 });
 
@@ -133,14 +131,12 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
     public void showInvitationSentAlert(String first,String last){
 
         String title = "Invite sent to " + first + " " + last;
-
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        hideProgressSpinner();
 
         dialog.setTitle(title)
                 .setPositiveButton("OK", (paramDialogInterface, paramInt) -> {
-
                     parentNavigator.resetToFirstFragment();
-
                 });
 
         dialog.show();
@@ -148,10 +144,19 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
     }
 
     @Override
+    public void showAlreadySentRequestAlert() {
+        hideProgressSpinner();
+        String title = getResources().getString(R.string.already_sent_contact_request_title);
+        String body = getResources().getString(R.string.already_sent_contact_request_body);
+        showAlert(title,body);
+    }
+
+    @Override
     public void showAlreadyAContactAlert() {
 
         String title = getBaseActivity().getResources().getString(R.string.already_connected_title);
         String body = getBaseActivity().getResources().getString(R.string.already_connected_body);
+        hideProgressSpinner();
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
 

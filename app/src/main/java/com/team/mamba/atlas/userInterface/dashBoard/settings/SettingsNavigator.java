@@ -6,6 +6,10 @@ public interface SettingsNavigator {
 
     void onOrganizationalOutreachClicked();
 
+    void onUserLoginClicked();
+
+    void onBusinessLoginClick();
+
     void onAlumniNetworkingClicked();
 
     void onPrivacyPolicyClicked();

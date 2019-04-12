@@ -89,7 +89,6 @@ public class ViewPagerFragment extends BaseFragment<WelcomeViewPagerBinding, Vie
         binding = getViewDataBinding();
 
         if (dataManager.getSharedPrefs().isUserLoggedIn()) {
-
             getBaseActivity().finishAffinity();
             startActivity(DashBoardActivity.newIntent(getBaseActivity()));
         }

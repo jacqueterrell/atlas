@@ -8,8 +8,6 @@ public interface WelcomeNavigator {
 
     void onStartButtonClicked();
 
-    void onBusinessLoginClicked();
-
     void onDateVerifyClicked();
 
     void onDateCancelClicked();

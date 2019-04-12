@@ -2,11 +2,8 @@ package com.team.mamba.atlas.userInterface.welcome.welcomeScreen.enter_phone_num
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,6 +11,9 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
@@ -35,13 +35,13 @@ import com.team.mamba.atlas.databinding.EnterPhoneNumberDialogBinding;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivityNavigator;
-import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerNavigator;
+import com.team.mamba.atlas.utils.AppConstants;
 import com.team.mamba.atlas.utils.CommonUtils;
 import com.team.mamba.atlas.utils.formatData.RegEx;
 import javax.inject.Inject;
 
-public class EnterPhoneNumberFragment extends BaseFragment<EnterPhoneNumberDialogBinding,EnterPhoneViewModel>
-implements EnterPhoneNavigator{
+public class EnterPhoneNumberFragment extends BaseFragment<EnterPhoneNumberDialogBinding, EnterPhoneViewModel>
+        implements EnterPhoneNavigator {
 
 
     @Inject
@@ -58,7 +58,7 @@ implements EnterPhoneNavigator{
     private WelcomeActivityNavigator parenNavigator;
 
 
-    public static EnterPhoneNumberFragment newInstance(long dob,String first, String last){
+    public static EnterPhoneNumberFragment newInstance(long dob, String first, String last) {
 
         dateOfBirth = dob;
         firstName = first;
@@ -105,10 +105,10 @@ implements EnterPhoneNavigator{
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
-
 
         Glide.with(getActivity())
                 .load(R.drawable.welcome_background)
@@ -134,7 +134,6 @@ implements EnterPhoneNavigator{
 
     @Override
     public void onPhoneSubmitClicked() {
-
         submitPhoneNumber();
     }
 
@@ -158,7 +157,6 @@ implements EnterPhoneNavigator{
 
     @Override
     public void onEnterSmsCancelClicked() {
-
         hideEnterSMSCode();
         hideProgressSpinner();
     }
@@ -168,7 +166,7 @@ implements EnterPhoneNavigator{
 
         String code = binding.etSmsCode.getText().toString();
 
-        if (code.isEmpty()){
+        if (code.isEmpty()) {
 
             showSnackbar("Your sms code is empty");
 
@@ -185,7 +183,7 @@ implements EnterPhoneNavigator{
     }
 
 
-    private void showEnterSMSCode(){
+    private void showEnterSMSCode() {
 
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
@@ -197,7 +195,7 @@ implements EnterPhoneNavigator{
 
     }
 
-    private void hideEnterSMSCode(){
+    private void hideEnterSMSCode() {
 
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
@@ -209,7 +207,6 @@ implements EnterPhoneNavigator{
 
     /**
      * Opens the soft keyboard with a focus on the passed in view
-     * @param view
      */
     private void showSoftKeyboard(View view) {
 
@@ -222,7 +219,7 @@ implements EnterPhoneNavigator{
     }
 
 
-    private void submitPhoneNumber(){
+    private void submitPhoneNumber() {
 
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
         String phoneNumber = binding.etPhoneNumber.getText().toString().replaceAll(RegEx.REMOVE_NON_DIGITS, "");
@@ -232,7 +229,7 @@ implements EnterPhoneNavigator{
             try {
 
                 Phonenumber.PhoneNumber pn = phoneNumberUtil.parse(phoneNumber, "US");
-                String pnE164 = phoneNumberUtil.format(pn,PhoneNumberUtil.PhoneNumberFormat.E164);
+                String pnE164 = phoneNumberUtil.format(pn, PhoneNumberUtil.PhoneNumberFormat.E164);
                 String international = phoneNumberUtil.format(pn, PhoneNumberFormat.INTERNATIONAL);
                 String national = phoneNumberUtil.format(pn, PhoneNumberFormat.NATIONAL);
 
@@ -245,8 +242,6 @@ implements EnterPhoneNavigator{
 
         }
     }
-
-
 
 
     /**
@@ -265,7 +260,7 @@ implements EnterPhoneNavigator{
                 })
                 .setPositiveButton("Continue", (paramDialogInterface, paramInt) -> {
 
-                    viewModel.fireBaseVerifyPhoneNumber(getViewModel(),phoneNumber);
+                    viewModel.fireBaseVerifyPhoneNumber(getViewModel(), phoneNumber);
                     showProgressSpinner();
 
                 });
@@ -326,26 +321,16 @@ implements EnterPhoneNavigator{
     public void openDashBoard() {
 
         hideProgressSpinner();
+        Intent intent = DashBoardActivity.newIntent(getBaseActivity());
+        intent.putExtra(AppConstants.START_SERVICE, AppConstants.START_SERVICE);
 
-        if (parenNavigator.isBusinessLogin()){
-
-            dataManager.getSharedPrefs().setBusinessAccount(true);
-            getBaseActivity().finishAffinity();
-            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
-
-        } else {
-
-            dataManager.getSharedPrefs().setBusinessAccount(false);
-            getBaseActivity().finishAffinity();
-            startActivity(DashBoardActivity.newIntent(getBaseActivity()));
-
-        }
-
+        dataManager.getSharedPrefs().setBusinessAccount(false);
+        getBaseActivity().finishAffinity();
+        startActivity(intent);
     }
 
     @Override
     public void onPhoneSubmitPreviousClicked() {
-
         getBaseActivity().onBackPressed();
     }
 

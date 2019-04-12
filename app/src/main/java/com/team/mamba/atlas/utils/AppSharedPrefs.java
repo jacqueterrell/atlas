@@ -113,6 +113,20 @@ public class AppSharedPrefs {
                 .apply();
     }
 
+    public String getBusinessRepId(){
+
+        return sharedPreferences
+                .getString(BUSINESS_REP_ID,"");
+    }
+
+    public void setBusinessRepId(String userCode){
+
+        sharedPreferences
+                .edit()
+                .putString(BUSINESS_REP_ID,userCode)
+                .apply();
+    }
+
     public boolean isBusinessAccount(){
 
         return sharedPreferences

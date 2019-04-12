@@ -3,11 +3,11 @@ package com.team.mamba.atlas.userInterface.welcome._container_activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import android.view.KeyEvent;
-import android.view.View;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.databinding.WelcomeFragmentContainerBinding;
@@ -19,7 +19,8 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import javax.inject.Inject;
 
-public class WelcomeActivity extends BaseActivity<WelcomeFragmentContainerBinding,WelcomeActivityViewModel> implements
+public class WelcomeActivity extends BaseActivity<WelcomeFragmentContainerBinding, WelcomeActivityViewModel>
+        implements
         WelcomeActivityNavigator, HasSupportFragmentInjector {
 
 
@@ -30,13 +31,11 @@ public class WelcomeActivity extends BaseActivity<WelcomeFragmentContainerBindin
     DispatchingAndroidInjector<Fragment> fragmentInjector;
 
 
-
     private WelcomeFragmentContainerBinding binding;
 
 
-    public static Intent newIntent(Context context){
-
-        return new Intent(context,WelcomeActivity.class);
+    public static Intent newIntent(Context context) {
+        return new Intent(context, WelcomeActivity.class);
     }
 
     @Override
@@ -77,25 +76,15 @@ public class WelcomeActivity extends BaseActivity<WelcomeFragmentContainerBindin
         }
     }
 
-    @Override
-    public boolean isBusinessLogin() {
-        return viewModel.isBusinessLogin();
-    }
-
-    @Override
-    public void setBusinessLogin(boolean businessLogin) {
-        viewModel.setBusinessLogin(businessLogin);
-    }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (keyCode == 4){
+        if (keyCode == 4) {
 
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.welcome_fragment_container);
 
-            if (fragment instanceof ViewPagerFragment){
+            if (fragment instanceof ViewPagerFragment) {
 
                 ViewPagerNavigator navigator = (ViewPagerNavigator) fragment;
                 navigator.onKeyDown();
@@ -108,7 +97,7 @@ public class WelcomeActivity extends BaseActivity<WelcomeFragmentContainerBindin
             return false;
         }
 
-        return super.onKeyDown(keyCode,event);
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

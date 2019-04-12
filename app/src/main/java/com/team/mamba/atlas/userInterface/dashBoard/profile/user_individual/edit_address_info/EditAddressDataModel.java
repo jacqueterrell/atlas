@@ -27,16 +27,12 @@ public class EditAddressDataModel {
                 .document(profile.getId())
                 .set(profile)
                 .addOnCompleteListener(task -> {
-
                     if (task.isSuccessful()) {
-
                      viewModel.getNavigator().onProfileUpdated();
 
                     } else {
-
                         Logger.e("Could not update address: " + task.getException());
                     }
-
                 });
     }
 }

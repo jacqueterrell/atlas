@@ -3,23 +3,19 @@ package com.team.mamba.atlas.userInterface.welcome.select_business_account.busin
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import android.view.View;
-
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.databinding.BusinessAccountsRecyclerViewBinding;
 import com.team.mamba.atlas.userInterface.base.BaseActivity;
-
 import com.team.mamba.atlas.userInterface.dashBoard._container_activity.DashBoardActivity;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 
 public class BusinessAccountsActivity
@@ -34,9 +30,7 @@ public class BusinessAccountsActivity
     private static List<BusinessProfile> businessProfiles = new ArrayList<>();
 
 
-
-    public static Intent newIntent(Context context, List<BusinessProfile>profiles) {
-
+    public static Intent newIntent(Context context, List<BusinessProfile> profiles) {
         businessProfiles = profiles;
         return new Intent(context, BusinessAccountsActivity.class);
     }
@@ -62,11 +56,34 @@ public class BusinessAccountsActivity
     }
 
     @Override
-    public void onAccountSelected(BusinessProfile profile) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel.setNavigator(this);
+        binding = getViewDataBinding();
+        BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(), businessProfiles);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerView.setAdapter(accountsAdapter);
 
+    }
+
+    @Override
+    public void onAccountSelected(BusinessProfile profile) {
+        viewModel.updateBusinessProfile(profile);
+    }
+
+    @Override
+    public void showCreateUserAccountAlert() {
+        hideProgressSpinner();
+        String title = "User account not found";
+        String body = "You must create a user account first to login as a business representative";
+        showAlert(title, body);
+    }
+
+    @Override
+    public void onAccountUpdatedSuccessfully(BusinessProfile profile) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-
         String title = "Login as " + profile.getName() + "?";
         String msg = "You are an authorized representative for " + profile.getName();
 
@@ -76,9 +93,7 @@ public class BusinessAccountsActivity
 
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
-
                     finishAffinity();
-
                     dataManager.getSharedPrefs().setUserId(profile.getId());
                     dataManager.getSharedPrefs().setUserLoggedIn(true);
                     dataManager.getSharedPrefs().setBusinessAccount(true);
@@ -86,20 +101,10 @@ public class BusinessAccountsActivity
                 });
 
         dialog.show();
-
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        viewModel.setNavigator(this);
-        binding = getViewDataBinding();
-
-
-        BusinessAccountsAdapter accountsAdapter = new BusinessAccountsAdapter(getViewModel(), businessProfiles);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        binding.recyclerView.setAdapter(accountsAdapter);
-
+    public void handleError(String errorMsg) {
+        showAlert("Error", errorMsg);
     }
 }

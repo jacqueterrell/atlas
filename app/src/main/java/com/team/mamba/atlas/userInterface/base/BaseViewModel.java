@@ -15,7 +15,6 @@ public abstract class BaseViewModel<N> extends ViewModel {
 
 
     public BaseViewModel(){
-
         this.mCompositeDisposable = new CompositeDisposable();
     }
 

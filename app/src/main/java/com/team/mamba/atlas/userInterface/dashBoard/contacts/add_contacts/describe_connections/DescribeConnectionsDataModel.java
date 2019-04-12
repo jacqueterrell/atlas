@@ -27,7 +27,6 @@ public class DescribeConnectionsDataModel {
 
     @Inject
     public DescribeConnectionsDataModel(AppDataManager dataManager) {
-
         this.dataManager = dataManager;
     }
 
@@ -39,13 +38,10 @@ public class DescribeConnectionsDataModel {
     public void initiateNewUserRequest(DescribeConnectionsViewModel viewModel, String lastName, String code,
             int connectionType) {
         //query users and search for a match...
-
         if (dataManager.getSharedPrefs().isBusinessAccount()) {
-
             getBusinessProfile(viewModel, lastName, code, connectionType);
 
         } else {
-
             requestNewUserIndividual(viewModel, lastName, code, connectionType);
         }
     }
@@ -95,25 +91,20 @@ public class DescribeConnectionsDataModel {
                         }
 
                         if (selectedProfileList.isEmpty()) {//no user found
-
                             viewModel.getNavigator().showUserNotFoundAlert();
 
                         } else {
-
                             UserProfile selectedProfile = selectedProfileList.get(0);
 
                             if (connectionIdList.contains(selectedProfile.getId())) {//already a contact
-
                                 viewModel.getNavigator().showAlreadyAContactAlert();
 
                             } else {
-
                                 addNewConnectionIndividual(viewModel, selectedProfile, connectionType);
                             }
                         }
 
                     } else {
-
                         handleError(task,viewModel);
                     }
                 });
@@ -157,42 +148,41 @@ public class DescribeConnectionsDataModel {
                 .addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
-
-                        List<String> consentingIdList = new ArrayList<>();
-
+                        UserConnections selectedUserConnection = null;
                         List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
 
                         for (UserConnections connection : connectionsList) {
-
                             if (connection.getConsentingUserID().equals(consentingProfile.getId())) {
-
-                                consentingIdList.add(consentingProfile.getId());
+                                selectedUserConnection = connection;
                             }
                         }
 
-                        //if the connection does not already exists
-                        if (consentingIdList.isEmpty()) {
-
+                        //if the connection does not already exists create a new one
+                        if (selectedUserConnection == null) {
                             newUserRef.set(userConnections);
-
                         }
 
                         if (viewModel.isApprovingConnection()) {
-
                             updateInitialConnection(viewModel);
 
                         } else {
-
-                            viewModel.getNavigator().onRequestSent();
+                            handleRequest(selectedUserConnection,viewModel);
                         }
 
                     } else {
-
                         handleError(task,viewModel);
                     }
-
                 });
 
+    }
+
+    private void handleRequest(UserConnections selectedConnection,DescribeConnectionsViewModel viewModel){
+
+        if (selectedConnection != null && !selectedConnection.isConfirmed){
+            viewModel.getNavigator().showAlreadySentRequestAlert();
+        } else {
+            viewModel.getNavigator().onRequestSent();
+        }
     }
 
     /**
@@ -214,7 +204,6 @@ public class DescribeConnectionsDataModel {
                 .addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
-
                         viewModel.getNavigator().onConnectionRequestApproved();
                         Logger.i("Connection updated successfully");
                         addToUsersContactList(viewModel);
@@ -222,7 +211,6 @@ public class DescribeConnectionsDataModel {
                     } else {
 
                         if (task.getException() != null) {
-
                             viewModel.getNavigator().handleError(
                                     "Failed to update connection " + task.getException().getLocalizedMessage());
                         }

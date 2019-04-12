@@ -41,22 +41,13 @@ import dagger.Provides;
 public class DashBoardModule {
 
     @Provides
-    CrmViewModel providesBusinessOpportunitiesViewModel(){
-
-        return new CrmViewModel();
-    }
+    CrmViewModel providesBusinessOpportunitiesViewModel(){ return new CrmViewModel(); }
 
     @Provides
-    DashBoardActivityViewModel providesDashBoardActivityViewModel(){
-
-        return new DashBoardActivityViewModel();
-    }
+    DashBoardActivityViewModel providesDashBoardActivityViewModel(){ return new DashBoardActivityViewModel(); }
 
     @Provides
-    ContactsViewModel providesContactsViewModel(){
-
-        return new ContactsViewModel();
-    }
+    ContactsViewModel providesContactsViewModel(){ return new ContactsViewModel(); }
 
     @Provides
     InfoViewModel providesDashBoardHomeViewModel(){

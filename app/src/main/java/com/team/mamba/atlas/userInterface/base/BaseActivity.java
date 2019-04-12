@@ -110,7 +110,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
                 .show();
     }
 
-    protected void showAlertDialog(String title, String body) {
+    protected void showAlert(String title, String body) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
@@ -121,9 +121,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
                 });
 
         if (!isFinishing()) {
-
             dialog.show();
-
         }
     }
 

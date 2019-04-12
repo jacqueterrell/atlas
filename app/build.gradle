@@ -46,6 +46,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        versionCode rootProject.ext.appVersionCode
+        versionName rootProject.ext.appVersionName
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -118,36 +120,24 @@ android {
     productFlavors {
 
         developmentFlavor {
-
             applicationId "com.team.mamba.atlas.dev"
             resValue "string", "app_name", "Atlas-Dev"
-            versionCode 21010101
-            versionName "1.1.1"
-            setProperty("archivesBaseName", "atlas_" + versionName)
+            setProperty("archivesBaseName", "atlas_" + rootProject.ext.appVersionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "ca0f3c6e94c847058ab7b90d0a520dfb"]
-
         }
 
         stagingFlavor {
-
             applicationId "com.team.mamba.atlas.staging"
             resValue "string", "app_name", "Atlas-Staging"
-            versionCode 21010101
-            versionName "1.1.1"
-            setProperty("archivesBaseName", "atlas_" + versionName)
+            setProperty("archivesBaseName", "atlas_" + rootProject.ext.appVersionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "f96b7678094340329695c6ee1427d195"]
-
         }
 
         productionFlavor {
-
             applicationId "com.team.mamba.atlas"
             resValue "string", "app_name", "Atlas"
-            versionCode 21010101
-            versionName "1.1.1"
-            setProperty("archivesBaseName", "atlas_" + versionName)
+            setProperty("archivesBaseName", "atlas_" + rootProject.ext.appVersionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "d5b53a01d8b241bc80acfd015103afe7"]
-
         }
     }
 
@@ -185,24 +175,26 @@ dependencies {
 
     //all support dependencies
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+
 
     //firebase libraries
-    implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.firebase:firebase-firestore:17.1.1'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-auth:16.2.0'
+    implementation 'com.google.firebase:firebase-firestore:18.1.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.firebase:firebase-messaging:17.4.0'
 
     //all testing dependencies
 
@@ -252,6 +244,8 @@ dependencies {
     implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
     implementation "com.google.android.gms:play-services-places:16.0.0"
     implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
+    implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
+
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
@@ -260,15 +254,15 @@ dependencies {
     implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rootProject.rxjavaForRetrofit"
 
     //RxJava support for ROOM dependencies
-    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
-    implementation 'androidx.room:room-rxjava2:2.1.0-alpha01'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha01'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha05'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha05'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha05'
 
     //all ROOM dependencies
-    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
-    implementation 'androidx.room:room-rxjava2:2.1.0-alpha01'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha01'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha01'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha05'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha05'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha05'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha05'
 
     //all dagger2 dependencies
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -279,8 +273,8 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
     //for dagger testing
-    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
-    androidTestImplementation 'androidx.test:rules:1.1.0-beta02'
+    androidTestImplementation 'androidx.annotation:annotation:1.0.2'
+    androidTestImplementation 'androidx.test:rules:1.1.2-alpha02'
 
     // Databinding
     // kapt "com.android.databinding:compiler:$gradle_plugin_version"

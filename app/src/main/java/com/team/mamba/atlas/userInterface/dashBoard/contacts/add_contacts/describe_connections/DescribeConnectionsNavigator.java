@@ -12,6 +12,8 @@ public interface DescribeConnectionsNavigator {
 
     void showAlreadyAContactAlert();
 
+    void showAlreadySentRequestAlert();
+
     void onRequestSent();
 
     void onConnectionRequestApproved();

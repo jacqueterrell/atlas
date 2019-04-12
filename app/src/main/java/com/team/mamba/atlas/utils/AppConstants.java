@@ -8,6 +8,7 @@ public class AppConstants {
         //disable new object creation
     }
 
+    public static final String START_SERVICE = "startService";
     public static boolean APP_DEBUG = BuildConfig.DEBUG;
     public static final String USERS_COLLECTION = "users";
     public static final String BUSINESSES_COLLECTION = "businesses";
@@ -16,7 +17,8 @@ public class AppConstants {
     public static final String USER_NOTES_COLLECTION = "userNotes";
     public static final String ANNOUNCEMENTS_COLLECTION = "announcements";
     public static String TEST_USER_ID = "S0URPfcKiVanC5NhHd4n9ejcEWZ2";
-    public static final String BASE_PLAY_STORE_LINK = "https://play.google.com/store/apps/details?id=";
+    public static final String ANDROID_APP_LINK = "http://bit.ly/2UNAeAq";
+    public static final String IOS_APP_LINK = "http://apple.co/2UGK9rg";
 
     public static final int REQUEST_WRITE_CONTACTS_PERMISSIONS = 6;
     public static final int REQUEST_PHONE_PERMISSIONS = 5;

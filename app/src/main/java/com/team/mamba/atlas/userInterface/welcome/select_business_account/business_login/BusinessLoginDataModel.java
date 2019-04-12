@@ -8,6 +8,7 @@ import com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlas.userInterface.welcome.welcomeScreen.WelcomeViewModel;
 import com.team.mamba.atlas.utils.AppConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,30 +20,10 @@ public class BusinessLoginDataModel {
 
 
     @Inject
-    public BusinessLoginDataModel(AppDataManager dataManager){
-
+    public BusinessLoginDataModel(AppDataManager dataManager) {
         this.dataManager = dataManager;
     }
 
-
-    public void firebaseAuthenticateByEmail(BusinessLoginViewModel viewModel, String email, String password) {
-
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(viewModel.getNavigator().getParentActivity(), task -> {
-
-                    if (task.isSuccessful()) {
-
-                        checkAllBusinesses(viewModel, email);
-
-                    } else {
-
-                        viewModel.getNavigator().showBusinessNotFoundAlert();
-                    }
-                });
-
-    }
 
 
     /**
@@ -52,11 +33,11 @@ public class BusinessLoginDataModel {
      *
      * @param email the business email address
      */
-    public void checkAllBusinesses(BusinessLoginViewModel viewModel, String email) {
+    public void authenticateCredentials(BusinessLoginViewModel viewModel, String email,String passWord) {
 
         //query database to look for the email
         //if match found login as the business
-        //if multiple matched recylerview to select the business to represent
+        //if multiple matched, show recylerview to select the business to represent
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -68,30 +49,58 @@ public class BusinessLoginDataModel {
                     if (task.isSuccessful()) {
 
                         List<BusinessProfile> businessProfiles = task.getResult().toObjects(BusinessProfile.class);
+                        List<BusinessProfile> verifiedProfileList = new ArrayList<>();
 
-                        viewModel.setBusinessProfileList(businessProfiles);
+                        for (BusinessProfile profile: businessProfiles){
+                            if (profile.getAdminPassword().equals(passWord)){
+                                verifiedProfileList.add(profile);
+                            }
+                        }
+                        viewModel.setBusinessProfileList(verifiedProfileList);
 
                         if (viewModel.getBusinessProfileList().isEmpty()) {
-
-                            //todo can this situation exist
                             viewModel.getNavigator().showBusinessNotFoundAlert();
 
                         } else if (viewModel.getBusinessProfileList().size() == 1) {
-
-                            dataManager.getSharedPrefs().setUserId(businessProfiles.get(0).getId());
-                            viewModel.getNavigator().openDashBoard();
+                            updateBusinessProfile(viewModel, businessProfiles.get(0));
 
                         } else {
-
                             viewModel.getNavigator().showMultipleBusinessLogin();
                         }
 
                     } else {
-
-                        Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
+                        String error = task.getException() != null ? task.getException().getLocalizedMessage()
+                                : "Could not return list of businesses";
+                        viewModel.getNavigator().handleError(error);
                     }
                 });
 
+    }
+
+    private void updateBusinessProfile(BusinessLoginViewModel viewModel, BusinessProfile profile) {
+
+        String userId = dataManager.getSharedPrefs().getUserId();
+        dataManager.getSharedPrefs().setBusinessRepId(userId);
+
+        if (!dataManager.getSharedPrefs().isBusinessAccount()) {
+            profile.setBusinessRepId(userId);
+        } else {
+            String savedRepId = dataManager.getSharedPrefs().getBusinessRepId();
+            profile.setBusinessRepId(savedRepId);
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(AppConstants.BUSINESSES_COLLECTION)
+                .document(profile.getId())
+                .set(profile)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        viewModel.getNavigator().openDashBoard();
+                    } else {
+                        String error = task.getException() != null ? task.getException().getLocalizedMessage()
+                                : "Could not update business profile";
+                        viewModel.getNavigator().handleError(error);
+                    }
+                });
     }
 }

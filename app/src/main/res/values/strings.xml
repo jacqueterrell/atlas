@@ -6,10 +6,14 @@
 
     <string name="already_connected_body">Check your contacts. It looks like you\'ve already connected.</string>
     <string name="already_connected_title">Already Connected</string>
+    <string name="already_sent_contact_request_body">You have already sent this contact a request</string>
+    <string name="already_sent_contact_request_title">Already Requested</string>
 
     <string name="business_login_title">Business Organizational Login</string>
     <string name="business_not_found_body">We couldn\'t find your business or organization with the provided credentials.
     Please check the email and password or contact us to get started with network engagement.</string>
+    <string name="business_login_new_business">Login to New Business</string>
+    <string name="business_login_view_business">View my Businesses</string>
 
     <string name="cancel">Cancel</string>
 
@@ -44,9 +48,6 @@
         <item>Doctor of Dental Surgery (DDS)</item>
     </string-array>
 
-    <string name="send_announcement_alert_body">All of your business or organization\'s contacts will receive a notification informing
-    them of the new announcement.</string>
-
     <string name="describe_connections_info">Atlas uses the following designations to determine how much information
         you share with your connection. Atlas will only share your work information with the Business Contact, Colleague,
         New Acquaintance, and Client designations (similar to if you shared your business card). Should you have personal
@@ -54,6 +55,8 @@
         designated as Personal Friend or Family Member.
     </string>
     <string name="describe_the_opp">Please describe the opportunity.</string>
+
+    <string name="edit_connection">Edit Connection</string>
 
     <string name="empty_crm_prompt">Add business opportunities by tapping the above pencil button.</string>
 
@@ -80,6 +83,8 @@
     <string name="how_did_you_meet">How did you meet? \n please select one.</string>
     <string name="how_you_met_body">Write personal notes on your contacts and always rememberthe how and why of your meetings. Your personal notes are for your eyes only.</string>
     <string name="how_you_met_title">Remember How You Met</string>
+
+    <string name="invite_message">Download Atlas - Business Card to better manage your contacts! \n\nIOS: %1$s  \n\nAndroid: %2$s</string>
 
     <string name="last_name">What\'s your last name?</string>
 
@@ -117,6 +122,13 @@
 
     <string name="recent_activity">Recent Activity</string>
 
+    <string name="send_announcement_alert_body">All of your business or organization\'s contacts will receive a notification informing
+    them of the new announcement.</string>
+
+    <string name="share_contact">
+        <u>Share Contact</u>
+    </string>
+
     <string-array name="status_array">
         <item>New</item>
         <item>Qualified</item>
@@ -135,6 +147,8 @@
     <string name="user_status_info">Your user statistics show you the number of individuals you\'re connected to in your network, the number of companies
     that people in your network work for, and the number opportunities you\'ve logged inside Atlas. Your user score is based on these network statistics
     and changed over time relative to Atlas\' entire user base.</string>
+
+    <string name="vcard_not_sent_alert">The vcard for this contact could not be sent.</string>
 
     <string name="verify">Verify</string>
     <string name="verify_age_body">To create an account on Atlas, you must be a minimum of 13 years old.</string>

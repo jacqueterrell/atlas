@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
-                    android:text="User"
+                    android:text="Person"
                     android:textAllCaps="false"
                     android:textColor="@color/colorPrimary"
                     android:fontFamily="@font/lato"

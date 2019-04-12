@@ -99,9 +99,8 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         setUpListeners();
 
         if (isApprovingConnection || isUpdatingConnection){
-
              setCachedConnectionType();
-             binding.tvTitle.setText("Edit Connection");
+             binding.tvTitle.setText(getResources().getString(R.string.edit_connection));
          }
 
         return binding.getRoot();
@@ -111,11 +110,9 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     public void onFinishButtonClicked() {
 
         if (isUpdatingConnection){
-
             showUpdateConnectionAlert();
 
         } else {
-
             viewModel.addUserRequest(getViewModel(),lastName,userCode,getConnectionType());
         }
     }
@@ -150,15 +147,11 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         dialog.setTitle(title)
                 .setCancelable(false)
                 .setMessage(body)
-                .setNegativeButton("Cancel",(paramDialogInterface, paramInt) -> {
-
-                })
+                .setNegativeButton("Cancel",(paramDialogInterface, paramInt) -> { })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
-
                     userConnections.setConnectionType(getConnectionType());
                     viewModel.updateConnection(getViewModel(),userConnections);
                     showToastShort("Contact details updated");
-
                 });
 
         dialog.show();
@@ -166,9 +159,8 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
 
     @Override
     public void onConnectionRequestApproved() {
-
         parentNavigator.setContactRecentlyAdded(true);
-        parentNavigator.refreshInfoFragment();
+        parentNavigator.resetEntireApp();
     }
 
     @Override
@@ -183,9 +175,7 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 .setCancelable(false)
                 .setMessage(body)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
-
                     parentNavigator.resetToFirstFragment();
-
                 });
 
         dialog.show();
@@ -194,7 +184,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
 
     @Override
     public void hideConnectionsInfo() {
-
         YoYo.with(Techniques.FadeOut)
                 .duration(500)
                 .onEnd(animator -> binding.dialogConnectionsInfo.setVisibility(View.GONE))
@@ -202,7 +191,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
     }
 
     public void showConnectionsInfo(){
-
         YoYo.with(Techniques.FadeIn)
                 .duration(500)
                 .onStart(animator -> binding.dialogConnectionsInfo.setVisibility(View.VISIBLE))
@@ -222,17 +210,14 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 .setCancelable(false)
                 .setMessage(msg)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
-
                     parentNavigator.resetToFirstFragment();
                 });
 
         dialog.show();
-
     }
 
     @Override
     public void showUserNotFoundAlert() {
-
         String title = "User Not Found";
         String msg = "No user found with a last name of " + lastName + " and a code of " + userCode;
         showAlert(title,msg);
@@ -244,19 +229,23 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
 
         String title = getBaseActivity().getResources().getString(R.string.already_connected_title);
         String body = getBaseActivity().getResources().getString(R.string.already_connected_body);
-
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
 
         dialog.setTitle(title)
                 .setCancelable(false)
                 .setMessage(body)
                 .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
-
                    parentNavigator.resetToFirstFragment();
-
                 });
 
         dialog.show();
+    }
+
+    @Override
+    public void showAlreadySentRequestAlert() {
+        String title = getResources().getString(R.string.already_sent_contact_request_title);
+        String body = getResources().getString(R.string.already_sent_contact_request_body);
+        showAlert(title,body);
     }
 
     @Override
@@ -289,7 +278,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         binding.chkBoxPersonalFriend.setOnClickListener(v -> {
 
             if (binding.chkBoxPersonalFriend.isChecked()){
-
                 binding.chkBoxFamilyMember.setChecked(false);
                 binding.chkBoxNewAcquaintance.setChecked(false);
                 binding.chkBoxBusinessContact.setChecked(false);
@@ -297,7 +285,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 binding.chkBoxClient.setChecked(false);
 
             } else {
-
                 binding.chkBoxPersonalFriend.setChecked(true);
             }
         });
@@ -306,7 +293,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         binding.chkBoxNewAcquaintance.setOnClickListener(v -> {
 
             if (binding.chkBoxNewAcquaintance.isChecked()){
-
                 binding.chkBoxPersonalFriend.setChecked(false);
                 binding.chkBoxFamilyMember.setChecked(false);
                 binding.chkBoxBusinessContact.setChecked(false);
@@ -314,7 +300,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 binding.chkBoxClient.setChecked(false);
 
             } else {
-
                 binding.chkBoxNewAcquaintance.setChecked(true);
             }
         });
@@ -323,7 +308,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         binding.chkBoxBusinessContact.setOnClickListener(v -> {
 
             if (binding.chkBoxBusinessContact.isChecked()){
-
                 binding.chkBoxPersonalFriend.setChecked(false);
                 binding.chkBoxFamilyMember.setChecked(false);
                 binding.chkBoxNewAcquaintance.setChecked(false);
@@ -331,7 +315,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 binding.chkBoxClient.setChecked(false);
 
             } else {
-
                 binding.chkBoxBusinessContact.setChecked(true);
             }
         });
@@ -340,7 +323,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
         binding.chkBoxColleague.setOnClickListener(v -> {
 
             if (binding.chkBoxColleague.isChecked()){
-
                 binding.chkBoxPersonalFriend.setChecked(false);
                 binding.chkBoxFamilyMember.setChecked(false);
                 binding.chkBoxBusinessContact.setChecked(false);
@@ -348,7 +330,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 binding.chkBoxClient.setChecked(false);
 
             } else {
-
                 binding.chkBoxColleague.setChecked(true);
             }
         });
@@ -365,7 +346,6 @@ public class DescribeConnectionsFragment extends BaseFragment<DescribeConnection
                 binding.chkBoxNewAcquaintance.setChecked(false);
 
             } else {
-
                 binding.chkBoxClient.setChecked(true);
             }
         });

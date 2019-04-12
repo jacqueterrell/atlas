@@ -59,10 +59,8 @@ public class BusinessLoginViewModel extends BaseViewModel<BusinessLoginNavigator
 
     /************DataModel Requests*****************/
 
-
     public void firebaseAuthenticateByEmail(BusinessLoginViewModel viewModel, String email, String password){
-
-        dataModel.firebaseAuthenticateByEmail(viewModel,email,password);
+        dataModel.authenticateCredentials(viewModel,email,password);
     }
 
 }
