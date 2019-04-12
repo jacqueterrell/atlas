@@ -1,5 +1,6 @@
 package com.team.mamba.atlas.userInterface.dashBoard.settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -27,6 +28,7 @@ import com.team.mamba.atlas.userInterface.dashBoard.settings.businessLogin.Setti
 import com.team.mamba.atlas.userInterface.dashBoard.settings.network_management.NetworkManagementFragment;
 import com.team.mamba.atlas.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlas.userInterface.welcome._viewPager.ViewPagerFragment;
+import com.team.mamba.atlas.userInterface.welcome.select_business_account.business_login.BusinessLoginFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
 import java.io.InputStream;
@@ -162,13 +164,11 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding, Settin
         dialog.show();
 
 
-
     }
 
     @Override
     public void onBusinessLoginClick() {
-        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.addFragmentVertically(SettingsBusinessLoginFragment.newInstance(), manager, "SettingsBusinessLogin", null);
+        showBusinessLoginAlert(getBaseActivity());
     }
 
     @Override
@@ -282,13 +282,32 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding, Settin
 
     }
 
+    private void showBusinessLoginAlert(Activity activity) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+        final String viewBusiness = getResources().getString(R.string.business_login_view_business);
+        final String loginToBusiness = getResources().getString(R.string.business_login_new_business);
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+
+        dialog.setTitle("Business Login")
+                .setNegativeButton(loginToBusiness, (paramDialogInterface, paramInt) -> {
+                    ChangeFragments
+                            .addFragmentVertically(BusinessLoginFragment.newInstance(), manager, "BusinessLogin",
+                                    null);
+                })
+                .setPositiveButton(viewBusiness, (paramDialogInterface, paramInt) -> {
+                    ChangeFragments.addFragmentVertically(SettingsBusinessLoginFragment.newInstance(), manager, "SettingsBusinessLogin", null);
+                })
+                .setNeutralButton("Cancel", (paramDialogInterface, paramInt) -> {
+                });
+        dialog.show();
+    }
+
 
     /**
      * Removes all Activities from the back stack and opens up
      * {@link ViewPagerFragment}
      */
     private void resetApplication() {
-
         getBaseActivity().finishAffinity();
         startActivity(WelcomeActivity.newIntent(getBaseActivity()));
     }
