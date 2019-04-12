@@ -29,6 +29,7 @@ public class BusinessProfile {
     private Map<String,String> contacts = new LinkedHashMap<>();
     private String shareNeeds = "...";
     private String businessRepId = "";
+    private String adminPassword = "";
     @Exclude private boolean isDirectory = false;
 
 
@@ -158,6 +159,14 @@ public class BusinessProfile {
 
     public String getSearchName() {
         return searchName;
+    }
+
+    public String getAdminPassword() {
+        return adminPassword;
+    }
+
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
     }
 
     @Exclude public boolean isDirectory() {

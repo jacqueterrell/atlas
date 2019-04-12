@@ -45,7 +45,6 @@ public class BusinessAccountsDataModel {
                 .set(profile)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        dataManager.getSharedPrefs().setUserId(profile.getId());
                         viewModel.getNavigator().onAccountUpdatedSuccessfully(profile);
                     } else {
                         String error = task.getException() != null ? task.getException().getLocalizedMessage() : "Could not update business profile";
