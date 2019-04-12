@@ -123,6 +123,9 @@ implements BusinessProfileNavigator {
         if (isPhonePermissionsGranted()) {
 
             String phone = profile.getPhone().replaceAll(RegEx.REMOVE_NON_DIGITS,"");
+
+            if (phone.isEmpty()){ return; }
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getBaseActivity());
 
             builder.setMessage(profile.getPhone())

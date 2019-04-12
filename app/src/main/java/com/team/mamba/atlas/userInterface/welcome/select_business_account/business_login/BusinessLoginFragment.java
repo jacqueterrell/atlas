@@ -109,10 +109,11 @@ public class BusinessLoginFragment extends BaseFragment<BusinessLoginLayoutBindi
 
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
+                    dataManager.getSharedPrefs().setUserId(profile.getId());
+                    dataManager.getSharedPrefs().setUserLoggedIn(true);
                     dataManager.getSharedPrefs().setBusinessAccount(true);
                     getBaseActivity().finishAffinity();
-                    Intent intent = DashBoardActivity.newIntent(getBaseActivity());
-                    startActivity(intent);
+                    startActivity(DashBoardActivity.newIntent(getBaseActivity()));
                 });
 
         dialog.show();
