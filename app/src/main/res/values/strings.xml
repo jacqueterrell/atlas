@@ -8,6 +8,7 @@
     <string name="already_connected_title">Already Connected</string>
     <string name="already_sent_contact_request_title">Already Requested</string>
     <string name="already_sent_contact_request_body">You have already sent this contact a request</string>
+    <string name="invite_message">Download Atlas - Business Card to better manage your contacts! \n%1$s  \n%2$s</string>
 
     <string name="business_login_title">Business Organizational Login</string>
     <string name="business_not_found_body">We couldn\'t find your business or organization with the provided credentials.
