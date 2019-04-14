@@ -25,6 +25,7 @@ public class PersonalNotes {
     }
 
     public List<String> getDetails() {
+        if (details == null){ return new ArrayList<>(); }
         return details;
     }
 

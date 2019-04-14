@@ -3,4 +3,11 @@ package com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.no
 import com.team.mamba.atlas.userInterface.base.BaseViewModel;
 
 public class HowDidYouMeetViewModel extends BaseViewModel<HowDidYouMeetNavigator> {
+
+    /*******************Onclick Listeners***********************/
+
+    public void onContinueClicked(){
+        getNavigator().onContinueClicked();
+    }
+
 }

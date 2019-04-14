@@ -33,13 +33,11 @@ public class PersonalNoteDataModel {
 
         newNotesRef.set(personalNotes)
                 .addOnSuccessListener(aVoid -> {
-
-                    Logger.i("Note successfully updated");
                     viewModel.getNavigator().onNoteSentSuccessfully();
                 })
                 .addOnFailureListener(e -> {
-                    //
-                    Logger.e("Error updating note");
+                    String msg = "Error saving notes, please try again later";
+                    viewModel.getNavigator().handleError(msg);
                 });
 
     }

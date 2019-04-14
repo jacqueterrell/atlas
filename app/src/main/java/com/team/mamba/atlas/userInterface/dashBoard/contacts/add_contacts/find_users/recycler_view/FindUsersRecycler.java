@@ -83,7 +83,7 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater,container,savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.find_users_recycler_layout,container,false);
+        binding = getViewDataBinding();
 
         Collections.sort(queriedProfiles, (o1, o2) -> o1.getLastName().compareTo(o2.getLastName()));
 
