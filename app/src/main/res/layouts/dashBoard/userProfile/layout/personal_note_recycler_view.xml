@@ -90,6 +90,10 @@
 
         </LinearLayout>
 
+        <include
+            android:id="@+id/spinner_layout"
+            layout="@layout/default_spinner"/>
+
     </FrameLayout>
 
 </layout>
