@@ -7,4 +7,6 @@ public interface PersonalNoteNavigator {
     void onNoteSentSuccessfully();
 
     void onFinishButtonClicked();
+
+    void handleError(String errorMsg);
 }

@@ -40,7 +40,6 @@ implements ContactNotesNavigator{
 
 
     public static ContactNotesFragment newInstance(UserProfile userProfile){
-
         profile = userProfile;
         return new ContactNotesFragment();
     }
@@ -110,18 +109,15 @@ implements ContactNotesNavigator{
 
     @Override
     public void onEditDetailsClicked() {
-
         //open how did you meet fragment
         PersonalNotes notes = viewModel.getPersonalNotes();
-        ChangeFragments.addFragmentFadeIn(HowDidYouMeetFragment.newInstance(notes), getBaseActivity().getSupportFragmentManager(), "HowDidYouMeet", null);
+        ChangeFragments.addFragmentFadeIn(HowDidYouMeetFragment.newInstance(profile,notes), getBaseActivity().getSupportFragmentManager(), "HowDidYouMeet", null);
 
     }
 
     @Override
     public void onConnectionInfoClicked() {
-
         ChangeFragments.addFragmentFadeIn(new ContactInfoDialog(), getBaseActivity().getSupportFragmentManager(), "ContactInfoDialog", null);
-
     }
 
     @Override

@@ -51,7 +51,6 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
     @Inject
     Context appContext;
 
-
     private PersonalNoteRecyclerViewBinding binding;
     private static PersonalNotes personalNotes;
     private PersonalNoteAdapter personalNoteAdapter;
@@ -60,10 +59,7 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
     private DashBoardActivityNavigator parentNavigator;
 
 
-
-
     public static PersonalNoteRecyclerView newInstance(PersonalNotes notes,AppDataManager appDataManager){
-
         personalNotes = notes;
         return new PersonalNoteRecyclerView();
     }
@@ -86,7 +82,7 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.spinnerLayout.progressSpinner;
     }
 
     @Override
@@ -106,7 +102,7 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater,container,savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.personal_note_recycler_view,container,false);
+        binding = getViewDataBinding();
 
         detailsList.addAll(personalNotes.getDetails());
         personalNoteAdapter = new PersonalNoteAdapter(detailsList,this);
@@ -114,14 +110,12 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(personalNoteAdapter);
 
-
         setUpItemTouchHelper();
         return binding.getRoot();
     }
 
     @Override
     public void onAddButtonClicked() {
-
         detailsList.add("");
         personalNoteAdapter.notifyDataSetChanged();
 
@@ -133,18 +127,21 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
         List<String> descriptionList = new ArrayList<>();
 
         for (Map.Entry<Integer,String> entry : personalNoteAdapter.getDetailsMap().entrySet()){
-
             String description = entry.getValue();
             descriptionList.add(description);
         }
 
         personalNotes.setDetails(descriptionList);
         Toast.makeText(getActivity(),"Saving your info",Toast.LENGTH_SHORT).show();
-
+        showProgressSpinner();
         viewModel.sendUserNote(getViewModel(),personalNotes);
-
     }
 
+    @Override
+    public void handleError(String errorMsg) {
+        hideProgressSpinner();
+        showAlert("Whoops",errorMsg);
+    }
 
     /**
      * Sets the swipe to delete on our adapter
@@ -233,7 +230,6 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
      * Used to show an 'items restored' snackbar
      */
     private void showRestoredSnackbar() {
-
         Snackbar snackbar = Snackbar.make(binding.getRoot(), "item restored", 2000);
         View v = snackbar.getView();
         v.setBackgroundColor(ContextCompat.getColor(appContext, R.color.dessert_green));
@@ -243,7 +239,6 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
 
     @Override
     public void onNoteSentSuccessfully() {
-
         hideProgressSpinner();
         parentNavigator.resetToFirstFragment();
     }

@@ -12,14 +12,18 @@ import android.view.ViewGroup;
 import com.team.mamba.atlas.BR;
 import com.team.mamba.atlas.R;
 import com.team.mamba.atlas.data.AppDataManager;
+import com.team.mamba.atlas.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlas.databinding.HowDidYouMeetBinding;
 import com.team.mamba.atlas.data.model.api.fireStore.PersonalNotes;
 import com.team.mamba.atlas.userInterface.base.BaseFragment;
 import com.team.mamba.atlas.utils.ChangeFragments;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
-public class HowDidYouMeetFragment extends BaseFragment<HowDidYouMeetBinding,HowDidYouMeetViewModel> {
+public class HowDidYouMeetFragment extends BaseFragment<HowDidYouMeetBinding,HowDidYouMeetViewModel>
+ implements HowDidYouMeetNavigator{
 
 
 
@@ -31,10 +35,17 @@ public class HowDidYouMeetFragment extends BaseFragment<HowDidYouMeetBinding,How
 
     private HowDidYouMeetBinding binding;
     private static PersonalNotes personalNotes;
+    private static UserProfile contactProfile;
+    private static final String CHANGE_ENCOUNTER = "Chance Encounter";
+    private static final String  WORK_EVENT = "Work Event";
+    private static final String SOCIAL_EVENT = "Social Event";
+    private static final String PEER_INTRO = "Peer Introduction";
+    private static final String PEER_COLLEAGUE = "Peer/Colleague";
 
-    public static HowDidYouMeetFragment newInstance(PersonalNotes notes){
 
+    public static HowDidYouMeetFragment newInstance(UserProfile userProfile,PersonalNotes notes){
         personalNotes = notes;
+        contactProfile = userProfile;
        return new HowDidYouMeetFragment();
     }
 
@@ -60,33 +71,70 @@ public class HowDidYouMeetFragment extends BaseFragment<HowDidYouMeetBinding,How
         return null;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel.setNavigator(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater,container,savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.how_did_you_meet,container,false);
-
-
-        binding.btnContinue.setOnClickListener(view -> {
-
-            PersonalNotes notes = new PersonalNotes();
-            notes.setAuthorID(dataManager.getSharedPrefs().getUserId());
-            notes.setHowMet(getHowMet());
-            notes.setWhereMet(binding.etWhere.getText().toString());
-
-            if (personalNotes != null){
-
-                notes.setDetails(personalNotes.getDetails());
-                notes.setSubjectID(personalNotes.getSubjectID());
-            }
-
-            ChangeFragments.addFragmentFadeIn(PersonalNoteRecyclerView
-                    .newInstance(notes,dataManager), getActivity().getSupportFragmentManager(), "ContactInfoDialog", null);
-
-        });
+        binding = getViewDataBinding();
 
         setUpListeners();
+        setData();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onContinueClicked() {
+
+        PersonalNotes notes = new PersonalNotes();
+        notes.setAuthorID(dataManager.getSharedPrefs().getUserId());
+        notes.setHowMet(getHowMet());
+        notes.setWhereMet(binding.etWhere.getText().toString());
+        notes.setSubjectID(contactProfile.getId());
+
+        if (personalNotes != null && !personalNotes.getDetails().isEmpty()){
+            notes.setDetails(personalNotes.getDetails());
+        } else {
+            List<String> details = new ArrayList<>();
+            details.add("");
+            notes.setDetails(details);
+        }
+
+        ChangeFragments.addFragmentFadeIn(PersonalNoteRecyclerView
+                .newInstance(notes,dataManager), getActivity().getSupportFragmentManager(), "ContactInfoDialog", null);
+
+    }
+
+    private void setData(){
+        if (personalNotes != null){
+            String whereMet = personalNotes.getWhereMet();
+            binding.etWhere.setText(whereMet);
+
+            String howMet = personalNotes.getHowMet();
+
+            switch (howMet) {
+                case CHANGE_ENCOUNTER:
+                    binding.chkBoxChanceEncounter.performClick();
+                    break;
+                case WORK_EVENT:
+                    binding.chkBoxWorkEvent.performClick();
+                    break;
+                case SOCIAL_EVENT:
+                    binding.chkBoxSocialEvent.performClick();
+                    break;
+                case PEER_INTRO:
+                    binding.chkBoxPeerIntroduction.performClick();
+                    break;
+                default:
+                    binding.chkBoxPeerColleague.performClick();
+                    break;
+            }
+        }
     }
 
 
@@ -178,27 +226,22 @@ public class HowDidYouMeetFragment extends BaseFragment<HowDidYouMeetBinding,How
         });
     }
 
-    public String getHowMet(){
+    private String getHowMet(){
 
         if (binding.chkBoxChanceEncounter.isChecked()){
-
-            return "Change Encounter";
+            return CHANGE_ENCOUNTER;
 
         } else if (binding.chkBoxWorkEvent.isChecked()){
-
-            return "Work Event";
+            return WORK_EVENT;
 
         } else if (binding.chkBoxSocialEvent.isChecked()){
-
-            return "Social Event";
+            return SOCIAL_EVENT;
 
         } else if (binding.chkBoxPeerIntroduction.isChecked()){
-
-            return "Peer Introduction";
+            return PEER_INTRO;
 
         } else {
-
-            return "Peer/Colleague";
+            return PEER_COLLEAGUE;
         }
     }
 }
