@@ -134,6 +134,7 @@ public class PersonalNoteRecyclerView extends BaseFragment<PersonalNoteRecyclerV
         personalNotes.setDetails(descriptionList);
         Toast.makeText(getActivity(),"Saving your info",Toast.LENGTH_SHORT).show();
         showProgressSpinner();
+        hideKeyboard();
         viewModel.sendUserNote(getViewModel(),personalNotes);
     }
 
