@@ -96,6 +96,7 @@ public class HowDidYouMeetFragment extends BaseFragment<HowDidYouMeetBinding,How
         notes.setHowMet(getHowMet());
         notes.setWhereMet(binding.etWhere.getText().toString());
         notes.setSubjectID(contactProfile.getId());
+        hideKeyboard();
 
         if (personalNotes != null && !personalNotes.getDetails().isEmpty()){
             notes.setDetails(personalNotes.getDetails());
@@ -114,7 +115,6 @@ public class HowDidYouMeetFragment extends BaseFragment<HowDidYouMeetBinding,How
         if (personalNotes != null){
             String whereMet = personalNotes.getWhereMet();
             binding.etWhere.setText(whereMet);
-
             String howMet = personalNotes.getHowMet();
 
             switch (howMet) {
